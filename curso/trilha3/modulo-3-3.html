@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="inema-course" content="loopgraph">
+  <title>Modulo 3.3 — Mito x fato | Graph Engineering</title>
+  <script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'purple' };
+      function clone(o) { var r = {}; for (var x in o) r[x] = o[x]; return r; }
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed === 'object') { for (var k in DEF) if (parsed[k] != null) p[k] = parsed[k]; } }
+        else { var legacy = localStorage.getItem('theme'); if (legacy === 'light') p.theme = 'claro'; else if (legacy === 'dark') p.theme = 'inema-dark'; }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = { 'inema-dark': { dark: true, attr: null, cs: 'dark' }, 'claro': { dark: false, attr: null, cs: 'light' }, 'sepia': { dark: false, attr: 'sepia', cs: 'light' }, 'foco': { dark: null, attr: 'foco', cs: null }, 'contraste': { dark: true, attr: 'contraste', cs: 'dark' } };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark === true) html.classList.add('dark'); else if (t.dark === false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark') ? 'dark' : 'light'));
+      html.setAttribute('data-font', p.font || 'inter'); html.setAttribute('data-accent', p.accent || 'emerald');
+      var s = html.style, scale = (+p.fontScale || 100);
+      s.setProperty('--inema-font-scale', (scale / 100).toString()); s.setProperty('font-size', scale + '%');
+      s.setProperty('--measure', (+p.lineWidth || 68) + 'ch'); s.setProperty('--lh-body', (+p.leading || 1.7).toString());
+      var fam = p.font === 'system' ? 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif' : (p.font === 'leitura' ? '"Atkinson Hyperlegible", "Inter", system-ui, sans-serif' : '"Inter", system-ui, sans-serif');
+      s.setProperty('--font-body', fam);
+      var ACC = { emerald: [152,76,45], blue: [217,91,60], purple: [258,90,66], amber: [38,92,50], teal: [174,72,41], rose: [350,89,60] };
+      var a = ACC[p.accent] || ACC.emerald;
+      s.setProperty('--accent-h', a[0]+''); s.setProperty('--accent-s', a[1]+'%'); s.setProperty('--accent-l', a[2]+'%');
+      s.setProperty('--accent', 'hsl(' + a[0] + ' ' + a[1] + '% ' + a[2] + '%)');
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme = 'dark'; } catch (e) {} }
+  })();
+  </script>
+  <script type="application/json" data-inema-manifest>
+  {
+    "course": "loopgraph",
+    "tracks": [
+      { "n": "1", "title": "Fundamentos: o grafo", "modules": [
+        { "id": "1-1", "title": "O que e um grafo", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
+        { "id": "1-2", "title": "Grafos no mundo real", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+        { "id": "1-3", "title": "Como se anda num grafo", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" }
+      ]},
+      { "n": "2", "title": "Loop Engineering", "modules": [
+        { "id": "2-1", "title": "Anatomia do loop", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
+        { "id": "2-2", "title": "O verificador e o gargalo", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
+        { "id": "2-3", "title": "Onde o loop quebra", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" }
+      ]},
+      { "n": "3", "title": "Agentic x Loop x Graph", "modules": [
+        { "id": "3-1", "title": "As cinco camadas", "topics": 6, "href": "curso/trilha3/modulo-3-1.html" },
+        { "id": "3-2", "title": "O comparativo de verdade", "topics": 6, "href": "curso/trilha3/modulo-3-2.html" },
+        { "id": "3-3", "title": "Mito x fato", "topics": 6, "href": "curso/trilha3/modulo-3-3.html" }
+      ]},
+      { "n": "4", "title": "Graph Engineering na pratica", "modules": [
+        { "id": "4-1", "title": "Nos, arestas e estado", "topics": 6, "href": "curso/trilha4/modulo-4-1.html" },
+        { "id": "4-2", "title": "Org graph x work graph", "topics": 6, "href": "curso/trilha4/modulo-4-2.html" },
+        { "id": "4-3", "title": "Falhas, harness e observabilidade", "topics": 6, "href": "curso/trilha4/modulo-4-3.html" }
+      ]},
+      { "n": "5", "title": "Mao na massa", "modules": [
+        { "id": "5-1", "title": "Do loop ao grafo", "topics": 6, "href": "curso/trilha5/modulo-5-1.html" },
+        { "id": "5-2", "title": "Grafos de negocio e de tarefas", "topics": 6, "href": "curso/trilha5/modulo-5-2.html" },
+        { "id": "5-3", "title": "Biblioteca de prompts", "topics": 6, "href": "curso/trilha5/modulo-5-3.html" }
+      ]}
+    ]
+  }
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }</script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/learn.css">
+  <link rel="stylesheet" href="../../assets/curso.css">
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+<a href="#conteudo" class="sr-only focus:not-sr-only focus:absolute focus:z-[60] focus:m-2 focus:px-4 focus:py-2 focus:rounded-lg focus:bg-dark-700">Pular para o conteudo</a>
+
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-14 gap-2">
+      <div class="flex items-center space-x-3 flex-shrink-0">
+        <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+          <span class="text-2xl">🕸️</span><span class="font-bold text-lg hidden lg:inline">Graph Engineering</span>
+        </a>
+        <span class="text-neutral-600 hidden sm:inline">|</span>
+        <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium hidden sm:inline">INEMA.CLUB</a>
+        <span class="text-neutral-600 hidden sm:inline">-</span>
+        <a href="https://inema.pro" target="_blank" class="text-amber-700 hover:text-amber-600 dark:text-slate-300 dark:hover:text-slate-200 text-sm font-medium hidden sm:inline">PRO</a>
+      </div>
+      <div class="flex items-center space-x-1">
+        <a href="../trilha1/index.html" class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors"><span class="lg:hidden">T1</span><span class="hidden lg:inline">Fundamentos</span></a>
+        <a href="../trilha2/index.html" class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors"><span class="lg:hidden">T2</span><span class="hidden lg:inline">Loops</span></a>
+        <a href="index.html" class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-purple-400 bg-purple-500/10"><span class="lg:hidden">T3</span><span class="hidden lg:inline">Comparativo</span></a>
+        <a href="../trilha4/index.html" class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors"><span class="lg:hidden">T4</span><span class="hidden lg:inline">Pratica</span></a>
+        <a href="../trilha5/index.html" class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors"><span class="lg:hidden">T5</span><span class="hidden lg:inline">Mao na massa</span></a>
+        <button type="button" data-inema-journey-open class="hidden sm:inline-flex items-center gap-1 px-2 py-1.5 rounded-lg text-sm text-neutral-400 hover:text-neutral-100 transition-colors" title="Minha jornada">
+          <span aria-hidden="true">◷</span><span class="hidden xl:inline">Jornada</span><span class="inema-journey-badge hidden" aria-hidden="true"></span>
+        </button>
+        <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" aria-label="Alternar tema claro/escuro">
+          <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+          <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4" aria-label="Trilha de navegacao">
+  <div class="flex items-center space-x-2 text-sm text-neutral-400">
+    <a href="../../index.html" class="hover:text-purple-400">Inicio</a><span>/</span>
+    <a href="index.html" class="hover:text-purple-400">Trilha 3</a><span>/</span>
+    <span class="text-purple-400">Modulo 3.3</span>
+  </div>
+</nav>
+
+<header class="bg-gradient-to-br from-purple-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600" data-inema-module="3-3" data-inema-track="3">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <span class="inline-block px-3 py-1 bg-purple-500/20 text-purple-400 text-xs font-semibold rounded-full mb-4">MODULO 3.3</span>
+    <h1 class="text-3xl sm:text-4xl font-bold mb-4">🔍 Mito × fato</h1>
+    <p class="text-lg text-neutral-400 max-w-3xl">
+      "Graph engineering" nasceu de um debate real e virou, em poucas semanas, um mercado de alegacoes infladas.
+      Este modulo separa o que se sustenta do que nao se sustenta — sem virar um modulo anti-grafo.
+      O grafo e real e util; o hype em cima dele e que precisa de auditoria.
+    </p>
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8 max-w-2xl">
+      <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">6</div><div class="text-xs text-neutral-400">Topicos</div></div>
+      <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">40</div><div class="text-xs text-neutral-400">Minutos</div></div>
+      <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">Intermediario</div><div class="text-xs text-neutral-400">Nivel</div></div>
+      <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">Critica</div><div class="text-xs text-neutral-400">Tipo</div></div>
+    </div>
+    <div class="mt-6 max-w-2xl bg-dark-800 rounded-xl border border-dark-600 p-4">
+      <div class="flex items-center justify-between">
+        <span class="text-sm text-neutral-300 font-semibold">Progresso deste modulo</span>
+        <div data-inema-meter="modulo:3-3" class="inema-meter text-sm" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="Progresso do modulo 3.3">
+          <span class="inema-meter-pct text-purple-400 font-bold">0%</span><span class="inema-meter-count text-neutral-400 ml-2">0 de 6</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="lg:grid lg:grid-cols-[220px_minmax(0,1fr)] lg:gap-10">
+
+  <nav data-inema-toc aria-label="Indice da pagina" class="hidden lg:block sticky top-24 self-start">
+    <p class="text-sm text-neutral-400 mb-3">Secao <span class="inema-toc-pos">1</span> de <span class="inema-toc-total">6</span></p>
+    <ul class="space-y-1 text-sm">
+      <li><a href="#topico-1" class="inema-toc-link text-neutral-400 hover:text-purple-400">1. Desarme o "loop morreu"</a></li>
+      <li><a href="#topico-2" class="inema-toc-link text-neutral-400 hover:text-purple-400">2. Conhecimento x execucao</a></li>
+      <li><a href="#topico-3" class="inema-toc-link text-neutral-400 hover:text-purple-400">3. Confira as atribuicoes</a></li>
+      <li><a href="#topico-4" class="inema-toc-link text-neutral-400 hover:text-purple-400">4. Desconfie do numero</a></li>
+      <li><a href="#topico-5" class="inema-toc-link text-neutral-400 hover:text-purple-400">5. Reconheca a prior art</a></li>
+      <li><a href="#topico-6" class="inema-toc-link text-neutral-400 hover:text-purple-400">6. Grafo nem sempre</a></li>
+    </ul>
+  </nav>
+
+  <main id="conteudo" class="inema-prose">
+
+  <!-- ============ TOPICO 1 ============ -->
+  <section id="topico-1" class="mb-16" data-inema-topic="modulo-3-3#topico-1">
+    <div class="flex items-center space-x-4 mb-6">
+      <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">1</span>
+      <h2 class="text-2xl font-bold">🪦 Desarme o "loop morreu"</h2>
+      <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar duvida neste topico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm">
+        <span aria-hidden="true">?</span><span>Tenho duvida</span>
+      </button>
+    </div>
+
+    <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-3-t1-p1">
+      Em julho de 2026 circulou a ideia de que "loop engineering morreu, agora e graph engineering". A frase
+      soa como uma virada de era, mas tecnicamente nao faz sentido: um loop <em>ja</em> e um grafo — um grafo cujo
+      caminho volta a um no anterior. Voce nao "gradua" de loop pra grafo como quem troca de ferramenta.
+    </p>
+
+    <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-3-t1-p2">
+      O que realmente acontece e composicao: voce compoe loops em grafos quando um loop deixa de bastar — e isso
+      tem custo real, nao e so upgrade gratuito. Voce paga em mais prompts pra escrever, um <strong class="text-purple-400">state schema</strong>
+      (o formato dos dados que atravessam o sistema) mais elaborado, e modos de falha que um loop sozinho nunca tinha
+      (merge que engole dado, roteamento que nao converge).
+    </p>
+
+    <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+      <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">🆕</span> Novo aqui? Duas palavras antes de seguir</h3>
+      <ul class="space-y-2 text-neutral-300 text-sm">
+        <li><strong class="text-neutral-100">Maquina de estados:</strong> um jeito antigo (bem antes de IA) de descrever um sistema como um conjunto fixo de "estados" e as regras que dizem quando ele muda de um pro outro.</li>
+        <li><strong class="text-neutral-100">FOMO:</strong> "fear of missing out" — o medo de ficar pra tras porque todo mundo esta falando de um termo novo. E o combustivel do ciclo de hype deste topico.</li>
+      </ul>
+    </div>
+
+    <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+      <h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center"><span class="mr-2">⚠️</span> O ciclo de hype em numero</h3>
+      <p class="text-neutral-300">
+        Loop engineering foi declarado "morto" com cerca de seis semanas de vida como termo popular. Toda semana um
+        vocabulario novo e anunciado como obrigatorio e o anterior e anunciado como obsoleto. Se voce trocar de
+        arquitetura toda vez que um termo muda, voce nunca termina nada — voce so persegue rotulo.
+      </p>
+    </div>
+
+    <div class="rounded-2xl border border-purple-500/30 bg-dark-900/40 p-3 sm:p-4 mb-4 overflow-hidden">
+      <svg viewBox="0 0 1000 260" class="w-full h-auto" role="img" aria-label="Um circulo grande rotulado grafo contendo dentro de si um circulo menor rotulado loop, com uma seta circular mostrando o ciclo dentro do loop. Ao lado, texto: o loop nao morreu, ele virou o no do grafo maior.">
+        <defs>
+          <linearGradient id="m33a-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c084fc"/><stop offset="1" stop-color="#a855f7"/></linearGradient>
+          <filter id="m33a-glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <pattern id="m33a-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#a855f7" opacity="0.12"/></pattern>
+          <marker id="m33a-ah" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#c084fc"/></marker>
+        </defs>
+        <rect x="0" y="0" width="1000" height="260" fill="url(#m33a-grid)"/>
+        <g filter="url(#m33a-glow)"><circle cx="260" cy="130" r="150" fill="#1a1230" stroke="url(#m33a-grad)" stroke-width="2"/></g>
+        <circle cx="260" cy="130" r="150" fill="none" stroke="#c084fc" stroke-width="2"/>
+        <text x="260" y="46" text-anchor="middle" fill="#e9d5ff" font-family="Inter,sans-serif" font-size="14" font-weight="600">grafo</text>
+        <circle cx="260" cy="150" r="62" fill="#0f0a1f" stroke="#38bdf8" stroke-width="2"/>
+        <path d="M300,120 A46,46 0 1 1 258,104" fill="none" stroke="#38bdf8" stroke-width="2" marker-end="url(#m33a-ah)"/>
+        <text x="260" y="156" text-anchor="middle" fill="#bfe6ff" font-family="Inter,sans-serif" font-size="14" font-weight="600">loop</text>
+        <g font-family="Inter,sans-serif" font-size="20" fill="#e9d5ff">
+          <text x="150" y="180">A</text><text x="370" y="180">B</text><text x="260" y="60">C</text>
+        </g>
+        <line x1="410" y1="130" x2="500" y2="130" stroke="#c084fc" stroke-width="1.6" opacity="0.5" stroke-dasharray="6 6"/>
+        <line x1="60" y1="130" x2="410" y2="60" stroke="#a855f7" stroke-width="1.6" opacity="0.35"/>
+        <text x="700" y="90" text-anchor="middle" fill="#e9d5ff" font-family="Inter,sans-serif" font-size="15" font-weight="600">o loop nao morreu.</text>
+        <text x="700" y="120" text-anchor="middle" fill="#e9d5ff" font-family="Inter,sans-serif" font-size="15" font-weight="600">ele virou UM NO do grafo.</text>
+        <text x="700" y="160" text-anchor="middle" fill="#9ad6ff" font-family="Inter,sans-serif" font-size="13">os outros nos (A, B, C) sao</text>
+        <text x="700" y="182" text-anchor="middle" fill="#9ad6ff" font-family="Inter,sans-serif" font-size="13">o que o grafo acrescenta</text>
+      </svg>
+    </div>
+    <p class="text-sm text-neutral-400 mb-6">
+      <strong class="text-neutral-300">O que olhar:</strong> o loop nao desaparece dentro do grafo maior — ele continua la,
+      inteiro, como um dos nos. O que o grafo faz e colocar outros nos (A, B, C) ao redor dele e definir como se
+      chega e se sai daquele loop. Nao houve substituicao; houve um no a mais.
+    </p>
+
+    <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+      <h3 class="text-lg font-semibold text-purple-400 mb-4">Conceitos-chave</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Loop = grafo com ciclo</div><p class="text-xs text-neutral-400">Ja era grafo desde o inicio</p></div>
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Composicao, nao troca</div><p class="text-xs text-neutral-400">Voce nao "gradua" de nivel</p></div>
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Custo real</div><p class="text-xs text-neutral-400">Prompt, schema, falha nova</p></div>
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Ciclo de hype</div><p class="text-xs text-neutral-400">Termo novo mata o anterior toda semana</p></div>
+      </div>
+    </div>
+
+    <div class="flex justify-start mt-6">
+      <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors">
+        <span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ============ TOPICO 2 ============ -->
+  <section id="topico-2" class="mb-16" data-inema-topic="modulo-3-3#topico-2">
+    <div class="flex items-center space-x-4 mb-6">
+      <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">2</span>
+      <h2 class="text-2xl font-bold">🗂️ Separe grafo de conhecimento de grafo de execucao</h2>
+      <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar duvida neste topico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm">
+        <span aria-hidden="true">?</span><span>Tenho duvida</span>
+      </button>
+    </div>
+
+    <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-3-t2-p1">
+      O erro mais comum do debate — inclusive em posts que parecem tecnicos — e misturar dois assuntos diferentes
+      que so tem "grafo" em comum no nome. <strong class="text-purple-400">GraphRAG</strong> e <strong class="text-purple-400">knowledge graph</strong>
+      sao grafos de <em>informacao</em>: os nos sao entidades ou documentos, as arestas sao relacoes ("detalha", "contradiz"),
+      e um agente <em>consulta</em> esse grafo pra responder uma pergunta.
+    </p>
+
+    <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-3-t2-p2">
+      Graph engineering, o assunto deste curso, e grafo de <em>execucao</em>: os nos sao unidades de trabalho
+      (agentes, chamadas de modelo, codigo), as arestas sao "o que roda depois", e um agente <em>percorre</em> esse
+      grafo pra fazer uma tarefa. Sao estruturas de dados com o mesmo nome tecnico, aplicadas a problemas opostos.
+    </p>
+
+    <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+      <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">🆕</span> Novo aqui? Duas palavras antes de seguir</h3>
+      <ul class="space-y-2 text-neutral-300 text-sm">
+        <li><strong class="text-neutral-100">RAG (retrieval-augmented generation):</strong> tecnica onde o modelo, antes de responder, busca trechos relevantes numa base de dados e usa isso como contexto. "Geracao aumentada por busca".</li>
+        <li><strong class="text-neutral-100">GraphRAG:</strong> uma variante do RAG onde a base de dados consultada e organizada como grafo de entidades e relacoes, em vez de so trechos de texto soltos.</li>
+        <li><strong class="text-neutral-100">Knowledge graph:</strong> banco de dados onde a informacao vira nos (entidades) e arestas (relacoes entre elas) — o Google usa um ha mais de uma decada pros paineis de busca.</li>
+      </ul>
+    </div>
+
+    <div class="rounded-2xl border border-purple-500/30 bg-dark-900/40 p-3 sm:p-4 mb-4 overflow-hidden">
+      <svg viewBox="0 0 1000 280" class="w-full h-auto" role="img" aria-label="Dois grafos lado a lado separados por uma linha tracejada vertical. A esquerda, grafo de conhecimento com nos rotulados documento A e entidade B ligados por arestas detalha e contradiz, com a legenda o agente CONSULTA. A direita, grafo de execucao com nos rotulados agente 1 e agente 2 ligados por arestas se aprovado e se reprovado, com a legenda o agente PERCORRE. Embaixo, rotulo grande: informacao x execucao.">
+        <defs>
+          <linearGradient id="m33b-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c084fc"/><stop offset="1" stop-color="#a855f7"/></linearGradient>
+          <filter id="m33b-glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <pattern id="m33b-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#a855f7" opacity="0.12"/></pattern>
+          <marker id="m33b-ah" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#38bdf8"/></marker>
+        </defs>
+        <rect x="0" y="0" width="1000" height="280" fill="url(#m33b-grid)"/>
+        <line x1="500" y1="20" x2="500" y2="240" stroke="#9ca3af" stroke-width="1.5" stroke-dasharray="9 9" opacity="0.4"/>
+
+        <text x="240" y="38" text-anchor="middle" fill="#e9d5ff" font-family="Inter,sans-serif" font-size="14" font-weight="600">grafo de conhecimento</text>
+        <g stroke="#c084fc" stroke-width="1.8" opacity="0.6" fill="none">
+          <path d="M215,100 L285,100"/><path d="M215,150 L285,150"/>
+        </g>
+        <g font-family="Inter,sans-serif" font-size="12" fill="#e9d5ff">
+          <text x="250" y="90" text-anchor="middle">detalha</text>
+          <text x="250" y="172" text-anchor="middle">contradiz</text>
+        </g>
+        <g filter="url(#m33b-glow)"><circle cx="150" cy="125" r="46" fill="#1a1230" stroke="url(#m33b-grad)" stroke-width="2"/></g>
+        <text x="150" y="131" text-anchor="middle" fill="#e9d5ff" font-family="Inter,sans-serif" font-size="12" font-weight="600">documento A</text>
+        <circle cx="350" cy="100" r="42" fill="#1a1230" stroke="#c084fc" stroke-width="2"/><text x="350" y="106" text-anchor="middle" fill="#e9d5ff" font-family="Inter,sans-serif" font-size="12" font-weight="600">entidade B</text>
+        <circle cx="350" cy="150" r="42" fill="#1a1230" stroke="#c084fc" stroke-width="2"/><text x="350" y="156" text-anchor="middle" fill="#e9d5ff" font-family="Inter,sans-serif" font-size="12" font-weight="600">entidade C</text>
+        <text x="240" y="222" text-anchor="middle" fill="#e9d5ff" font-family="Inter,sans-serif" font-size="13" font-weight="600">o agente CONSULTA</text>
+
+        <text x="760" y="38" text-anchor="middle" fill="#bfe6ff" font-family="Inter,sans-serif" font-size="14" font-weight="600">grafo de execucao</text>
+        <path d="M715,100 L785,100" stroke="#38bdf8" stroke-width="1.8" opacity="0.6" fill="none" marker-end="url(#m33b-ah)"/>
+        <path d="M715,150 L785,150" stroke="#38bdf8" stroke-width="1.8" opacity="0.6" fill="none" marker-end="url(#m33b-ah)"/>
+        <g font-family="Inter,sans-serif" font-size="12" fill="#bfe6ff">
+          <text x="750" y="90" text-anchor="middle">se aprovado</text>
+          <text x="750" y="172" text-anchor="middle">se reprovado</text>
+        </g>
+        <circle cx="670" cy="125" r="46" fill="#0f0a1f" stroke="#38bdf8" stroke-width="2"/><text x="670" y="131" text-anchor="middle" fill="#bfe6ff" font-family="Inter,sans-serif" font-size="12" font-weight="600">agente 1</text>
+        <circle cx="870" cy="100" r="42" fill="#0f0a1f" stroke="#38bdf8" stroke-width="2"/><text x="870" y="106" text-anchor="middle" fill="#bfe6ff" font-family="Inter,sans-serif" font-size="12" font-weight="600">agente 2</text>
+        <circle cx="870" cy="150" r="42" fill="#0f0a1f" stroke="#38bdf8" stroke-width="2"/><text x="870" y="156" text-anchor="middle" fill="#bfe6ff" font-family="Inter,sans-serif" font-size="12" font-weight="600">volta ao 1</text>
+        <text x="760" y="222" text-anchor="middle" fill="#bfe6ff" font-family="Inter,sans-serif" font-size="13" font-weight="600">o agente PERCORRE</text>
+
+        <text x="500" y="262" text-anchor="middle" fill="#a855f7" font-family="Inter,sans-serif" font-size="15" font-weight="600">informacao × execucao</text>
+      </svg>
+    </div>
+    <p class="text-sm text-neutral-400 mb-6">
+      <strong class="text-neutral-300">O que olhar:</strong> repare no verbo embaixo de cada lado. Consultar e percorrer sao
+      operacoes diferentes. Um grafo de conhecimento fica parado esperando pergunta; um grafo de execucao anda sozinho,
+      passo a passo, ate terminar a tarefa. Confundir os dois faz voce achar que aprender GraphRAG te ensina a orquestrar agentes — nao ensina.
+    </p>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+      <div class="bg-purple-900/20 rounded-xl border border-purple-500/30 p-6">
+        <h4 class="font-bold text-purple-400 mb-4">✓ E grafo de conhecimento quando</h4>
+        <ul class="space-y-3 text-neutral-300 text-sm">
+          <li class="flex items-start space-x-2"><span class="text-purple-400">✓</span><span>O objetivo e responder "quem se relaciona com quem"</span></li>
+          <li class="flex items-start space-x-2"><span class="text-purple-400">✓</span><span>O grafo e consultado, nao executado passo a passo</span></li>
+          <li class="flex items-start space-x-2"><span class="text-purple-400">✓</span><span>E uma forma de RAG — busca melhor, nao orquestracao</span></li>
+        </ul>
+      </div>
+      <div class="bg-sky-900/20 rounded-xl border border-sky-500/30 p-6">
+        <h4 class="font-bold text-sky-400 mb-4">✓ E grafo de execucao quando</h4>
+        <ul class="space-y-3 text-neutral-300 text-sm">
+          <li class="flex items-start space-x-2"><span class="text-sky-400">✓</span><span>O objetivo e "o que roda depois do que"</span></li>
+          <li class="flex items-start space-x-2"><span class="text-sky-400">✓</span><span>O agente percorre o grafo pra completar uma tarefa</span></li>
+          <li class="flex items-start space-x-2"><span class="text-sky-400">✓</span><span>E o assunto deste curso — graph engineering de verdade</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+      <h3 class="text-lg font-semibold text-purple-400 mb-4">Conceitos-chave</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Mesmo nome, coisas diferentes</div><p class="text-xs text-neutral-400">Conhecimento x execucao</p></div>
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">GraphRAG e RAG</div><p class="text-xs text-neutral-400">Nao e substituicao</p></div>
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Consultar x percorrer</div><p class="text-xs text-neutral-400">O verbo denuncia o tipo</p></div>
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Mercado mistura</div><p class="text-xs text-neutral-400">Ate posts tecnicos erram isso</p></div>
+      </div>
+    </div>
+
+    <div class="flex justify-start mt-6">
+      <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors">
+        <span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ============ TOPICO 3 ============ -->
+  <section id="topico-3" class="mb-16" data-inema-topic="modulo-3-3#topico-3">
+    <div class="flex items-center space-x-4 mb-6">
+      <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">3</span>
+      <h2 class="text-2xl font-bold">🕵️ Confira as atribuicoes</h2>
+      <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar duvida neste topico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm">
+        <span aria-hidden="true">?</span><span>Tenho duvida</span>
+      </button>
+    </div>
+
+    <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-3-t3-p1">
+      Tres alegacoes especificas circularam durante o debate de julho de 2026 dizendo que grandes empresas
+      "adotaram graph engineering". Nenhuma das tres se sustenta quando voce checa a fonte primaria — ou seja, o
+      que a propria empresa de fato anunciou.
+    </p>
+
+    <div class="space-y-6 mb-6">
+      <div class="flex items-start space-x-4">
+        <div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center"><span class="text-purple-400 font-bold">1</span></div>
+        <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+          <h4 class="font-semibold text-white mb-2">"Graph engineering substituiu RAG na Microsoft"</h4>
+          <p class="text-sm text-neutral-400 mb-3">A Microsoft publicou pesquisa sobre GraphRAG, uma tecnica de recuperacao de contexto.</p>
+          <p class="text-neutral-300 text-sm">GraphRAG e uma <strong class="text-purple-400">forma de RAG</strong>, nao uma disciplina que substitui RAG. E grafo de conhecimento (topico 2), nao grafo de execucao.</p>
+        </div>
+      </div>
+      <div class="flex items-start space-x-4">
+        <div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center"><span class="text-purple-400 font-bold">2</span></div>
+        <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+          <h4 class="font-semibold text-white mb-2">"Stanford adotou graph engineering" (via DSPy)</h4>
+          <p class="text-sm text-neutral-400 mb-3"><strong class="text-neutral-100">DSPy:</strong> framework de pesquisa de Stanford que otimiza automaticamente os prompts e parametros de um programa que usa modelos de linguagem.</p>
+          <p class="text-neutral-300 text-sm">DSPy otimiza <em>programas</em> de modelo de linguagem — nao tem relacao com grafos de conhecimento nem com uma disciplina chamada "graph engineering".</p>
+        </div>
+      </div>
+      <div class="flex items-start space-x-4">
+        <div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center"><span class="text-purple-400 font-bold">3</span></div>
+        <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+          <h4 class="font-semibold text-white mb-2">"A Anthropic lancou graph engineering"</h4>
+          <p class="text-sm text-neutral-400 mb-3">A Anthropic usa orquestracao multi-agente escrita em codigo em alguns dos seus proprios sistemas.</p>
+          <p class="text-neutral-300 text-sm">Usar orquestracao em codigo e bem diferente de anunciar uma disciplina nova com esse nome. A Anthropic nao anunciou "graph engineering" como conceito.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+      <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Dica pratica</h3>
+      <p class="text-neutral-300">
+        Sempre que uma alegacao tiver o formato "<strong>Empresa X adotou Y</strong>", pergunte: isso apareceu num
+        anuncio, post ou paper <em>da propria</em> empresa X, ou so num post de terceiro repetindo o que outro post disse?
+        Se for a segunda opcao, trate como boato ate achar a fonte primaria.
+      </p>
+    </div>
+
+    <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+      <h3 class="text-lg font-semibold text-purple-400 mb-4">Conceitos-chave</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Microsoft</div><p class="text-xs text-neutral-400">GraphRAG e forma de RAG</p></div>
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Stanford / DSPy</div><p class="text-xs text-neutral-400">Otimiza programa, nao grafo</p></div>
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Anthropic</div><p class="text-xs text-neutral-400">Orquestracao em codigo ≠ disciplina</p></div>
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Fonte primaria</div><p class="text-xs text-neutral-400">A propria empresa disse isso?</p></div>
+      </div>
+    </div>
+
+    <div class="flex justify-start mt-6">
+      <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors">
+        <span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ============ TOPICO 4 ============ -->
+  <section id="topico-4" class="mb-16" data-inema-topic="modulo-3-3#topico-4">
+    <div class="flex items-center space-x-4 mb-6">
+      <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">4</span>
+      <h2 class="text-2xl font-bold">📉 Desconfie do numero sem fonte</h2>
+      <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar duvida neste topico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm">
+        <span aria-hidden="true">?</span><span>Tenho duvida</span>
+      </button>
+    </div>
+
+    <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-3-t4-p1">
+      Dois numeros circularam junto com o hype: "18% mais acuracia" e "85% menos custo" para sistemas em grafo.
+      Eles foram citados como se fossem propriedade geral de <em>qualquer</em> sistema orquestrado em grafo. Nao sao.
+      Vieram de um <strong class="text-purple-400">baseline</strong> especifico: um estudo sobre um dominio estreito, leitura de diagramas industriais.
+    </p>
+
+    <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-3-t4-p2">
+      Um resultado de um dominio estreito nao vira lei geral so porque foi retuitado sem o contexto. A regra pratica:
+      antes de repetir um numero de performance, pergunte de que experimento ele saiu, contra qual
+      <strong class="text-purple-400">baseline</strong> (a comparacao de referencia) e em que tarefa especifica.
+    </p>
+
+    <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+      <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">🆕</span> Novo aqui? Uma palavra antes de seguir</h3>
+      <ul class="space-y-2 text-neutral-300 text-sm">
+        <li><strong class="text-neutral-100">Baseline:</strong> o "ponto de comparacao" de um experimento — o que voce mede o resultado novo contra. "18% melhor" so quer dizer algo se voce sabe 18% melhor que <em>o que</em>.</li>
+      </ul>
+    </div>
+
+    <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+      <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">📊</span> De onde vieram os numeros que circularam</h3>
+      <ul class="space-y-2 text-neutral-300 text-sm">
+        <li><strong>Dominio:</strong> extracao de informacao de diagramas industriais (nao "agentes em geral")</li>
+        <li><strong>Comparacao:</strong> um pipeline especifico de RAG tradicional como baseline</li>
+        <li><strong>Escopo:</strong> um estudo, nao uma revisao sistematica de varios estudos</li>
+        <li><strong>Conclusao correta:</strong> "em <em>esta</em> tarefa, esta abordagem em grafo ganhou desta baseline" — nao "grafo sempre ganha"</li>
+      </ul>
+    </div>
+
+    <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+      <h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center"><span class="mr-2">⚠️</span> Atencao: numero solto e uma bandeira vermelha</h3>
+      <p class="text-neutral-300">
+        Se um post cita uma porcentagem de melhoria sem dizer o nome do estudo, o dominio testado, e a baseline usada,
+        trate o numero como decoracao, nao como evidencia. Isso vale pro numero mais impressionante que voce ja viu tambem.
+      </p>
+    </div>
+
+    <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+      <h3 class="text-lg font-semibold text-purple-400 mb-4">Conceitos-chave</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">18% / 85%</div><p class="text-xs text-neutral-400">De um dominio estreito</p></div>
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Baseline</div><p class="text-xs text-neutral-400">Melhor que o que?</p></div>
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Escopo</div><p class="text-xs text-neutral-400">Um estudo ≠ lei geral</p></div>
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Pergunta padrao</div><p class="text-xs text-neutral-400">Experimento, baseline, tarefa</p></div>
+      </div>
+    </div>
+
+    <div class="flex justify-start mt-6">
+      <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors">
+        <span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ============ TOPICO 5 ============ -->
+  <section id="topico-5" class="mb-16" data-inema-topic="modulo-3-3#topico-5">
+    <div class="flex items-center space-x-4 mb-6">
+      <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">5</span>
+      <h2 class="text-2xl font-bold">🏛️ Reconheca a prior art</h2>
+      <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar duvida neste topico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm">
+        <span aria-hidden="true">?</span><span>Tenho duvida</span>
+      </button>
+    </div>
+
+    <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-3-t5-p1">
+      Nada da mecanica de "graph engineering" e novo. <strong class="text-purple-400">Maquina de estados</strong> e conceito de
+      decadas atras. <strong class="text-purple-400">XState</strong> — uma biblioteca de JavaScript — formalizou fluxo de controle
+      explicito e inspecionavel anos antes do termo aparecer; foi o proprio criador do XState que participou do debate
+      defendendo essa ideia de sempre, so que com outro rotulo.
+    </p>
+
+    <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-3-t5-p2">
+      LangGraph expoe agentes como um <code class="text-purple-400">StateGraph</code>: voce adiciona nos, liga arestas,
+      e o estado passa por elas. Microsoft AutoGen e Google ADK entregam workflow em grafo, roteamento de agente e
+      delegacao multi-agente — todos anteriores ao termo "graph engineering". No mundo de dados, DAG descreve workflow
+      ha decadas. O que e novo em 2026 e o <strong class="text-purple-400">vocabulario</strong>, nao a estrutura.
+    </p>
+
+    <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+      <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">🆕</span> Novo aqui? Duas palavras antes de seguir</h3>
+      <ul class="space-y-2 text-neutral-300 text-sm">
+        <li><strong class="text-neutral-100">Prior art ("arte anterior"):</strong> termo emprestado de patentes — tudo que ja existia antes de uma "novidade" ser anunciada. Se ha prior art, a novidade e so um rotulo novo pra algo conhecido.</li>
+        <li><strong class="text-neutral-100">Maquina de estados:</strong> ja definida no topico 1 — sistema com estados fixos e regras de transicao entre eles.</li>
+      </ul>
+    </div>
+
+    <div class="rounded-2xl border border-purple-500/30 bg-dark-900/40 p-3 sm:p-4 mb-4 overflow-hidden">
+      <svg viewBox="0 0 1000 240" class="w-full h-auto" role="img" aria-label="Linha do tempo horizontal com cinco marcos em ordem: maquina de estados, DAG de workflow, XState, LangGraph AutoGen e ADK, e por ultimo o termo graph engineering, que tem um brilho ao redor indicando que e o mais recente e menos fundamentado.">
+        <defs>
+          <linearGradient id="m33c-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c084fc"/><stop offset="1" stop-color="#a855f7"/></linearGradient>
+          <filter id="m33c-glow" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="1.8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <pattern id="m33c-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#a855f7" opacity="0.12"/></pattern>
+        </defs>
+        <rect x="0" y="0" width="1000" height="240" fill="url(#m33c-grid)"/>
+        <line x1="60" y1="130" x2="940" y2="130" stroke="#6b7280" stroke-width="2"/>
+        <g font-family="Inter,sans-serif" font-size="11.5" font-weight="600">
+          <circle cx="110" cy="130" r="9" fill="#0f0a1f" stroke="#c084fc" stroke-width="2"/>
+          <text x="110" y="100" text-anchor="middle" fill="#e9d5ff">maquina de</text>
+          <text x="110" y="115" text-anchor="middle" fill="#e9d5ff">estados</text>
+          <text x="110" y="155" text-anchor="middle" fill="#9ca3af" font-weight="400">decadas atras</text>
+
+          <circle cx="310" cy="130" r="9" fill="#0f0a1f" stroke="#c084fc" stroke-width="2"/>
+          <text x="310" y="100" text-anchor="middle" fill="#e9d5ff">DAG de</text>
+          <text x="310" y="115" text-anchor="middle" fill="#e9d5ff">workflow</text>
+          <text x="310" y="155" text-anchor="middle" fill="#9ca3af" font-weight="400">dados, ha decadas</text>
+
+          <circle cx="510" cy="130" r="9" fill="#0f0a1f" stroke="#c084fc" stroke-width="2"/>
+          <text x="510" y="115" text-anchor="middle" fill="#e9d5ff">XState</text>
+          <text x="510" y="155" text-anchor="middle" fill="#9ca3af" font-weight="400">anos atras</text>
+
+          <circle cx="710" cy="130" r="9" fill="#0f0a1f" stroke="#38bdf8" stroke-width="2"/>
+          <text x="710" y="100" text-anchor="middle" fill="#bfe6ff">LangGraph /</text>
+          <text x="710" y="115" text-anchor="middle" fill="#bfe6ff">AutoGen / ADK</text>
+          <text x="710" y="155" text-anchor="middle" fill="#9ca3af" font-weight="400">antes do termo</text>
+
+          <g filter="url(#m33c-glow)"><circle cx="910" cy="130" r="12" fill="#1a1230" stroke="url(#m33c-grad)" stroke-width="2.5"/></g>
+          <text x="910" y="100" text-anchor="middle" fill="#f5d0fe">"graph</text>
+          <text x="910" y="115" text-anchor="middle" fill="#f5d0fe">engineering"</text>
+          <text x="910" y="155" text-anchor="middle" fill="#c084fc" font-weight="700">2026 — o VOCABULARIO</text>
+        </g>
+        <text x="500" y="205" text-anchor="middle" fill="#a855f7" font-family="Inter,sans-serif" font-size="14" font-weight="600">o termo e o ultimo da fila — a estrutura ja existia</text>
+      </svg>
+    </div>
+    <p class="text-sm text-neutral-400 mb-6">
+      <strong class="text-neutral-300">O que olhar:</strong> o brilho esta no ultimo marco, nao porque ele e o mais importante,
+      mas porque e o mais recente e o menos testado pelo tempo. Cada marco anterior resolveu o mesmo problema —
+      "como coordenar passos com desvio e retorno" — com nomes diferentes. Julgue o padrao tecnico, nao o rotulo do mes.
+    </p>
+
+    <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+      <h3 class="text-lg font-semibold text-purple-400 mb-4">Conceitos-chave</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">XState</div><p class="text-xs text-neutral-400">Fluxo explicito ha anos</p></div>
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">LangGraph</div><p class="text-xs text-neutral-400">StateGraph ja existia</p></div>
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">AutoGen / ADK</div><p class="text-xs text-neutral-400">Workflow e delegacao anteriores</p></div>
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Vocabulario novo</div><p class="text-xs text-neutral-400">A estrutura nao e</p></div>
+      </div>
+    </div>
+
+    <div class="flex justify-start mt-6">
+      <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors">
+        <span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ============ TOPICO 6 ============ -->
+  <section id="topico-6" class="mb-16" data-inema-topic="modulo-3-3#topico-6">
+    <div class="flex items-center space-x-4 mb-6">
+      <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">6</span>
+      <h2 class="text-2xl font-bold">🧭 Aceite que a maioria dos agentes nao precisa de grafo</h2>
+      <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar duvida neste topico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm">
+        <span aria-hidden="true">?</span><span>Tenho duvida</span>
+      </button>
+    </div>
+
+    <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-3-t6-p1">
+      A chegada de um termo novo cria a tentacao imediata de reconstruir todo agente como um sistema distribuido em
+      miniatura. Resista a isso. Muita tarefa continua precisando so de um modelo, um ciclo de ferramentas e uma boa
+      condicao de parada — exatamente o que a Trilha 2 deste curso ensinou.
+    </p>
+
+    <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-3-t6-p2">
+      Adotar grafo significa adotar gerencia de estado, roteamento entre nos e uma superficie de falha maior —
+      custos reais, discutidos no topico 1. A moral final do modulo: saber o que e um grafo (nos e arestas, nada mais)
+      e o que te permite absorver o conceito novo em cinco minutos, em vez de largar tudo pra estudar do zero.
+      IA e alavanca do que voce ja sabe; conhecimento de base e o que diminui o FOMO.
+    </p>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+      <div class="bg-purple-900/20 rounded-xl border border-purple-500/30 p-6">
+        <h4 class="font-bold text-purple-400 mb-4">✓ Sinais de que voce precisa de grafo</h4>
+        <ul class="space-y-3 text-neutral-300 text-sm">
+          <li class="flex items-start space-x-2"><span class="text-purple-400">✓</span><span>Voce tem partes independentes que podem rodar ao mesmo tempo (fan-out)</span></li>
+          <li class="flex items-start space-x-2"><span class="text-purple-400">✓</span><span>O roteamento depende de condicao ("se aprovado, va pra X; se nao, va pra Y")</span></li>
+          <li class="flex items-start space-x-2"><span class="text-purple-400">✓</span><span>Cada etapa precisa de contexto limpo, sem herdar a sujeira das anteriores</span></li>
+        </ul>
+      </div>
+      <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+        <h4 class="font-bold text-red-400 mb-4">✗ Sinais de que voce so precisa de um loop melhor</h4>
+        <ul class="space-y-3 text-neutral-300 text-sm">
+          <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>O trabalho e essencialmente sequencial, um passo de cada vez</span></li>
+          <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Um unico verificador ja cobre a condicao de parada</span></li>
+          <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Voce esta considerando grafo so porque o termo esta em alta</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- TABELA MITO x FATO -->
+    <div class="bg-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+      <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center"><span class="mr-2">⚖️</span> Mito × fato — o resumo do modulo</h3>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="text-left border-b border-dark-600">
+              <th class="py-2 pr-4 text-red-400 font-semibold">O que se diz</th>
+              <th class="py-2 text-purple-400 font-semibold">O que se verifica</th>
+            </tr>
+          </thead>
+          <tbody class="text-neutral-300">
+            <tr class="border-b border-dark-700">
+              <td class="py-3 pr-4">"Loop engineering morreu, agora e graph engineering."</td>
+              <td class="py-3">Um loop ja e um grafo com ciclo; grafo compoe loops, nao substitui.</td>
+            </tr>
+            <tr class="border-b border-dark-700">
+              <td class="py-3 pr-4">"GraphRAG substituiu RAG na Microsoft."</td>
+              <td class="py-3">GraphRAG e uma forma de RAG, nao uma substituicao dele.</td>
+            </tr>
+            <tr class="border-b border-dark-700">
+              <td class="py-3 pr-4">"Stanford adotou graph engineering via DSPy."</td>
+              <td class="py-3">DSPy otimiza programas de modelo de linguagem, nao grafos de conhecimento.</td>
+            </tr>
+            <tr class="border-b border-dark-700">
+              <td class="py-3 pr-4">"A Anthropic lancou a disciplina graph engineering."</td>
+              <td class="py-3">Ela usa orquestracao escrita em codigo, mas nao anunciou disciplina alguma.</td>
+            </tr>
+            <tr class="border-b border-dark-700">
+              <td class="py-3 pr-4">"18% mais acuracia, 85% menos custo em grafo."</td>
+              <td class="py-3">Numeros de um estudo estreito sobre diagramas industriais, nao lei geral.</td>
+            </tr>
+            <tr>
+              <td class="py-3 pr-4">"E tudo novidade de 2026."</td>
+              <td class="py-3">Maquina de estados, DAG, XState, LangGraph, AutoGen e ADK antecedem o termo.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- EXEMPLO COPY-RUN -->
+    <div class="bg-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+      <h3 class="text-lg font-semibold text-purple-400 mb-2 flex items-center"><span class="mr-2">🧪</span> Exemplo pratico: prompt "detector de hype"</h3>
+      <p class="text-sm text-neutral-400 mb-4"><strong class="text-neutral-300">Objetivo:</strong> ter um prompt pronto que voce cola no Claude Code (ou qualquer assistente) junto com um post/tweet/artigo sobre arquitetura de IA, e ele te devolve uma auditoria — nao uma opiniao.</p>
+
+      <div class="code-box bg-dark-900 rounded-lg border border-dark-600 p-4 mb-4 overflow-x-auto">
+<pre class="text-sm text-neutral-300">Voce e um auditor cetico e justo de alegacoes tecnicas sobre arquitetura de IA.
+Vou colar um texto (post, tweet ou artigo) sobre um conceito ou arquitetura nova.
+Para CADA alegacao factual relevante no texto, responda em lista:
+
+1. ALEGACAO: cite a frase exata que faz a afirmacao.
+2. FONTE PRIMARIA: existe uma fonte primaria citada (post oficial da empresa,
+   paper, repositorio)? Se nao houver, diga "sem fonte" explicitamente.
+3. PRIOR ART: existe uma tecnica ou ferramenta anterior que ja resolvia o
+   mesmo problema com outro nome? Cite pelo menos uma se houver.
+4. O QUE E REALMENTE NOVO: separando o vocabulario da tecnica, o que sobra
+   como novidade genuina (se sobrar algo)?
+
+Regra: se voce concordar com TODAS as alegacoes do texto sem ressalva,
+releia e aponte pelo menos UMA alegacao sem fonte antes de responder.
+
+Texto para auditar:
+&lt;cole aqui o post/tweet/artigo&gt;</pre>
+      </div>
+
+      <div class="bg-dark-700/50 rounded-lg p-4">
+        <p class="text-sm text-neutral-300"><strong class="text-purple-400">Como verificar:</strong> rode esse prompt contra um texto que voce <em>ja sabe</em> ser exagerado —
+        por exemplo, cole as tres alegacoes do topico 3 deste modulo como se fossem um post real.
+        Se o modelo concordar com tudo sem contestar nada, o prompt esta frouxo demais.</p>
+        <p class="text-sm text-neutral-400 mt-3"><strong class="text-neutral-300">Exija rigor:</strong> se a saida nao apontar pelo menos uma alegacao "sem fonte",
+        peca explicitamente: "releia e aponte a alegacao mais fraca do texto". Um bom detector de hype sempre acha alguma coisa pra questionar.</p>
+      </div>
+    </div>
+
+    <!-- CHECAGEM LEVE -->
+    <div data-inema-check="modulo-3-3#q1" class="inema-check mt-8 bg-dark-800 border border-dark-600 rounded-xl p-6 mb-6">
+      <p class="font-medium mb-4">Checagem rapida (nao bloqueia nada): um post diz "sistemas em grafo tem 18% mais acuracia" sem citar de onde tirou. O que fazer?</p>
+      <div class="inema-check-options space-y-2">
+        <button type="button" data-inema-check-option="0" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">Repetir o numero, porque grafo realmente costuma performar melhor</button>
+        <button type="button" data-inema-check-option="1" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">Tratar como decoracao ate achar o estudo, o dominio testado e a baseline usada</button>
+        <button type="button" data-inema-check-option="2" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">Ignorar o post inteiro, ja que um numero sem fonte invalida tudo o resto</button>
+      </div>
+      <div data-inema-check-feedback class="mt-4 text-sm" role="status" aria-live="polite"></div>
+    </div>
+
+    <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+      <h3 class="text-lg font-semibold text-purple-400 mb-4">Conceitos-chave</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Resista a reconstruir tudo</div><p class="text-xs text-neutral-400">Termo novo nao obriga refatorar</p></div>
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Grafo cobra</div><p class="text-xs text-neutral-400">Estado, roteamento, falha nova</p></div>
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Base reduz FOMO</div><p class="text-xs text-neutral-400">Nos e arestas bastam pra entender rapido</p></div>
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Anti-hype, nao anti-grafo</div><p class="text-xs text-neutral-400">O grafo e real; o exagero, nao</p></div>
+      </div>
+    </div>
+
+    <div class="flex justify-start mt-6">
+      <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors">
+        <span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ============ RESUMO ============ -->
+  <section class="mb-12">
+    <div class="bg-gradient-to-br from-purple-900/40 via-dark-800 to-dark-800 rounded-xl border border-purple-500/30 p-8">
+      <h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">📌</span> Resumo do Modulo</h2>
+      <div class="space-y-4 mb-8">
+        <div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">O loop nao morreu</strong><span class="text-neutral-400"> — virou um no do grafo maior. Composicao, nao substituicao.</span></div></div>
+        <div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">Conhecimento ≠ execucao</strong><span class="text-neutral-400"> — GraphRAG e grafo de informacao; graph engineering e grafo de execucao.</span></div></div>
+        <div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">Nenhuma das atribuicoes se sustenta</strong><span class="text-neutral-400"> — Microsoft, Stanford e Anthropic nao anunciaram o que lhes atribuiram.</span></div></div>
+        <div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">Numero sem fonte e decoracao</strong><span class="text-neutral-400"> — 18%/85% vieram de um dominio estreito, nao de lei geral.</span></div></div>
+        <div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">O termo e o mais novo, nao a estrutura</strong><span class="text-neutral-400"> — maquina de estados, DAG, XState, LangGraph, AutoGen e ADK vieram antes.</span></div></div>
+        <div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">Maioria dos agentes nao precisa de grafo</strong><span class="text-neutral-400"> — conhecer nos e arestas te da o resto de graca, sem FOMO.</span></div></div>
+      </div>
+      <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+        <h3 class="font-semibold text-purple-400 mb-2">Proximo:</h3>
+        <p class="text-neutral-300">Trilha 4 — Graph Engineering na pratica: nos, arestas, estado e onde os sistemas reais quebram.</p>
+      </div>
+      <div class="flex flex-col sm:flex-row gap-4">
+        <a href="modulo-3-2.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">← Voltar para o Modulo 3.2</a>
+        <a href="../trilha4/index.html" class="flex-1 text-center px-6 py-3 bg-amber-600 text-white rounded-lg font-semibold hover:bg-amber-500 transition-colors">Trilha 4: Graph Engineering na pratica →</a>
+      </div>
+    </div>
+  </section>
+
+  </main>
+</div>
+</div>
+
+<footer class="border-t border-dark-600 py-8 mt-16">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+    <p>Graph Engineering — de loops a grafos · INEMA 2026</p>
+    <p class="mt-2">
+      <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a>
+      <span class="text-neutral-600 mx-1">-</span>
+      <a href="https://inema.pro" target="_blank" class="text-amber-700 hover:text-amber-600 dark:text-slate-300 dark:hover:text-slate-200">PRO</a>
+    </p>
+  </div>
+</footer>
+
+<script>
+  function toggleTopic(button) {
+    const topicItem = button.closest('.topic-item');
+    const explanation = topicItem.querySelector('.topic-explanation');
+    const moduleCard = button.closest('.bg-dark-800') || document;
+    moduleCard.querySelectorAll('.topic-explanation.active').forEach(exp => { if (exp !== explanation) { exp.classList.remove('active'); const b = exp.closest('.topic-item').querySelector('button'); if (b) b.setAttribute('aria-expanded','false'); } });
+    explanation.classList.toggle('active');
+    button.setAttribute('aria-expanded', explanation.classList.contains('active') ? 'true' : 'false');
+  }
+  function openModal(modalId) { const m = document.getElementById(modalId); if (m) { m.classList.remove('hidden'); document.body.style.overflow = 'hidden'; } }
+  function closeModal() { document.querySelectorAll('.modal').forEach(m => m.classList.add('hidden')); document.body.style.overflow = 'auto'; }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+  const themeToggle = document.getElementById('theme-toggle');
+  const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+  const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+  const htmlEl = document.documentElement;
+  if (htmlEl.classList.contains('dark')) themeToggleLightIcon.classList.remove('hidden'); else themeToggleDarkIcon.classList.remove('hidden');
+  themeToggle.addEventListener('click', () => {
+    themeToggleDarkIcon.classList.toggle('hidden'); themeToggleLightIcon.classList.toggle('hidden');
+    htmlEl.classList.toggle('dark');
+    const dark = htmlEl.classList.contains('dark');
+    localStorage.setItem('theme', dark ? 'dark' : 'light');
+    try { const p = JSON.parse(localStorage.getItem('inema.prefs') || '{}'); p.theme = dark ? 'inema-dark' : 'claro'; localStorage.setItem('inema.prefs', JSON.stringify(p)); } catch (e) {}
+  });
+</script>
+<script src="../../assets/learn.js"></script>
+<script>
+  if (window.INEMA && typeof window.INEMA.init === 'function') { window.INEMA.init(); }
+  window.addEventListener('DOMContentLoaded', function () {
+    if (window.INEMA && INEMA.registerCheck) {
+      INEMA.registerCheck('modulo-3-3#q1', {
+        answer: 1,
+        explain: {
+          0: 'Nao. Repetir um numero sem checar a fonte e exatamente o mecanismo que espalhou "18% mais acuracia" como se fosse lei geral, quando era um estudo estreito.',
+          1: 'Isso. Antes de repetir, pergunte de que experimento o numero saiu, contra que baseline e em que tarefa. Sem essas tres respostas, o numero e so decoracao.',
+          2: 'Nao precisa ignorar o post inteiro — o resto pode ter conteudo valido. O ponto e nao repassar o numero especifico sem fonte, nao descartar tudo.'
+        }
+      });
+    }
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="inema-course" content="loopgraph">
+  <meta name="description" content="Curso completo de Graph Engineering: de loops isolados a grafos de agentes. Fundamentos de grafos, loop engineering, comparativo agentic x loop x graph, pratica e prompts prontos.">
+  <title>Graph Engineering — de loops a grafos | INEMA</title>
+
+  <script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'emerald' };
+      function clone(o) { var r = {}; for (var x in o) r[x] = o[x]; return r; }
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed === 'object') { for (var k in DEF) if (parsed[k] != null) p[k] = parsed[k]; } }
+        else { var legacy = localStorage.getItem('theme'); if (legacy === 'light') p.theme = 'claro'; else if (legacy === 'dark') p.theme = 'inema-dark'; }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = { 'inema-dark': { dark: true, attr: null, cs: 'dark' }, 'claro': { dark: false, attr: null, cs: 'light' }, 'sepia': { dark: false, attr: 'sepia', cs: 'light' }, 'foco': { dark: null, attr: 'foco', cs: null }, 'contraste': { dark: true, attr: 'contraste', cs: 'dark' } };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark === true) html.classList.add('dark'); else if (t.dark === false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark') ? 'dark' : 'light'));
+      html.setAttribute('data-font', p.font || 'inter');
+      html.setAttribute('data-accent', p.accent || 'emerald');
+      var s = html.style, scale = (+p.fontScale || 100);
+      s.setProperty('--inema-font-scale', (scale / 100).toString());
+      s.setProperty('font-size', scale + '%');
+      s.setProperty('--measure', (+p.lineWidth || 68) + 'ch');
+      s.setProperty('--lh-body', (+p.leading || 1.7).toString());
+      var fam = p.font === 'system' ? 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif' : (p.font === 'leitura' ? '"Atkinson Hyperlegible", "Inter", system-ui, sans-serif' : '"Inter", system-ui, sans-serif');
+      s.setProperty('--font-body', fam);
+      var ACC = { emerald: [152, 76, 45], blue: [217, 91, 60], purple: [258, 90, 66], amber: [38, 92, 50], teal: [174, 72, 41], rose: [350, 89, 60] };
+      var a = ACC[p.accent] || ACC.emerald;
+      s.setProperty('--accent-h', a[0] + ''); s.setProperty('--accent-s', a[1] + '%'); s.setProperty('--accent-l', a[2] + '%');
+      s.setProperty('--accent', 'hsl(' + a[0] + ' ' + a[1] + '% ' + a[2] + '%)');
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme = 'dark'; } catch (e) {} }
+  })();
+  </script>
+
+  <script type="application/json" data-inema-manifest>
+  {
+    "course": "loopgraph",
+    "tracks": [
+      { "n": "1", "title": "Fundamentos: o grafo", "modules": [
+        { "id": "1-1", "title": "O que e um grafo", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
+        { "id": "1-2", "title": "Grafos no mundo real", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+        { "id": "1-3", "title": "Como se anda num grafo", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" }
+      ]},
+      { "n": "2", "title": "Loop Engineering", "modules": [
+        { "id": "2-1", "title": "Anatomia do loop", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
+        { "id": "2-2", "title": "O verificador e o gargalo", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
+        { "id": "2-3", "title": "Onde o loop quebra", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" }
+      ]},
+      { "n": "3", "title": "Agentic x Loop x Graph", "modules": [
+        { "id": "3-1", "title": "As cinco camadas", "topics": 6, "href": "curso/trilha3/modulo-3-1.html" },
+        { "id": "3-2", "title": "O comparativo de verdade", "topics": 6, "href": "curso/trilha3/modulo-3-2.html" },
+        { "id": "3-3", "title": "Mito x fato", "topics": 6, "href": "curso/trilha3/modulo-3-3.html" }
+      ]},
+      { "n": "4", "title": "Graph Engineering na pratica", "modules": [
+        { "id": "4-1", "title": "Nos, arestas e estado", "topics": 6, "href": "curso/trilha4/modulo-4-1.html" },
+        { "id": "4-2", "title": "Org graph x work graph", "topics": 6, "href": "curso/trilha4/modulo-4-2.html" },
+        { "id": "4-3", "title": "Falhas, harness e observabilidade", "topics": 6, "href": "curso/trilha4/modulo-4-3.html" }
+      ]},
+      { "n": "5", "title": "Mao na massa", "modules": [
+        { "id": "5-1", "title": "Do loop ao grafo", "topics": 6, "href": "curso/trilha5/modulo-5-1.html" },
+        { "id": "5-2", "title": "Grafos de negocio e de tarefas", "topics": 6, "href": "curso/trilha5/modulo-5-2.html" },
+        { "id": "5-3", "title": "Biblioteca de prompts", "topics": 6, "href": "curso/trilha5/modulo-5-3.html" }
+      ]}
+    ]
+  }
+  </script>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/learn.css">
+  <link rel="stylesheet" href="assets/curso.css">
+  <style>
+    /* so o que e especifico da landing — o resto vem de assets/curso.css */
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+<a href="#conteudo" class="sr-only focus:not-sr-only focus:absolute focus:z-[60] focus:m-2 focus:px-4 focus:py-2 focus:rounded-lg focus:bg-dark-700">Pular para o conteudo</a>
+
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-14 gap-2">
+      <div class="flex items-center space-x-3 flex-shrink-0">
+        <a href="index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+          <span class="text-2xl">🕸️</span>
+          <span class="font-bold text-lg hidden lg:inline">Graph Engineering</span>
+        </a>
+        <span class="text-neutral-600 hidden sm:inline">|</span>
+        <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium hidden sm:inline">INEMA.CLUB</a>
+        <span class="text-neutral-600 hidden sm:inline">-</span>
+        <a href="https://inema.pro" target="_blank" class="text-amber-700 hover:text-amber-600 dark:text-slate-300 dark:hover:text-slate-200 text-sm font-medium hidden sm:inline">PRO</a>
+      </div>
+      <div class="flex items-center space-x-1">
+        <a href="curso/trilha1/index.html" class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors"><span class="lg:hidden">T1</span><span class="hidden lg:inline">Fundamentos</span></a>
+        <a href="curso/trilha2/index.html" class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors"><span class="lg:hidden">T2</span><span class="hidden lg:inline">Loops</span></a>
+        <a href="curso/trilha3/index.html" class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors"><span class="lg:hidden">T3</span><span class="hidden lg:inline">Comparativo</span></a>
+        <a href="curso/trilha4/index.html" class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors"><span class="lg:hidden">T4</span><span class="hidden lg:inline">Pratica</span></a>
+        <a href="curso/trilha5/index.html" class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors"><span class="lg:hidden">T5</span><span class="hidden lg:inline">Mao na massa</span></a>
+        <button type="button" data-inema-journey-open class="hidden sm:inline-flex items-center gap-1 px-2 py-1.5 rounded-lg text-sm text-neutral-400 hover:text-neutral-100 transition-colors" title="Minha jornada">
+          <span aria-hidden="true">◷</span><span class="hidden xl:inline">Jornada</span>
+          <span class="inema-journey-badge hidden" aria-hidden="true"></span>
+        </button>
+        <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" aria-label="Alternar tema claro/escuro">
+          <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+          <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<main id="conteudo">
+
+<!-- ===================== HERO ===================== -->
+<header class="bg-gradient-to-br from-amber-900/30 via-dark-800 to-dark-800 py-14 border-b border-dark-600">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <span class="inline-block px-3 py-1 bg-amber-500/20 text-amber-400 text-xs font-semibold rounded-full mb-4">CURSO COMPLETO · 2026</span>
+    <h1 class="text-4xl sm:text-5xl font-bold mb-4">🕸️ Graph Engineering</h1>
+    <p class="text-lg text-neutral-400 max-w-3xl mb-6">
+      De <strong class="text-blue-400">loops isolados</strong> a <strong class="text-amber-400">grafos de agentes</strong>.
+      O curso comeca do zero — o que e um no, o que e uma aresta — e termina com voce desenhando,
+      rodando e depurando um grafo de agentes de verdade. Com o antidoto para o hype no meio do caminho.
+    </p>
+
+    <figure class="mb-8">
+      <img src="assets/img/graph-engineering-panorama.png"
+           alt="Infografico em quatro estagios. (1) Loop simples: um circulo vermelho girando sobre um unico icone de pessoa, com as etiquetas 1 tarefa, 1 metrica, 1 objetivo. (2) Harnesses e skills: quatro caixas — ferramentas, memoria, prompt, validacao. (3) Orquestrador: um cerebro central ligado a planejamento, roteamento, estado e checklist. (4) Grafo de agentes: uma malha dourada com pesquisa, dados, execucao, analise, validacao, observabilidade e memoria compartilhada, todos interligados. Abaixo, o bloco Por que grafos? — paralelismo, dependencias, multiplas metricas, escalabilidade — e a faixa final Loop Engineering (isolado, fragil, otimiza 1 metrica) versus Graph Engineering (orquestrado, resiliente, equilibra o sistema)."
+           class="w-full h-auto rounded-xl border border-dark-600"
+           onerror="this.closest('figure').style.display='none'">
+      <figcaption class="text-sm text-neutral-400 mt-3">
+        <strong class="text-neutral-300">O que olhar:</strong> a progressao da esquerda pra direita e o curso inteiro em uma imagem.
+        O estagio 1 (vermelho) e o loop: <em>uma</em> tarefa, <em>uma</em> metrica, <em>um</em> objetivo — e a Trilha 2 mostra exatamente por que esse “um” e o limite.
+        Os estagios 2 e 3 sao o que voce pendura em volta do loop pra ele aguentar mais (harness, orquestrador).
+        O estagio 4 e o grafo. Repare na faixa de baixo: a promessa nao e “mais rapido”, e <strong class="text-amber-400">equilibrar o sistema</strong> em vez de otimizar um numero so.
+      </figcaption>
+    </figure>
+
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl mb-8">
+      <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+        <div class="text-xl font-bold text-amber-400">5</div><div class="text-xs text-neutral-400">Trilhas</div>
+      </div>
+      <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+        <div class="text-xl font-bold text-amber-400">15</div><div class="text-xs text-neutral-400">Modulos</div>
+      </div>
+      <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+        <div class="text-xl font-bold text-amber-400">90</div><div class="text-xs text-neutral-400">Topicos</div>
+      </div>
+      <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+        <div class="text-xl font-bold text-amber-400">~10h</div><div class="text-xs text-neutral-400">Duracao</div>
+      </div>
+    </div>
+
+    <!-- Progresso do curso + continuar -->
+    <div class="bg-dark-800 rounded-xl border border-dark-600 p-5 max-w-3xl">
+      <div class="flex items-center justify-between mb-3">
+        <h2 class="text-sm font-semibold text-neutral-300">Seu progresso no curso</h2>
+        <div data-inema-meter="curso" class="inema-meter text-sm" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="Progresso do curso">
+          <span class="inema-meter-pct text-amber-400 font-bold">0%</span>
+          <span class="inema-meter-count text-neutral-400 ml-2">0 de 90</span>
+        </div>
+      </div>
+      <div class="flex justify-start flex-wrap gap-3">
+        <a href="curso/trilha1/modulo-1-1.html" class="px-4 py-2 text-sm bg-amber-600 hover:bg-amber-500 text-white rounded-lg font-semibold transition-colors">Comecar pelo modulo 1.1</a>
+        <button type="button" data-inema-journey-open class="px-4 py-2 text-sm bg-dark-700 hover:bg-dark-600 rounded-lg transition-colors">Minha jornada / continuar</button>
+      </div>
+      <p class="text-xs text-neutral-500 mt-3">Seu progresso, duvidas e anotacoes ficam salvos no seu proprio navegador. Nada sobe pra servidor nenhum.</p>
+    </div>
+  </div>
+</header>
+
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+  <!-- ===================== A TESE (hero SVG) ===================== -->
+  <section class="mb-16">
+    <h2 class="text-2xl font-bold mb-4">A frase que sobrevive ao hype</h2>
+    <div class="bg-gradient-to-br from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-8">
+      <p class="text-xl text-neutral-100 leading-relaxed mb-3">
+        “Um <strong class="text-blue-400">loop</strong> ja e um <strong class="text-amber-400">grafo</strong> — um grafo cujo caminho volta a um no anterior.”
+      </p>
+      <p class="text-neutral-300">
+        Voce nao <em>se forma</em> de loops para grafos. Voce <strong class="text-amber-400">compoe</strong> loops em grafos
+        quando um loop deixa de bastar — e paga por isso em prompts, em <em>state schema</em> e em novos modos de falha.
+        Acerte o loop primeiro; monte o grafo quando o trabalho exigir.
+      </p>
+    </div>
+
+    <div class="rounded-2xl border border-amber-500/30 bg-dark-900/40 p-3 sm:p-4 mb-4 overflow-hidden">
+      <svg viewBox="0 0 1000 300" class="w-full h-auto" role="img" aria-label="A esquerda, um loop: um unico no que volta para si mesmo, com a etiqueta uma metrica. Ao centro, uma seta de composicao. A direita, um grafo: um no de plano que se abre em quatro agentes paralelos em ciano, que convergem num no de resultado, com um caminho de volta rotulado reprovado.">
+        <defs>
+          <linearGradient id="hero-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fbbf24"/><stop offset="1" stop-color="#f59e0b"/></linearGradient>
+          <linearGradient id="hero-grad-b" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#60a5fa"/><stop offset="1" stop-color="#3b82f6"/></linearGradient>
+          <filter id="hero-glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <pattern id="hero-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#f59e0b" opacity="0.12"/></pattern>
+          <marker id="hero-ah" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#fbbf24"/></marker>
+          <marker id="hero-ahc" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#38bdf8"/></marker>
+          <marker id="hero-ahb" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#60a5fa"/></marker>
+        </defs>
+        <rect x="0" y="0" width="1000" height="300" fill="url(#hero-grid)"/>
+
+        <!-- LOOP (esquerda, azul = T2) -->
+        <text x="140" y="34" text-anchor="middle" fill="#93c5fd" font-family="Inter,sans-serif" font-size="13" font-weight="600">LOOP</text>
+        <path d="M140,88 C60,88 60,212 140,212 C220,212 220,88 140,88" fill="none" stroke="#60a5fa" stroke-width="1.8" opacity="0.55" marker-end="url(#hero-ahb)"/>
+        <g filter="url(#hero-glow)"><rect x="62" y="118" width="156" height="64" rx="14" fill="#0e1622" stroke="url(#hero-grad-b)" stroke-width="2"/></g>
+        <text x="140" y="145" text-anchor="middle" fill="#60a5fa" font-family="Inter,sans-serif" font-weight="600" font-size="17">agente</text>
+        <text x="140" y="165" text-anchor="middle" fill="#bfdbfe" font-family="Inter,sans-serif" font-size="12">plan · act · verify</text>
+        <text x="140" y="248" text-anchor="middle" fill="#93c5fd" font-family="Inter,sans-serif" font-size="12.5">1 contexto · 1 metrica · sequencial</text>
+
+        <!-- Seta de composicao -->
+        <path d="M258,150 L338,150" fill="none" stroke="#9ca3af" stroke-width="1.8" opacity="0.5" marker-end="url(#hero-ah)"/>
+        <text x="298" y="138" text-anchor="middle" fill="#e5e7eb" font-family="Inter,sans-serif" font-size="12">compor</text>
+
+        <!-- GRAFO (direita, ambar = T4) -->
+        <text x="660" y="34" text-anchor="middle" fill="#fcd9a0" font-family="Inter,sans-serif" font-size="13" font-weight="600">GRAFO DE LOOPS</text>
+        <g fill="none" stroke="#fbbf24" stroke-width="1.8" opacity="0.5">
+          <path d="M506,150 C560,150 570,72 630,72" marker-end="url(#hero-ah)"/>
+          <path d="M506,150 C560,150 570,118 630,118" marker-end="url(#hero-ah)"/>
+          <path d="M506,150 C560,150 570,164 630,164" marker-end="url(#hero-ah)"/>
+          <path d="M506,150 C560,150 570,210 630,210" marker-end="url(#hero-ah)"/>
+        </g>
+        <g fill="none" stroke="#38bdf8" stroke-width="1.8" opacity="0.5">
+          <path d="M766,72  C830,72 840,150 886,150" marker-end="url(#hero-ahc)"/>
+          <path d="M766,118 C830,118 840,150 886,150" marker-end="url(#hero-ahc)"/>
+          <path d="M766,164 C830,164 840,150 886,150" marker-end="url(#hero-ahc)"/>
+          <path d="M766,210 C830,210 840,150 886,150" marker-end="url(#hero-ahc)"/>
+        </g>
+        <path d="M930,182 C930,262 430,262 430,192" fill="none" stroke="#f87171" stroke-width="1.8" stroke-dasharray="8 8" opacity="0.65" marker-end="url(#hero-ah)"/>
+        <text x="680" y="278" text-anchor="middle" fill="#fca5a5" font-family="Inter,sans-serif" font-size="12">aresta de volta: “reprovado, refaz”</text>
+
+        <rect x="350" y="118" width="156" height="64" rx="14" fill="#1f1604" stroke="#fbbf24" stroke-width="2"/>
+        <text x="428" y="145" text-anchor="middle" fill="#fbbf24" font-family="Inter,sans-serif" font-weight="600" font-size="16">plano</text>
+        <text x="428" y="165" text-anchor="middle" fill="#fcd9a0" font-family="Inter,sans-serif" font-size="12">orquestrador</text>
+
+        <g font-family="Inter,sans-serif" font-size="12.5" font-weight="600">
+          <g class="wf-a"><rect x="630" y="56"  width="136" height="32" rx="9" fill="#0e1b26" stroke="#38bdf8" stroke-width="2"/><text x="698" y="77"  text-anchor="middle" fill="#bfe6ff">pesquisa</text></g>
+          <g class="wf-a"><rect x="630" y="102" width="136" height="32" rx="9" fill="#0e1b26" stroke="#38bdf8" stroke-width="2"/><text x="698" y="123" text-anchor="middle" fill="#bfe6ff">escrita</text></g>
+          <g class="wf-a"><rect x="630" y="148" width="136" height="32" rx="9" fill="#0e1b26" stroke="#38bdf8" stroke-width="2"/><text x="698" y="169" text-anchor="middle" fill="#bfe6ff">dados</text></g>
+          <g class="wf-a"><rect x="630" y="194" width="136" height="32" rx="9" fill="#0e1b26" stroke="#38bdf8" stroke-width="2"/><text x="698" y="215" text-anchor="middle" fill="#bfe6ff">revisao</text></g>
+        </g>
+
+        <g filter="url(#hero-glow)"><rect x="886" y="118" width="96" height="64" rx="14" fill="#1f1604" stroke="url(#hero-grad)" stroke-width="2"/></g>
+        <text x="934" y="155" text-anchor="middle" fill="#fbbf24" font-family="Inter,sans-serif" font-weight="600" font-size="14">saida</text>
+      </svg>
+    </div>
+    <p class="text-sm text-neutral-400 mb-8">
+      <strong class="text-neutral-300">O que olhar:</strong> os dois desenhos tem <em>nos</em> e <em>arestas</em> — a diferenca nao e conceitual, e de forma.
+      A esquerda, uma aresta so, que volta pro mesmo no: tudo acontece num contexto so, um passo por vez.
+      A direita, o mesmo trabalho quebrado em quatro nos que rodam <em>ao mesmo tempo</em>, cada um com seu proprio contexto limpo,
+      mais uma aresta vermelha de volta (o revisor reprovou). Cada caixinha azul-clara ali dentro continua sendo um loop.
+    </p>
+  </section>
+
+  <!-- ===================== O QUE VOCE VAI SABER FAZER ===================== -->
+  <section class="mb-16">
+    <h2 class="text-2xl font-bold mb-6">O que voce vai saber fazer no fim</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+        <h3 class="font-bold text-emerald-400 mb-4">✓ Voce vai sair daqui capaz de</h3>
+        <ul class="space-y-3 text-neutral-300 text-sm">
+          <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Ler e desenhar um grafo (nos, arestas, direcao, peso) sem susto</span></li>
+          <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Projetar um loop com condicao de parada e um verificador que presta</span></li>
+          <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Decidir, com criterio, entre agente solto, loop e grafo</span></li>
+          <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Quebrar uma tarefa em nos com contexto limpo e fazer fan-out / fan-in</span></li>
+          <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Escrever o <em>state schema</em> entre nos e prever os modos de falha novos</span></li>
+          <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Usar prompts prontos para desenhar o grafo e virar codigo executavel</span></li>
+        </ul>
+      </div>
+      <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+        <h3 class="font-bold text-red-400 mb-4">✗ O que este curso NAO faz</h3>
+        <ul class="space-y-3 text-neutral-300 text-sm">
+          <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Nao vende que “loop morreu”. Loop nao morreu — virou o no do grafo</span></li>
+          <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Nao te obriga a adotar framework nenhum pra aprender o conceito</span></li>
+          <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Nao repete numeros de marketing sem fonte (tem um modulo so pra isso)</span></li>
+          <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Nao confunde <em>knowledge graph</em> / GraphRAG com graph engineering</span></li>
+          <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Nao manda voce transformar todo agente num sistema distribuido</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== TRILHAS ===================== -->
+  <section class="mb-16">
+    <h2 class="text-2xl font-bold mb-6">As 5 trilhas</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+      <a href="curso/trilha1/index.html" class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-emerald-500/30 p-6 transition-all">
+        <div class="flex items-center justify-between mb-3">
+          <span class="px-3 py-1 bg-emerald-500/20 text-emerald-400 text-xs font-semibold rounded-full">TRILHA 1</span>
+          <span class="text-xs text-neutral-500">3 modulos · ~2h</span>
+        </div>
+        <h3 class="text-2xl font-bold mb-2 group-hover:text-emerald-400 transition-colors">🔵 Fundamentos: o grafo</h3>
+        <p class="text-neutral-400 text-sm mb-4">Do zero absoluto. No, aresta, peso, direcao, ciclo — e por que a sua manha com cafe ja e um grafo.</p>
+        <div data-inema-meter="trilha:1" class="inema-meter text-xs text-neutral-500" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="Progresso da trilha 1">
+          <span class="inema-meter-pct text-emerald-400 font-bold">0%</span><span class="inema-meter-count ml-2">0 de 18</span>
+        </div>
+      </a>
+
+      <a href="curso/trilha2/index.html" class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-blue-500/30 p-6 transition-all">
+        <div class="flex items-center justify-between mb-3">
+          <span class="px-3 py-1 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full">TRILHA 2</span>
+          <span class="text-xs text-neutral-500">3 modulos · ~2h</span>
+        </div>
+        <h3 class="text-2xl font-bold mb-2 group-hover:text-blue-400 transition-colors">🔁 Loop Engineering</h3>
+        <p class="text-neutral-400 text-sm mb-4">O ciclo que fez a IA parar de precisar de babá — e os quatro jeitos estruturais de ele te trair.</p>
+        <div data-inema-meter="trilha:2" class="inema-meter text-xs text-neutral-500" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="Progresso da trilha 2">
+          <span class="inema-meter-pct text-blue-400 font-bold">0%</span><span class="inema-meter-count ml-2">0 de 18</span>
+        </div>
+      </a>
+
+      <a href="curso/trilha3/index.html" class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-purple-500/30 p-6 transition-all">
+        <div class="flex items-center justify-between mb-3">
+          <span class="px-3 py-1 bg-purple-500/20 text-purple-400 text-xs font-semibold rounded-full">TRILHA 3</span>
+          <span class="text-xs text-neutral-500">3 modulos · ~2h</span>
+        </div>
+        <h3 class="text-2xl font-bold mb-2 group-hover:text-purple-400 transition-colors">⚖️ Agentic × Loop × Graph</h3>
+        <p class="text-neutral-400 text-sm mb-4">As cinco camadas, o comparativo de tres colunas e a tabela mito × fato que te salva do proximo tweet.</p>
+        <div data-inema-meter="trilha:3" class="inema-meter text-xs text-neutral-500" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="Progresso da trilha 3">
+          <span class="inema-meter-pct text-purple-400 font-bold">0%</span><span class="inema-meter-count ml-2">0 de 18</span>
+        </div>
+      </a>
+
+      <a href="curso/trilha4/index.html" class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-amber-500/30 p-6 transition-all">
+        <div class="flex items-center justify-between mb-3">
+          <span class="px-3 py-1 bg-amber-500/20 text-amber-400 text-xs font-semibold rounded-full">TRILHA 4</span>
+          <span class="text-xs text-neutral-500">3 modulos · ~2h</span>
+        </div>
+        <h3 class="text-2xl font-bold mb-2 group-hover:text-amber-400 transition-colors">🕸️ Graph Engineering na pratica</h3>
+        <p class="text-neutral-400 text-sm mb-4">Org graph × work graph, zone defense, fan-out/fan-in, state schema e os modos de falha que so o grafo tem.</p>
+        <div data-inema-meter="trilha:4" class="inema-meter text-xs text-neutral-500" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="Progresso da trilha 4">
+          <span class="inema-meter-pct text-amber-400 font-bold">0%</span><span class="inema-meter-count ml-2">0 de 18</span>
+        </div>
+      </a>
+
+      <a href="curso/trilha5/index.html" class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-teal-500/30 p-6 transition-all md:col-span-2">
+        <div class="flex items-center justify-between mb-3">
+          <span class="px-3 py-1 bg-teal-500/20 text-teal-400 text-xs font-semibold rounded-full">TRILHA 5</span>
+          <span class="text-xs text-neutral-500">3 modulos · ~2h</span>
+        </div>
+        <h3 class="text-2xl font-bold mb-2 group-hover:text-teal-400 transition-colors">🛠️ Mao na massa</h3>
+        <p class="text-neutral-400 text-sm mb-4">Migrar um caso real de loop pra grafo, modelar o grafo do seu negocio e do seu backlog — e a biblioteca de prompts copia-e-cola.</p>
+        <div data-inema-meter="trilha:5" class="inema-meter text-xs text-neutral-500" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="Progresso da trilha 5">
+          <span class="inema-meter-pct text-teal-400 font-bold">0%</span><span class="inema-meter-count ml-2">0 de 18</span>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ===================== PRE-REQUISITOS ===================== -->
+  <section class="mb-12">
+    <h2 class="text-2xl font-bold mb-6">Pra quem e (e o que precisa saber antes)</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+        <h3 class="font-semibold text-amber-400 mb-3">Pre-requisitos</h3>
+        <p class="text-neutral-300 text-sm">Nenhum conhecimento de teoria dos grafos. Se voce ja usou um agente de IA (Claude Code, Codex, um bot qualquer) e sabe o que e um prompt, ta pronto. A Trilha 1 define <em>cada</em> termo tecnico na primeira vez que ele aparece.</p>
+      </div>
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+        <h3 class="font-semibold text-amber-400 mb-3">Pra quem</h3>
+        <p class="text-neutral-300 text-sm">Quem constroi com agentes e ja sentiu o teto de um agente so: dev, PM, fundador, automatizador. E pra quem viu “graph engineering” num tweet e quer entender antes de largar tudo.</p>
+      </div>
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6">
+        <h3 class="font-semibold text-primary mb-3">💡 Como estudar</h3>
+        <p class="text-neutral-300 text-sm">Marque cada secao como lida — e assim que o progresso anda. Selecione um trecho pra grifar ou anotar. Marque “tenho duvida” sem medo: tudo isso volta junto no painel <strong>Minha jornada</strong>.</p>
+      </div>
+    </div>
+  </section>
+
+</div>
+</main>
+
+<footer class="border-t border-dark-600 py-8 mt-16">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+    <p>Graph Engineering — de loops a grafos · INEMA 2026</p>
+    <p class="mt-2">
+      <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a>
+      <span class="text-neutral-600 mx-1">-</span>
+      <a href="https://inema.pro" target="_blank" class="text-amber-700 hover:text-amber-600 dark:text-slate-300 dark:hover:text-slate-200">PRO</a>
+    </p>
+  </div>
+</footer>
+
+<script>
+  function toggleTopic(button) {
+    const topicItem = button.closest('.topic-item');
+    const explanation = topicItem.querySelector('.topic-explanation');
+    const moduleCard = button.closest('.bg-dark-800') || document;
+    moduleCard.querySelectorAll('.topic-explanation.active').forEach(exp => { if (exp !== explanation) { exp.classList.remove('active'); const b = exp.closest('.topic-item').querySelector('button'); if (b) b.setAttribute('aria-expanded','false'); } });
+    explanation.classList.toggle('active');
+    button.setAttribute('aria-expanded', explanation.classList.contains('active') ? 'true' : 'false');
+  }
+  function openModal(modalId) { const m = document.getElementById(modalId); if (m) { m.classList.remove('hidden'); document.body.style.overflow = 'hidden'; } }
+  function closeModal() { document.querySelectorAll('.modal').forEach(m => m.classList.add('hidden')); document.body.style.overflow = 'auto'; }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+  const themeToggle = document.getElementById('theme-toggle');
+  const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+  const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+  const htmlEl = document.documentElement;
+  if (htmlEl.classList.contains('dark')) themeToggleLightIcon.classList.remove('hidden'); else themeToggleDarkIcon.classList.remove('hidden');
+  themeToggle.addEventListener('click', () => {
+    themeToggleDarkIcon.classList.toggle('hidden'); themeToggleLightIcon.classList.toggle('hidden');
+    htmlEl.classList.toggle('dark');
+    const dark = htmlEl.classList.contains('dark');
+    localStorage.setItem('theme', dark ? 'dark' : 'light');
+    try { const p = JSON.parse(localStorage.getItem('inema.prefs') || '{}'); p.theme = dark ? 'inema-dark' : 'claro'; localStorage.setItem('inema.prefs', JSON.stringify(p)); } catch (e) {}
+  });
+</script>
+<script src="assets/learn.js"></script>
+<script>if (window.INEMA && typeof window.INEMA.init === 'function') { window.INEMA.init(); }</script>
+</body>
+</html>

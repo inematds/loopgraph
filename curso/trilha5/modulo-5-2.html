@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="inema-course" content="loopgraph">
+  <title>Modulo 5.2 — Grafos de negocio e de tarefas | Graph Engineering</title>
+  <script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'emerald' };
+      function clone(o) { var r = {}; for (var x in o) r[x] = o[x]; return r; }
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed === 'object') { for (var k in DEF) if (parsed[k] != null) p[k] = parsed[k]; } }
+        else { var legacy = localStorage.getItem('theme'); if (legacy === 'light') p.theme = 'claro'; else if (legacy === 'dark') p.theme = 'inema-dark'; }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = { 'inema-dark': { dark: true, attr: null, cs: 'dark' }, 'claro': { dark: false, attr: null, cs: 'light' }, 'sepia': { dark: false, attr: 'sepia', cs: 'light' }, 'foco': { dark: null, attr: 'foco', cs: null }, 'contraste': { dark: true, attr: 'contraste', cs: 'dark' } };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark === true) html.classList.add('dark'); else if (t.dark === false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark') ? 'dark' : 'light'));
+      html.setAttribute('data-font', p.font || 'inter'); html.setAttribute('data-accent', p.accent || 'emerald');
+      var s = html.style, scale = (+p.fontScale || 100);
+      s.setProperty('--inema-font-scale', (scale / 100).toString()); s.setProperty('font-size', scale + '%');
+      s.setProperty('--measure', (+p.lineWidth || 68) + 'ch'); s.setProperty('--lh-body', (+p.leading || 1.7).toString());
+      var fam = p.font === 'system' ? 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif' : (p.font === 'leitura' ? '"Atkinson Hyperlegible", "Inter", system-ui, sans-serif' : '"Inter", system-ui, sans-serif');
+      s.setProperty('--font-body', fam);
+      var ACC = { emerald: [152,76,45], blue: [217,91,60], purple: [258,90,66], amber: [38,92,50], teal: [174,72,41], rose: [350,89,60] };
+      var a = ACC[p.accent] || ACC.emerald;
+      s.setProperty('--accent-h', a[0]+''); s.setProperty('--accent-s', a[1]+'%'); s.setProperty('--accent-l', a[2]+'%');
+      s.setProperty('--accent', 'hsl(' + a[0] + ' ' + a[1] + '% ' + a[2] + '%)');
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme = 'dark'; } catch (e) {} }
+  })();
+  </script>
+  <script type="application/json" data-inema-manifest>
+  {
+    "course": "loopgraph",
+    "tracks": [
+      { "n": "1", "title": "Fundamentos: o grafo", "modules": [
+        { "id": "1-1", "title": "O que e um grafo", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
+        { "id": "1-2", "title": "Grafos no mundo real", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+        { "id": "1-3", "title": "Como se anda num grafo", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" }
+      ]},
+      { "n": "2", "title": "Loop Engineering", "modules": [
+        { "id": "2-1", "title": "Anatomia do loop", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
+        { "id": "2-2", "title": "O verificador e o gargalo", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
+        { "id": "2-3", "title": "Onde o loop quebra", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" }
+      ]},
+      { "n": "3", "title": "Agentic x Loop x Graph", "modules": [
+        { "id": "3-1", "title": "As cinco camadas", "topics": 6, "href": "curso/trilha3/modulo-3-1.html" },
+        { "id": "3-2", "title": "O comparativo de verdade", "topics": 6, "href": "curso/trilha3/modulo-3-2.html" },
+        { "id": "3-3", "title": "Mito x fato", "topics": 6, "href": "curso/trilha3/modulo-3-3.html" }
+      ]},
+      { "n": "4", "title": "Graph Engineering na pratica", "modules": [
+        { "id": "4-1", "title": "Nos, arestas e estado", "topics": 6, "href": "curso/trilha4/modulo-4-1.html" },
+        { "id": "4-2", "title": "Org graph x work graph", "topics": 6, "href": "curso/trilha4/modulo-4-2.html" },
+        { "id": "4-3", "title": "Falhas, harness e observabilidade", "topics": 6, "href": "curso/trilha4/modulo-4-3.html" }
+      ]},
+      { "n": "5", "title": "Mao na massa", "modules": [
+        { "id": "5-1", "title": "Do loop ao grafo", "topics": 6, "href": "curso/trilha5/modulo-5-1.html" },
+        { "id": "5-2", "title": "Grafos de negocio e de tarefas", "topics": 6, "href": "curso/trilha5/modulo-5-2.html" },
+        { "id": "5-3", "title": "Biblioteca de prompts", "topics": 6, "href": "curso/trilha5/modulo-5-3.html" }
+      ]}
+    ]
+  }
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }</script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/learn.css">
+  <link rel="stylesheet" href="../../assets/curso.css">
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+<a href="#conteudo" class="sr-only focus:not-sr-only focus:absolute focus:z-[60] focus:m-2 focus:px-4 focus:py-2 focus:rounded-lg focus:bg-dark-700">Pular para o conteudo</a>
+
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-14 gap-2">
+      <div class="flex items-center space-x-3 flex-shrink-0">
+        <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+          <span class="text-2xl">🕸️</span><span class="font-bold text-lg hidden lg:inline">Graph Engineering</span>
+        </a>
+        <span class="text-neutral-600 hidden sm:inline">|</span>
+        <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium hidden sm:inline">INEMA.CLUB</a>
+        <span class="text-neutral-600 hidden sm:inline">-</span>
+        <a href="https://inema.pro" target="_blank" class="text-amber-700 hover:text-amber-600 dark:text-slate-300 dark:hover:text-slate-200 text-sm font-medium hidden sm:inline">PRO</a>
+      </div>
+      <div class="flex items-center space-x-1">
+        <a href="../trilha1/index.html" class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors"><span class="lg:hidden">T1</span><span class="hidden lg:inline">Fundamentos</span></a>
+        <a href="../trilha2/index.html" class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors"><span class="lg:hidden">T2</span><span class="hidden lg:inline">Loops</span></a>
+        <a href="../trilha3/index.html" class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors"><span class="lg:hidden">T3</span><span class="hidden lg:inline">Comparativo</span></a>
+        <a href="../trilha4/index.html" class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors"><span class="lg:hidden">T4</span><span class="hidden lg:inline">Pratica</span></a>
+        <a href="index.html" class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-teal-400 bg-teal-500/10"><span class="lg:hidden">T5</span><span class="hidden lg:inline">Mao na massa</span></a>
+        <button type="button" data-inema-journey-open class="hidden sm:inline-flex items-center gap-1 px-2 py-1.5 rounded-lg text-sm text-neutral-400 hover:text-neutral-100 transition-colors" title="Minha jornada">
+          <span aria-hidden="true">◷</span><span class="hidden xl:inline">Jornada</span><span class="inema-journey-badge hidden" aria-hidden="true"></span>
+        </button>
+        <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" aria-label="Alternar tema claro/escuro">
+          <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+          <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4" aria-label="Trilha de navegacao">
+  <div class="flex items-center space-x-2 text-sm text-neutral-400">
+    <a href="../../index.html" class="hover:text-teal-400">Inicio</a><span>/</span>
+    <a href="index.html" class="hover:text-teal-400">Trilha 5</a><span>/</span>
+    <span class="text-teal-400">Modulo 5.2</span>
+  </div>
+</nav>
+
+<header class="bg-gradient-to-br from-teal-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600" data-inema-module="5-2" data-inema-track="5">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <span class="inline-block px-3 py-1 bg-teal-500/20 text-teal-400 text-xs font-semibold rounded-full mb-4">MODULO 5.2</span>
+    <h1 class="text-3xl sm:text-4xl font-bold mb-4">📊 Grafos de negocio e de tarefas</h1>
+    <p class="text-lg text-neutral-400 max-w-3xl">
+      Modulo <strong class="text-teal-400">pratico</strong>: pegue o funil de crescimento e o backlog do seu time — coisas que voce
+      ja tem — e desenhe os dois como grafo. Escrever isso expoe realimentacao, restricao e gargalo que o organograma esconde.
+    </p>
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8 max-w-2xl">
+      <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-teal-400">6</div><div class="text-xs text-neutral-400">Topicos</div></div>
+      <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-teal-400">45</div><div class="text-xs text-neutral-400">Minutos</div></div>
+      <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-teal-400">Pratico</div><div class="text-xs text-neutral-400">Nivel</div></div>
+      <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-teal-400">Mao na massa</div><div class="text-xs text-neutral-400">Tipo</div></div>
+    </div>
+    <div class="mt-6 max-w-2xl bg-dark-800 rounded-xl border border-dark-600 p-4">
+      <div class="flex items-center justify-between">
+        <span class="text-sm text-neutral-300 font-semibold">Progresso deste modulo</span>
+        <div data-inema-meter="modulo:5-2" class="inema-meter text-sm" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="Progresso do modulo 5.2">
+          <span class="inema-meter-pct text-teal-400 font-bold">0%</span><span class="inema-meter-count text-neutral-400 ml-2">0 de 6</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="lg:grid lg:grid-cols-[220px_minmax(0,1fr)] lg:gap-10">
+
+  <nav data-inema-toc aria-label="Indice da pagina" class="hidden lg:block sticky top-24 self-start">
+    <p class="text-sm text-neutral-400 mb-3">Secao <span class="inema-toc-pos">1</span> de <span class="inema-toc-total">6</span></p>
+    <ul class="space-y-1 text-sm">
+      <li><a href="#topico-1" class="inema-toc-link text-neutral-400 hover:text-teal-400">1. Modele o funil</a></li>
+      <li><a href="#topico-2" class="inema-toc-link text-neutral-400 hover:text-teal-400">2. Arestas de volta</a></li>
+      <li><a href="#topico-3" class="inema-toc-link text-neutral-400 hover:text-teal-400">3. Restricao entre metricas</a></li>
+      <li><a href="#topico-4" class="inema-toc-link text-neutral-400 hover:text-teal-400">4. Decompor x depender x bloquear</a></li>
+      <li><a href="#topico-5" class="inema-toc-link text-neutral-400 hover:text-teal-400">5. Largura do nivel</a></li>
+      <li><a href="#topico-6" class="inema-toc-link text-neutral-400 hover:text-teal-400">6. Entregue pro agente</a></li>
+    </ul>
+  </nav>
+
+  <main id="conteudo" class="inema-prose">
+
+  <!-- ============ TOPICO 1 ============ -->
+  <section id="topico-1" class="mb-16" data-inema-topic="modulo-5-2#topico-1">
+    <div class="flex items-center space-x-4 mb-6">
+      <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">1</span>
+      <h2 class="text-2xl font-bold">🌱 Modele o funil como grafo</h2>
+      <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar duvida neste topico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm">
+        <span aria-hidden="true">?</span><span>Tenho duvida</span>
+      </button>
+    </div>
+
+    <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m5-2-t1-p1">
+      Pegue o funil que voce ja tem na cabeca: campanha, trafego, landing, signup, ativacao, retencao, LTV, churn.
+      Cada um vira um <strong class="text-teal-400">no</strong> — um estado pelo qual o cliente passa. Cada seta e a
+      <strong class="text-teal-400">taxa de conversao</strong> entre um estado e o proximo: quantos por cento saem de um no e chegam no seguinte.
+    </p>
+
+    <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+      <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">🆕</span> Novo aqui? Quatro termos antes de seguir</h3>
+      <ul class="space-y-2 text-neutral-300 text-sm">
+        <li><strong class="text-neutral-100">CAC (custo de aquisicao de cliente):</strong> quanto voce gasta, em media, pra conseguir um cliente novo — soma o que foi pra campanha e divide pelos clientes que vieram.</li>
+        <li><strong class="text-neutral-100">LTV (lifetime value):</strong> quanto um cliente gera de receita, no total, enquanto continua pagando.</li>
+        <li><strong class="text-neutral-100">Ativacao:</strong> o momento em que o cliente novo usa o produto de verdade pela primeira vez — nao so se cadastrou, mas fez a coisa que prova valor.</li>
+        <li><strong class="text-neutral-100">Retencao / churn:</strong> retencao e a fatia de clientes que continua; churn e o oposto — a fatia que cancela ou some.</li>
+      </ul>
+    </div>
+
+    <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m5-2-t1-p2">
+      So o exercicio de escrever essa fila de nos ja costuma expor problema: alguem sempre percebe que nunca mediu a taxa entre
+      duas etapas especificas — normalmente entre "signup" e "ativacao", que e onde a maioria dos produtos perde gente sem perceber.
+      Nomear o no obriga voce a admitir que aquele numero nao existe.
+    </p>
+
+    <figure class="mb-6">
+      <img src="../../assets/img/ex2-funil-crescimento.png"
+           alt="Diagrama em estilo lousa do funil de crescimento: orcamento leva a campanha, que leva a trafego, que leva a landing, que leva a signup, que leva a ativacao, que leva a retencao, que leva a LTV. Churn sai da retencao. CAC esta ligado a ativacao. Uma linha tracejada liga LTV e CAC com o rotulo LTV dividido por CAC maior que 3. Um laco vermelho volta de LTV/churn ate campanha, rotulado melhor campanha leva a menor churn leva a maior LTV."
+           class="w-full h-auto rounded-xl border border-dark-600">
+      <figcaption class="text-sm text-neutral-400 mt-3">
+        <strong class="text-neutral-300">O que olhar:</strong> o angulo aqui nao e a fila de caixas — e a linha vermelha voltando e a linha tracejada
+        ligando LTV a CAC. A fila sozinha e so um pipeline. Sao essas duas linhas extras que fazem virar grafo, e sao elas o assunto dos proximos dois topicos.
+      </figcaption>
+    </figure>
+
+    <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+      <h3 class="text-lg font-semibold text-teal-400 mb-4">Conceitos-chave</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">No = estado</div><p class="text-xs text-neutral-400">Etapa pela qual o cliente passa</p></div>
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">Aresta = taxa</div><p class="text-xs text-neutral-400">Conversao entre dois estados</p></div>
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">Escrever expoe</div><p class="text-xs text-neutral-400">Etapa sem taxa medida aparece</p></div>
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">Ponto de partida</div><p class="text-xs text-neutral-400">Funil e um pipeline ainda</p></div>
+      </div>
+    </div>
+
+    <div class="flex justify-start mt-6">
+      <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-500/20 border border-teal-500/30 text-teal-400 hover:bg-teal-500/30 transition-colors">
+        <span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ============ TOPICO 2 ============ -->
+  <section id="topico-2" class="mb-16" data-inema-topic="modulo-5-2#topico-2">
+    <div class="flex items-center space-x-4 mb-6">
+      <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">2</span>
+      <h2 class="text-2xl font-bold">🔄 Marque as arestas de realimentacao</h2>
+      <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar duvida neste topico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm">
+        <span aria-hidden="true">?</span><span>Tenho duvida</span>
+      </button>
+    </div>
+
+    <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m5-2-t2-p1">
+      Duas arestas voltam pro comeco do funil, e sao elas que fazem o sistema ter comportamento proprio. A primeira: o cliente que
+      cancela (churn) vira <em>dado</em> que muda a campanha — voce olha quem cancelou e ajusta pra quem anuncia.
+      A segunda: o CAC alimenta a decisao de quanto orcamento a campanha recebe no proximo ciclo.
+    </p>
+
+    <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+      <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">🆕</span> Novo aqui? Realimentacao</h3>
+      <p class="text-neutral-300 text-sm"><strong class="text-neutral-100">Realimentacao (feedback):</strong> quando a saida de um processo volta a influenciar sua propria entrada.
+      No grafo, e uma aresta que sai la na frente e volta pra um no anterior — o mesmo ciclo que voce ja viu na Trilha 1, so que agora com metrica de negocio nas pontas.</p>
+    </div>
+
+    <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+      <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center"><span class="mr-2">🎯</span> Por que isso importa</h3>
+      <p class="text-neutral-300">
+        E essa volta que faz o sistema ter comportamento proprio — e e exatamente o que um agente miope, olhando uma metrica
+        so (por exemplo "baixar o CAC"), nao ve. Ele corta orcamento de campanha, o CAC cai no relatorio, e ninguem percebeu
+        que o publico mais barato tambem tem churn maior — o LTV desaba tres meses depois.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+      <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+        <h4 class="font-bold text-emerald-400 mb-4">✓ Realimentacao bem marcada</h4>
+        <ul class="space-y-3 text-neutral-300 text-sm">
+          <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>"Churn atualiza o perfil de quem NAO anunciar pra"</span></li>
+          <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>"CAC do mes alimenta o teto de orcamento do proximo"</span></li>
+          <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>A aresta tem um rotulo dizendo QUAL dado volta e ONDE ele entra</span></li>
+        </ul>
+      </div>
+      <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+        <h4 class="font-bold text-red-400 mb-4">✗ Realimentacao ignorada</h4>
+        <ul class="space-y-3 text-neutral-300 text-sm">
+          <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Desenhar o funil so como fila reta, campanha ate LTV</span></li>
+          <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Otimizar CAC sem checar o que acontece com churn/LTV</span></li>
+          <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Tratar cada metrica como se fosse independente das outras</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+      <h3 class="text-lg font-semibold text-teal-400 mb-4">Conceitos-chave</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">Churn realimenta</div><p class="text-xs text-neutral-400">Vira dado pra campanha</p></div>
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">CAC realimenta</div><p class="text-xs text-neutral-400">Vira dado pra orcamento</p></div>
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">Comportamento proprio</div><p class="text-xs text-neutral-400">O ciclo e o que da vida ao sistema</p></div>
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">Agente miope</div><p class="text-xs text-neutral-400">So ve o que voce apontou</p></div>
+      </div>
+    </div>
+
+    <div class="flex justify-start mt-6">
+      <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-500/20 border border-teal-500/30 text-teal-400 hover:bg-teal-500/30 transition-colors">
+        <span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ============ TOPICO 3 ============ -->
+  <section id="topico-3" class="mb-16" data-inema-topic="modulo-5-2#topico-3">
+    <div class="flex items-center space-x-4 mb-6">
+      <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">3</span>
+      <h2 class="text-2xl font-bold">⚖️ Declare as restricoes entre metricas</h2>
+      <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar duvida neste topico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm">
+        <span aria-hidden="true">?</span><span>Tenho duvida</span>
+      </button>
+    </div>
+
+    <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m5-2-t3-p1">
+      "LTV dividido por CAC precisa ser maior que 3" nao e uma metrica — e uma <strong class="text-teal-400">relacao</strong> entre duas.
+      Voce nao consegue escrever isso como um numero que sobe ou desce sozinho: e uma comparacao que so existe quando os dois nos
+      estao no mesmo grafo, com uma aresta declarando a regra entre eles.
+    </p>
+
+    <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m5-2-t3-p2">
+      Um loop com objetivo unico — "baixar o CAC", "subir a conversao" — nao consegue nem <em>expressar</em> essa restricao, quanto mais
+      respeitar. E o argumento mais concreto a favor de modelar negocio em grafo: restricao entre metricas so faz sentido quando as
+      duas metricas sao nos visiveis ao mesmo tempo, ligados por uma aresta que carrega a regra.
+    </p>
+
+    <div class="rounded-2xl border border-teal-500/30 bg-dark-900/40 p-3 sm:p-4 mb-4 overflow-hidden">
+      <svg viewBox="0 0 1000 260" class="w-full h-auto" role="img" aria-label="Duas caixas, LTV e CAC, ligadas por uma aresta tracejada com o rotulo LTV dividido por CAC maior que 3 e um simbolo de balanca no meio. Ao lado, uma seta mostra que empurrar CAC pra baixo sem olhar LTV pode quebrar a relacao mesmo com o numero do CAC melhorando.">
+        <defs>
+          <linearGradient id="m52a-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2dd4bf"/><stop offset="1" stop-color="#14b8a6"/></linearGradient>
+          <filter id="m52a-glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <pattern id="m52a-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#14b8a6" opacity="0.12"/></pattern>
+          <marker id="m52a-ah" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#f87171"/></marker>
+        </defs>
+        <rect x="0" y="0" width="1000" height="260" fill="url(#m52a-grid)"/>
+        <g font-family="Inter,sans-serif" font-size="15" font-weight="600">
+          <g filter="url(#m52a-glow)"><rect x="70" y="70" width="180" height="64" rx="14" fill="#0c1f1c" stroke="url(#m52a-grad)" stroke-width="2"/></g>
+          <text x="160" y="108" text-anchor="middle" fill="#99f6e4">LTV</text>
+          <rect x="750" y="70" width="180" height="64" rx="14" fill="#0c1f1c" stroke="#2dd4bf" stroke-width="2"/>
+          <text x="840" y="108" text-anchor="middle" fill="#99f6e4">CAC</text>
+        </g>
+        <path d="M250,102 L750,102" stroke="#38bdf8" stroke-width="2" stroke-dasharray="8 8" opacity="0.7"/>
+        <text x="500" y="88" text-anchor="middle" fill="#bfe6ff" font-family="Inter,sans-serif" font-size="15" font-weight="600">⚖️ LTV / CAC &gt; 3</text>
+        <text x="500" y="150" text-anchor="middle" fill="#7dd3c0" font-family="Inter,sans-serif" font-size="12.5">restricao — nao e um numero, e uma relacao entre dois nos</text>
+        <path d="M840,134 C840,190 500,210 250,190" stroke="#f87171" stroke-width="1.8" fill="none" marker-end="url(#m52a-ah)" opacity="0.75"/>
+        <text x="545" y="235" text-anchor="middle" fill="#fca5a5" font-family="Inter,sans-serif" font-size="12.5">empurrar CAC pra baixo sem olhar LTV pode quebrar a relacao mesmo com o CAC "melhorando"</text>
+      </svg>
+    </div>
+    <p class="text-sm text-neutral-400 mb-6">
+      <strong class="text-neutral-300">O que olhar:</strong> a linha tracejada no meio nao e uma aresta de fluxo — ela nao representa
+      "o cliente passa daqui pra ali". Ela representa uma regra que precisa continuar verdadeira. A seta vermelha por baixo mostra o
+      erro classico: CAC caiu (bom no relatorio isolado), mas a relacao com LTV quebrou porque ninguem olhou os dois juntos.
+    </p>
+
+    <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+      <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">📊</span> Outras restricoes comuns de negocio</h3>
+      <ul class="space-y-2 text-neutral-300 text-sm">
+        <li><strong>Payback period</strong> — quanto tempo o CAC leva pra se pagar tem que ser menor que o caixa disponivel</li>
+        <li><strong>Retencao minima</strong> — churn mensal abaixo de X% pra LTV projetado bater</li>
+        <li><strong>Margem sobre CAC</strong> — a receita do primeiro mes tem que cobrir uma fracao do CAC, senao o caixa quebra antes do LTV se realizar</li>
+      </ul>
+    </div>
+
+    <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+      <h3 class="text-lg font-semibold text-teal-400 mb-4">Conceitos-chave</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">Restricao ≠ metrica</div><p class="text-xs text-neutral-400">E uma relacao entre duas</p></div>
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">Precisa dos dois nos</div><p class="text-xs text-neutral-400">Sem os dois visiveis, nao da</p></div>
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">Objetivo unico falha</div><p class="text-xs text-neutral-400">Loop de 1 metrica nao expressa</p></div>
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">Melhora enganosa</div><p class="text-xs text-neutral-400">Um numero sobe, o par quebra</p></div>
+      </div>
+    </div>
+
+    <div class="flex justify-start mt-6">
+      <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-500/20 border border-teal-500/30 text-teal-400 hover:bg-teal-500/30 transition-colors">
+        <span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ============ TOPICO 4 ============ -->
+  <section id="topico-4" class="mb-16" data-inema-topic="modulo-5-2#topico-4">
+    <div class="flex items-center space-x-4 mb-6">
+      <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">4</span>
+      <h2 class="text-2xl font-bold">🌳 Distinga decompor, depender e bloquear</h2>
+      <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar duvida neste topico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm">
+        <span aria-hidden="true">?</span><span>Tenho duvida</span>
+      </button>
+    </div>
+
+    <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m5-2-t4-p1">
+      No backlog do time sao tres tipos de aresta diferentes, e a maioria das ferramentas so mostra uma delas de verdade.
+      <strong class="text-teal-400">Decomposicao</strong>: epico contem historia contem tarefa. <strong class="text-teal-400">Dependencia</strong>:
+      precisa terminar antes. <strong class="text-teal-400">Bloqueio</strong>: impede o inicio de outra coisa ate ser resolvido.
+    </p>
+
+    <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m5-2-t4-p2">
+      So a primeira e hierarquia de verdade — cada tarefa tem um pai so, e nada volta. As outras duas transformam a arvore em grafo:
+      uma tarefa pode depender de outra tarefa de um epico completamente diferente, e um bloqueio pode ligar itens que nao tem
+      nenhuma relacao de parentesco no organograma do backlog.
+    </p>
+
+    <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+      <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">🆕</span> Novo aqui? Aresta tipada</h3>
+      <p class="text-neutral-300 text-sm"><strong class="text-neutral-100">Aresta tipada:</strong> uma aresta que carrega um rotulo dizendo QUE TIPO de relacao ela representa — nao e so "A liga com B", e "A <em>depende de</em> B" ou "A <em>bloqueia</em> B". Sem o tipo, o grafo vira uma sopa de linhas sem significado.</p>
+    </div>
+
+    <figure class="mb-6">
+      <img src="../../assets/img/ex3-projeto-software.png"
+           alt="Diagrama em estilo lousa de um projeto de software: epico se decompoe em Historia A e Historia B, que se decompoem em tarefas e subtarefas. Uma seta vermelha vai da Tarefa 2 ate a Tarefa 3 rotulada depende. Uma seta azul vai da Tarefa 3 ate a Tarefa 1 rotulada bloqueia. Uma legenda mostra tres tipos de aresta: decomposicao em branco, depende em vermelho, bloqueia em azul."
+           class="w-full h-auto rounded-xl border border-dark-600">
+      <figcaption class="text-sm text-neutral-400 mt-3">
+        <strong class="text-neutral-300">O que olhar:</strong> a arvore branca (epico → historias → tarefas) e previsivel, qualquer ferramenta de backlog desenha ela sozinha.
+        O que importa sao as duas setas coloridas: so elas quebram a arvore e mostram por que a Tarefa 1, que parecia livre, na verdade esta presa.
+      </figcaption>
+    </figure>
+
+    <div class="overflow-x-auto mb-6">
+      <table class="w-full text-sm text-left border-collapse">
+        <thead>
+          <tr class="border-b border-dark-600">
+            <th class="py-3 pr-4 text-teal-400 font-semibold">Tipo de aresta</th>
+            <th class="py-3 pr-4 text-teal-400 font-semibold">O que significa</th>
+            <th class="py-3 text-teal-400 font-semibold">Efeito no paralelismo</th>
+          </tr>
+        </thead>
+        <tbody class="text-neutral-300">
+          <tr class="border-b border-dark-700">
+            <td class="py-3 pr-4 font-semibold">Decompoe</td>
+            <td class="py-3 pr-4">Epico contem historia, historia contem tarefa — hierarquia, um pai so</td>
+            <td class="py-3">Nenhum — e so organizacao, nao trava ordem de execucao</td>
+          </tr>
+          <tr class="border-b border-dark-700">
+            <td class="py-3 pr-4 font-semibold">Depende de</td>
+            <td class="py-3 pr-4">Precisa terminar antes de comecar a proxima</td>
+            <td class="py-3">Reduz — a tarefa dependente so libera depois</td>
+          </tr>
+          <tr>
+            <td class="py-3 pr-4 font-semibold">Bloqueia</td>
+            <td class="py-3 pr-4">Impede o inicio de outra ate ser resolvido, mesmo sem hierarquia entre elas</td>
+            <td class="py-3">Reduz e esconde — costuma atravessar epicos, e o mais dificil de enxergar</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+      <h3 class="text-lg font-semibold text-teal-400 mb-4">Conceitos-chave</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">Tres arestas</div><p class="text-xs text-neutral-400">Decompoe, depende, bloqueia</p></div>
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">So uma e arvore</div><p class="text-xs text-neutral-400">Decomposicao tem pai unico</p></div>
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">Duas quebram arvore</div><p class="text-xs text-neutral-400">Cruzam epicos diferentes</p></div>
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">Somem do organograma</div><p class="text-xs text-neutral-400">Ferramenta so desenha a hierarquia</p></div>
+      </div>
+    </div>
+
+    <div class="flex justify-start mt-6">
+      <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-500/20 border border-teal-500/30 text-teal-400 hover:bg-teal-500/30 transition-colors">
+        <span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ============ TOPICO 5 ============ -->
+  <section id="topico-5" class="mb-16" data-inema-topic="modulo-5-2#topico-5">
+    <div class="flex items-center space-x-4 mb-6">
+      <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">5</span>
+      <h2 class="text-2xl font-bold">📐 Calcule quantas frentes andam agora</h2>
+      <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar duvida neste topico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm">
+        <span aria-hidden="true">?</span><span>Tenho duvida</span>
+      </button>
+    </div>
+
+    <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m5-2-t5-p1">
+      Com dependencia e bloqueio marcados, da pra contar a <strong class="text-teal-400">largura do nivel</strong>: quantas tarefas estao
+      prontas ao mesmo tempo, sem nenhuma dependencia pendente. E assim que se dimensiona gente ou agentes de verdade, em vez de chutar
+      "vou botar cinco agentes nisso".
+    </p>
+
+    <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+      <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">🆕</span> Novo aqui? Largura do nivel e gargalo</h3>
+      <ul class="space-y-2 text-neutral-300 text-sm">
+        <li><strong class="text-neutral-100">Largura do nivel:</strong> quantas tarefas ficam liberadas ao mesmo tempo, num mesmo "andar" do grafo de dependencias.</li>
+        <li><strong class="text-neutral-100">Gargalo:</strong> o ponto do sistema que limita o quanto o resto pode andar — mesmo que tudo em volta tenha capacidade sobrando.</li>
+      </ul>
+    </div>
+
+    <div class="rounded-2xl border border-teal-500/30 bg-dark-900/40 p-3 sm:p-4 mb-4 overflow-hidden">
+      <svg viewBox="0 0 1000 280" class="w-full h-auto" role="img" aria-label="Tres faixas horizontais empilhadas representando niveis de paralelismo do backlog. Nivel 1 tem duas tarefas marcadas livres agora. Nivel 2 tem tres tarefas. Nivel 3 tem uma tarefa so, marcada como gargalo.">
+        <defs>
+          <linearGradient id="m52b-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2dd4bf"/><stop offset="1" stop-color="#14b8a6"/></linearGradient>
+          <filter id="m52b-glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <pattern id="m52b-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#14b8a6" opacity="0.12"/></pattern>
+        </defs>
+        <rect x="0" y="0" width="1000" height="280" fill="url(#m52b-grid)"/>
+        <text x="40" y="38" fill="#7dd3c0" font-family="Inter,sans-serif" font-size="13" font-weight="600">nivel 1 — livres agora</text>
+        <g font-family="Inter,sans-serif" font-size="13" font-weight="600">
+          <rect x="40" y="48" width="150" height="46" rx="10" fill="#0c1f1c" stroke="#2dd4bf" stroke-width="2"/><text x="115" y="76" text-anchor="middle" fill="#99f6e4">tarefa A</text>
+          <rect x="210" y="48" width="150" height="46" rx="10" fill="#0c1f1c" stroke="#2dd4bf" stroke-width="2"/><text x="285" y="76" text-anchor="middle" fill="#99f6e4">tarefa B</text>
+        </g>
+        <text x="40" y="128" fill="#7dd3c0" font-family="Inter,sans-serif" font-size="13" font-weight="600">nivel 2</text>
+        <g font-family="Inter,sans-serif" font-size="13" font-weight="600">
+          <rect x="40" y="138" width="150" height="46" rx="10" fill="#0c1f1c" stroke="#2dd4bf" stroke-width="2"/><text x="115" y="166" text-anchor="middle" fill="#99f6e4">tarefa C</text>
+          <rect x="210" y="138" width="150" height="46" rx="10" fill="#0c1f1c" stroke="#2dd4bf" stroke-width="2"/><text x="285" y="166" text-anchor="middle" fill="#99f6e4">tarefa D</text>
+          <rect x="380" y="138" width="150" height="46" rx="10" fill="#0c1f1c" stroke="#2dd4bf" stroke-width="2"/><text x="455" y="166" text-anchor="middle" fill="#99f6e4">tarefa E</text>
+        </g>
+        <text x="40" y="218" fill="#fca5a5" font-family="Inter,sans-serif" font-size="13" font-weight="600">nivel 3 — gargalo</text>
+        <g filter="url(#m52b-glow)"><rect x="40" y="228" width="150" height="46" rx="10" fill="#2a1414" stroke="#f87171" stroke-width="2"/></g>
+        <text x="115" y="256" text-anchor="middle" fill="#fca5a5" font-family="Inter,sans-serif" font-size="13" font-weight="600">tarefa F</text>
+        <text x="700" y="256" text-anchor="middle" fill="#a3a3a3" font-family="Inter,sans-serif" font-size="12.5">2 → 3 → 1: o funil de largura afunila de novo — F trava tudo que depende dela</text>
+      </svg>
+    </div>
+    <p class="text-sm text-neutral-400 mb-6">
+      <strong class="text-neutral-300">O que olhar:</strong> a largura de cada faixa. O nivel 1 libera duas tarefas, o nivel 2 libera tres —
+      ate aqui, cinco agentes ou cinco pessoas cabem bem. Mas o nivel 3 so libera <em>uma</em>. Se voce botou cinco agentes pra trabalhar
+      e so uma tarefa esta disponivel naquele nivel, os outros quatro vao ficar parados ou vao comecar a atrapalhar um ao outro.
+    </p>
+
+    <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+      <h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center"><span class="mr-2">⚠️</span> Atencao: capacidade sobrando nao e capacidade usavel</h3>
+      <p class="text-neutral-300">
+        Ter cinco agentes disponiveis nao significa que cinco tarefas vao andar em paralelo. O grafo de dependencias e quem decide
+        a largura real de cada momento — nao o numero de gente ou agentes que voce contratou. Contar a largura do nivel <em>antes</em>
+        de alocar evita colocar recurso onde nao ha o que fazer.
+      </p>
+    </div>
+
+    <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+      <h3 class="text-lg font-semibold text-teal-400 mb-4">Conceitos-chave</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">Largura do nivel</div><p class="text-xs text-neutral-400">Tarefas prontas ao mesmo tempo</p></div>
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">Dimensiona time</div><p class="text-xs text-neutral-400">Melhor que chutar um numero</p></div>
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">Gargalo</div><p class="text-xs text-neutral-400">Nivel estreito trava o resto</p></div>
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">Recurso ocioso</div><p class="text-xs text-neutral-400">Sobrar agente nao resolve gargalo</p></div>
+      </div>
+    </div>
+
+    <div class="flex justify-start mt-6">
+      <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-500/20 border border-teal-500/30 text-teal-400 hover:bg-teal-500/30 transition-colors">
+        <span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ============ TOPICO 6 ============ -->
+  <section id="topico-6" class="mb-16" data-inema-topic="modulo-5-2#topico-6">
+    <div class="flex items-center space-x-4 mb-6">
+      <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">6</span>
+      <h2 class="text-2xl font-bold">🤖 Entregue o grafo pro agente decidir</h2>
+      <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar duvida neste topico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm">
+        <span aria-hidden="true">?</span><span>Tenho duvida</span>
+      </button>
+    </div>
+
+    <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m5-2-t6-p1">
+      Com o grafo do negocio ou do backlog escrito, um agente consegue propor alocacao, apontar o gargalo e simular efeito colateral
+      de uma mudanca — "se eu dobrar o orcamento da campanha, o que acontece com churn e LTV?". Sem o grafo, ele so opina sobre a
+      metrica que voce citou — e volta a ser o loop miope do comeco do curso.
+    </p>
+
+    <!-- EXEMPLO COPY-RUN -->
+    <div class="bg-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+      <h3 class="text-lg font-semibold text-teal-400 mb-2 flex items-center"><span class="mr-2">🧪</span> Prompt pronto: transforme negocio ou backlog em grafo tipado</h3>
+      <p class="text-sm text-neutral-400 mb-4"><strong class="text-neutral-300">Objetivo:</strong> dar pro Claude Code a descricao do seu funil ou o export do seu backlog e receber de volta um grafo em JSON com arestas tipadas, mais os niveis de paralelismo e o gargalo.</p>
+
+      <div class="code-box bg-dark-900 rounded-lg border border-dark-600 p-4 mb-4 overflow-x-auto">
+<pre class="text-sm text-neutral-300">Voce vai modelar &lt;o funil de crescimento do meu produto&gt; (ou: &lt;o export do meu
+backlog em CSV/JSON&gt;) como um grafo. Regras:
+
+1. Cada etapa/tarefa vira um NO com id curto.
+2. Para negocio: arestas tipadas em "converte_em" (fluxo normal), "realimenta"
+   (volta pra um no anterior, ex: churn -&gt; campanha) e "restringe" (relacao
+   entre duas metricas, ex: LTV/CAC &gt; 3 — nao e fluxo, e regra).
+3. Para backlog: arestas tipadas em "decompoe" (hierarquia, um pai so),
+   "depende_de" (precisa terminar antes) e "bloqueia" (impede inicio,
+   pode cruzar epicos diferentes).
+4. Devolva em JSON: { "nos": [...], "arestas": [{"de","para","tipo"}] }.
+5. Calcule e devolva tambem "niveis_paralelismo": lista de niveis com os
+   nos liberados em cada um (sem dependencia pendente), e "gargalo": o
+   nivel com menor largura.
+
+Dados de entrada: &lt;cole aqui a descricao do negocio ou o export do backlog&gt;</pre>
+      </div>
+
+      <div class="bg-dark-700/50 rounded-lg p-4">
+        <p class="text-sm text-neutral-300"><strong class="text-teal-400">Como verificar:</strong> (1) se o JSON nao tiver NENHUMA
+        aresta "realimenta" (negocio) ou "bloqueia" (backlog), o modelo desenhou um pipeline reto e nao um grafo — peca de novo,
+        insistindo nas voltas e nas relacoes cruzadas. (2) Confira se o "gargalo" apontado bate com o nivel que o time ja sente
+        na pratica — se o modelo apontar um gargalo que ninguem reconhece, o grafo provavelmente esta com uma dependencia errada.</p>
+      </div>
+    </div>
+
+    <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+      <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center"><span class="mr-2">💡</span> O que o grafo compra que a metrica solta nao compra</h3>
+      <p class="text-neutral-300">
+        Um numero isolado so responde "subiu ou desceu". Um grafo responde "o que mais se move quando eu mexo aqui" — e essa e a
+        pergunta que decide alocacao, orcamento e prioridade de verdade. E o mesmo argumento da Trilha 3: o grafo nao e modinha,
+        e o formato certo quando a pergunta envolve mais de uma coisa ao mesmo tempo.
+      </p>
+    </div>
+
+    <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+      <h3 class="text-lg font-semibold text-teal-400 mb-4">Conceitos-chave</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">Grafo habilita agente</div><p class="text-xs text-neutral-400">Alocacao, gargalo, simulacao</p></div>
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">Sem grafo, opiniao solta</div><p class="text-xs text-neutral-400">So fala da metrica citada</p></div>
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">Prompt tipado</div><p class="text-xs text-neutral-400">Arestas com nome, nao so linha</p></div>
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">Fecha o curso</div><p class="text-xs text-neutral-400">Volta a frase-ancora inicial</p></div>
+      </div>
+    </div>
+
+    <!-- CHECAGEM LEVE -->
+    <div data-inema-check="modulo-5-2#q1" class="inema-check mt-8 bg-dark-800 border border-dark-600 rounded-xl p-6 mb-6">
+      <p class="font-medium mb-4">Checagem rapida (nao bloqueia nada): voce pediu pro modelo desenhar o grafo do seu funil de crescimento e ele devolveu so uma fila reta, campanha ate LTV, sem nenhuma seta voltando. O que fazer?</p>
+      <div class="inema-check-options space-y-2">
+        <button type="button" data-inema-check-option="0" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">Aceitar — um funil e mesmo uma fila, esta correto</button>
+        <button type="button" data-inema-check-option="1" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">Pedir de novo, insistindo nas arestas de realimentacao (churn, CAC) e nas restricoes entre metricas</button>
+        <button type="button" data-inema-check-option="2" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">Trocar de modelo, o problema e a IA usada</button>
+      </div>
+      <div data-inema-check-feedback class="mt-4 text-sm" role="status" aria-live="polite"></div>
+    </div>
+
+    <div class="flex justify-start mt-6">
+      <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-500/20 border border-teal-500/30 text-teal-400 hover:bg-teal-500/30 transition-colors">
+        <span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ============ RESUMO ============ -->
+  <section class="mb-12">
+    <div class="bg-gradient-to-br from-teal-900/40 via-dark-800 to-dark-800 rounded-xl border border-teal-500/30 p-8">
+      <h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">📌</span> Resumo do Modulo</h2>
+      <div class="space-y-4 mb-8">
+        <div class="flex items-start space-x-3"><span class="text-teal-400 mt-1">✓</span><div><strong class="text-white">Funil = grafo de estados</strong><span class="text-neutral-400"> — cada etapa e um no, cada conversao e uma aresta.</span></div></div>
+        <div class="flex items-start space-x-3"><span class="text-teal-400 mt-1">✓</span><div><strong class="text-white">Realimentacao</strong><span class="text-neutral-400"> — churn e CAC voltam pro comeco, e isso da comportamento proprio ao sistema.</span></div></div>
+        <div class="flex items-start space-x-3"><span class="text-teal-400 mt-1">✓</span><div><strong class="text-white">Restricao entre metricas</strong><span class="text-neutral-400"> — LTV/CAC &gt; 3 e uma relacao, nao um numero; um objetivo unico nao expressa isso.</span></div></div>
+        <div class="flex items-start space-x-3"><span class="text-teal-400 mt-1">✓</span><div><strong class="text-white">Decompor, depender, bloquear</strong><span class="text-neutral-400"> — tres arestas diferentes no backlog; so a primeira e hierarquia.</span></div></div>
+        <div class="flex items-start space-x-3"><span class="text-teal-400 mt-1">✓</span><div><strong class="text-white">Largura do nivel</strong><span class="text-neutral-400"> — conte quantas tarefas estao livres agora antes de alocar gente ou agentes.</span></div></div>
+        <div class="flex items-start space-x-3"><span class="text-teal-400 mt-1">✓</span><div><strong class="text-white">Grafo habilita o agente</strong><span class="text-neutral-400"> — com o grafo escrito, ele propoe alocacao e simula efeito colateral; sem ele, so opina.</span></div></div>
+      </div>
+      <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+        <h3 class="font-semibold text-teal-400 mb-2">Proximo Modulo:</h3>
+        <p class="text-neutral-300">5.3 — Biblioteca de prompts: desenhar o grafo a partir de um processo, virar script executavel, auditar um grafo, achar colisao entre loops.</p>
+      </div>
+      <div class="flex flex-col sm:flex-row gap-4">
+        <a href="modulo-5-1.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">← Modulo Anterior</a>
+        <a href="modulo-5-3.html" class="flex-1 text-center px-6 py-3 bg-teal-600 text-white rounded-lg font-semibold hover:bg-teal-500 transition-colors">Proximo Modulo →</a>
+      </div>
+    </div>
+  </section>
+
+  </main>
+</div>
+</div>
+
+<footer class="border-t border-dark-600 py-8 mt-16">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+    <p>Graph Engineering — de loops a grafos · INEMA 2026</p>
+    <p class="mt-2">
+      <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a>
+      <span class="text-neutral-600 mx-1">-</span>
+      <a href="https://inema.pro" target="_blank" class="text-amber-700 hover:text-amber-600 dark:text-slate-300 dark:hover:text-slate-200">PRO</a>
+    </p>
+  </div>
+</footer>
+
+<script>
+  function toggleTopic(button) {
+    const topicItem = button.closest('.topic-item');
+    const explanation = topicItem.querySelector('.topic-explanation');
+    const moduleCard = button.closest('.bg-dark-800') || document;
+    moduleCard.querySelectorAll('.topic-explanation.active').forEach(exp => { if (exp !== explanation) { exp.classList.remove('active'); const b = exp.closest('.topic-item').querySelector('button'); if (b) b.setAttribute('aria-expanded','false'); } });
+    explanation.classList.toggle('active');
+    button.setAttribute('aria-expanded', explanation.classList.contains('active') ? 'true' : 'false');
+  }
+  function openModal(modalId) { const m = document.getElementById(modalId); if (m) { m.classList.remove('hidden'); document.body.style.overflow = 'hidden'; } }
+  function closeModal() { document.querySelectorAll('.modal').forEach(m => m.classList.add('hidden')); document.body.style.overflow = 'auto'; }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+  const themeToggle = document.getElementById('theme-toggle');
+  const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+  const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+  const htmlEl = document.documentElement;
+  if (htmlEl.classList.contains('dark')) themeToggleLightIcon.classList.remove('hidden'); else themeToggleDarkIcon.classList.remove('hidden');
+  themeToggle.addEventListener('click', () => {
+    themeToggleDarkIcon.classList.toggle('hidden'); themeToggleLightIcon.classList.toggle('hidden');
+    htmlEl.classList.toggle('dark');
+    const dark = htmlEl.classList.contains('dark');
+    localStorage.setItem('theme', dark ? 'dark' : 'light');
+    try { const p = JSON.parse(localStorage.getItem('inema.prefs') || '{}'); p.theme = dark ? 'inema-dark' : 'claro'; localStorage.setItem('inema.prefs', JSON.stringify(p)); } catch (e) {}
+  });
+</script>
+<script src="../../assets/learn.js"></script>
+<script>
+  if (window.INEMA && typeof window.INEMA.init === 'function') { window.INEMA.init(); }
+  window.addEventListener('DOMContentLoaded', function () {
+    if (window.INEMA && INEMA.registerCheck) {
+      INEMA.registerCheck('modulo-5-2#q1', {
+        answer: 1,
+        explain: {
+          0: 'Nao. Um funil desenhado como fila reta e um pipeline, nao um grafo — o modulo inteiro depende de expor as voltas de churn e CAC. Aceitar assim deixa a realimentacao invisivel.',
+          1: 'Isso. Sem realimentacao e sem restricao entre metricas, o modelo so redesenhou o organograma que voce ja tinha. Insistir nesses dois pontos e o que forca o grafo de verdade a aparecer.',
+          2: 'Nao necessariamente. O problema mais comum e o prompt nao ter pedido explicitamente as arestas de realimentacao e restricao — troque o prompt antes de trocar o modelo.'
+        }
+      });
+    }
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="inema-course" content="loopgraph">
+  <title>Modulo 4.3 — Falhas, harness e observabilidade | Graph Engineering</title>
+  <script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'emerald' };
+      function clone(o) { var r = {}; for (var x in o) r[x] = o[x]; return r; }
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed === 'object') { for (var k in DEF) if (parsed[k] != null) p[k] = parsed[k]; } }
+        else { var legacy = localStorage.getItem('theme'); if (legacy === 'light') p.theme = 'claro'; else if (legacy === 'dark') p.theme = 'inema-dark'; }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = { 'inema-dark': { dark: true, attr: null, cs: 'dark' }, 'claro': { dark: false, attr: null, cs: 'light' }, 'sepia': { dark: false, attr: 'sepia', cs: 'light' }, 'foco': { dark: null, attr: 'foco', cs: null }, 'contraste': { dark: true, attr: 'contraste', cs: 'dark' } };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark === true) html.classList.add('dark'); else if (t.dark === false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark') ? 'dark' : 'light'));
+      html.setAttribute('data-font', p.font || 'inter'); html.setAttribute('data-accent', p.accent || 'emerald');
+      var s = html.style, scale = (+p.fontScale || 100);
+      s.setProperty('--inema-font-scale', (scale / 100).toString()); s.setProperty('font-size', scale + '%');
+      s.setProperty('--measure', (+p.lineWidth || 68) + 'ch'); s.setProperty('--lh-body', (+p.leading || 1.7).toString());
+      var fam = p.font === 'system' ? 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif' : (p.font === 'leitura' ? '"Atkinson Hyperlegible", "Inter", system-ui, sans-serif' : '"Inter", system-ui, sans-serif');
+      s.setProperty('--font-body', fam);
+      var ACC = { emerald: [152,76,45], blue: [217,91,60], purple: [258,90,66], amber: [38,92,50], teal: [174,72,41], rose: [350,89,60] };
+      var a = ACC[p.accent] || ACC.emerald;
+      s.setProperty('--accent-h', a[0]+''); s.setProperty('--accent-s', a[1]+'%'); s.setProperty('--accent-l', a[2]+'%');
+      s.setProperty('--accent', 'hsl(' + a[0] + ' ' + a[1] + '% ' + a[2] + '%)');
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme = 'dark'; } catch (e) {} }
+  })();
+  </script>
+  <script type="application/json" data-inema-manifest>
+  {
+    "course": "loopgraph",
+    "tracks": [
+      { "n": "1", "title": "Fundamentos: o grafo", "modules": [
+        { "id": "1-1", "title": "O que e um grafo", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
+        { "id": "1-2", "title": "Grafos no mundo real", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+        { "id": "1-3", "title": "Como se anda num grafo", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" }
+      ]},
+      { "n": "2", "title": "Loop Engineering", "modules": [
+        { "id": "2-1", "title": "Anatomia do loop", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
+        { "id": "2-2", "title": "O verificador e o gargalo", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
+        { "id": "2-3", "title": "Onde o loop quebra", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" }
+      ]},
+      { "n": "3", "title": "Agentic x Loop x Graph", "modules": [
+        { "id": "3-1", "title": "As cinco camadas", "topics": 6, "href": "curso/trilha3/modulo-3-1.html" },
+        { "id": "3-2", "title": "O comparativo de verdade", "topics": 6, "href": "curso/trilha3/modulo-3-2.html" },
+        { "id": "3-3", "title": "Mito x fato", "topics": 6, "href": "curso/trilha3/modulo-3-3.html" }
+      ]},
+      { "n": "4", "title": "Graph Engineering na pratica", "modules": [
+        { "id": "4-1", "title": "Nos, arestas e estado", "topics": 6, "href": "curso/trilha4/modulo-4-1.html" },
+        { "id": "4-2", "title": "Org graph x work graph", "topics": 6, "href": "curso/trilha4/modulo-4-2.html" },
+        { "id": "4-3", "title": "Falhas, harness e observabilidade", "topics": 6, "href": "curso/trilha4/modulo-4-3.html" }
+      ]},
+      { "n": "5", "title": "Mao na massa", "modules": [
+        { "id": "5-1", "title": "Do loop ao grafo", "topics": 6, "href": "curso/trilha5/modulo-5-1.html" },
+        { "id": "5-2", "title": "Grafos de negocio e de tarefas", "topics": 6, "href": "curso/trilha5/modulo-5-2.html" },
+        { "id": "5-3", "title": "Biblioteca de prompts", "topics": 6, "href": "curso/trilha5/modulo-5-3.html" }
+      ]}
+    ]
+  }
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }</script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/learn.css">
+  <link rel="stylesheet" href="../../assets/curso.css">
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+<a href="#conteudo" class="sr-only focus:not-sr-only focus:absolute focus:z-[60] focus:m-2 focus:px-4 focus:py-2 focus:rounded-lg focus:bg-dark-700">Pular para o conteudo</a>
+
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-14 gap-2">
+      <div class="flex items-center space-x-3 flex-shrink-0">
+        <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+          <span class="text-2xl">🕸️</span><span class="font-bold text-lg hidden lg:inline">Graph Engineering</span>
+        </a>
+        <span class="text-neutral-600 hidden sm:inline">|</span>
+        <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium hidden sm:inline">INEMA.CLUB</a>
+        <span class="text-neutral-600 hidden sm:inline">-</span>
+        <a href="https://inema.pro" target="_blank" class="text-amber-700 hover:text-amber-600 dark:text-slate-300 dark:hover:text-slate-200 text-sm font-medium hidden sm:inline">PRO</a>
+      </div>
+      <div class="flex items-center space-x-1">
+        <a href="../trilha1/index.html" class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors"><span class="lg:hidden">T1</span><span class="hidden lg:inline">Fundamentos</span></a>
+        <a href="../trilha2/index.html" class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors"><span class="lg:hidden">T2</span><span class="hidden lg:inline">Loops</span></a>
+        <a href="../trilha3/index.html" class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors"><span class="lg:hidden">T3</span><span class="hidden lg:inline">Comparativo</span></a>
+        <a href="index.html" class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-amber-400 bg-amber-500/10"><span class="lg:hidden">T4</span><span class="hidden lg:inline">Pratica</span></a>
+        <a href="../trilha5/index.html" class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors"><span class="lg:hidden">T5</span><span class="hidden lg:inline">Mao na massa</span></a>
+        <button type="button" data-inema-journey-open class="hidden sm:inline-flex items-center gap-1 px-2 py-1.5 rounded-lg text-sm text-neutral-400 hover:text-neutral-100 transition-colors" title="Minha jornada">
+          <span aria-hidden="true">◷</span><span class="hidden xl:inline">Jornada</span><span class="inema-journey-badge hidden" aria-hidden="true"></span>
+        </button>
+        <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" aria-label="Alternar tema claro/escuro">
+          <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+          <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4" aria-label="Trilha de navegacao">
+  <div class="flex items-center space-x-2 text-sm text-neutral-400">
+    <a href="../../index.html" class="hover:text-amber-400">Inicio</a><span>/</span>
+    <a href="index.html" class="hover:text-amber-400">Trilha 4</a><span>/</span>
+    <span class="text-amber-400">Modulo 4.3</span>
+  </div>
+</nav>
+
+<header class="bg-gradient-to-br from-amber-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600" data-inema-module="4-3" data-inema-track="4">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <span class="inline-block px-3 py-1 bg-amber-500/20 text-amber-400 text-xs font-semibold rounded-full mb-4">MODULO 4.3</span>
+    <h1 class="text-3xl sm:text-4xl font-bold mb-4">🔭 Falhas, harness e observabilidade</h1>
+    <p class="text-lg text-neutral-400 max-w-3xl">
+      Aqui esta o preco do grafo. Fan-in que engole uma fonte, ciclo que nao converge, estado que vaza de um no pro outro.
+      Este modulo mostra os tres modos de falha que so existem porque voce montou um grafo — e como instrumentar pra
+      nao descobrir cada um deles em producao.
+    </p>
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8 max-w-2xl">
+      <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-amber-400">6</div><div class="text-xs text-neutral-400">Topicos</div></div>
+      <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-amber-400">45</div><div class="text-xs text-neutral-400">Minutos</div></div>
+      <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-amber-400">Avancado</div><div class="text-xs text-neutral-400">Nivel</div></div>
+      <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-amber-400">Pratica</div><div class="text-xs text-neutral-400">Tipo</div></div>
+    </div>
+    <div class="mt-6 max-w-2xl bg-dark-800 rounded-xl border border-dark-600 p-4">
+      <div class="flex items-center justify-between">
+        <span class="text-sm text-neutral-300 font-semibold">Progresso deste modulo</span>
+        <div data-inema-meter="modulo:4-3" class="inema-meter text-sm" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="Progresso do modulo 4.3">
+          <span class="inema-meter-pct text-amber-400 font-bold">0%</span><span class="inema-meter-count text-neutral-400 ml-2">0 de 6</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="lg:grid lg:grid-cols-[220px_minmax(0,1fr)] lg:gap-10">
+
+  <nav data-inema-toc aria-label="Indice da pagina" class="hidden lg:block sticky top-24 self-start">
+    <p class="text-sm text-neutral-400 mb-3">Secao <span class="inema-toc-pos">1</span> de <span class="inema-toc-total">6</span></p>
+    <ul class="space-y-1 text-sm">
+      <li><a href="#topico-1" class="inema-toc-link text-neutral-400 hover:text-amber-400">1. Cace o merge que engole</a></li>
+      <li><a href="#topico-2" class="inema-toc-link text-neutral-400 hover:text-amber-400">2. Quebre o loop infinito</a></li>
+      <li><a href="#topico-3" class="inema-toc-link text-neutral-400 hover:text-amber-400">3. Vede o estado que vaza</a></li>
+      <li><a href="#topico-4" class="inema-toc-link text-neutral-400 hover:text-amber-400">4. Escreva o state schema</a></li>
+      <li><a href="#topico-5" class="inema-toc-link text-neutral-400 hover:text-amber-400">5. Torne a execucao duravel</a></li>
+      <li><a href="#topico-6" class="inema-toc-link text-neutral-400 hover:text-amber-400">6. Instrumente ou apague no escuro</a></li>
+    </ul>
+  </nav>
+
+  <main id="conteudo" class="inema-prose">
+
+  <!-- ============ TOPICO 1 ============ -->
+  <section id="topico-1" class="mb-16" data-inema-topic="modulo-4-3#topico-1">
+    <div class="flex items-center space-x-4 mb-6">
+      <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl">1</span>
+      <h2 class="text-2xl font-bold">🔀 Cace o merge que engole uma fonte</h2>
+      <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar duvida neste topico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm">
+        <span aria-hidden="true">?</span><span>Tenho duvida</span>
+      </button>
+    </div>
+
+    <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-3-t1-p1">
+      No fan-in — o ponto onde varios ramos paralelos se juntam de volta num so no — existe um modo de falha silencioso:
+      um ramo falha ou volta vazio, e a juncao segue em frente como se estivesse completa. O resultado sai bonito,
+      esta incompleto, e ninguem percebe porque nada gritou.
+    </p>
+
+    <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+      <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">🆕</span> Novo aqui? Duas palavras antes de seguir</h3>
+      <ul class="space-y-2 text-neutral-300 text-sm">
+        <li><strong class="text-neutral-100">Fan-in / merge / juncao:</strong> o no onde varios ramos que rodaram em paralelo (fan-out) voltam a se encontrar. E o oposto do fan-out.</li>
+        <li><strong class="text-neutral-100">Cardinalidade:</strong> quantidade esperada de itens. Se voce despachou 4 ramos, a cardinalidade esperada na juncao e 4. Cardinalidade errada = alguem sumiu no meio do caminho.</li>
+      </ul>
+    </div>
+
+    <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-3-t1-p2">
+      O jeito mais comum disso acontecer: voce despacha pesquisa em quatro fontes, uma API cai, o no daquela fonte
+      retorna lista vazia (nao erro — vazia), e o merge escreve o relatorio com tres fontes achando que sao quatro.
+      Ninguem recebeu excecao, ninguem viu log vermelho. O relatorio so esta errado.
+    </p>
+
+    <div class="rounded-2xl border border-amber-500/30 bg-dark-900/40 p-3 sm:p-4 mb-4 overflow-hidden">
+      <svg viewBox="0 0 1000 260" class="w-full h-auto" role="img" aria-label="Um no despacha quatro ramos paralelos: fonte A, B, C e D. A fonte C aparece em cinza apagado com um X, indicando falha. As quatro setas convergem para um no de juncao que, sem checagem, segue em frente escrito relatorio com 3 de 4 fontes, sem alerta.">
+        <defs>
+          <linearGradient id="m43a-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fbbf24"/><stop offset="1" stop-color="#f59e0b"/></linearGradient>
+          <filter id="m43a-glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <pattern id="m43a-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#f59e0b" opacity="0.12"/></pattern>
+          <marker id="m43a-ah" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#fbbf24"/></marker>
+          <marker id="m43a-ahr" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#f87171"/></marker>
+        </defs>
+        <rect x="0" y="0" width="1000" height="260" fill="url(#m43a-grid)"/>
+        <g stroke="#fbbf24" stroke-width="1.8" opacity="0.55" fill="none">
+          <path d="M170,60 C320,60 380,150 470,150" marker-end="url(#m43a-ah)"/>
+          <path d="M170,110 C320,110 380,140 470,148" marker-end="url(#m43a-ah)"/>
+          <path d="M170,190 C320,190 380,160 470,152" marker-end="url(#m43a-ah)"/>
+        </g>
+        <path d="M170,150 C320,150 380,150 470,150" stroke="#f87171" stroke-width="1.8" opacity="0.5" stroke-dasharray="6 6" fill="none" marker-end="url(#m43a-ahr)"/>
+        <g font-family="Inter,sans-serif" font-size="13" font-weight="600">
+          <rect x="60" y="36" width="110" height="48" rx="12" fill="#1f1604" stroke="#fbbf24" stroke-width="2"/><text x="115" y="66" text-anchor="middle" fill="#fcd9a0">fonte A</text>
+          <rect x="60" y="86" width="110" height="48" rx="12" fill="#1f1604" stroke="#fbbf24" stroke-width="2"/><text x="115" y="116" text-anchor="middle" fill="#fcd9a0">fonte B</text>
+          <rect x="60" y="126" width="110" height="48" rx="12" fill="#241010" stroke="#f87171" stroke-width="2" opacity="0.7"/><text x="115" y="156" text-anchor="middle" fill="#fca5a5">fonte C ✗</text>
+          <rect x="60" y="166" width="110" height="48" rx="12" fill="#1f1604" stroke="#fbbf24" stroke-width="2"/><text x="115" y="196" text-anchor="middle" fill="#fcd9a0">fonte D</text>
+          <g filter="url(#m43a-glow)"><rect x="470" y="126" width="150" height="48" rx="12" fill="#1f1604" stroke="url(#m43a-grad)" stroke-width="2"/></g>
+          <text x="545" y="156" text-anchor="middle" fill="#fbbf24" font-weight="600">juncao (merge)</text>
+        </g>
+        <text x="500" y="228" text-anchor="middle" fill="#fcd9a0" font-family="Inter,sans-serif" font-size="13">3 de 4 fontes chegaram — merge nao checou, seguiu como se estivesse completo</text>
+      </svg>
+    </div>
+    <p class="text-sm text-neutral-400 mb-6">
+      <strong class="text-neutral-300">O que olhar:</strong> a linha vermelha tracejada da fonte C — ela ainda chega na juncao, so que vazia.
+      O no de merge nao tem nenhuma checagem de quantidade, entao ele processa o que recebeu e segue. Nenhum erro sobe.
+      O defeito nao esta na fonte que falhou; esta na juncao que nao perguntou "recebi os quatro que despachei?".
+    </p>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+      <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+        <h4 class="font-bold text-emerald-400 mb-4">✓ Junção segura</h4>
+        <ul class="space-y-3 text-neutral-300 text-sm">
+          <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Conta quantos itens chegaram e compara com quantos foram despachados</span></li>
+          <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Decide explicitamente o que fazer com ramo faltando: abortar, seguir marcando lacuna, ou retry</span></li>
+          <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Registra no output "3 de 4 fontes, C indisponivel" quando decide seguir mesmo assim</span></li>
+        </ul>
+      </div>
+      <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+        <h4 class="font-bold text-red-400 mb-4">✗ Junção cega</h4>
+        <ul class="space-y-3 text-neutral-300 text-sm">
+          <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Faz merge de "o que chegou" sem saber quanto era esperado</span></li>
+          <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Trata lista vazia igual a lista com dado — os dois "passam" no merge</span></li>
+          <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Nenhum log, nenhuma metrica registra a lacuna</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+      <h3 class="text-lg font-semibold text-amber-400 mb-4">Conceitos-chave</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">Fan-in</div><p class="text-xs text-neutral-400">Onde ramos paralelos se juntam</p></div>
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">Cardinalidade</div><p class="text-xs text-neutral-400">Recebi os N que despachei?</p></div>
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">Falha silenciosa</div><p class="text-xs text-neutral-400">Vazio nao e erro, mas devia ser</p></div>
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">Decisao explicita</div><p class="text-xs text-neutral-400">Abortar, marcar ou tentar de novo</p></div>
+      </div>
+    </div>
+
+    <div class="flex justify-start mt-6">
+      <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500/30 transition-colors">
+        <span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ============ TOPICO 2 ============ -->
+  <section id="topico-2" class="mb-16" data-inema-topic="modulo-4-3#topico-2">
+    <div class="flex items-center space-x-4 mb-6">
+      <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl">2</span>
+      <h2 class="text-2xl font-bold">♾️ Quebre o roteamento que nao converge</h2>
+      <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar duvida neste topico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm">
+        <span aria-hidden="true">?</span><span>Tenho duvida</span>
+      </button>
+    </div>
+
+    <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-3-t2-p1">
+      Duas arestas condicionais que se apontam sao a receita mais comum de um grafo travado: o revisor reprova,
+      o escritor reescreve, o revisor reprova de novo — indefinidamente. O grafo "esta rodando" ha horas e o sintoma
+      e exatamente esse: nenhum erro, so consumo.
+    </p>
+
+    <div class="bg-gradient-to-br from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+      <h3 class="text-lg font-semibold text-amber-400 mb-4 flex items-center"><span class="mr-2">💡</span> O que todo ciclo precisa ter</h3>
+      <ul class="space-y-2 text-neutral-300">
+        <li class="flex items-start space-x-2"><span class="text-amber-400 mt-1">•</span><span><strong>Teto de voltas</strong> — um numero maximo de repeticoes, ponto final, mesmo que ninguem tenha "resolvido" nada</span></li>
+        <li class="flex items-start space-x-2"><span class="text-amber-400 mt-1">•</span><span><strong>Criterio de progresso</strong> — duas voltas sem melhora mensuravel = desiste e avisa, nao continua tentando igual</span></li>
+        <li class="flex items-start space-x-2"><span class="text-amber-400 mt-1">•</span><span>Sem os dois, a fatura e infinita — voce paga token, tempo e credito ate alguem notar manualmente</span></li>
+      </ul>
+    </div>
+
+    <div class="rounded-2xl border border-amber-500/30 bg-dark-900/40 p-3 sm:p-4 mb-4 overflow-hidden">
+      <svg viewBox="0 0 1000 260" class="w-full h-auto" role="img" aria-label="Comparacao lado a lado. A esquerda, dois nos escritor e revisor apontando um pro outro num loop fechado vermelho com o simbolo infinito no centro. A direita, os mesmos dois nos com um contador volta 2 de 3 e uma terceira aresta saindo para uma caixa desiste e avisa, destacada com brilho.">
+        <defs>
+          <linearGradient id="m43b-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fbbf24"/><stop offset="1" stop-color="#f59e0b"/></linearGradient>
+          <filter id="m43b-glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <pattern id="m43b-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#f59e0b" opacity="0.12"/></pattern>
+          <marker id="m43b-ahr" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#f87171"/></marker>
+          <marker id="m43b-ah" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#fbbf24"/></marker>
+        </defs>
+        <rect x="0" y="0" width="1000" height="260" fill="url(#m43b-grid)"/>
+        <path d="M500,20 L500,240" stroke="#9ca3af" stroke-width="1.5" stroke-dasharray="9 9" opacity="0.4"/>
+
+        <text x="220" y="36" text-anchor="middle" fill="#fca5a5" font-family="Inter,sans-serif" font-size="13" font-weight="600">SEM TETO — trava</text>
+        <g font-family="Inter,sans-serif" font-size="13">
+          <rect x="90" y="90" width="120" height="48" rx="12" fill="#1f1604" stroke="#fbbf24" stroke-width="2"/><text x="150" y="120" text-anchor="middle" fill="#fcd9a0">escritor</text>
+          <rect x="260" y="90" width="120" height="48" rx="12" fill="#1f1604" stroke="#fbbf24" stroke-width="2"/><text x="320" y="120" text-anchor="middle" fill="#fcd9a0">revisor</text>
+        </g>
+        <path d="M210,105 L260,105" stroke="#f87171" stroke-width="1.8" fill="none" marker-end="url(#m43b-ahr)"/>
+        <path d="M260,125 L210,125" stroke="#f87171" stroke-width="1.8" fill="none" marker-end="url(#m43b-ahr)"/>
+        <text x="235" y="90" text-anchor="middle" fill="#fca5a5" font-family="Inter,sans-serif" font-size="26" font-weight="700">∞</text>
+        <text x="220" y="200" text-anchor="middle" fill="#fcd9a0" font-family="Inter,sans-serif" font-size="12.5">reprova → reescreve → reprova → reescreve...</text>
+
+        <text x="775" y="36" text-anchor="middle" fill="#fcd9a0" font-family="Inter,sans-serif" font-size="13" font-weight="600">COM TETO — converge</text>
+        <g font-family="Inter,sans-serif" font-size="13">
+          <rect x="620" y="90" width="120" height="48" rx="12" fill="#1f1604" stroke="#fbbf24" stroke-width="2"/><text x="680" y="120" text-anchor="middle" fill="#fcd9a0">escritor</text>
+          <rect x="790" y="90" width="120" height="48" rx="12" fill="#1f1604" stroke="#fbbf24" stroke-width="2"/><text x="850" y="120" text-anchor="middle" fill="#fcd9a0">revisor</text>
+        </g>
+        <path d="M740,105 L790,105" stroke="#fbbf24" stroke-width="1.8" opacity="0.6" fill="none" marker-end="url(#m43b-ah)"/>
+        <path d="M790,125 L740,125" stroke="#fbbf24" stroke-width="1.8" opacity="0.6" fill="none" marker-end="url(#m43b-ah)"/>
+        <text x="765" y="90" text-anchor="middle" fill="#fcd9a0" font-family="Inter,sans-serif" font-size="12">volta 2 de 3</text>
+        <path d="M850,138 C850,170 780,175 780,195" stroke="#38bdf8" stroke-width="1.8" opacity="0.7" fill="none" marker-end="url(#m43b-ah)"/>
+        <g filter="url(#m43b-glow)"><rect x="700" y="196" width="160" height="44" rx="12" fill="#0e1b26" stroke="#38bdf8" stroke-width="2"/></g>
+        <text x="780" y="223" text-anchor="middle" fill="#bfe6ff" font-family="Inter,sans-serif" font-size="12.5" font-weight="600">desiste e avisa</text>
+      </svg>
+    </div>
+    <p class="text-sm text-neutral-400 mb-6">
+      <strong class="text-neutral-300">O que olhar:</strong> a diferenca inteira esta na terceira aresta do lado direito, a ciano, que so existe
+      porque alguem desenhou uma saida de emergencia. Sem ela, o grafo da esquerda so tem duas arestas — e as duas so sabem apontar uma pra outra.
+    </p>
+
+    <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+      <h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center"><span class="mr-2">⚠️</span> Atencao: "converge eventualmente" nao e um plano</h3>
+      <p class="text-neutral-300">
+        Se a sua defesa contra o loop infinito e "o revisor vai aprovar em algum momento", voce nao tem defesa nenhuma.
+        Escreva o numero explicito (ex.: max 3 voltas) E o criterio de progresso (ex.: score de qualidade tem que subir a cada volta) —
+        os dois, nao um so. Teto sem criterio de progresso deixa o grafo gastar as 3 voltas inteiras mesmo quando a segunda ja mostrou que nao vai melhorar.
+      </p>
+    </div>
+
+    <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+      <h3 class="text-lg font-semibold text-amber-400 mb-4">Conceitos-chave</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">Teto de voltas</div><p class="text-xs text-neutral-400">Numero maximo, sem excecao</p></div>
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">Criterio de progresso</div><p class="text-xs text-neutral-400">2 voltas sem melhora = para</p></div>
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">Saida de emergencia</div><p class="text-xs text-neutral-400">Terceira aresta pra fora do par</p></div>
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">Fatura infinita</div><p class="text-xs text-neutral-400">Sem teto = sem limite de custo</p></div>
+      </div>
+    </div>
+
+    <div class="flex justify-start mt-6">
+      <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500/30 transition-colors">
+        <span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ============ TOPICO 3 ============ -->
+  <section id="topico-3" class="mb-16" data-inema-topic="modulo-4-3#topico-3">
+    <div class="flex items-center space-x-4 mb-6">
+      <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl">3</span>
+      <h2 class="text-2xl font-bold">🚰 Vede o estado que vaza</h2>
+      <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar duvida neste topico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm">
+        <span aria-hidden="true">?</span><span>Tenho duvida</span>
+      </button>
+    </div>
+
+    <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-3-t3-p1">
+      <strong class="text-amber-400">Vazamento de estado</strong> e quando um no passa adiante mais do que devia, e o contexto
+      limpo do no seguinte deixa de ser limpo. Contexto limpo era exatamente a vantagem que motivou montar o grafo — e
+      esse e o modo de falha que anula essa vantagem, silenciosamente, sem quebrar nada visivel.
+    </p>
+
+    <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-3-t3-p2">
+      O exemplo classico e o revisor. Se o revisor recebe so o texto e o criterio de aprovacao, ele julga com olhos frescos.
+      Se o revisor recebe o <em>raciocinio</em> do escritor junto — "pensei assim, decidi assado" — ele para de julgar o resultado
+      e comeca a validar o processo. Na pratica, ele volta a carimbar o trabalho, porque agora entende (e simpatiza com) o motivo por tras da escolha.
+    </p>
+
+    <div class="rounded-2xl border border-amber-500/30 bg-dark-900/40 p-3 sm:p-4 mb-4 overflow-hidden">
+      <svg viewBox="0 0 1000 260" class="w-full h-auto" role="img" aria-label="Dois caminhos lado a lado separados por uma linha tracejada. A esquerda, escritor para revisor com a aresta rotulada texto mais criterio; o revisor aparece com um brilho ambar indicando contexto limpo. A direita, o mesmo par, mas a aresta carrega texto, criterio e todo o raciocinio do escritor; o revisor aparece contaminado em vermelho, rotulado volta a carimbar.">
+        <defs>
+          <linearGradient id="m43c-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fbbf24"/><stop offset="1" stop-color="#f59e0b"/></linearGradient>
+          <filter id="m43c-glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <pattern id="m43c-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#f59e0b" opacity="0.12"/></pattern>
+          <marker id="m43c-ah" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#fbbf24"/></marker>
+          <marker id="m43c-ahr" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#f87171"/></marker>
+        </defs>
+        <rect x="0" y="0" width="1000" height="260" fill="url(#m43c-grid)"/>
+        <path d="M500,20 L500,240" stroke="#9ca3af" stroke-width="1.5" stroke-dasharray="9 9" opacity="0.4"/>
+
+        <text x="220" y="36" text-anchor="middle" fill="#fcd9a0" font-family="Inter,sans-serif" font-size="13" font-weight="600">estado enxuto</text>
+        <g font-family="Inter,sans-serif" font-size="13">
+          <rect x="90" y="90" width="120" height="48" rx="12" fill="#1f1604" stroke="#fbbf24" stroke-width="2"/><text x="150" y="120" text-anchor="middle" fill="#fcd9a0">escritor</text>
+          <g filter="url(#m43c-glow)"><rect x="260" y="90" width="120" height="48" rx="12" fill="#1f1604" stroke="url(#m43c-grad)" stroke-width="2"/></g>
+          <text x="320" y="120" text-anchor="middle" fill="#fbbf24" font-weight="600">revisor</text>
+        </g>
+        <path d="M210,113 L260,113" stroke="#fbbf24" stroke-width="1.8" opacity="0.7" fill="none" marker-end="url(#m43c-ah)"/>
+        <text x="235" y="98" text-anchor="middle" fill="#fcd9a0" font-family="Inter,sans-serif" font-size="11">texto + criterio</text>
+        <text x="220" y="200" text-anchor="middle" fill="#fcd9a0" font-family="Inter,sans-serif" font-size="12.5">revisor julga com olhos frescos</text>
+
+        <text x="775" y="36" text-anchor="middle" fill="#fca5a5" font-family="Inter,sans-serif" font-size="13" font-weight="600">estado vazado</text>
+        <g font-family="Inter,sans-serif" font-size="13">
+          <rect x="620" y="90" width="120" height="48" rx="12" fill="#1f1604" stroke="#fbbf24" stroke-width="2"/><text x="680" y="120" text-anchor="middle" fill="#fcd9a0">escritor</text>
+          <rect x="790" y="90" width="120" height="48" rx="12" fill="#241010" stroke="#f87171" stroke-width="2"/><text x="850" y="120" text-anchor="middle" fill="#fca5a5">revisor</text>
+        </g>
+        <path d="M740,113 L790,113" stroke="#f87171" stroke-width="1.8" opacity="0.7" fill="none" marker-end="url(#m43c-ahr)"/>
+        <text x="765" y="98" text-anchor="middle" fill="#fca5a5" font-family="Inter,sans-serif" font-size="10.5">texto + criterio + raciocinio</text>
+        <text x="775" y="200" text-anchor="middle" fill="#fca5a5" font-family="Inter,sans-serif" font-size="12.5">volta a carimbar o trabalho</text>
+      </svg>
+    </div>
+    <p class="text-sm text-neutral-400 mb-6">
+      <strong class="text-neutral-300">O que olhar:</strong> so a aresta mudou de conteudo — nao a estrutura do grafo. Isso e o que torna vazamento de estado
+      dificil de flagrar em revisao de codigo: o diagrama fica identico, so o payload que trafega dentro da aresta engordou.
+      Auditar arestas pelo <em>schema</em>, nao so pelo desenho, e a unica forma confiavel de pegar isso.
+    </p>
+
+    <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+      <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">📊</span> Onde o vazamento costuma entrar sem querer</h3>
+      <ul class="space-y-2 text-neutral-300 text-sm">
+        <li><strong>Log de debug esquecido no payload</strong> — voce deixou o "pensamento em voz alta" do escritor no campo de saida</li>
+        <li><strong>Contexto compartilhado por conveniencia</strong> — um objeto de sessao unico que todo no le e escreve</li>
+        <li><strong>Historico de conversa inteiro</strong> — em vez de so o resumo, o proximo no recebe o transcript bruto</li>
+        <li><strong>Campos "por via das duvidas"</strong> — alguem adiciona um campo extra "pode ser util depois" sem revisar se deveria vazar</li>
+      </ul>
+    </div>
+
+    <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+      <h3 class="text-lg font-semibold text-amber-400 mb-4">Conceitos-chave</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">Vazamento de estado</div><p class="text-xs text-neutral-400">Aresta carrega mais do que deveria</p></div>
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">Contexto limpo</div><p class="text-xs text-neutral-400">A vantagem que o grafo prometia</p></div>
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">Carimba de volta</div><p class="text-xs text-neutral-400">Revisor contaminado sempre aprova</p></div>
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">Falha silenciosa</div><p class="text-xs text-neutral-400">Diagrama igual, payload diferente</p></div>
+      </div>
+    </div>
+
+    <div class="flex justify-start mt-6">
+      <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500/30 transition-colors">
+        <span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ============ TOPICO 4 ============ -->
+  <section id="topico-4" class="mb-16" data-inema-topic="modulo-4-3#topico-4">
+    <div class="flex items-center space-x-4 mb-6">
+      <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl">4</span>
+      <h2 class="text-2xl font-bold">📐 Escreva o state schema</h2>
+      <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar duvida neste topico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm">
+        <span aria-hidden="true">?</span><span>Tenho duvida</span>
+      </button>
+    </div>
+
+    <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-3-t4-p1">
+      <strong class="text-amber-400">State schema</strong> e a declaracao explicita do que cada aresta carrega: nome dos campos,
+      formato de cada um, o que e obrigatorio, e — tao importante quanto — o que explicitamente <em>nao</em> deve passar.
+      E o contrato entre dois nos. Sem contrato, mudar um lado quebra o outro sem aviso, e ninguem sabe de quem e a culpa.
+    </p>
+
+    <div class="space-y-6 mb-6">
+      <div class="flex items-start space-x-4">
+        <div class="flex-shrink-0 w-10 h-10 rounded-full bg-amber-500/20 flex items-center justify-center"><span class="text-amber-400 font-bold">1</span></div>
+        <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+          <h4 class="font-semibold text-white mb-2">Campos obrigatorios</h4>
+          <p class="text-sm text-neutral-400 mb-3">O minimo que o no seguinte precisa pra funcionar — sem eles, ele nem deveria comecar.</p>
+          <p class="text-neutral-300 text-sm">Ex.: <code class="text-amber-400">texto</code> e <code class="text-amber-400">criterio_aprovacao</code> pra um revisor.</p>
+        </div>
+      </div>
+      <div class="flex items-start space-x-4">
+        <div class="flex-shrink-0 w-10 h-10 rounded-full bg-amber-500/20 flex items-center justify-center"><span class="text-amber-400 font-bold">2</span></div>
+        <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+          <h4 class="font-semibold text-white mb-2">Campos proibidos</h4>
+          <p class="text-sm text-neutral-400 mb-3">A parte que a maioria esquece de escrever. Sem isso, "por via das duvidas" vira padrao.</p>
+          <p class="text-neutral-300 text-sm">Ex.: <code class="text-amber-400">raciocinio_do_escritor</code> NAO passa pro revisor — e vazamento de estado do topico 3.</p>
+        </div>
+      </div>
+      <div class="flex items-start space-x-4">
+        <div class="flex-shrink-0 w-10 h-10 rounded-full bg-amber-500/20 flex items-center justify-center"><span class="text-amber-400 font-bold">3</span></div>
+        <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+          <h4 class="font-semibold text-white mb-2">Formato e validacao</h4>
+          <p class="text-sm text-neutral-400 mb-3">Nao basta o nome do campo — precisa dizer o tipo e, se der, validar antes de repassar.</p>
+          <p class="text-neutral-300 text-sm">Ex.: <code class="text-amber-400">score</code> e numero entre 0 e 1, nao string "oitenta por cento".</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+      <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Dica pratica</h3>
+      <p class="text-neutral-300">
+        Escreva o state schema ANTES de escrever o prompt de cada no — no papel ou num JSON de exemplo. Se voce
+        nao consegue nomear os campos com clareza, e sinal de que os dois nos ainda estao conceitualmente misturados,
+        e talvez devessem ser um so.
+      </p>
+    </div>
+
+    <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+      <h3 class="text-lg font-semibold text-amber-400 mb-4">Conceitos-chave</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">State schema</div><p class="text-xs text-neutral-400">O contrato de cada aresta</p></div>
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">Obrigatorio x proibido</div><p class="text-xs text-neutral-400">Os dois lados precisam existir</p></div>
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">Antes do prompt</div><p class="text-xs text-neutral-400">Schema define o no, nao o contrario</p></div>
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">Sem culpa dividida</div><p class="text-xs text-neutral-400">Contrato claro = quebra rastreavel</p></div>
+      </div>
+    </div>
+
+    <div class="flex justify-start mt-6">
+      <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500/30 transition-colors">
+        <span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ============ TOPICO 5 ============ -->
+  <section id="topico-5" class="mb-16" data-inema-topic="modulo-4-3#topico-5">
+    <div class="flex items-center space-x-4 mb-6">
+      <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl">5</span>
+      <h2 class="text-2xl font-bold">💾 Torne a execucao duravel</h2>
+      <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar duvida neste topico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm">
+        <span aria-hidden="true">?</span><span>Tenho duvida</span>
+      </button>
+    </div>
+
+    <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-3-t5-p1">
+      <strong class="text-amber-400">Execucao duravel</strong> e a capacidade de um grafo sobreviver a uma falha no meio do caminho:
+      retomar exatamente de onde parou, nao refazer um no que ja terminou com sucesso, e ser <strong class="text-amber-400">idempotente</strong> —
+      rodar a mesma entrada duas vezes produz o mesmo resultado, sem efeito colateral duplicado.
+    </p>
+
+    <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-3-t5-p2">
+      Isso nao e novidade que o mundo de agentes inventou. E exatamente o que orquestracao de dados resolve ha decadas
+      com execucao duravel e cache por no (pense em ferramentas de pipeline de dados que retomam um job travado sem refazer
+      as etapas que ja completaram). Grafo agentico herda essa solucao pronta — nao precisa reinventar.
+    </p>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+      <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+        <h4 class="font-bold text-emerald-400 mb-4">✓ Execucao duravel</h4>
+        <ul class="space-y-3 text-neutral-300 text-sm">
+          <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Cada no completo grava resultado + checkpoint antes de seguir</span></li>
+          <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Retomar apos falha comeca do proximo no pendente, nao do inicio</span></li>
+          <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Mesma entrada + mesmo grafo = mesmo caminho (reproduzivel)</span></li>
+        </ul>
+      </div>
+      <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+        <h4 class="font-bold text-red-400 mb-4">✗ Execucao fragil</h4>
+        <ul class="space-y-3 text-neutral-300 text-sm">
+          <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Grafo inteiro roda de novo do zero apos qualquer falha</span></li>
+          <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>No que ja mandou email/gravou arquivo repete a acao no retry (nao idempotente)</span></li>
+          <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Nenhum registro de "ate onde eu tinha chegado"</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+      <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">📊</span> Tres perguntas pra checar se o seu grafo e duravel</h3>
+      <ul class="space-y-2 text-neutral-300 text-sm">
+        <li><strong>Se cair no no 4 de 7, o que acontece no restart?</strong> — se a resposta e "roda tudo de novo", nao e duravel</li>
+        <li><strong>Rodar um no duas vezes muda o resultado do mundo real?</strong> — se sim (email duplicado, cobranca dupla), ele nao e idempotente</li>
+        <li><strong>Voce consegue reproduzir exatamente o mesmo caminho com a mesma entrada?</strong> — se nao, voce nao tem como depurar de verdade</li>
+      </ul>
+    </div>
+
+    <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+      <h3 class="text-lg font-semibold text-amber-400 mb-4">Conceitos-chave</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">Execucao duravel</div><p class="text-xs text-neutral-400">Sobrevive a falha no meio</p></div>
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">Idempotente</div><p class="text-xs text-neutral-400">Repetir nao muda o resultado</p></div>
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">Cache por no</div><p class="text-xs text-neutral-400">Nao refaz o que ja terminou</p></div>
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">Herdado de dados</div><p class="text-xs text-neutral-400">Orquestracao ja resolveu isso</p></div>
+      </div>
+    </div>
+
+    <div class="flex justify-start mt-6">
+      <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500/30 transition-colors">
+        <span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ============ TOPICO 6 ============ -->
+  <section id="topico-6" class="mb-16" data-inema-topic="modulo-4-3#topico-6">
+    <div class="flex items-center space-x-4 mb-6">
+      <span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl">6</span>
+      <h2 class="text-2xl font-bold">🖥️ Instrumente ou depure no escuro</h2>
+      <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar duvida neste topico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm">
+        <span aria-hidden="true">?</span><span>Tenho duvida</span>
+      </button>
+    </div>
+
+    <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-3-t6-p1">
+      <strong class="text-amber-400">Observabilidade</strong> aqui e simples: o harness de grafo precisa mostrar quais nos rodaram,
+      em que ordem, com que latencia e com que custo. Num loop, "por que ele fez isso?" fica enterrado num
+      <strong class="text-amber-400">transcript</strong> (o log bruto da conversa/execucao) que voce le linha a linha. Num grafo,
+      o caminho percorrido e um dado que voce consulta — se a instrumentacao existir.
+    </p>
+
+    <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-3-t6-p2">
+      Sem essa instrumentacao, voce paga o preco inteiro do grafo — mais nos, mais arestas, mais modos de falha —
+      e nao recebe a vantagem que o justificava: enxergar o sistema. E instrumentacao nao e opcional em grafo do jeito
+      que era "desejavel" em loop; sem ela voce literalmente nao tem como responder "onde travou".
+    </p>
+
+    <div class="bg-dark-900 rounded-xl border border-dark-600 overflow-hidden mb-3">
+      <div class="flex items-center gap-2 px-4 py-2.5 border-b border-dark-600 bg-dark-800">
+        <span class="w-3 h-3 rounded-full bg-red-500/70"></span>
+        <span class="w-3 h-3 rounded-full bg-amber-400/70"></span>
+        <span class="w-3 h-3 rounded-full bg-emerald-500/70"></span>
+        <span class="ml-3 text-xs text-neutral-400 font-mono">monitor de execucao — grafo:daily_brief#run_4821</span>
+      </div>
+      <div class="p-4 font-mono text-sm space-y-3">
+        <div>
+          <div class="flex items-center justify-between text-neutral-300"><span>✓ coletar_fonte_a</span><span class="text-neutral-500 text-xs">1.2s · $0.003</span></div>
+          <div class="h-1.5 mt-1 rounded-full bg-dark-700 overflow-hidden"><div class="h-full bg-emerald-500 w-full"></div></div>
+        </div>
+        <div>
+          <div class="flex items-center justify-between text-neutral-300"><span>✓ coletar_fonte_b</span><span class="text-neutral-500 text-xs">0.9s · $0.002</span></div>
+          <div class="h-1.5 mt-1 rounded-full bg-dark-700 overflow-hidden"><div class="h-full bg-emerald-500 w-full"></div></div>
+        </div>
+        <div>
+          <div class="flex items-center justify-between text-red-400"><span>✗ coletar_fonte_c</span><span class="text-neutral-500 text-xs">4.0s · timeout</span></div>
+          <div class="h-1.5 mt-1 rounded-full bg-dark-700 overflow-hidden"><div class="h-full bg-red-500 w-1/3"></div></div>
+        </div>
+        <div>
+          <div class="flex items-center justify-between text-amber-300"><span>⧗ revisor (volta 3 de 3)</span><span class="text-neutral-500 text-xs">rodando · $0.041 acum.</span></div>
+          <div class="h-1.5 mt-1 rounded-full bg-dark-700 overflow-hidden"><div class="h-full bg-amber-400 w-2/3 animate-pulse"></div></div>
+        </div>
+        <div>
+          <div class="flex items-center justify-between text-neutral-500"><span>○ juncao_final</span><span class="text-neutral-600 text-xs">aguardando</span></div>
+          <div class="h-1.5 mt-1 rounded-full bg-dark-700 overflow-hidden"><div class="h-full bg-dark-600 w-0"></div></div>
+        </div>
+      </div>
+    </div>
+    <p class="text-xs text-neutral-500 mb-6">recriacao ilustrativa, nao e screenshot de ferramenta real.</p>
+    <p class="text-sm text-neutral-400 mb-6">
+      <strong class="text-neutral-300">O que olhar:</strong> a linha vermelha (coletar_fonte_c) e o alerta do topico 1 batendo na sua tela — sem esse painel,
+      esse timeout vira o "3 de 4 fontes" silencioso que ninguem percebeu. A linha ambar mostra o ciclo do topico 2 na terceira e ultima volta
+      permitida, com custo acumulado visivel — voce ve o teto se aproximando antes dele estourar o orcamento.
+    </p>
+
+    <!-- EXEMPLO COPY-RUN -->
+    <div class="bg-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+      <h3 class="text-lg font-semibold text-amber-400 mb-2 flex items-center"><span class="mr-2">🧪</span> Exemplo pratico: prompt de auditoria de grafo</h3>
+      <p class="text-sm text-neutral-400 mb-4"><strong class="text-neutral-300">Objetivo:</strong> dar ao Claude Code (ou outro assistente com acesso a arquivos) um
+      <code class="text-amber-400">grafo.json</code> descrevendo nos e arestas, e pedir pra ele achar os cinco defeitos deste modulo antes de voce colocar em producao.</p>
+
+      <div class="code-box bg-dark-900 rounded-lg border border-dark-600 p-4 mb-4 overflow-x-auto">
+<pre class="text-sm text-neutral-300">Voce vai auditar o arquivo &lt;grafo.json&gt; deste projeto, que descreve um grafo de
+agentes (nos, arestas, condicoes). Procure especificamente estes cinco defeitos
+e reporte cada ocorrencia com o no/aresta exato:
+
+1. CICLO SEM TETO DE VOLTAS
+   Existe algum par de arestas condicionais que formam um ciclo (A -&gt; B -&gt; A)
+   sem um campo tipo "max_voltas" ou equivalente? Se sim, aponte o ciclo.
+
+2. ARESTA CONDICIONAL SEM "QUANDO"
+   Toda aresta que sai de um no de decisao/roteamento declara a condicao sob a
+   qual e seguida? Aponte arestas condicionais sem condicao explicita.
+
+3. CONDICOES QUE NAO COBREM TODOS OS CASOS (ENTRADA ORFA)
+   Some as condicoes de saida de cada no de decisao. Existe um caso possivel
+   (ex.: nem aprovado nem reprovado) que nao tem aresta correspondente? Isso
+   deixa o fluxo sem destino nesse caso.
+
+4. JUNCAO SEM CHECAGEM DE CARDINALIDADE
+   Todo no que recebe de mais de uma aresta (fan-in) tem alguma logica de
+   checagem de quantidade/completude antes de seguir? Aponte juncoes que nao
+   verificam se receberam todos os ramos esperados.
+
+5. NO SEM TETO DE CUSTO
+   Todo no que chama um modelo tem um limite de custo, tokens ou tempo
+   declarado? Aponte nos sem nenhum limite.
+
+Para cada defeito encontrado: cite o id do no/aresta, explique o risco em
+1 frase, e sugira a correcao minima.</pre>
+      </div>
+
+      <div class="bg-dark-700/50 rounded-lg p-4">
+        <p class="text-sm text-neutral-300"><strong class="text-amber-400">Como verificar:</strong> rode esse prompt contra um grafo que voce sabe que esta quebrado —
+        pegue um <code class="text-amber-400">grafo.json</code> valido e remova de proposito o campo <code class="text-amber-400">max_voltas</code> de um ciclo.
+        Se o assistente nao apontar exatamente esse ciclo como defeito 1, o prompt esta frouxo — reescreva pedindo que ele liste TODOS os ciclos antes de decidir se tem teto.</p>
+        <p class="text-sm text-neutral-400 mt-3"><strong class="text-neutral-300">Agora troque pelo seu:</strong> aponte pro seu proprio
+        <code class="text-amber-400">&lt;grafo.json&gt;</code> real. Se aparecer mais de um defeito, priorize corrigir primeiro o ciclo sem teto e a juncao sem checagem —
+        sao os dois que mais rapido viram fatura infinita ou dado incompleto sem aviso.</p>
+      </div>
+    </div>
+
+    <!-- CHECAGEM LEVE -->
+    <div data-inema-check="modulo-4-3#q1" class="inema-check mt-8 bg-dark-800 border border-dark-600 rounded-xl p-6 mb-6">
+      <p class="font-medium mb-4">Checagem rapida (nao bloqueia nada): o revisor comeca a aprovar tudo depois que voce passou a incluir o raciocinio do escritor na aresta que chega ate ele. Qual e o defeito?</p>
+      <div class="inema-check-options space-y-2">
+        <button type="button" data-inema-check-option="0" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">Ciclo sem teto de voltas — o revisor esta preso num loop</button>
+        <button type="button" data-inema-check-option="1" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">Vazamento de estado — o revisor perdeu o contexto limpo e passou a validar o processo, nao o resultado</button>
+        <button type="button" data-inema-check-option="2" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">Merge que engole uma fonte — falta cardinalidade na juncao</button>
+      </div>
+      <div data-inema-check-feedback class="mt-4 text-sm" role="status" aria-live="polite"></div>
+    </div>
+
+    <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+      <h3 class="text-lg font-semibold text-amber-400 mb-4">Conceitos-chave</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">Observabilidade</div><p class="text-xs text-neutral-400">Quais nos, em que ordem, quanto custou</p></div>
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">Transcript</div><p class="text-xs text-neutral-400">Log bruto que voce le linha a linha</p></div>
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">Caminho como dado</div><p class="text-xs text-neutral-400">Voce consulta, nao adivinha</p></div>
+        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">Sem instrumento</div><p class="text-xs text-neutral-400">Paga o preco, perde a vantagem</p></div>
+      </div>
+    </div>
+
+    <div class="flex justify-start mt-6">
+      <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500/30 transition-colors">
+        <span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ============ RESUMO ============ -->
+  <section class="mb-12">
+    <div class="bg-gradient-to-br from-amber-900/40 via-dark-800 to-dark-800 rounded-xl border border-amber-500/30 p-8">
+      <h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">📌</span> Resumo do Modulo</h2>
+      <div class="space-y-4 mb-8">
+        <div class="flex items-start space-x-3"><span class="text-amber-400 mt-1">✓</span><div><strong class="text-white">Junção precisa checar cardinalidade</strong><span class="text-neutral-400"> — recebeu os N que despachou? Decida explicitamente o que fazer com o que faltou.</span></div></div>
+        <div class="flex items-start space-x-3"><span class="text-amber-400 mt-1">✓</span><div><strong class="text-white">Todo ciclo precisa de teto e criterio de progresso</strong><span class="text-neutral-400"> — sem os dois, a fatura e infinita.</span></div></div>
+        <div class="flex items-start space-x-3"><span class="text-amber-400 mt-1">✓</span><div><strong class="text-white">Vazamento de estado anula o grafo</strong><span class="text-neutral-400"> — contexto contaminado faz o revisor voltar a carimbar.</span></div></div>
+        <div class="flex items-start space-x-3"><span class="text-amber-400 mt-1">✓</span><div><strong class="text-white">State schema e o contrato</strong><span class="text-neutral-400"> — obrigatorio e proibido, os dois lados precisam existir.</span></div></div>
+        <div class="flex items-start space-x-3"><span class="text-amber-400 mt-1">✓</span><div><strong class="text-white">Execucao duravel e idempotente</strong><span class="text-neutral-400"> — retoma sem refazer, repete sem duplicar efeito.</span></div></div>
+        <div class="flex items-start space-x-3"><span class="text-amber-400 mt-1">✓</span><div><strong class="text-white">Sem observabilidade voce paga e nao recebe</strong><span class="text-neutral-400"> — o caminho percorrido tem que ser um dado que se consulta.</span></div></div>
+      </div>
+      <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+        <h3 class="font-semibold text-amber-400 mb-2">O que isto fecha:</h3>
+        <p class="text-neutral-300">
+          O grafo nao e de graca. Voce compra paralelismo, contexto limpo e fluxo auditavel — e paga em state schema,
+          modos de falha novos e infraestrutura de execucao/observabilidade. Se voce nao vai instrumentar,
+          provavelmente nao devia ter montado o grafo.
+        </p>
+      </div>
+      <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+        <h3 class="font-semibold text-amber-400 mb-2">Proxima Trilha:</h3>
+        <p class="text-neutral-300">Trilha 5 — Mao na massa: migre um loop real pra grafo, modele grafos de negocio e de tarefas, e leve pra casa uma biblioteca de prompts prontos.</p>
+      </div>
+      <div class="flex flex-col sm:flex-row gap-4">
+        <a href="modulo-4-2.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">← Modulo anterior</a>
+        <a href="../trilha5/index.html" class="flex-1 text-center px-6 py-3 bg-teal-600 text-white rounded-lg font-semibold hover:bg-teal-500 transition-colors">Trilha 5: Mao na massa →</a>
+      </div>
+    </div>
+  </section>
+
+  </main>
+</div>
+</div>
+
+<footer class="border-t border-dark-600 py-8 mt-16">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+    <p>Graph Engineering — de loops a grafos · INEMA 2026</p>
+    <p class="mt-2">
+      <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a>
+      <span class="text-neutral-600 mx-1">-</span>
+      <a href="https://inema.pro" target="_blank" class="text-amber-700 hover:text-amber-600 dark:text-slate-300 dark:hover:text-slate-200">PRO</a>
+    </p>
+  </div>
+</footer>
+
+<script>
+  function toggleTopic(button) {
+    const topicItem = button.closest('.topic-item');
+    const explanation = topicItem.querySelector('.topic-explanation');
+    const moduleCard = button.closest('.bg-dark-800') || document;
+    moduleCard.querySelectorAll('.topic-explanation.active').forEach(exp => { if (exp !== explanation) { exp.classList.remove('active'); const b = exp.closest('.topic-item').querySelector('button'); if (b) b.setAttribute('aria-expanded','false'); } });
+    explanation.classList.toggle('active');
+    button.setAttribute('aria-expanded', explanation.classList.contains('active') ? 'true' : 'false');
+  }
+  function openModal(modalId) { const m = document.getElementById(modalId); if (m) { m.classList.remove('hidden'); document.body.style.overflow = 'hidden'; } }
+  function closeModal() { document.querySelectorAll('.modal').forEach(m => m.classList.add('hidden')); document.body.style.overflow = 'auto'; }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+  const themeToggle = document.getElementById('theme-toggle');
+  const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+  const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+  const htmlEl = document.documentElement;
+  if (htmlEl.classList.contains('dark')) themeToggleLightIcon.classList.remove('hidden'); else themeToggleDarkIcon.classList.remove('hidden');
+  themeToggle.addEventListener('click', () => {
+    themeToggleDarkIcon.classList.toggle('hidden'); themeToggleLightIcon.classList.toggle('hidden');
+    htmlEl.classList.toggle('dark');
+    const dark = htmlEl.classList.contains('dark');
+    localStorage.setItem('theme', dark ? 'dark' : 'light');
+    try { const p = JSON.parse(localStorage.getItem('inema.prefs') || '{}'); p.theme = dark ? 'inema-dark' : 'claro'; localStorage.setItem('inema.prefs', JSON.stringify(p)); } catch (e) {}
+  });
+</script>
+<script src="../../assets/learn.js"></script>
+<script>
+  if (window.INEMA && typeof window.INEMA.init === 'function') { window.INEMA.init(); }
+  window.addEventListener('DOMContentLoaded', function () {
+    if (window.INEMA && INEMA.registerCheck) {
+      INEMA.registerCheck('modulo-4-3#q1', {
+        answer: 1,
+        explain: {
+          0: 'Nao. Nao ha nada aqui indicando que faltou teto de voltas — o sintoma descrito e o revisor sempre aprovando, nao um numero infinito de repeticoes.',
+          1: 'Isso. Quando o revisor recebe o raciocinio do escritor, ele deixa de julgar so o resultado e passa a validar o processo que gerou aquele resultado — e comeca a aprovar tudo. E vazamento de estado: a aresta carregou mais do que devia.',
+          2: 'Nao. Nao ha juncao nem fan-in nesse cenario — e um par escritor-revisor com uma aresta so entre eles, sem fontes paralelas se juntando.'
+        }
+      });
+    }
+  });
+</script>
+</body>
+</html>

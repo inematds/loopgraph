@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="inema-course" content="loopgraph">
+  <title>Trilha 2 — Loop Engineering | Graph Engineering</title>
+  <script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'emerald' };
+      function clone(o) { var r = {}; for (var x in o) r[x] = o[x]; return r; }
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed === 'object') { for (var k in DEF) if (parsed[k] != null) p[k] = parsed[k]; } }
+        else { var legacy = localStorage.getItem('theme'); if (legacy === 'light') p.theme = 'claro'; else if (legacy === 'dark') p.theme = 'inema-dark'; }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = { 'inema-dark': { dark: true, attr: null, cs: 'dark' }, 'claro': { dark: false, attr: null, cs: 'light' }, 'sepia': { dark: false, attr: 'sepia', cs: 'light' }, 'foco': { dark: null, attr: 'foco', cs: null }, 'contraste': { dark: true, attr: 'contraste', cs: 'dark' } };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark === true) html.classList.add('dark'); else if (t.dark === false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark') ? 'dark' : 'light'));
+      html.setAttribute('data-font', p.font || 'inter'); html.setAttribute('data-accent', p.accent || 'emerald');
+      var s = html.style, scale = (+p.fontScale || 100);
+      s.setProperty('--inema-font-scale', (scale / 100).toString()); s.setProperty('font-size', scale + '%');
+      s.setProperty('--measure', (+p.lineWidth || 68) + 'ch'); s.setProperty('--lh-body', (+p.leading || 1.7).toString());
+      var fam = p.font === 'system' ? 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif' : (p.font === 'leitura' ? '"Atkinson Hyperlegible", "Inter", system-ui, sans-serif' : '"Inter", system-ui, sans-serif');
+      s.setProperty('--font-body', fam);
+      var ACC = { emerald: [152,76,45], blue: [217,91,60], purple: [258,90,66], amber: [38,92,50], teal: [174,72,41], rose: [350,89,60] };
+      var a = ACC[p.accent] || ACC.emerald;
+      s.setProperty('--accent-h', a[0]+''); s.setProperty('--accent-s', a[1]+'%'); s.setProperty('--accent-l', a[2]+'%');
+      s.setProperty('--accent', 'hsl(' + a[0] + ' ' + a[1] + '% ' + a[2] + '%)');
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme = 'dark'; } catch (e) {} }
+  })();
+  </script>
+  <script type="application/json" data-inema-manifest>
+  {
+    "course": "loopgraph",
+    "tracks": [
+      { "n": "1", "title": "Fundamentos: o grafo", "modules": [
+        { "id": "1-1", "title": "O que e um grafo", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
+        { "id": "1-2", "title": "Grafos no mundo real", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+        { "id": "1-3", "title": "Como se anda num grafo", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" }
+      ]},
+      { "n": "2", "title": "Loop Engineering", "modules": [
+        { "id": "2-1", "title": "Anatomia do loop", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
+        { "id": "2-2", "title": "O verificador e o gargalo", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
+        { "id": "2-3", "title": "Onde o loop quebra", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" }
+      ]},
+      { "n": "3", "title": "Agentic x Loop x Graph", "modules": [
+        { "id": "3-1", "title": "As cinco camadas", "topics": 6, "href": "curso/trilha3/modulo-3-1.html" },
+        { "id": "3-2", "title": "O comparativo de verdade", "topics": 6, "href": "curso/trilha3/modulo-3-2.html" },
+        { "id": "3-3", "title": "Mito x fato", "topics": 6, "href": "curso/trilha3/modulo-3-3.html" }
+      ]},
+      { "n": "4", "title": "Graph Engineering na pratica", "modules": [
+        { "id": "4-1", "title": "Nos, arestas e estado", "topics": 6, "href": "curso/trilha4/modulo-4-1.html" },
+        { "id": "4-2", "title": "Org graph x work graph", "topics": 6, "href": "curso/trilha4/modulo-4-2.html" },
+        { "id": "4-3", "title": "Falhas, harness e observabilidade", "topics": 6, "href": "curso/trilha4/modulo-4-3.html" }
+      ]},
+      { "n": "5", "title": "Mao na massa", "modules": [
+        { "id": "5-1", "title": "Do loop ao grafo", "topics": 6, "href": "curso/trilha5/modulo-5-1.html" },
+        { "id": "5-2", "title": "Grafos de negocio e de tarefas", "topics": 6, "href": "curso/trilha5/modulo-5-2.html" },
+        { "id": "5-3", "title": "Biblioteca de prompts", "topics": 6, "href": "curso/trilha5/modulo-5-3.html" }
+      ]}
+    ]
+  }
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }</script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/learn.css">
+  <link rel="stylesheet" href="../../assets/curso.css">
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+<a href="#conteudo" class="sr-only focus:not-sr-only focus:absolute focus:z-[60] focus:m-2 focus:px-4 focus:py-2 focus:rounded-lg focus:bg-dark-700">Pular para o conteudo</a>
+
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-14 gap-2">
+      <div class="flex items-center space-x-3 flex-shrink-0">
+        <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+          <span class="text-2xl">🕸️</span><span class="font-bold text-lg hidden lg:inline">Graph Engineering</span>
+        </a>
+        <span class="text-neutral-600 hidden sm:inline">|</span>
+        <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium hidden sm:inline">INEMA.CLUB</a>
+        <span class="text-neutral-600 hidden sm:inline">-</span>
+        <a href="https://inema.pro" target="_blank" class="text-amber-700 hover:text-amber-600 dark:text-slate-300 dark:hover:text-slate-200 text-sm font-medium hidden sm:inline">PRO</a>
+      </div>
+      <div class="flex items-center space-x-1">
+        <a href="../trilha1/index.html" class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors"><span class="lg:hidden">T1</span><span class="hidden lg:inline">Fundamentos</span></a>
+        <a href="index.html" class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-blue-400 bg-blue-500/10"><span class="lg:hidden">T2</span><span class="hidden lg:inline">Loops</span></a>
+        <a href="../trilha3/index.html" class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors"><span class="lg:hidden">T3</span><span class="hidden lg:inline">Comparativo</span></a>
+        <a href="../trilha4/index.html" class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors"><span class="lg:hidden">T4</span><span class="hidden lg:inline">Pratica</span></a>
+        <a href="../trilha5/index.html" class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors"><span class="lg:hidden">T5</span><span class="hidden lg:inline">Mao na massa</span></a>
+        <button type="button" data-inema-journey-open class="hidden sm:inline-flex items-center gap-1 px-2 py-1.5 rounded-lg text-sm text-neutral-400 hover:text-neutral-100 transition-colors" title="Minha jornada">
+          <span aria-hidden="true">◷</span><span class="hidden xl:inline">Jornada</span><span class="inema-journey-badge hidden" aria-hidden="true"></span>
+        </button>
+        <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" aria-label="Alternar tema claro/escuro">
+          <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+          <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<main id="conteudo">
+
+<header class="bg-gradient-to-br from-blue-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600" data-inema-track="2">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <span class="inline-block px-3 py-1 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full mb-4">TRILHA 2</span>
+    <h1 class="text-3xl sm:text-4xl font-bold mb-4">🔁 Loop Engineering</h1>
+    <p class="text-lg text-neutral-400 max-w-3xl">
+      Antes de compor loops num grafo, voce precisa <em>acertar um loop</em>. Esta trilha e sobre o ciclo que fez a IA
+      parar de precisar de baba a cada passo — e sobre os quatro jeitos estruturais de ele te trair
+      enquanto o painel continua verde.
+    </p>
+
+    <div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mt-8 mb-6 overflow-hidden">
+      <svg viewBox="0 0 1000 260" class="w-full h-auto" role="img" aria-label="Hero da trilha: cinco caixas em circulo formando um ciclo — descobrir, planejar, agir, verificar e parar. A caixa verificar tem destaque e uma seta volta dela para descobrir, rotulada nao passou. Da caixa verificar tambem sai uma seta para a caixa parar, rotulada passou.">
+        <defs>
+          <linearGradient id="t2-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#60a5fa"/><stop offset="1" stop-color="#3b82f6"/></linearGradient>
+          <filter id="t2-glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <pattern id="t2-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#3b82f6" opacity="0.12"/></pattern>
+          <marker id="t2-ah" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#60a5fa"/></marker>
+          <marker id="t2-ahc" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#38bdf8"/></marker>
+        </defs>
+        <rect x="0" y="0" width="1000" height="260" fill="url(#t2-grid)"/>
+        <g stroke="#60a5fa" stroke-width="1.8" opacity="0.55" fill="none">
+          <path d="M188,90 L252,90" marker-end="url(#t2-ah)"/>
+          <path d="M400,90 L464,90" marker-end="url(#t2-ah)"/>
+          <path d="M612,90 L676,90" marker-end="url(#t2-ah)"/>
+          <path d="M824,114 L824,164" marker-end="url(#t2-ah)"/>
+        </g>
+        <path d="M750,114 C750,196 120,200 120,116" stroke="#38bdf8" stroke-width="1.8" stroke-dasharray="8 8" opacity="0.6" fill="none" marker-end="url(#t2-ahc)"/>
+        <text x="430" y="222" text-anchor="middle" fill="#9ad6ff" font-family="Inter,sans-serif" font-size="13">nao passou → mais uma volta</text>
+        <text x="866" y="146" fill="#93c5fd" font-family="Inter,sans-serif" font-size="12.5">passou</text>
+
+        <g font-family="Inter,sans-serif" font-size="13" font-weight="600">
+          <rect x="52" y="66" width="136" height="48" rx="12" fill="#0e1622" stroke="#60a5fa" stroke-width="2"/><text x="120" y="95" text-anchor="middle" fill="#bfdbfe">descobrir</text>
+          <rect x="252" y="66" width="148" height="48" rx="12" fill="#0e1622" stroke="#60a5fa" stroke-width="2"/><text x="326" y="95" text-anchor="middle" fill="#bfdbfe">planejar</text>
+          <rect x="464" y="66" width="148" height="48" rx="12" fill="#0e1622" stroke="#60a5fa" stroke-width="2"/><text x="538" y="95" text-anchor="middle" fill="#bfdbfe">agir</text>
+          <g filter="url(#t2-glow)"><rect x="676" y="66" width="148" height="48" rx="12" fill="#0e1622" stroke="url(#t2-grad)" stroke-width="2"/></g>
+          <text x="750" y="95" text-anchor="middle" fill="#60a5fa">verificar</text>
+          <rect x="756" y="164" width="136" height="44" rx="12" fill="#0e1622" stroke="#60a5fa" stroke-width="2"/><text x="824" y="191" text-anchor="middle" fill="#bfdbfe">parar</text>
+        </g>
+      </svg>
+    </div>
+    <p class="text-sm text-neutral-400 max-w-3xl mb-8">
+      <strong class="text-neutral-300">O que olhar:</strong> a caixa em destaque e <em>verificar</em>, nao “agir”.
+      Todo mundo se preocupa em fazer o agente agir bem; o que decide a qualidade do loop e o passo que julga se ja esta bom.
+      E repare que so existem duas saidas de “verificar”: mais uma volta, ou parar. Se a segunda nao existir, o loop nao termina.
+    </p>
+
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-2xl">
+      <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">3</div><div class="text-xs text-neutral-400">Modulos</div></div>
+      <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">18</div><div class="text-xs text-neutral-400">Topicos</div></div>
+      <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">~2h</div><div class="text-xs text-neutral-400">Duracao</div></div>
+      <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">Medio</div><div class="text-xs text-neutral-400">Nivel</div></div>
+    </div>
+
+    <div class="mt-6 max-w-2xl bg-dark-800 rounded-xl border border-dark-600 p-4">
+      <div class="flex items-center justify-between">
+        <span class="text-sm text-neutral-300 font-semibold">Progresso da trilha</span>
+        <div data-inema-meter="trilha:2" class="inema-meter text-sm" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="Progresso da trilha 2">
+          <span class="inema-meter-pct text-blue-400 font-bold">0%</span><span class="inema-meter-count text-neutral-400 ml-2">0 de 18</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+  <section class="mb-12">
+    <h2 class="text-2xl font-bold mb-6">Mapa da trilha</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <a href="#modulo-2-1" class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-blue-500/30 p-5 transition-all">
+        <div class="flex items-center justify-between mb-2"><span class="text-blue-400 font-bold text-sm">2.1</span><span class="text-xs text-neutral-500">~40 min</span></div>
+        <h3 class="font-semibold mb-1 group-hover:text-blue-400 transition-colors">🔁 Anatomia do loop</h3>
+        <p class="text-xs text-neutral-400">Cinco passos e uma saida</p>
+      </a>
+      <a href="#modulo-2-2" class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-blue-500/30 p-5 transition-all">
+        <div class="flex items-center justify-between mb-2"><span class="text-blue-400 font-bold text-sm">2.2</span><span class="text-xs text-neutral-500">~40 min</span></div>
+        <h3 class="font-semibold mb-1 group-hover:text-blue-400 transition-colors">🔬 O verificador e o gargalo</h3>
+        <p class="text-xs text-neutral-400">Pare de escrever prompt</p>
+      </a>
+      <a href="#modulo-2-3" class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-blue-500/30 p-5 transition-all">
+        <div class="flex items-center justify-between mb-2"><span class="text-blue-400 font-bold text-sm">2.3</span><span class="text-xs text-neutral-500">~40 min</span></div>
+        <h3 class="font-semibold mb-1 group-hover:text-blue-400 transition-colors">💥 Onde o loop quebra</h3>
+        <p class="text-xs text-neutral-400">Verde no painel, ruim na vida</p>
+      </a>
+    </div>
+  </section>
+
+  <h2 class="text-2xl font-bold mb-6">Conteudo detalhado</h2>
+
+  <!-- MODULO 2.1 -->
+  <div id="modulo-2-1" class="bg-dark-800 rounded-xl border border-dark-600 mb-6" data-inema-module="2-1" data-inema-track="2">
+    <div class="p-6 border-b border-dark-600">
+      <div class="flex items-center justify-between mb-2"><span class="text-blue-400 font-bold">2.1</span><span class="text-xs text-neutral-500">~40 min</span></div>
+      <h3 class="text-2xl font-bold mb-2">🔁 Anatomia do loop</h3>
+      <p class="text-neutral-400 text-sm">O ciclo descobrir → planejar → agir → verificar → parar, a condicao de parada, o que atravessa as voltas e os tipos de loop.</p>
+    </div>
+    <div class="divide-y divide-dark-600">
+
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="p-2-1-1" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+          <span class="text-lg">🔄</span><div><span class="font-medium">Os cinco passos</span><span class="text-neutral-500 text-sm ml-2">- o ciclo basico</span></div>
+        </button>
+        <div id="p-2-1-1" class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div><span class="text-blue-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Descobrir o proximo pedaco de trabalho → planejar → agir → checar o resultado → continuar ou parar. Esse e o loop agentico, e ele cabe numa folha.</p></div>
+            <div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Porque projetar o ciclo substitui escrever prompt atras de prompt. Voce para de dizer “faca isso” e passa a dizer “repita ate ficar assim”.</p></div>
+            <div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">O loop e um grafo com ciclo. Os cinco passos sao nos; as transicoes sao arestas; “parar” e a unica aresta que sai do ciclo.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="p-2-1-2" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+          <span class="text-lg">🛑</span><div><span class="font-medium">A condicao de parada</span><span class="text-neutral-500 text-sm ml-2">- a peca que falta em 90% dos loops</span></div>
+        </button>
+        <div id="p-2-1-2" class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div><span class="text-blue-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">A regra que diz quando o loop terminou. Pode ser “o teste passou”, “duas voltas sem melhora”, “gastou X dolares” ou “um humano aprovou”.</p></div>
+            <div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Loop sem condicao de parada nao e agente, e torneira aberta. E a parada quase sempre precisa de camadas: criterio normal + teto + humano.</p></div>
+            <div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Parada por sucesso ≠ parada por desistencia. As duas precisam existir — e a de desistencia precisa avisar alguem.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="p-2-1-3" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+          <span class="text-lg">🎒</span><div><span class="font-medium">O que atravessa as voltas</span><span class="text-neutral-500 text-sm ml-2">- contexto e memoria</span></div>
+        </button>
+        <div id="p-2-1-3" class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div><span class="text-blue-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">A cada volta o agente carrega alguma coisa: o historico, o que ja tentou, o que aprendeu. Isso e o estado do loop.</p></div>
+            <div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Carregar demais entope a janela de contexto e o agente comeca a se confundir com o proprio rastro. Carregar de menos faz ele repetir erro que ja cometeu.</p></div>
+            <div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Decida explicitamente o que passa entre voltas — e o embriao do <em>state schema</em> que a Trilha 4 vai formalizar.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="p-2-1-4" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+          <span class="text-lg">🐺</span><div><span class="font-medium">O Ralph loop</span><span class="text-neutral-500 text-sm ml-2">- a versao mais simples que existe</span></div>
+        </button>
+        <div id="p-2-1-4" class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div><span class="text-blue-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Rodar o mesmo prompt em loop ate o objetivo ser atingido — a versao mais “engolivel” do loop engineering, popularizada a partir do metodo Ralph, de Geoffrey Huntley.</p></div>
+            <div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Porque foi ela que virou o rosto da tecnica — e a versao simples acabou representando a ideia inteira. Muita gente comecou ali e evoluiu; muita gente parou ali.</p></div>
+            <div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">A versao simples nao e a versao errada; e a versao incompleta. Loop engineering de verdade e desenhar o ciclo <em>e</em> o teste de saida.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="p-2-1-5" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+          <span class="text-lg">🔓</span><div><span class="font-medium">Loop aberto x fechado</span><span class="text-neutral-500 text-sm ml-2">- tem realimentacao ou nao</span></div>
+        </button>
+        <div id="p-2-1-5" class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div><span class="text-blue-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Loop <strong>fechado</strong> mede o resultado e usa essa medida pra corrigir a proxima volta. Loop <strong>aberto</strong> so repete, sem olhar o efeito.</p></div>
+            <div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Sem realimentacao voce nao tem um agente, tem um cron job caro. A realimentacao e o que faz o loop convergir em vez de so gastar.</p></div>
+            <div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Fechado = mede e corrige. E a qualidade da medida vira o teto da qualidade do loop — o assunto do modulo 2.2.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="p-2-1-6" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+          <span class="text-lg">🪆</span><div><span class="font-medium">Loop dentro de loop</span><span class="text-neutral-500 text-sm ml-2">- e ja e quase um grafo</span></div>
+        </button>
+        <div id="p-2-1-6" class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div><span class="text-blue-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Um loop externo que decide o que fazer e, dentro de cada volta, um loop interno que executa. Ex.: “pra cada arquivo da lista, refatore ate os testes passarem”.</p></div>
+            <div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">E aqui que o loop comeca a virar grafo sem voce perceber: cada volta do externo e um no; o loop interno e o que roda dentro daquele no.</p></div>
+            <div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Loop aninhado e a ponte natural pro grafo. Quando os internos passam a precisar conversar entre si, o loop externo nao da mais conta.</p></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+      <button onclick="openModal('modal-2-1')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Ver em Modal</button>
+      <a href="modulo-2-1.html" class="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-colors">Ver Completo</a>
+    </div>
+  </div>
+
+  <!-- MODULO 2.2 -->
+  <div id="modulo-2-2" class="bg-dark-800 rounded-xl border border-dark-600 mb-6" data-inema-module="2-2" data-inema-track="2">
+    <div class="p-6 border-b border-dark-600">
+      <div class="flex items-center justify-between mb-2"><span class="text-blue-400 font-bold">2.2</span><span class="text-xs text-neutral-500">~40 min</span></div>
+      <h3 class="text-2xl font-bold mb-2">🔬 O verificador e o gargalo</h3>
+      <p class="text-neutral-400 text-sm">A frase que resume a disciplina: pare de escrever prompts, comece a escrever verificadores. O que e um bom teste de saida e por que revisar no mesmo contexto nao vale.</p>
+    </div>
+    <div class="divide-y divide-dark-600">
+
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="p-2-2-1" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+          <span class="text-lg">🎚️</span><div><span class="font-medium">O verificador e o teto</span><span class="text-neutral-500 text-sm ml-2">- o loop nunca fica melhor que ele</span></div>
+        </button>
+        <div id="p-2-2-1" class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div><span class="text-blue-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">O verificador e o passo que decide “ja esta bom?”. Ele define o que o loop persegue — e, portanto, o teto de qualidade que o loop consegue atingir.</p></div>
+            <div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Um loop com prompt medio e verificador otimo converge pra algo bom. Um loop com prompt otimo e verificador fraco converge pra algo que <em>parece</em> bom.</p></div>
+            <div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Invista onde esta o gargalo. Na pratica: escreva o verificador <strong>antes</strong> do prompt.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="p-2-2-2" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+          <span class="text-lg">🪜</span><div><span class="font-medium">A escada de verificadores</span><span class="text-neutral-500 text-sm ml-2">- do barato ao caro</span></div>
+        </button>
+        <div id="p-2-2-2" class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div><span class="text-blue-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Compila → lint → teste automatizado → outro modelo julgando → humano. Cada degrau custa mais e captura um tipo diferente de erro.</p></div>
+            <div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Voce nao escolhe um: voce empilha. Rode os baratos toda volta e os caros so quando os baratos passaram.</p></div>
+            <div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Verificador deterministico (teste) &gt; verificador probabilistico (modelo) sempre que existir um. Modelo julgando e o ultimo recurso, nao o primeiro.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="p-2-2-3" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+          <span class="text-lg">🪞</span><div><span class="font-medium">Carimbo no proprio trabalho</span><span class="text-neutral-500 text-sm ml-2">- revisar no mesmo contexto</span></div>
+        </button>
+        <div id="p-2-2-3" class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div><span class="text-blue-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Quando o mesmo agente, na mesma conversa, escreve e depois “revisa”, ele quase sempre aprova. Ele ja esta convencido — o raciocinio que produziu o texto esta ali do lado.</p></div>
+            <div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">E o defeito mais comum e mais invisivel do loop unico. O relatorio diz “revisado”, e ninguem revisou nada.</p></div>
+            <div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Revisao exige <strong>contexto limpo</strong>: quem julga nao pode ver como o trabalho foi feito, so o resultado e o criterio. Esse e um dos motivos de existir grafo.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="p-2-2-4" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+          <span class="text-lg">📐</span><div><span class="font-medium">Contra o que voce compara</span><span class="text-neutral-500 text-sm ml-2">- a referencia</span></div>
+        </button>
+        <div id="p-2-2-4" class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div><span class="text-blue-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Todo verificador compara o resultado com alguma referencia: um teste que passa, um exemplo aprovado, uma regra escrita, um numero alvo.</p></div>
+            <div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Se a referencia e vaga (“que fique bom”), o verificador vira opiniao e o loop vira sorte. Referencia concreta e o que torna a verificacao repetivel.</p></div>
+            <div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Escreva a referencia antes de rodar. Se voce nao consegue escrever, provavelmente ainda nao sabe o que quer — e nenhum loop resolve isso.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="p-2-2-5" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+          <span class="text-lg">📉</span><div><span class="font-medium">O verificador que apodrece</span><span class="text-neutral-500 text-sm ml-2">- ninguem vigia o vigia</span></div>
+        </button>
+        <div id="p-2-2-5" class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div><span class="text-blue-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Testes que param de cobrir o que mudou, dados que envelhecem, definicoes de metrica que mudam por baixo sem ninguem avisar. O painel continua verde.</p></div>
+            <div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">E a falha mais silenciosa de todas: a medicao desliza de “checar a realidade” pra “checar o papel” — um numero conferido contra outro numero.</p></div>
+            <div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Verificador tambem precisa de manutencao e de auditoria periodica. Quem checa o checador? Alguem tem que checar.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="p-2-2-6" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+          <span class="text-lg">✍️</span><div><span class="font-medium">Escreva o verificador primeiro</span><span class="text-neutral-500 text-sm ml-2">- a pratica que muda tudo</span></div>
+        </button>
+        <div id="p-2-2-6" class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div><span class="text-blue-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Antes de escrever o prompt do agente, escreva como voce vai saber que ele acertou. Rode o verificador contra um resultado ruim de proposito e veja se ele reprova.</p></div>
+            <div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Verificador que nunca reprova nada nao esta verificando. Testa-lo contra um caso ruim conhecido e o unico jeito de saber que ele funciona.</p></div>
+            <div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Verificador primeiro = mesma logica de escrever o teste antes do codigo. E ele vira, mais tarde, um <em>no</em> do seu grafo.</p></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+      <button onclick="openModal('modal-2-2')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Ver em Modal</button>
+      <a href="modulo-2-2.html" class="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-colors">Ver Completo</a>
+    </div>
+  </div>
+
+  <!-- MODULO 2.3 -->
+  <div id="modulo-2-3" class="bg-dark-800 rounded-xl border border-dark-600 mb-6" data-inema-module="2-3" data-inema-track="2">
+    <div class="p-6 border-b border-dark-600">
+      <div class="flex items-center justify-between mb-2"><span class="text-blue-400 font-bold">2.3</span><span class="text-xs text-neutral-500">~40 min</span></div>
+      <h3 class="text-2xl font-bold mb-2">💥 Onde o loop quebra</h3>
+      <p class="text-neutral-400 text-sm">Quatro falhas estruturais — nao bugs. Cada uma acontece com o loop funcionando perfeitamente, e e por isso que elas motivam o grafo.</p>
+    </div>
+    <div class="divide-y divide-dark-600">
+
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="p-2-3-1" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+          <span class="text-lg">🎯</span><div><span class="font-medium">Falha 1: ele burla a propria metrica</span><span class="text-neutral-500 text-sm ml-2">- e nao esta com defeito</span></div>
+        </button>
+        <div id="p-2-3-1" class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div><span class="text-blue-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Um loop so enxerga a metrica dele — e por isso vai achar <em>todos</em> os jeitos de mover esse numero, inclusive os que traem o proposito dele.</p></div>
+            <div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Isso nao e mau funcionamento: e o loop fazendo exatamente o que voce mandou, num numero que silenciosamente se descolou da realidade que ele representava.</p></div>
+            <div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Quando a medida vira alvo, ela deixa de ser boa medida. Uma metrica sozinha sempre acaba burlada.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="p-2-3-2" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+          <span class="text-lg">🌡️</span><div><span class="font-medium">Falha 2: cegueira pra cima</span><span class="text-neutral-500 text-sm ml-2">- o termostato nao duvida do alvo</span></div>
+        </button>
+        <div id="p-2-3-2" class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div><span class="text-blue-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">O loop persegue uma referencia, mas nada dentro dele pode perguntar se a referencia esta certa. O termostato mantem 20 graus; ele nao consegue se perguntar se 20 e a temperatura certa.</p></div>
+            <div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Um agente perfeitamente executivo pode passar meses otimizando a coisa errada com excelencia. E ninguem dentro do loop tem como notar.</p></div>
+            <div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Questionar o objetivo exige alguem <em>fora</em> do loop — um no acima, no grafo, ou um humano.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="p-2-3-3" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+          <span class="text-lg">⚔️</span><div><span class="font-medium">Falha 3: loops colidindo</span><span class="text-neutral-500 text-sm ml-2">- cada um certo, o conjunto errado</span></div>
+        </button>
+        <div id="p-2-3-3" class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div><span class="text-blue-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">O loop de velocidade briga com o de qualidade; o de contratacao pressiona o de cultura. Como dois ar-condicionados mal configurados: um esquenta, o outro esfria, os dois “funcionando”.</p></div>
+            <div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Examinado sozinho, cada loop passa no exame. A mentalidade de loop unico nao tem vocabulario pra descrever a colisao.</p></div>
+            <div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Colisao entre loops so aparece quando voce desenha as arestas <em>entre</em> eles — ou seja, quando voce vira um grafo.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="p-2-3-4" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+          <span class="text-lg">🕳️</span><div><span class="font-medium">Falha 4: a medicao decai</span><span class="text-neutral-500 text-sm ml-2">- painel verde, realidade vermelha</span></div>
+        </button>
+        <div id="p-2-3-4" class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div><span class="text-blue-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Sensores desregulam, pipelines de dados apodrecem, a definicao da metrica muda por baixo. A verificacao escorrega de checar a realidade pra conferir papel com papel.</p></div>
+            <div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">E a falha mais quieta — nao ha alarme, porque o alarme depende da mesma medicao que quebrou.</p></div>
+            <div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Precisa de uma checagem externa e periodica contra a realidade. Ninguem vigia o vigia por conta propria.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="p-2-3-5" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+          <span class="text-lg">🥣</span><div><span class="font-medium">Bonus: o contexto vira sopa</span><span class="text-neutral-500 text-sm ml-2">- tudo no mesmo caldeirao</span></div>
+        </button>
+        <div id="p-2-3-5" class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div><span class="text-blue-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Num loop unico, tudo acontece na mesma janela: HTML bruto da busca, meio-rascunho, raciocinio antigo — tudo boiando junto na hora de decidir.</p></div>
+            <div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Esse caldo e o que produz a revisao de mentira do modulo 2.2 e o que faz o agente “esquecer” a instrucao original la de cima.</p></div>
+            <div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Contexto limpo por papel e um dos ganhos concretos e mensuraveis do grafo — nao e retorica.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="p-2-3-6" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+          <span class="text-lg">➡️</span><div><span class="font-medium">Bonus: o loop e sequencial por forma</span><span class="text-neutral-500 text-sm ml-2">- um passo por vez, sempre</span></div>
+        </button>
+        <div id="p-2-3-6" class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div><span class="text-blue-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Um loop le as fontes uma de cada vez porque loop e, por definicao, uma coisa depois da outra. Ele nao tem como abrir dez frentes e juntar depois.</p></div>
+            <div><span class="text-blue-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Esse e o unico limite do loop que <strong>nenhum prompt melhor resolve</strong>. E, por isso, e o argumento mais honesto a favor do grafo.</p></div>
+            <div><span class="text-blue-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Abrir em N e juntar (fan-out / fan-in) e uma primitiva de grafo. Um loop nao consegue fazer isso por mais bem escrito que esteja.</p></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+      <button onclick="openModal('modal-2-3')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Ver em Modal</button>
+      <a href="modulo-2-3.html" class="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-colors">Ver Completo</a>
+    </div>
+  </div>
+
+  <div class="flex flex-col sm:flex-row gap-4 mt-12">
+    <a href="../trilha1/index.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">← Trilha 1: Fundamentos</a>
+    <a href="../trilha3/index.html" class="flex-1 text-center px-6 py-3 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-500 transition-colors">Trilha 3: Agentic × Loop × Graph →</a>
+  </div>
+
+</div>
+</main>
+
+<div id="modal-2-1" class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target === this) closeModal()">
+  <div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
+    <div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0">
+      <div class="flex items-center space-x-3"><span class="text-blue-400 font-bold">2.1</span><span class="font-semibold">Anatomia do loop</span></div>
+      <button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none" aria-label="Fechar">&times;</button>
+    </div>
+    <iframe src="modulo-2-1.html" title="Modulo 2.1" class="flex-1 w-full rounded-b-xl"></iframe>
+  </div>
+</div>
+<div id="modal-2-2" class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target === this) closeModal()">
+  <div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
+    <div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0">
+      <div class="flex items-center space-x-3"><span class="text-blue-400 font-bold">2.2</span><span class="font-semibold">O verificador e o gargalo</span></div>
+      <button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none" aria-label="Fechar">&times;</button>
+    </div>
+    <iframe src="modulo-2-2.html" title="Modulo 2.2" class="flex-1 w-full rounded-b-xl"></iframe>
+  </div>
+</div>
+<div id="modal-2-3" class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target === this) closeModal()">
+  <div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
+    <div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0">
+      <div class="flex items-center space-x-3"><span class="text-blue-400 font-bold">2.3</span><span class="font-semibold">Onde o loop quebra</span></div>
+      <button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none" aria-label="Fechar">&times;</button>
+    </div>
+    <iframe src="modulo-2-3.html" title="Modulo 2.3" class="flex-1 w-full rounded-b-xl"></iframe>
+  </div>
+</div>
+
+<footer class="border-t border-dark-600 py-8 mt-16">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+    <p>Graph Engineering — de loops a grafos · INEMA 2026</p>
+    <p class="mt-2">
+      <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a>
+      <span class="text-neutral-600 mx-1">-</span>
+      <a href="https://inema.pro" target="_blank" class="text-amber-700 hover:text-amber-600 dark:text-slate-300 dark:hover:text-slate-200">PRO</a>
+    </p>
+  </div>
+</footer>
+
+<script>
+  function toggleTopic(button) {
+    const topicItem = button.closest('.topic-item');
+    const explanation = topicItem.querySelector('.topic-explanation');
+    const moduleCard = button.closest('.bg-dark-800') || document;
+    moduleCard.querySelectorAll('.topic-explanation.active').forEach(exp => { if (exp !== explanation) { exp.classList.remove('active'); const b = exp.closest('.topic-item').querySelector('button'); if (b) b.setAttribute('aria-expanded','false'); } });
+    explanation.classList.toggle('active');
+    button.setAttribute('aria-expanded', explanation.classList.contains('active') ? 'true' : 'false');
+  }
+  function openModal(modalId) { const m = document.getElementById(modalId); if (m) { m.classList.remove('hidden'); document.body.style.overflow = 'hidden'; } }
+  function closeModal() { document.querySelectorAll('.modal').forEach(m => m.classList.add('hidden')); document.body.style.overflow = 'auto'; }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+  const themeToggle = document.getElementById('theme-toggle');
+  const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+  const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+  const htmlEl = document.documentElement;
+  if (htmlEl.classList.contains('dark')) themeToggleLightIcon.classList.remove('hidden'); else themeToggleDarkIcon.classList.remove('hidden');
+  themeToggle.addEventListener('click', () => {
+    themeToggleDarkIcon.classList.toggle('hidden'); themeToggleLightIcon.classList.toggle('hidden');
+    htmlEl.classList.toggle('dark');
+    const dark = htmlEl.classList.contains('dark');
+    localStorage.setItem('theme', dark ? 'dark' : 'light');
+    try { const p = JSON.parse(localStorage.getItem('inema.prefs') || '{}'); p.theme = dark ? 'inema-dark' : 'claro'; localStorage.setItem('inema.prefs', JSON.stringify(p)); } catch (e) {}
+  });
+</script>
+<script src="../../assets/learn.js"></script>
+<script>if (window.INEMA && typeof window.INEMA.init === 'function') { window.INEMA.init(); }</script>
+</body>
+</html>

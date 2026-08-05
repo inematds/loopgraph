@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="inema-course" content="loopgraph">
+  <title>Trilha 3 — Agentic × Loop × Graph | Graph Engineering</title>
+  <script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'emerald' };
+      function clone(o) { var r = {}; for (var x in o) r[x] = o[x]; return r; }
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed === 'object') { for (var k in DEF) if (parsed[k] != null) p[k] = parsed[k]; } }
+        else { var legacy = localStorage.getItem('theme'); if (legacy === 'light') p.theme = 'claro'; else if (legacy === 'dark') p.theme = 'inema-dark'; }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = { 'inema-dark': { dark: true, attr: null, cs: 'dark' }, 'claro': { dark: false, attr: null, cs: 'light' }, 'sepia': { dark: false, attr: 'sepia', cs: 'light' }, 'foco': { dark: null, attr: 'foco', cs: null }, 'contraste': { dark: true, attr: 'contraste', cs: 'dark' } };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark === true) html.classList.add('dark'); else if (t.dark === false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark') ? 'dark' : 'light'));
+      html.setAttribute('data-font', p.font || 'inter'); html.setAttribute('data-accent', p.accent || 'emerald');
+      var s = html.style, scale = (+p.fontScale || 100);
+      s.setProperty('--inema-font-scale', (scale / 100).toString()); s.setProperty('font-size', scale + '%');
+      s.setProperty('--measure', (+p.lineWidth || 68) + 'ch'); s.setProperty('--lh-body', (+p.leading || 1.7).toString());
+      var fam = p.font === 'system' ? 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif' : (p.font === 'leitura' ? '"Atkinson Hyperlegible", "Inter", system-ui, sans-serif' : '"Inter", system-ui, sans-serif');
+      s.setProperty('--font-body', fam);
+      var ACC = { emerald: [152,76,45], blue: [217,91,60], purple: [258,90,66], amber: [38,92,50], teal: [174,72,41], rose: [350,89,60] };
+      var a = ACC[p.accent] || ACC.emerald;
+      s.setProperty('--accent-h', a[0]+''); s.setProperty('--accent-s', a[1]+'%'); s.setProperty('--accent-l', a[2]+'%');
+      s.setProperty('--accent', 'hsl(' + a[0] + ' ' + a[1] + '% ' + a[2] + '%)');
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme = 'dark'; } catch (e) {} }
+  })();
+  </script>
+  <script type="application/json" data-inema-manifest>
+  {
+    "course": "loopgraph",
+    "tracks": [
+      { "n": "1", "title": "Fundamentos: o grafo", "modules": [
+        { "id": "1-1", "title": "O que e um grafo", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
+        { "id": "1-2", "title": "Grafos no mundo real", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+        { "id": "1-3", "title": "Como se anda num grafo", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" }
+      ]},
+      { "n": "2", "title": "Loop Engineering", "modules": [
+        { "id": "2-1", "title": "Anatomia do loop", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
+        { "id": "2-2", "title": "O verificador e o gargalo", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
+        { "id": "2-3", "title": "Onde o loop quebra", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" }
+      ]},
+      { "n": "3", "title": "Agentic x Loop x Graph", "modules": [
+        { "id": "3-1", "title": "As cinco camadas", "topics": 6, "href": "curso/trilha3/modulo-3-1.html" },
+        { "id": "3-2", "title": "O comparativo de verdade", "topics": 6, "href": "curso/trilha3/modulo-3-2.html" },
+        { "id": "3-3", "title": "Mito x fato", "topics": 6, "href": "curso/trilha3/modulo-3-3.html" }
+      ]},
+      { "n": "4", "title": "Graph Engineering na pratica", "modules": [
+        { "id": "4-1", "title": "Nos, arestas e estado", "topics": 6, "href": "curso/trilha4/modulo-4-1.html" },
+        { "id": "4-2", "title": "Org graph x work graph", "topics": 6, "href": "curso/trilha4/modulo-4-2.html" },
+        { "id": "4-3", "title": "Falhas, harness e observabilidade", "topics": 6, "href": "curso/trilha4/modulo-4-3.html" }
+      ]},
+      { "n": "5", "title": "Mao na massa", "modules": [
+        { "id": "5-1", "title": "Do loop ao grafo", "topics": 6, "href": "curso/trilha5/modulo-5-1.html" },
+        { "id": "5-2", "title": "Grafos de negocio e de tarefas", "topics": 6, "href": "curso/trilha5/modulo-5-2.html" },
+        { "id": "5-3", "title": "Biblioteca de prompts", "topics": 6, "href": "curso/trilha5/modulo-5-3.html" }
+      ]}
+    ]
+  }
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }</script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/learn.css">
+  <link rel="stylesheet" href="../../assets/curso.css">
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+<a href="#conteudo" class="sr-only focus:not-sr-only focus:absolute focus:z-[60] focus:m-2 focus:px-4 focus:py-2 focus:rounded-lg focus:bg-dark-700">Pular para o conteudo</a>
+
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-14 gap-2">
+      <div class="flex items-center space-x-3 flex-shrink-0">
+        <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+          <span class="text-2xl">🕸️</span><span class="font-bold text-lg hidden lg:inline">Graph Engineering</span>
+        </a>
+        <span class="text-neutral-600 hidden sm:inline">|</span>
+        <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium hidden sm:inline">INEMA.CLUB</a>
+        <span class="text-neutral-600 hidden sm:inline">-</span>
+        <a href="https://inema.pro" target="_blank" class="text-amber-700 hover:text-amber-600 dark:text-slate-300 dark:hover:text-slate-200 text-sm font-medium hidden sm:inline">PRO</a>
+      </div>
+      <div class="flex items-center space-x-1">
+        <a href="../trilha1/index.html" class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors"><span class="lg:hidden">T1</span><span class="hidden lg:inline">Fundamentos</span></a>
+        <a href="../trilha2/index.html" class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors"><span class="lg:hidden">T2</span><span class="hidden lg:inline">Loops</span></a>
+        <a href="index.html" class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-purple-400 bg-purple-500/10"><span class="lg:hidden">T3</span><span class="hidden lg:inline">Comparativo</span></a>
+        <a href="../trilha4/index.html" class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors"><span class="lg:hidden">T4</span><span class="hidden lg:inline">Pratica</span></a>
+        <a href="../trilha5/index.html" class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors"><span class="lg:hidden">T5</span><span class="hidden lg:inline">Mao na massa</span></a>
+        <button type="button" data-inema-journey-open class="hidden sm:inline-flex items-center gap-1 px-2 py-1.5 rounded-lg text-sm text-neutral-400 hover:text-neutral-100 transition-colors" title="Minha jornada">
+          <span aria-hidden="true">◷</span><span class="hidden xl:inline">Jornada</span><span class="inema-journey-badge hidden" aria-hidden="true"></span>
+        </button>
+        <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" aria-label="Alternar tema claro/escuro">
+          <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+          <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<main id="conteudo">
+
+<header class="bg-gradient-to-br from-purple-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600" data-inema-track="3">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <span class="inline-block px-3 py-1 bg-purple-500/20 text-purple-400 text-xs font-semibold rounded-full mb-4">TRILHA 3</span>
+    <h1 class="text-3xl sm:text-4xl font-bold mb-4">⚖️ Agentic × Loop × Graph</h1>
+    <p class="text-lg text-neutral-400 max-w-3xl">
+      As tres arquiteturas lado a lado, sem torcida: o que cada uma e, quando cada uma serve, o que o grafo entrega
+      de genuinamente novo e o que nele e so rebatismo de coisa que ja existia. Termina com uma tabela mito × fato
+      pra voce nao repetir numero de marketing sem fonte.
+    </p>
+
+    <div class="rounded-2xl border border-purple-500/30 bg-dark-900/40 p-3 sm:p-4 mt-8 mb-6 overflow-hidden">
+      <svg viewBox="0 0 1000 320" class="w-full h-auto" role="img" aria-label="Hero da trilha: uma escada de cinco degraus subindo em diagonal, de baixo para cima, prompt, contexto, harness, loop e grafo, cada um com um pequeno sub-rotulo explicando o que aquela camada resolve. Uma linha tracejada acompanha a subida. Apenas o ultimo degrau, grafo, tem destaque com brilho.">
+        <defs>
+          <linearGradient id="t3-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c084fc"/><stop offset="1" stop-color="#a855f7"/></linearGradient>
+          <filter id="t3-glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <pattern id="t3-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#a855f7" opacity="0.12"/></pattern>
+        </defs>
+        <rect x="0" y="0" width="1000" height="320" fill="url(#t3-grid)"/>
+        <path d="M110,270 L280,222 L450,174 L620,126 L790,78" stroke="#38bdf8" stroke-width="1.8" stroke-dasharray="9 9" opacity="0.6" fill="none"/>
+
+        <g font-family="Inter,sans-serif" font-weight="600">
+          <rect x="60" y="248" width="140" height="44" rx="10" fill="#1a1230" stroke="#c084fc" stroke-width="2"/>
+          <text x="130" y="275" text-anchor="middle" fill="#e9d5ff" font-size="13">prompt</text>
+          <text x="130" y="308" text-anchor="middle" fill="#9ca3af" font-size="10.5" font-weight="400">o que voce pede</text>
+
+          <rect x="230" y="200" width="140" height="44" rx="10" fill="#1a1230" stroke="#c084fc" stroke-width="2"/>
+          <text x="300" y="227" text-anchor="middle" fill="#e9d5ff" font-size="13">contexto</text>
+          <text x="300" y="260" text-anchor="middle" fill="#9ca3af" font-size="10.5" font-weight="400">o que ele sabe</text>
+
+          <rect x="400" y="152" width="140" height="44" rx="10" fill="#1a1230" stroke="#c084fc" stroke-width="2"/>
+          <text x="470" y="179" text-anchor="middle" fill="#e9d5ff" font-size="13">harness</text>
+          <text x="470" y="212" text-anchor="middle" fill="#9ca3af" font-size="10.5" font-weight="400">o que ele pode fazer</text>
+
+          <rect x="570" y="104" width="140" height="44" rx="10" fill="#1a1230" stroke="#c084fc" stroke-width="2"/>
+          <text x="640" y="131" text-anchor="middle" fill="#e9d5ff" font-size="13">loop</text>
+          <text x="640" y="164" text-anchor="middle" fill="#9ca3af" font-size="10.5" font-weight="400">quantas vezes tenta</text>
+
+          <g filter="url(#t3-glow)"><rect x="740" y="56" width="140" height="44" rx="10" fill="#1a1230" stroke="url(#t3-grad)" stroke-width="2.4"/></g>
+          <text x="810" y="83" text-anchor="middle" fill="#c084fc" font-size="13">grafo</text>
+          <text x="810" y="116" text-anchor="middle" fill="#9ca3af" font-size="10.5" font-weight="400">quantos, e como se ligam</text>
+        </g>
+      </svg>
+    </div>
+    <p class="text-sm text-neutral-400 max-w-3xl mb-8">
+      <strong class="text-neutral-300">O que olhar:</strong> cada degrau EMBRULHA o de baixo — voce nao troca loop
+      por grafo, voce embrulha loops num grafo. E a maioria dos sistemas para no degrau 4 e esta tudo bem.
+    </p>
+
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-2xl">
+      <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">3</div><div class="text-xs text-neutral-400">Modulos</div></div>
+      <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">18</div><div class="text-xs text-neutral-400">Topicos</div></div>
+      <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">~2h</div><div class="text-xs text-neutral-400">Duracao</div></div>
+      <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">Medio</div><div class="text-xs text-neutral-400">Nivel</div></div>
+    </div>
+
+    <div class="mt-6 max-w-2xl bg-dark-800 rounded-xl border border-dark-600 p-4">
+      <div class="flex items-center justify-between">
+        <span class="text-sm text-neutral-300 font-semibold">Progresso da trilha</span>
+        <div data-inema-meter="trilha:3" class="inema-meter text-sm" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="Progresso da trilha 3">
+          <span class="inema-meter-pct text-purple-400 font-bold">0%</span><span class="inema-meter-count text-neutral-400 ml-2">0 de 18</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+  <section class="mb-12">
+    <h2 class="text-2xl font-bold mb-6">Mapa da trilha</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <a href="#modulo-3-1" class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-purple-500/30 p-5 transition-all">
+        <div class="flex items-center justify-between mb-2"><span class="text-purple-400 font-bold text-sm">3.1</span><span class="text-xs text-neutral-500">~40 min</span></div>
+        <h3 class="font-semibold mb-1 group-hover:text-purple-400 transition-colors">🪜 As cinco camadas</h3>
+        <p class="text-xs text-neutral-400">Cada uma embrulha a de baixo</p>
+      </a>
+      <a href="#modulo-3-2" class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-purple-500/30 p-5 transition-all">
+        <div class="flex items-center justify-between mb-2"><span class="text-purple-400 font-bold text-sm">3.2</span><span class="text-xs text-neutral-500">~40 min</span></div>
+        <h3 class="font-semibold mb-1 group-hover:text-purple-400 transition-colors">⚖️ O comparativo de verdade</h3>
+        <p class="text-xs text-neutral-400">O mesmo caso, tres vezes</p>
+      </a>
+      <a href="#modulo-3-3" class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-purple-500/30 p-5 transition-all">
+        <div class="flex items-center justify-between mb-2"><span class="text-purple-400 font-bold text-sm">3.3</span><span class="text-xs text-neutral-500">~40 min</span></div>
+        <h3 class="font-semibold mb-1 group-hover:text-purple-400 transition-colors">🔍 Mito × fato</h3>
+        <p class="text-xs text-neutral-400">O antidoto pro proximo tweet</p>
+      </a>
+    </div>
+  </section>
+
+  <h2 class="text-2xl font-bold mb-6">Conteudo detalhado</h2>
+
+  <!-- MODULO 3.1 -->
+  <div id="modulo-3-1" class="bg-dark-800 rounded-xl border border-dark-600 mb-6" data-inema-module="3-1" data-inema-track="3">
+    <div class="p-6 border-b border-dark-600">
+      <div class="flex items-center justify-between mb-2"><span class="text-purple-400 font-bold">3.1</span><span class="text-xs text-neutral-500">~40 min</span></div>
+      <h3 class="text-2xl font-bold mb-2">🪜 As cinco camadas</h3>
+      <p class="text-neutral-400 text-sm">Prompt, contexto, harness, loop, grafo — o que cada camada resolve, e por que subir de camada sem dominar a anterior so multiplica o problema.</p>
+    </div>
+    <div class="divide-y divide-dark-600">
+
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="p-3-1-1" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+          <span class="text-lg">✍️</span><div><span class="font-medium">Prompt</span><span class="text-neutral-500 text-sm ml-2">- o que voce pede</span></div>
+        </button>
+        <div id="p-3-1-1" class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">A camada que todo mundo conhece: a instrucao que voce escreve pro modelo. E onde a maioria comeca — e onde a maioria empaca.</p></div>
+            <div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Porque quase todo problema de "a IA nao fez o que eu queria" e resolvido tentando melhorar o prompt, mesmo quando o defeito esta numa camada mais acima.</p></div>
+            <div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Prompt e a camada mais barata de mudar e a mais limitada. Sozinha, nunca resolve o que exige memoria, ferramentas ou repeticao.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="p-3-1-2" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+          <span class="text-lg">🗂️</span><div><span class="font-medium">Contexto</span><span class="text-neutral-500 text-sm ml-2">- o que ele sabe na hora de agir</span></div>
+        </button>
+        <div id="p-3-1-2" class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Arquivos, historico, documentacao — tudo que entra na janela de contexto antes do modelo decidir o proximo passo.</p></div>
+            <div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Contexto errado produz decisao errada mesmo com prompt perfeito. E contexto demais entope a janela e degrada a atencao do modelo.</p></div>
+            <div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Janela de contexto e um recurso finito. O que entope ela — logs brutos, rascunhos velhos, raciocinio antigo — e o inimigo silencioso desta camada.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="p-3-1-3" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+          <span class="text-lg">🧰</span><div><span class="font-medium">Harness</span><span class="text-neutral-500 text-sm ml-2">- o que ele pode fazer</span></div>
+        </button>
+        <div id="p-3-1-3" class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">A infraestrutura em volta do modelo: ferramentas disponiveis, permissoes, captura de saida, retentativa, orcamento de token.</p></div>
+            <div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">O harness define o teto de capacidade do agente. Um modelo brilhante sem ferramenta certa nao executa nada — so descreve o que faria.</p></div>
+            <div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Harness e a fronteira entre "o modelo pensou" e "o modelo agiu". E onde permissao, seguranca e custo entram na conta.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="p-3-1-4" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+          <span class="text-lg">🔁</span><div><span class="font-medium">Loop</span><span class="text-neutral-500 text-sm ml-2">- quantas vezes ele tenta</span></div>
+        </button>
+        <div id="p-3-1-4" class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Quantas vezes o agente tenta e como sabe que terminou. E a Trilha 2 inteira, resumida numa frase.</p></div>
+            <div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Sem loop, cada tentativa e isolada — nao ha correcao. Com loop, o sistema pode errar, medir e tentar de novo.</p></div>
+            <div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">O loop precisa de um verificador e de uma condicao de parada. Sem os dois, nao e loop — e repeticao cega.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="p-3-1-5" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+          <span class="text-lg">🕸️</span><div><span class="font-medium">Grafo</span><span class="text-neutral-500 text-sm ml-2">- quantos loops, e como se ligam</span></div>
+        </button>
+        <div id="p-3-1-5" class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Um conjunto de loops conectados por arestas explicitas — a camada que so faz sentido depois de dominar as quatro anteriores.</p></div>
+            <div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Subir pro grafo sem um loop solido embaixo so multiplica o problema: agora voce tem varios loops ruins conversando entre si.</p></div>
+            <div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Grafo nao substitui as camadas de baixo — ele as organiza. Cada no do grafo ainda precisa de prompt, contexto, harness e loop proprios.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="p-3-1-6" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+          <span class="text-lg">⚙️</span><div><span class="font-medium">Harness de loop × harness de grafo</span><span class="text-neutral-500 text-sm ml-2">- script vira runtime distribuido</span></div>
+        </button>
+        <div id="p-3-1-6" class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">O harness de loop cabe num script: entrada, contexto, orcamento, retry, saida. O de grafo se parece mais com um runtime distribuido: roteamento de mensagem entre nos, isolamento de falha de um no, consistencia de estado, criacao dinamica de no, observabilidade de quem rodou, quando e com qual latencia.</p></div>
+            <div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">E por isso que frameworks ganham tracao quando a conversa vai de loop pra grafo — o problema de infraestrutura muda de categoria, nao so de tamanho.</p></div>
+            <div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Nao e "mais loop": e um problema de sistema distribuido. Falha parcial, estado compartilhado e observabilidade viram obrigatorios, nao opcionais.</p></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+      <button onclick="openModal('modal-3-1')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Ver em Modal</button>
+      <a href="modulo-3-1.html" class="px-4 py-2 text-sm bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition-colors">Ver Completo</a>
+    </div>
+  </div>
+
+  <!-- MODULO 3.2 -->
+  <div id="modulo-3-2" class="bg-dark-800 rounded-xl border border-dark-600 mb-6" data-inema-module="3-2" data-inema-track="3">
+    <div class="p-6 border-b border-dark-600">
+      <div class="flex items-center justify-between mb-2"><span class="text-purple-400 font-bold">3.2</span><span class="text-xs text-neutral-500">~40 min</span></div>
+      <h3 class="text-2xl font-bold mb-2">⚖️ O comparativo de verdade</h3>
+      <p class="text-neutral-400 text-sm">O mesmo trabalho — um resumo diario de pesquisa — construido como agente solto, como loop e como grafo. Com o preco de cada um.</p>
+    </div>
+    <div class="divide-y divide-dark-600">
+
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="p-3-2-1" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+          <span class="text-lg">🧑‍💻</span><div><span class="font-medium">Agentic: um agente com ferramentas e julgamento</span><span class="text-neutral-500 text-sm ml-2">- voce descreve o objetivo</span></div>
+        </button>
+        <div id="p-3-2-1" class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Voce descreve o objetivo, da ferramentas, e o modelo decide o que fazer. Sem ciclo desenhado nem teste de saida explicito.</p></div>
+            <div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">E o ponto de partida mais comum e o mais rapido de montar — e tambem o mais dificil de prever ou depurar quando da errado.</p></div>
+            <div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Julgamento do modelo substitui estrutura desenhada por voce. Funciona bem em tarefa curta; degrada em tarefa longa ou repetida.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="p-3-2-2" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+          <span class="text-lg">🔁</span><div><span class="font-medium">Loop: o ciclo desenhado com teste de saida</span><span class="text-neutral-500 text-sm ml-2">- voce projeta o ciclo</span></div>
+        </button>
+        <div id="p-3-2-2" class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Voce para de escrever prompt e passa a projetar o ciclo e a condicao de parada — descobrir, planejar, agir, verificar, parar.</p></div>
+            <div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">E o salto de qualidade mais barato que existe: o mesmo modelo, com um ciclo desenhado, erra menos e converge mais rapido.</p></div>
+            <div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">O verificador vira o teto de qualidade — tema inteiro da Trilha 2. Aqui ele so reaparece como peca do comparativo.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="p-3-2-3" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+          <span class="text-lg">🕸️</span><div><span class="font-medium">Graph: loops compostos com arestas explicitas</span><span class="text-neutral-500 text-sm ml-2">- varios nos, caminho desenhado antes</span></div>
+        </button>
+        <div id="p-3-2-3" class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Varios nos, cada um um loop, com o caminho entre eles escrito antes de rodar — nao inferido pelo modelo em tempo real.</p></div>
+            <div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">E o unico dos tres formatos que permite paralelismo real e contextos separados por papel. E tambem o mais caro de manter.</p></div>
+            <div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Aresta explicita e a diferenca central: o fluxo de controle vira algo que voce le num diagrama, nao algo que voce reconstroi de um transcript.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="p-3-2-4" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+          <span class="text-lg">📰</span><div><span class="font-medium">O mesmo caso nos tres formatos</span><span class="text-neutral-500 text-sm ml-2">- o resumo diario de pesquisa</span></div>
+        </button>
+        <div id="p-3-2-4" class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Como loop unico, um agente faz tudo numa janela so, le as fontes uma a uma e revisa o proprio texto no mesmo contexto (carimba). Como grafo: pesquisador (abre em N fontes em paralelo) → escritor (so as notas, contexto limpo) → revisor (contexto novo, ve so o texto e o criterio, e tem aresta de volta "reprovado").</p></div>
+            <div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Ver o mesmo caso nos tres formatos e o unico jeito de comparar sem retorica — os numeros e as falhas ficam visiveis lado a lado.</p></div>
+            <div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Fan-out (pesquisador em paralelo) e contexto limpo por papel (escritor so ve notas, revisor so ve texto e criterio) sao as duas diferencas que realmente importam.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="p-3-2-5" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+          <span class="text-lg">✨</span><div><span class="font-medium">O que o grafo da de genuinamente novo</span><span class="text-neutral-500 text-sm ml-2">- nao e so organograma</span></div>
+        </button>
+        <div id="p-3-2-5" class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Nos paralelos especializados com contextos limpos e separados; fan-out e fan-in como movimento de primeira classe; fluxo de controle legivel como diagrama em vez de reconstruido de um transcript.</p></div>
+            <div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Sao os tres ganhos que um loop, por mais bem escrito, nao consegue reproduzir — porque loop e sequencial por definicao.</p></div>
+            <div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Nenhum desses ganhos e retorica: cada um resolve uma falha estrutural especifica do loop unico vista na Trilha 2.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="p-3-2-6" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+          <span class="text-lg">💸</span><div><span class="font-medium">O que o grafo cobra</span><span class="text-neutral-500 text-sm ml-2">- o preco que ninguem menciona no tweet</span></div>
+        </button>
+        <div id="p-3-2-6" class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Tres prompts pra manter em vez de um; um state schema entre nos (o que exatamente o pesquisador entrega pro escritor?); e modos de falha novos — merge que engole uma fonte, roteamento que fica indo e voltando, estado que vaza de um no pro outro.</p></div>
+            <div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Pra tarefa que roda todo dia, compensa; pra tarefa que roda uma vez, e imposto puro. Saber isso evita adotar grafo por moda.</p></div>
+            <div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">O caso degenerado: um grafo de UM no com todas as ferramentas e loop reinventado — a estrutura nao esta fazendo nada.</p></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+      <button onclick="openModal('modal-3-2')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Ver em Modal</button>
+      <a href="modulo-3-2.html" class="px-4 py-2 text-sm bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition-colors">Ver Completo</a>
+    </div>
+  </div>
+
+  <!-- MODULO 3.3 -->
+  <div id="modulo-3-3" class="bg-dark-800 rounded-xl border border-dark-600 mb-6" data-inema-module="3-3" data-inema-track="3">
+    <div class="p-6 border-b border-dark-600">
+      <div class="flex items-center justify-between mb-2"><span class="text-purple-400 font-bold">3.3</span><span class="text-xs text-neutral-500">~40 min</span></div>
+      <h3 class="text-2xl font-bold mb-2">🔍 Mito × fato</h3>
+      <p class="text-neutral-400 text-sm">O antidoto contra o proximo tweet. O que e real, o que e rebatismo e o que e numero de marketing.</p>
+    </div>
+    <div class="divide-y divide-dark-600">
+
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="p-3-3-1" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+          <span class="text-lg">⚰️</span><div><span class="font-medium">"Loop morreu"</span><span class="text-neutral-500 text-sm ml-2">- nao morreu, virou o no</span></div>
+        </button>
+        <div id="p-3-3-1" class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Loop nao morreu: virou o no do grafo. Voce nao gradua de loop pra grafo, voce compoe loops em grafos quando um loop deixa de bastar.</p></div>
+            <div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Esse mito faz gente descartar loop antes de dominar — e loop mal dominado embaixo garante grafo ruim em cima.</p></div>
+            <div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Composicao, nao substituicao. Todo no de grafo, quando aberto, e um loop com seu proprio verificador e condicao de parada.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="p-3-3-2" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+          <span class="text-lg">📚</span><div><span class="font-medium">GraphRAG e grafo de conhecimento nao sao graph engineering</span><span class="text-neutral-500 text-sm ml-2">- informacao ≠ execucao</span></div>
+        </button>
+        <div id="p-3-3-2" class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Um e grafo de INFORMACAO que o agente consulta; o outro e grafo de EXECUCAO, quem roda em que ordem. O mercado mistura os dois o tempo todo.</p></div>
+            <div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Confundir os dois faz voce comprar a ferramenta errada pro problema que tem — GraphRAG nao orquestra agente, e o contrario tambem.</p></div>
+            <div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Grafo de conhecimento responde "o que sei". Grafo de execucao responde "quem faz o que, em que ordem". Sao dois grafos diferentes com o mesmo nome de marketing.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="p-3-3-3" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+          <span class="text-lg">🎯</span><div><span class="font-medium">DSPy nao otimiza grafo de conhecimento</span><span class="text-neutral-500 text-sm ml-2">- atribuicao errada comum</span></div>
+        </button>
+        <div id="p-3-3-3" class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">DSPy otimiza programas de modelo de linguagem — prompts e parametros — nao grafos de conhecimento. E uma atribuicao errada comum na discussao sobre graph engineering.</p></div>
+            <div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Repetir a atribuicao errada faz voce buscar DSPy pra um problema que ele nao resolve, e ignorar as ferramentas que resolveriam.</p></div>
+            <div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">DSPy = otimizacao de programa. Nao confundir com armazenamento ou consulta de grafo — sao categorias diferentes de ferramenta.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="p-3-3-4" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+          <span class="text-lg">🏢</span><div><span class="font-medium">Anthropic nao anunciou "graph engineering"</span><span class="text-neutral-500 text-sm ml-2">- orquestracao em codigo ≠ metodologia nova</span></div>
+        </button>
+        <div id="p-3-3-4" class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Anthropic nao anunciou disciplina nenhuma chamada graph engineering — usa orquestracao escrita em codigo, o que e diferente de lancar uma metodologia com esse nome.</p></div>
+            <div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Citar "a Anthropic lancou graph engineering" como fonte de autoridade e um erro factual especifico que circula bastante — bom saber apontar.</p></div>
+            <div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Orquestrar agentes com codigo (grafos, filas, roteamento) e uma pratica de engenharia antiga. O rotulo "graph engineering" e recente; a pratica nao e.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="p-3-3-5" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+          <span class="text-lg">📊</span><div><span class="font-medium">Os numeros "18% mais acuracia / 85% menos custo"</span><span class="text-neutral-500 text-sm ml-2">- de onde vem, e onde nao valem</span></div>
+        </button>
+        <div id="p-3-3-5" class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Vieram de um estudo especifico sobre diagramas industriais, nao de um benchmark geral de agentes. Repetir isso como se valesse pra qualquer sistema e desonesto.</p></div>
+            <div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">E o exemplo mais claro de numero de marketing viajando sem contexto — util pra reconhecer o padrao em qualquer outro numero solto que aparecer.</p></div>
+            <div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Sempre pergunte: benchmark de que tarefa, comparado com que baseline, medido por quem. Sem isso, o numero e so ruido com aparencia de dado.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="topic-item">
+        <button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="p-3-3-6" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+          <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+          <span class="text-lg">🕰️</span><div><span class="font-medium">Prior art: nada disso e novo</span><span class="text-neutral-500 text-sm ml-2">- o vocabulario e novo, o padrao nao</span></div>
+        </button>
+        <div id="p-3-3-6" class="topic-explanation px-6 pb-4">
+          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Maquina de estados, XState, orquestracao em grafo em LangGraph, AutoGen e Google ADK sao anteriores ao termo. O que e novo em 2026 e o VOCABULARIO.</p></div>
+            <div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Julgue o padrao, nao o rotulo. E a conclusao pratica: a maioria dos agentes ainda nao precisa de grafo — muita tarefa continua sendo um modelo, um ciclo de ferramentas e uma boa condicao de parada.</p></div>
+            <div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Maquina de estados finita e o antepassado direto. Nomear de novo nao torna a ideia nova — mas tambem nao torna a ideia inutil.</p></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+      <button onclick="openModal('modal-3-3')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Ver em Modal</button>
+      <a href="modulo-3-3.html" class="px-4 py-2 text-sm bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition-colors">Ver Completo</a>
+    </div>
+  </div>
+
+  <div class="flex flex-col sm:flex-row gap-4 mt-12">
+    <a href="../trilha2/index.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">← Trilha 2: Loop Engineering</a>
+    <a href="../trilha4/index.html" class="flex-1 text-center px-6 py-3 bg-amber-600 text-white rounded-lg font-semibold hover:bg-amber-500 transition-colors">Trilha 4: Graph Engineering na pratica →</a>
+  </div>
+
+</div>
+</main>
+
+<div id="modal-3-1" class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target === this) closeModal()">
+  <div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
+    <div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0">
+      <div class="flex items-center space-x-3"><span class="text-purple-400 font-bold">3.1</span><span class="font-semibold">As cinco camadas</span></div>
+      <button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none" aria-label="Fechar">&times;</button>
+    </div>
+    <iframe src="modulo-3-1.html" title="Modulo 3.1" class="flex-1 w-full rounded-b-xl"></iframe>
+  </div>
+</div>
+<div id="modal-3-2" class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target === this) closeModal()">
+  <div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
+    <div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0">
+      <div class="flex items-center space-x-3"><span class="text-purple-400 font-bold">3.2</span><span class="font-semibold">O comparativo de verdade</span></div>
+      <button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none" aria-label="Fechar">&times;</button>
+    </div>
+    <iframe src="modulo-3-2.html" title="Modulo 3.2" class="flex-1 w-full rounded-b-xl"></iframe>
+  </div>
+</div>
+<div id="modal-3-3" class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target === this) closeModal()">
+  <div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
+    <div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0">
+      <div class="flex items-center space-x-3"><span class="text-purple-400 font-bold">3.3</span><span class="font-semibold">Mito × fato</span></div>
+      <button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none" aria-label="Fechar">&times;</button>
+    </div>
+    <iframe src="modulo-3-3.html" title="Modulo 3.3" class="flex-1 w-full rounded-b-xl"></iframe>
+  </div>
+</div>
+
+<footer class="border-t border-dark-600 py-8 mt-16">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+    <p>Graph Engineering — de loops a grafos · INEMA 2026</p>
+    <p class="mt-2">
+      <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a>
+      <span class="text-neutral-600 mx-1">-</span>
+      <a href="https://inema.pro" target="_blank" class="text-amber-700 hover:text-amber-600 dark:text-slate-300 dark:hover:text-slate-200">PRO</a>
+    </p>
+  </div>
+</footer>
+
+<script>
+  function toggleTopic(button) {
+    const topicItem = button.closest('.topic-item');
+    const explanation = topicItem.querySelector('.topic-explanation');
+    const moduleCard = button.closest('.bg-dark-800') || document;
+    moduleCard.querySelectorAll('.topic-explanation.active').forEach(exp => { if (exp !== explanation) { exp.classList.remove('active'); const b = exp.closest('.topic-item').querySelector('button'); if (b) b.setAttribute('aria-expanded','false'); } });
+    explanation.classList.toggle('active');
+    button.setAttribute('aria-expanded', explanation.classList.contains('active') ? 'true' : 'false');
+  }
+  function openModal(modalId) { const m = document.getElementById(modalId); if (m) { m.classList.remove('hidden'); document.body.style.overflow = 'hidden'; } }
+  function closeModal() { document.querySelectorAll('.modal').forEach(m => m.classList.add('hidden')); document.body.style.overflow = 'auto'; }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+  const themeToggle = document.getElementById('theme-toggle');
+  const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+  const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+  const htmlEl = document.documentElement;
+  if (htmlEl.classList.contains('dark')) themeToggleLightIcon.classList.remove('hidden'); else themeToggleDarkIcon.classList.remove('hidden');
+  themeToggle.addEventListener('click', () => {
+    themeToggleDarkIcon.classList.toggle('hidden'); themeToggleLightIcon.classList.toggle('hidden');
+    htmlEl.classList.toggle('dark');
+    const dark = htmlEl.classList.contains('dark');
+    localStorage.setItem('theme', dark ? 'dark' : 'light');
+    try { const p = JSON.parse(localStorage.getItem('inema.prefs') || '{}'); p.theme = dark ? 'inema-dark' : 'claro'; localStorage.setItem('inema.prefs', JSON.stringify(p)); } catch (e) {}
+  });
+</script>
+<script src="../../assets/learn.js"></script>
+<script>if (window.INEMA && typeof window.INEMA.init === 'function') { window.INEMA.init(); }</script>
+</body>
+</html>
