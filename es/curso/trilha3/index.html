@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="loopgraph" name="inema-course"/>
+<title>Ruta 3 — Agentic × Loop × Graph | Graph Engineering</title>
+<script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'emerald' };
+      function clone(o) { var r = {}; for (var x in o) r[x] = o[x]; return r; }
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed === 'object') { for (var k in DEF) if (parsed[k] != null) p[k] = parsed[k]; } }
+        else { var legacy = localStorage.getItem('theme'); if (legacy === 'light') p.theme = 'claro'; else if (legacy === 'dark') p.theme = 'inema-dark'; }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = { 'inema-dark': { dark: true, attr: null, cs: 'dark' }, 'claro': { dark: false, attr: null, cs: 'light' }, 'sepia': { dark: false, attr: 'sepia', cs: 'light' }, 'foco': { dark: null, attr: 'foco', cs: null }, 'contraste': { dark: true, attr: 'contraste', cs: 'dark' } };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark === true) html.classList.add('dark'); else if (t.dark === false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark') ? 'dark' : 'light'));
+      html.setAttribute('data-font', p.font || 'inter'); html.setAttribute('data-accent', p.accent || 'emerald');
+      var s = html.style, scale = (+p.fontScale || 100);
+      s.setProperty('--inema-font-scale', (scale / 100).toString()); s.setProperty('font-size', scale + '%');
+      s.setProperty('--measure', (+p.lineWidth || 68) + 'ch'); s.setProperty('--lh-body', (+p.leading || 1.7).toString());
+      var fam = p.font === 'system' ? 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif' : (p.font === 'leitura' ? '"Atkinson Hyperlegible", "Inter", system-ui, sans-serif' : '"Inter", system-ui, sans-serif');
+      s.setProperty('--font-body', fam);
+      var ACC = { emerald: [152,76,45], blue: [217,91,60], purple: [258,90,66], amber: [38,92,50], teal: [174,72,41], rose: [350,89,60] };
+      var a = ACC[p.accent] || ACC.emerald;
+      s.setProperty('--accent-h', a[0]+''); s.setProperty('--accent-s', a[1]+'%'); s.setProperty('--accent-l', a[2]+'%');
+      s.setProperty('--accent', 'hsl(' + a[0] + ' ' + a[1] + '% ' + a[2] + '%)');
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme = 'dark'; } catch (e) {} }
+  })();
+  </script>
+<script data-inema-manifest="" type="application/json">
+  {
+    "course": "loopgraph",
+    "tracks": [
+      { "n": "1", "title": "Fundamentos: o grafo", "modules": [
+        { "id": "1-1", "title": "O que e um grafo", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
+        { "id": "1-2", "title": "Grafos no mundo real", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+        { "id": "1-3", "title": "Como se anda num grafo", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" }
+      ]},
+      { "n": "2", "title": "Loop Engineering", "modules": [
+        { "id": "2-1", "title": "Anatomia do loop", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
+        { "id": "2-2", "title": "O verificador e o gargalo", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
+        { "id": "2-3", "title": "Onde o loop quebra", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" }
+      ]},
+      { "n": "3", "title": "Agentic x Loop x Graph", "modules": [
+        { "id": "3-1", "title": "As cinco camadas", "topics": 6, "href": "curso/trilha3/modulo-3-1.html" },
+        { "id": "3-2", "title": "O comparativo de verdade", "topics": 6, "href": "curso/trilha3/modulo-3-2.html" },
+        { "id": "3-3", "title": "Mito x fato", "topics": 6, "href": "curso/trilha3/modulo-3-3.html" }
+      ]},
+      { "n": "4", "title": "Graph Engineering na pratica", "modules": [
+        { "id": "4-1", "title": "Nos, arestas e estado", "topics": 6, "href": "curso/trilha4/modulo-4-1.html" },
+        { "id": "4-2", "title": "Org graph x work graph", "topics": 6, "href": "curso/trilha4/modulo-4-2.html" },
+        { "id": "4-3", "title": "Falhas, harness e observabilidade", "topics": 6, "href": "curso/trilha4/modulo-4-3.html" }
+      ]},
+      { "n": "5", "title": "Mao na massa", "modules": [
+        { "id": "5-1", "title": "Do loop ao grafo", "topics": 6, "href": "curso/trilha5/modulo-5-1.html" },
+        { "id": "5-2", "title": "Grafos de negocio e de tarefas", "topics": 6, "href": "curso/trilha5/modulo-5-2.html" },
+        { "id": "5-3", "title": "Biblioteca de prompts", "topics": 6, "href": "curso/trilha5/modulo-5-3.html" }
+      ]}
+    ]
+  }
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }</script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../../assets/learn.css" rel="stylesheet"/>
+<link href="../../../assets/curso.css" rel="stylesheet"/>
+<link href="https://inematds.github.io/loopgraph/curso/trilha3/" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/loopgraph/en/curso/trilha3/" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/loopgraph/es/curso/trilha3/" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha3/" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="../../../en/curso/trilha3/" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="./" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">ES</a></div>
+<a class="sr-only focus:not-sr-only focus:absolute focus:z-[60] focus:m-2 focus:px-4 focus:py-2 focus:rounded-lg focus:bg-dark-700" href="#conteudo">Saltar al contenido</a>
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14 gap-2">
+<div class="flex items-center space-x-3 flex-shrink-0">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html">
+<span class="text-2xl">🕸️</span><span class="font-bold text-lg hidden lg:inline">Graph Engineering</span>
+</a>
+<span class="text-neutral-600 hidden sm:inline">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium hidden sm:inline" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+<span class="text-neutral-600 hidden sm:inline">-</span>
+<a class="text-amber-700 hover:text-amber-600 dark:text-slate-300 dark:hover:text-slate-200 text-sm font-medium hidden sm:inline" href="https://inema.pro" target="_blank">PRO</a>
+</div>
+<div class="flex items-center space-x-1">
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors" href="../trilha1/index.html"><span class="lg:hidden">T1</span><span class="hidden lg:inline">Fundamentos</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors" href="../trilha2/index.html"><span class="lg:hidden">T2</span><span class="hidden lg:inline">Bucles</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-purple-400 bg-purple-500/10" href="index.html"><span class="lg:hidden">T3</span><span class="hidden lg:inline">Comparativo</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors" href="../trilha4/index.html"><span class="lg:hidden">T4</span><span class="hidden lg:inline">Práctica</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors" href="../trilha5/index.html"><span class="lg:hidden">T5</span><span class="hidden lg:inline">Manos a la obra</span></a>
+<button class="hidden sm:inline-flex items-center gap-1 px-2 py-1.5 rounded-lg text-sm text-neutral-400 hover:text-neutral-100 transition-colors" data-inema-journey-open="" title="Mi recorrido" type="button">
+<span aria-hidden="true">◷</span><span class="hidden xl:inline">Recorrido</span><span aria-hidden="true" class="inema-journey-badge hidden"></span>
+</button>
+<button aria-label="Alternar entre tema claro y oscuro" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<main id="conteudo">
+<header class="bg-gradient-to-br from-purple-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600" data-inema-track="3">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-purple-500/20 text-purple-400 text-xs font-semibold rounded-full mb-4">RUTA 3</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">⚖️ Agentic × Loop × Graph</h1>
+<p class="text-lg text-neutral-400 max-w-3xl">
+      Las tres arquitecturas, una al lado de la otra, sin tomar partido: qué es cada una, cuándo sirve cada una, qué aporta el grafo que es genuinamente nuevo y qué es solo un nuevo nombre para algo que ya existía. Termina con una tabla mito × realidad para que no repitas una cifra de marketing sin fuente.
+    </p>
+<div class="rounded-2xl border border-purple-500/30 bg-dark-900/40 p-3 sm:p-4 mt-8 mb-6 overflow-hidden">
+<svg aria-label="Hero de la ruta: una escalera de cinco peldaños que sube en diagonal, de abajo hacia arriba: prompt, contexto, harness, loop y grafo; cada uno tiene una pequeña etiqueta que explica qué resuelve esa capa. Una línea discontinua acompaña la subida. Solo el último peldaño, grafo, está resaltado con un brillo." class="w-full h-auto" role="img" viewbox="0 0 1000 320">
+<defs>
+<lineargradient id="t3-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#c084fc"></stop><stop offset="1" stop-color="#a855f7"></stop></lineargradient>
+<filter height="180%" id="t3-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="t3-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#a855f7" opacity="0.12" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#t3-grid)" height="320" width="1000" x="0" y="0"></rect>
+<path d="M110,270 L280,222 L450,174 L620,126 L790,78" fill="none" opacity="0.6" stroke="#38bdf8" stroke-dasharray="9 9" stroke-width="1.8"></path>
+<g font-family="Inter,sans-serif" font-weight="600">
+<rect fill="#1a1230" height="44" rx="10" stroke="#c084fc" stroke-width="2" width="140" x="60" y="248"></rect>
+<text fill="#e9d5ff" font-size="13" text-anchor="middle" x="130" y="275">prompt</text>
+<text fill="#9ca3af" font-size="10.5" font-weight="400" text-anchor="middle" x="130" y="308">lo que pides</text>
+<rect fill="#1a1230" height="44" rx="10" stroke="#c084fc" stroke-width="2" width="140" x="230" y="200"></rect>
+<text fill="#e9d5ff" font-size="13" text-anchor="middle" x="300" y="227">contexto</text>
+<text fill="#9ca3af" font-size="10.5" font-weight="400" text-anchor="middle" x="300" y="260">qué sabe</text>
+<rect fill="#1a1230" height="44" rx="10" stroke="#c084fc" stroke-width="2" width="140" x="400" y="152"></rect>
+<text fill="#e9d5ff" font-size="13" text-anchor="middle" x="470" y="179">harness</text>
+<text fill="#9ca3af" font-size="10.5" font-weight="400" text-anchor="middle" x="470" y="212">qué puede hacer</text>
+<rect fill="#1a1230" height="44" rx="10" stroke="#c084fc" stroke-width="2" width="140" x="570" y="104"></rect>
+<text fill="#e9d5ff" font-size="13" text-anchor="middle" x="640" y="131">loop</text>
+<text fill="#9ca3af" font-size="10.5" font-weight="400" text-anchor="middle" x="640" y="164">cuántas veces lo intenta</text>
+<g filter="url(#t3-glow)"><rect fill="#1a1230" height="44" rx="10" stroke="url(#t3-grad)" stroke-width="2.4" width="140" x="740" y="56"></rect></g>
+<text fill="#c084fc" font-size="13" text-anchor="middle" x="810" y="83">grafo</text>
+<text fill="#9ca3af" font-size="10.5" font-weight="400" text-anchor="middle" x="810" y="116">cuántos y cómo se conectan</text>
+</g>
+</svg>
+</div>
+<p class="text-sm text-neutral-400 max-w-3xl mb-8">
+<strong class="text-neutral-300">Qué observar:</strong> cada nivel ENVUELVE al de abajo — no cambias loops
+      por un grafo, envuelves loops en un grafo. Y la mayoría de los sistemas se detiene en el nivel 4 y está bien.
+    </p>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">3</div><div class="text-xs text-neutral-400">Módulos</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">18</div><div class="text-xs text-neutral-400">Temas</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">~2h</div><div class="text-xs text-neutral-400">Duración</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">Medio</div><div class="text-xs text-neutral-400">Nivel</div></div>
+</div>
+<div class="mt-6 max-w-2xl bg-dark-800 rounded-xl border border-dark-600 p-4">
+<div class="flex items-center justify-between">
+<span class="text-sm text-neutral-300 font-semibold">Progreso de la ruta</span>
+<div aria-label="Progreso de la ruta 3" aria-valuemax="100" aria-valuemin="0" class="inema-meter text-sm" data-inema-meter="trilha:3" role="progressbar">
+<span class="inema-meter-pct text-purple-400 font-bold">0%</span><span class="inema-meter-count text-neutral-400 ml-2">0 de 18</span>
+</div>
+</div>
+</div>
+</div>
+</header>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<section class="mb-12">
+<h2 class="text-2xl font-bold mb-6">Mapa de la ruta</h2>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+<a class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-purple-500/30 p-5 transition-all" href="#modulo-3-1">
+<div class="flex items-center justify-between mb-2"><span class="text-purple-400 font-bold text-sm">3.1</span><span class="text-xs text-neutral-500">~40 min</span></div>
+<h3 class="font-semibold mb-1 group-hover:text-purple-400 transition-colors">🪜 Las cinco capas</h3>
+<p class="text-xs text-neutral-400">Cada una envuelve la de abajo</p>
+</a>
+<a class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-purple-500/30 p-5 transition-all" href="#modulo-3-2">
+<div class="flex items-center justify-between mb-2"><span class="text-purple-400 font-bold text-sm">3.2</span><span class="text-xs text-neutral-500">~40 min</span></div>
+<h3 class="font-semibold mb-1 group-hover:text-purple-400 transition-colors">⚖️ La comparación de verdad</h3>
+<p class="text-xs text-neutral-400">El mismo caso, tres veces</p>
+</a>
+<a class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-purple-500/30 p-5 transition-all" href="#modulo-3-3">
+<div class="flex items-center justify-between mb-2"><span class="text-purple-400 font-bold text-sm">3.3</span><span class="text-xs text-neutral-500">~40 min</span></div>
+<h3 class="font-semibold mb-1 group-hover:text-purple-400 transition-colors">🔍 Mito × hecho</h3>
+<p class="text-xs text-neutral-400">El antídoto para el próximo tweet</p>
+</a>
+</div>
+</section>
+<h2 class="text-2xl font-bold mb-6">Contenido detallado</h2>
+<!-- MODULO 3.1 -->
+<div class="bg-dark-800 rounded-xl border border-dark-600 mb-6" data-inema-module="3-1" data-inema-track="3" id="modulo-3-1">
+<div class="p-6 border-b border-dark-600">
+<div class="flex items-center justify-between mb-2"><span class="text-purple-400 font-bold">3.1</span><span class="text-xs text-neutral-500">~40 min</span></div>
+<h3 class="text-2xl font-bold mb-2">🪜 Las cinco capas</h3>
+<p class="text-neutral-400 text-sm">Prompt, contexto, harness, loop, grafo — qué resuelve cada capa y por qué subir de capa sin dominar la anterior solo multiplica el problema.</p>
+</div>
+<div class="divide-y divide-dark-600">
+<div class="topic-item">
+<button aria-controls="p-3-1-1" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<span class="text-lg">✍️</span><div><span class="font-medium">Prompt</span><span class="text-neutral-500 text-sm ml-2">- lo que pides</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4" id="p-3-1-1">
+<div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-purple-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">La capa que todos conocen: la instrucción que escribes para el modelo. Es donde la mayoría empieza — y donde la mayoría se atasca.</p></div>
+<div><span class="text-purple-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Porque casi todo problema de «la IA no hizo lo que quería» se resuelve intentando mejorar el prompt, incluso cuando el defecto está en una capa superior.</p></div>
+<div><span class="text-purple-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">El prompt es la capa más barata de cambiar y la más limitada. Por sí solo, nunca resuelve lo que exige memoria, herramientas o repetición.</p></div>
+</div>
+</div>
+</div>
+<div class="topic-item">
+<button aria-controls="p-3-1-2" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<span class="text-lg">🗂️</span><div><span class="font-medium">Contexto</span><span class="text-neutral-500 text-sm ml-2">- lo que sabe al momento de actuar</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4" id="p-3-1-2">
+<div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-purple-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Archivos, historial, documentación: todo lo que entra en la ventana de contexto antes de que el modelo decida el siguiente paso.</p></div>
+<div><span class="text-purple-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Un contexto incorrecto produce decisiones incorrectas incluso con un prompt perfecto. Y demasiado contexto satura la ventana y degrada la atención del modelo.</p></div>
+<div><span class="text-purple-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">La ventana de contexto es un recurso finito. Lo que la llena —logs sin procesar, borradores antiguos, razonamiento previo— es el enemigo silencioso de esta capa.</p></div>
+</div>
+</div>
+</div>
+<div class="topic-item">
+<button aria-controls="p-3-1-3" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<span class="text-lg">🧰</span><div><span class="font-medium">Harness</span><span class="text-neutral-500 text-sm ml-2">- lo que puede hacer</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4" id="p-3-1-3">
+<div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-purple-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">La infraestructura que rodea al modelo: herramientas disponibles, permisos, captura de salida, reintentos, presupuesto de tokens.</p></div>
+<div><span class="text-purple-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">El harness define el límite de capacidad del agente. Un modelo brillante sin la herramienta adecuada no ejecuta nada: solo describe lo que haría.</p></div>
+<div><span class="text-purple-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">El harness es la frontera entre «el modelo pensó» y «el modelo actuó». Ahí entran en juego los permisos, la seguridad y los costos.</p></div>
+</div>
+</div>
+</div>
+<div class="topic-item">
+<button aria-controls="p-3-1-4" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<span class="text-lg">🔁</span><div><span class="font-medium">Bucle</span><span class="text-neutral-500 text-sm ml-2">- cuántas veces lo intenta</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4" id="p-3-1-4">
+<div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-purple-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Cuántas veces lo intenta el agente y cómo sabe que terminó. Y toda la Trilha 2, resumida en una frase.</p></div>
+<div><span class="text-purple-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Sin loop, cada intento está aislado: no hay corrección. Con loop, el sistema puede equivocarse, medir y volver a intentarlo.</p></div>
+<div><span class="text-purple-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">El loop necesita un verificador y una condición de parada. Sin ambos, no es un loop: es una repetición ciega.</p></div>
+</div>
+</div>
+</div>
+<div class="topic-item">
+<button aria-controls="p-3-1-5" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<span class="text-lg">🕸️</span><div><span class="font-medium">Grafo</span><span class="text-neutral-500 text-sm ml-2">- cuántos bucles y cómo se conectan</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4" id="p-3-1-5">
+<div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-purple-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Un conjunto de loops conectados por aristas explícitas — la capa que solo tiene sentido después de dominar las cuatro anteriores.</p></div>
+<div><span class="text-purple-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Subir al grafo sin un loop sólido debajo solo multiplica el problema: ahora tienes varios loops malos comunicándose entre sí.</p></div>
+<div><span class="text-purple-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">El grafo no sustituye las capas inferiores: las organiza. Cada nodo del grafo aún necesita su propio prompt, contexto, harness y loop.</p></div>
+</div>
+</div>
+</div>
+<div class="topic-item">
+<button aria-controls="p-3-1-6" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<span class="text-lg">⚙️</span><div><span class="font-medium">Harness de loop × harness de grafo</span><span class="text-neutral-500 text-sm ml-2">- el script se convierte en un runtime distribuido</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4" id="p-3-1-6">
+<div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-purple-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">El harness del loop cabe en un script: entrada, contexto, presupuesto, retry, salida. El del grafo se parece más a un runtime distribuido: enrutamiento de mensajes entre nodos, aislamiento de fallas de un nodo, consistencia del estado, creación dinámica de nodos, observabilidad de quién se ejecutó, cuándo y con qué latencia.</p></div>
+<div><span class="text-purple-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Y por eso los frameworks ganan impulso cuando la conversación pasa de loop a grafo: el problema de infraestructura cambia de categoría, no solo de tamaño.</p></div>
+<div><span class="text-purple-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">No es "más loops": es un problema de sistema distribuido. La falla parcial, el estado compartido y la observabilidad se vuelven obligatorios, no opcionales.</p></div>
+</div>
+</div>
+</div>
+</div>
+<div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+<button class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors" onclick="openModal('modal-3-1')">Ver en modal</button>
+<a class="px-4 py-2 text-sm bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition-colors" href="modulo-3-1.html">Ver completo</a>
+</div>
+</div>
+<!-- MODULO 3.2 -->
+<div class="bg-dark-800 rounded-xl border border-dark-600 mb-6" data-inema-module="3-2" data-inema-track="3" id="modulo-3-2">
+<div class="p-6 border-b border-dark-600">
+<div class="flex items-center justify-between mb-2"><span class="text-purple-400 font-bold">3.2</span><span class="text-xs text-neutral-500">~40 min</span></div>
+<h3 class="text-2xl font-bold mb-2">⚖️ La comparación de verdad</h3>
+<p class="text-neutral-400 text-sm">El mismo trabajo —un resumen diario de investigación— construido como agente independiente, como loop y como grafo. Con el costo de cada uno.</p>
+</div>
+<div class="divide-y divide-dark-600">
+<div class="topic-item">
+<button aria-controls="p-3-2-1" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<span class="text-lg">🧑‍💻</span><div><span class="font-medium">Agentic: un agente con herramientas y criterio</span><span class="text-neutral-500 text-sm ml-2">- tú describes el objetivo</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4" id="p-3-2-1">
+<div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-purple-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Describes el objetivo, proporcionas herramientas y el modelo decide qué hacer. Sin un ciclo definido ni una prueba de salida explícita.</p></div>
+<div><span class="text-purple-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Y el punto de partida más común y más rápido de montar, y también el más difícil de prever o depurar cuando algo sale mal.</p></div>
+<div><span class="text-purple-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">El juicio del modelo sustituye una estructura diseñada por ti. Funciona bien en tareas cortas; se degrada en tareas largas o repetidas.</p></div>
+</div>
+</div>
+</div>
+<div class="topic-item">
+<button aria-controls="p-3-2-2" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<span class="text-lg">🔁</span><div><span class="font-medium">Bucle: el ciclo dibujado con una prueba de salida</span><span class="text-neutral-500 text-sm ml-2">- tú diseñas el ciclo</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4" id="p-3-2-2">
+<div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-purple-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Dejas de escribir prompts y empiezas a diseñar el ciclo y la condición de parada: descubrir, planificar, actuar, verificar, parar.</p></div>
+<div><span class="text-purple-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Y el salto de calidad más barato que existe: el mismo modelo, con un ciclo diseñado, se equivoca menos y converge más rápido.</p></div>
+<div><span class="text-purple-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">El verificador se convierte en el límite de calidad: es el tema completo de la Ruta 2. Aquí solo vuelve a aparecer como pieza de la comparación.</p></div>
+</div>
+</div>
+</div>
+<div class="topic-item">
+<button aria-controls="p-3-2-3" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<span class="text-lg">🕸️</span><div><span class="font-medium">Graph: loops compuestos con aristas explícitas</span><span class="text-neutral-500 text-sm ml-2">- varios nodos, camino dibujado de antemano</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4" id="p-3-2-3">
+<div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-purple-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Varios nodos, cada uno con su propio ciclo, y el camino entre ellos definido antes de ejecutarlos, sin que el modelo lo infiera en tiempo real.</p></div>
+<div><span class="text-purple-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Y es el único de los tres formatos que permite paralelismo real y contextos separados por rol. También es el más caro de mantener.</p></div>
+<div><span class="text-purple-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">La arista explícita es la diferencia central: el flujo de control se convierte en algo que puedes leer en un diagrama, no algo que reconstruyes a partir de una transcripción.</p></div>
+</div>
+</div>
+</div>
+<div class="topic-item">
+<button aria-controls="p-3-2-4" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<span class="text-lg">📰</span><div><span class="font-medium">El mismo caso en los tres formatos</span><span class="text-neutral-500 text-sm ml-2">- el resumen diario de investigación</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4" id="p-3-2-4">
+<div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-purple-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Como bucle único, un agente hace todo en una sola ventana, lee las fuentes una por una y revisa su propio texto en el mismo contexto (sella). Como grafo: investigador (abre N fuentes en paralelo) → escritor (solo las notas, contexto limpio) → revisor (contexto nuevo, solo ve el texto y el criterio, y tiene una arista de retorno «reprobado»).</p></div>
+<div><span class="text-purple-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Ver el mismo caso en los tres formatos es la única forma de comparar sin retórica: los números y los errores quedan visibles uno al lado del otro.</p></div>
+<div><span class="text-purple-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Fan-out (investigador en paralelo) y contexto limpio por rol (el escritor solo ve las notas, el revisor solo ve el texto y el criterio) son las dos diferencias que realmente importan.</p></div>
+</div>
+</div>
+</div>
+<div class="topic-item">
+<button aria-controls="p-3-2-5" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<span class="text-lg">✨</span><div><span class="font-medium">Lo que el grafo aporta que es realmente nuevo</span><span class="text-neutral-500 text-sm ml-2">- no es solo un organigrama</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4" id="p-3-2-5">
+<div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-purple-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Nodos paralelos especializados con contextos limpios y separados; fan-out y fan-in como movimientos de primera clase; flujo de control legible como diagrama, en vez de reconstruido a partir de una transcripción.</p></div>
+<div><span class="text-purple-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Son las tres ventajas que un bucle, por bien escrito que esté, no puede reproducir, porque un bucle es secuencial por definición.</p></div>
+<div><span class="text-purple-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Ninguno de estos beneficios es retórico: cada uno resuelve un fallo estructural específico del loop único que se vio en la Trilha 2.</p></div>
+</div>
+</div>
+</div>
+<div class="topic-item">
+<button aria-controls="p-3-2-6" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<span class="text-lg">💸</span><div><span class="font-medium">Lo que exige el grafo</span><span class="text-neutral-500 text-sm ml-2">- el precio que nadie menciona en el tweet</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4" id="p-3-2-6">
+<div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-purple-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Tres prompts que mantener en lugar de uno; un esquema de estado entre nodos (¿qué le entrega exactamente el investigador al escritor?); y nuevos modos de falla: una fusión que se traga una fuente, un enrutamiento que va y vuelve, un estado que se filtra de un nodo a otro.</p></div>
+<div><span class="text-purple-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Para una tarea que se ejecuta todos los días, vale la pena; para una que se ejecuta una vez, es un impuesto puro. Saber esto evita adoptar un grafo por moda.</p></div>
+<div><span class="text-purple-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">El caso degenerado: un grafo de UN nodo con todas las herramientas y un loop reinventado; la estructura no está haciendo nada.</p></div>
+</div>
+</div>
+</div>
+</div>
+<div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+<button class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors" onclick="openModal('modal-3-2')">Ver en modal</button>
+<a class="px-4 py-2 text-sm bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition-colors" href="modulo-3-2.html">Ver completo</a>
+</div>
+</div>
+<!-- MODULO 3.3 -->
+<div class="bg-dark-800 rounded-xl border border-dark-600 mb-6" data-inema-module="3-3" data-inema-track="3" id="modulo-3-3">
+<div class="p-6 border-b border-dark-600">
+<div class="flex items-center justify-between mb-2"><span class="text-purple-400 font-bold">3.3</span><span class="text-xs text-neutral-500">~40 min</span></div>
+<h3 class="text-2xl font-bold mb-2">🔍 Mito × hecho</h3>
+<p class="text-neutral-400 text-sm">El antídoto contra el próximo tweet. Qué es real, qué es un cambio de nombre y qué es una cifra de marketing.</p>
+</div>
+<div class="divide-y divide-dark-600">
+<div class="topic-item">
+<button aria-controls="p-3-3-1" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<span class="text-lg">⚰️</span><div><span class="font-medium">"Loop murió"</span><span class="text-neutral-500 text-sm ml-2">- no murió, se convirtió en el nodo</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4" id="p-3-3-1">
+<div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-purple-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">El bucle no murió: se convirtió en el nodo del grafo. No pasas del bucle al grafo; compones bucles en grafos cuando un bucle deja de ser suficiente.</p></div>
+<div><span class="text-purple-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Este mito hace que la gente descarte los loops antes de dominarlos — y dominar mal los loops abajo garantiza un grafo deficiente arriba.</p></div>
+<div><span class="text-purple-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Composición, no sustitución. Todo nodo del grafo, cuando se abre, es un bucle con su propio verificador y condición de parada.</p></div>
+</div>
+</div>
+</div>
+<div class="topic-item">
+<button aria-controls="p-3-3-2" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<span class="text-lg">📚</span><div><span class="font-medium">GraphRAG y el grafo de conocimiento no son graph engineering</span><span class="text-neutral-500 text-sm ml-2">- información ≠ ejecución</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4" id="p-3-3-2">
+<div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-purple-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Uno es un grafo de INFORMACIÓN que el agente consulta; el otro es un grafo de EJECUCIÓN: quién se ejecuta y en qué orden. El mercado los mezcla todo el tiempo.</p></div>
+<div><span class="text-purple-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Confundir los dos hace que compres la herramienta equivocada para el problema que tienes: GraphRAG no orquesta agentes, y viceversa.</p></div>
+<div><span class="text-purple-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">El grafo de conocimiento responde «qué sé». El grafo de ejecución responde «quién hace qué y en qué orden». Son dos grafos diferentes con el mismo nombre de marketing.</p></div>
+</div>
+</div>
+</div>
+<div class="topic-item">
+<button aria-controls="p-3-3-3" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<span class="text-lg">🎯</span><div><span class="font-medium">DSPy no optimiza grafos de conocimiento</span><span class="text-neutral-500 text-sm ml-2">- atribución errónea común</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4" id="p-3-3-3">
+<div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-purple-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">DSPy optimiza programas de modelos de lenguaje —prompts y parámetros—, no grafos de conocimiento. Es una atribución errónea común en las conversaciones sobre ingeniería de grafos.</p></div>
+<div><span class="text-purple-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Repetir la atribución equivocada hace que busques DSPy para un problema que no resuelve e ignores las herramientas que sí lo resolverían.</p></div>
+<div><span class="text-purple-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">DSPy = optimización de programas. No lo confundas con el almacenamiento o la consulta de grafos: son categorías distintas de herramientas.</p></div>
+</div>
+</div>
+</div>
+<div class="topic-item">
+<button aria-controls="p-3-3-4" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<span class="text-lg">🏢</span><div><span class="font-medium">Anthropic no anunció "graph engineering"</span><span class="text-neutral-500 text-sm ml-2">- orquestación en código ≠ metodología nueva</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4" id="p-3-3-4">
+<div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-purple-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Anthropic no anunció ninguna disciplina llamada graph engineering: usa orquestación escrita en código, que es distinto de lanzar una metodología con ese nombre.</p></div>
+<div><span class="text-purple-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Citar «Anthropic lanzó graph engineering» como fuente de autoridad es un error factual específico que circula bastante; conviene saber señalarlo.</p></div>
+<div><span class="text-purple-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Orquestar agentes con código (grafos, colas, enrutamiento) es una práctica de ingeniería antigua. La etiqueta "graph engineering" es reciente; la práctica no lo es.</p></div>
+</div>
+</div>
+</div>
+<div class="topic-item">
+<button aria-controls="p-3-3-5" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<span class="text-lg">📊</span><div><span class="font-medium">Los números "18% más de precisión / 85% menos de costo"</span><span class="text-neutral-500 text-sm ml-2">- de dónde vienen y dónde no se aplican</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4" id="p-3-3-5">
+<div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-purple-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Surgieron de un estudio específico sobre diagramas industriales, no de un benchmark general de agentes. Repetir esto como si aplicara a cualquier sistema es deshonesto.</p></div>
+<div><span class="text-purple-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Es el ejemplo más claro de una cifra de marketing que circula sin contexto — útil para reconocer el patrón en cualquier otra cifra suelta que aparezca.</p></div>
+<div><span class="text-purple-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Pregunta siempre: benchmark de qué tarea, comparado con qué baseline y medido por quién. Sin eso, el número es solo ruido con apariencia de dato.</p></div>
+</div>
+</div>
+</div>
+<div class="topic-item">
+<button aria-controls="p-3-3-6" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<span class="text-lg">🕰️</span><div><span class="font-medium">Prior art: nada de esto es nuevo</span><span class="text-neutral-500 text-sm ml-2">- el vocabulario es nuevo, el patrón no</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4" id="p-3-3-6">
+<div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-purple-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">La máquina de estados, XState y la orquestación en grafo de LangGraph, AutoGen y Google ADK son anteriores al término. Lo nuevo en 2026 es el VOCABULARIO.</p></div>
+<div><span class="text-purple-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Evalúa el patrón, no la etiqueta. Esa es la conclusión práctica: la mayoría de los agentes todavía no necesita un grafo — muchas tareas siguen siendo un modelo, un ciclo de herramientas y una buena condición de parada.</p></div>
+<div><span class="text-purple-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">La máquina de estados finita es el antecesor directo. Volver a nombrarla no hace que la idea sea nueva, pero tampoco la vuelve inútil.</p></div>
+</div>
+</div>
+</div>
+</div>
+<div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+<button class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors" onclick="openModal('modal-3-3')">Ver en modal</button>
+<a class="px-4 py-2 text-sm bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition-colors" href="modulo-3-3.html">Ver completo</a>
+</div>
+</div>
+<div class="flex flex-col sm:flex-row gap-4 mt-12">
+<a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="../trilha2/index.html">← Ruta 2: Loop Engineering</a>
+<a class="flex-1 text-center px-6 py-3 bg-amber-600 text-white rounded-lg font-semibold hover:bg-amber-500 transition-colors" href="../trilha4/index.html">Ruta 4: Graph Engineering en la práctica →</a>
+</div>
+</div>
+</main>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" id="modal-3-1" onclick="if(event.target === this) closeModal()">
+<div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
+<div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0">
+<div class="flex items-center space-x-3"><span class="text-purple-400 font-bold">3.1</span><span class="font-semibold">Las cinco capas</span></div>
+<button aria-label="Cerrar" class="text-neutral-400 hover:text-white text-2xl leading-none" onclick="closeModal()">×</button>
+</div>
+<iframe class="flex-1 w-full rounded-b-xl" src="modulo-3-1.html" title="Módulo 3.1"></iframe>
+</div>
+</div>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" id="modal-3-2" onclick="if(event.target === this) closeModal()">
+<div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
+<div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0">
+<div class="flex items-center space-x-3"><span class="text-purple-400 font-bold">3.2</span><span class="font-semibold">La comparación de verdad</span></div>
+<button aria-label="Cerrar" class="text-neutral-400 hover:text-white text-2xl leading-none" onclick="closeModal()">×</button>
+</div>
+<iframe class="flex-1 w-full rounded-b-xl" src="modulo-3-2.html" title="Módulo 3.2"></iframe>
+</div>
+</div>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" id="modal-3-3" onclick="if(event.target === this) closeModal()">
+<div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
+<div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0">
+<div class="flex items-center space-x-3"><span class="text-purple-400 font-bold">3.3</span><span class="font-semibold">Mito × realidad</span></div>
+<button aria-label="Cerrar" class="text-neutral-400 hover:text-white text-2xl leading-none" onclick="closeModal()">×</button>
+</div>
+<iframe class="flex-1 w-full rounded-b-xl" src="modulo-3-3.html" title="Módulo 3.3"></iframe>
+</div>
+</div>
+<footer class="border-t border-dark-600 py-8 mt-16">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+<p>Graph Engineering — de loops a grafos · INEMA 2026</p>
+<p class="mt-2">
+<a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+<span class="text-neutral-600 mx-1">-</span>
+<a class="text-amber-700 hover:text-amber-600 dark:text-slate-300 dark:hover:text-slate-200" href="https://inema.pro" target="_blank">PRO</a>
+</p>
+</div>
+</footer>
+<script>
+  function toggleTopic(button) {
+    const topicItem = button.closest('.topic-item');
+    const explanation = topicItem.querySelector('.topic-explanation');
+    const moduleCard = button.closest('.bg-dark-800') || document;
+    moduleCard.querySelectorAll('.topic-explanation.active').forEach(exp => { if (exp !== explanation) { exp.classList.remove('active'); const b = exp.closest('.topic-item').querySelector('button'); if (b) b.setAttribute('aria-expanded','false'); } });
+    explanation.classList.toggle('active');
+    button.setAttribute('aria-expanded', explanation.classList.contains('active') ? 'true' : 'false');
+  }
+  function openModal(modalId) { const m = document.getElementById(modalId); if (m) { m.classList.remove('hidden'); document.body.style.overflow = 'hidden'; } }
+  function closeModal() { document.querySelectorAll('.modal').forEach(m => m.classList.add('hidden')); document.body.style.overflow = 'auto'; }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+  const themeToggle = document.getElementById('theme-toggle');
+  const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+  const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+  const htmlEl = document.documentElement;
+  if (htmlEl.classList.contains('dark')) themeToggleLightIcon.classList.remove('hidden'); else themeToggleDarkIcon.classList.remove('hidden');
+  themeToggle.addEventListener('click', () => {
+    themeToggleDarkIcon.classList.toggle('hidden'); themeToggleLightIcon.classList.toggle('hidden');
+    htmlEl.classList.toggle('dark');
+    const dark = htmlEl.classList.contains('dark');
+    localStorage.setItem('theme', dark ? 'dark' : 'light');
+    try { const p = JSON.parse(localStorage.getItem('inema.prefs') || '{}'); p.theme = dark ? 'inema-dark' : 'claro'; localStorage.setItem('inema.prefs', JSON.stringify(p)); } catch (e) {}
+  });
+</script>
+<script src="../../../assets/learn.js"></script>
+<script>if (window.INEMA && typeof window.INEMA.init === 'function') { window.INEMA.init(); }</script>
+</body>
+</html>

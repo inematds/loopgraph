@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="loopgraph" name="inema-course"/>
+<title>Módulo 2.3 — Dónde se rompe el bucle | Graph Engineering</title>
+<script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'emerald' };
+      function clone(o) { var r = {}; for (var x in o) r[x] = o[x]; return r; }
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed === 'object') { for (var k in DEF) if (parsed[k] != null) p[k] = parsed[k]; } }
+        else { var legacy = localStorage.getItem('theme'); if (legacy === 'light') p.theme = 'claro'; else if (legacy === 'dark') p.theme = 'inema-dark'; }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = { 'inema-dark': { dark: true, attr: null, cs: 'dark' }, 'claro': { dark: false, attr: null, cs: 'light' }, 'sepia': { dark: false, attr: 'sepia', cs: 'light' }, 'foco': { dark: null, attr: 'foco', cs: null }, 'contraste': { dark: true, attr: 'contraste', cs: 'dark' } };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark === true) html.classList.add('dark'); else if (t.dark === false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark') ? 'dark' : 'light'));
+      html.setAttribute('data-font', p.font || 'inter'); html.setAttribute('data-accent', p.accent || 'emerald');
+      var s = html.style, scale = (+p.fontScale || 100);
+      s.setProperty('--inema-font-scale', (scale / 100).toString()); s.setProperty('font-size', scale + '%');
+      s.setProperty('--measure', (+p.lineWidth || 68) + 'ch'); s.setProperty('--lh-body', (+p.leading || 1.7).toString());
+      var fam = p.font === 'system' ? 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif' : (p.font === 'leitura' ? '"Atkinson Hyperlegible", "Inter", system-ui, sans-serif' : '"Inter", system-ui, sans-serif');
+      s.setProperty('--font-body', fam);
+      var ACC = { emerald: [152,76,45], blue: [217,91,60], purple: [258,90,66], amber: [38,92,50], teal: [174,72,41], rose: [350,89,60] };
+      var a = ACC[p.accent] || ACC.emerald;
+      s.setProperty('--accent-h', a[0]+''); s.setProperty('--accent-s', a[1]+'%'); s.setProperty('--accent-l', a[2]+'%');
+      s.setProperty('--accent', 'hsl(' + a[0] + ' ' + a[1] + '% ' + a[2] + '%)');
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme = 'dark'; } catch (e) {} }
+  })();
+  </script>
+<script data-inema-manifest="" type="application/json">
+  {
+    "course": "loopgraph",
+    "tracks": [
+      { "n": "1", "title": "Fundamentos: o grafo", "modules": [
+        { "id": "1-1", "title": "O que e um grafo", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
+        { "id": "1-2", "title": "Grafos no mundo real", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+        { "id": "1-3", "title": "Como se anda num grafo", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" }
+      ]},
+      { "n": "2", "title": "Loop Engineering", "modules": [
+        { "id": "2-1", "title": "Anatomia do loop", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
+        { "id": "2-2", "title": "O verificador e o gargalo", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
+        { "id": "2-3", "title": "Onde o loop quebra", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" }
+      ]},
+      { "n": "3", "title": "Agentic x Loop x Graph", "modules": [
+        { "id": "3-1", "title": "As cinco camadas", "topics": 6, "href": "curso/trilha3/modulo-3-1.html" },
+        { "id": "3-2", "title": "O comparativo de verdade", "topics": 6, "href": "curso/trilha3/modulo-3-2.html" },
+        { "id": "3-3", "title": "Mito x fato", "topics": 6, "href": "curso/trilha3/modulo-3-3.html" }
+      ]},
+      { "n": "4", "title": "Graph Engineering na pratica", "modules": [
+        { "id": "4-1", "title": "Nos, arestas e estado", "topics": 6, "href": "curso/trilha4/modulo-4-1.html" },
+        { "id": "4-2", "title": "Org graph x work graph", "topics": 6, "href": "curso/trilha4/modulo-4-2.html" },
+        { "id": "4-3", "title": "Falhas, harness e observabilidade", "topics": 6, "href": "curso/trilha4/modulo-4-3.html" }
+      ]},
+      { "n": "5", "title": "Mao na massa", "modules": [
+        { "id": "5-1", "title": "Do loop ao grafo", "topics": 6, "href": "curso/trilha5/modulo-5-1.html" },
+        { "id": "5-2", "title": "Grafos de negocio e de tarefas", "topics": 6, "href": "curso/trilha5/modulo-5-2.html" },
+        { "id": "5-3", "title": "Biblioteca de prompts", "topics": 6, "href": "curso/trilha5/modulo-5-3.html" }
+      ]}
+    ]
+  }
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }</script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../../assets/learn.css" rel="stylesheet"/>
+<link href="../../../assets/curso.css" rel="stylesheet"/>
+<link href="https://inematds.github.io/loopgraph/curso/trilha2/modulo-2-3.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/loopgraph/en/curso/trilha2/modulo-2-3.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/loopgraph/es/curso/trilha2/modulo-2-3.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha2/modulo-2-3.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="../../../en/curso/trilha2/modulo-2-3.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="modulo-2-3.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">ES</a></div>
+<a class="sr-only focus:not-sr-only focus:absolute focus:z-[60] focus:m-2 focus:px-4 focus:py-2 focus:rounded-lg focus:bg-dark-700" href="#conteudo">Saltar al contenido</a>
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14 gap-2">
+<div class="flex items-center space-x-3 flex-shrink-0">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html">
+<span class="text-2xl">🕸️</span><span class="font-bold text-lg hidden lg:inline">Graph Engineering</span>
+</a>
+<span class="text-neutral-600 hidden sm:inline">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium hidden sm:inline" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+<span class="text-neutral-600 hidden sm:inline">-</span>
+<a class="text-amber-700 hover:text-amber-600 dark:text-slate-300 dark:hover:text-slate-200 text-sm font-medium hidden sm:inline" href="https://inema.pro" target="_blank">PRO</a>
+</div>
+<div class="flex items-center space-x-1">
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors" href="../trilha1/index.html"><span class="lg:hidden">T1</span><span class="hidden lg:inline">Fundamentos</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-blue-400 bg-blue-500/10" href="index.html"><span class="lg:hidden">T2</span><span class="hidden lg:inline">Bucles</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors" href="../trilha3/index.html"><span class="lg:hidden">T3</span><span class="hidden lg:inline">Comparativo</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors" href="../trilha4/index.html"><span class="lg:hidden">T4</span><span class="hidden lg:inline">Práctica</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors" href="../trilha5/index.html"><span class="lg:hidden">T5</span><span class="hidden lg:inline">Manos a la obra</span></a>
+<button class="hidden sm:inline-flex items-center gap-1 px-2 py-1.5 rounded-lg text-sm text-neutral-400 hover:text-neutral-100 transition-colors" data-inema-journey-open="" title="Mi recorrido" type="button">
+<span aria-hidden="true">◷</span><span class="hidden xl:inline">Recorrido</span><span aria-hidden="true" class="inema-journey-badge hidden"></span>
+</button>
+<button aria-label="Alternar entre tema claro y oscuro" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<nav aria-label="Ruta de navegación" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+<div class="flex items-center space-x-2 text-sm text-neutral-400">
+<a class="hover:text-blue-400" href="../../index.html">Inicio</a><span>/</span>
+<a class="hover:text-blue-400" href="index.html">Trilha 2</a><span>/</span>
+<span class="text-blue-400">Módulo 2.3</span>
+</div>
+</nav>
+<header class="bg-gradient-to-br from-blue-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600" data-inema-module="2-3" data-inema-track="2">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full mb-4">MÓDULO 2.3</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">💥 Dónde falla el bucle</h1>
+<p class="text-lg text-neutral-400 max-w-3xl">
+      Un loop bien construido — cinco pasos correctos, un verificador preciso — aun así falla. No por un bug: por
+      <strong class="text-blue-400">estructura</strong>. Este módulo muestra cuatro fallos que ocurren con el bucle
+      funcionando perfectamente, además de dos consecuencias prácticas — y cuál de ellas realmente exige cambiar de forma.
+    </p>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">6</div><div class="text-xs text-neutral-400">Temas</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">40</div><div class="text-xs text-neutral-400">Minutos</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">Intermedio</div><div class="text-xs text-neutral-400">Nivel</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">Cierre</div><div class="text-xs text-neutral-400">Tipo</div></div>
+</div>
+<div class="mt-6 max-w-2xl bg-dark-800 rounded-xl border border-dark-600 p-4">
+<div class="flex items-center justify-between">
+<span class="text-sm text-neutral-300 font-semibold">Progreso de este módulo</span>
+<div aria-label="Progreso del módulo 2.3" aria-valuemax="100" aria-valuemin="0" class="inema-meter text-sm" data-inema-meter="modulo:2-3" role="progressbar">
+<span class="inema-meter-pct text-blue-400 font-bold">0%</span><span class="inema-meter-count text-neutral-400 ml-2">0 de 6</span>
+</div>
+</div>
+</div>
+</div>
+</header>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="lg:grid lg:grid-cols-[220px_minmax(0,1fr)] lg:gap-10">
+<nav aria-label="Índice de la página" class="hidden lg:block sticky top-24 self-start" data-inema-toc="">
+<p class="text-sm text-neutral-400 mb-3">Sección <span class="inema-toc-pos">1</span> de <span class="inema-toc-total">6</span></p>
+<ul class="space-y-1 text-sm">
+<li><a class="inema-toc-link text-neutral-400 hover:text-blue-400" href="#topico-1">1. Mira cómo lo elude</a></li>
+<li><a class="inema-toc-link text-neutral-400 hover:text-blue-400" href="#topico-2">2. Nota la ceguera</a></li>
+<li><a class="inema-toc-link text-neutral-400 hover:text-blue-400" href="#topico-3">3. Descubre las colisiones</a></li>
+<li><a class="inema-toc-link text-neutral-400 hover:text-blue-400" href="#topico-4">4. Desconfía de la medición</a></li>
+<li><a class="inema-toc-link text-neutral-400 hover:text-blue-400" href="#topico-5">5. Limpia la sopa</a></li>
+<li><a class="inema-toc-link text-neutral-400 hover:text-blue-400" href="#topico-6">6. Acepta el límite</a></li>
+</ul>
+</nav>
+<main class="inema-prose" id="conteudo">
+<!-- ============ TOPICO 1 ============ -->
+<section class="mb-16" data-inema-topic="modulo-2-3#topico-1" id="topico-1">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">1</span>
+<h2 class="text-2xl font-bold">🎯 Mira cómo manipula su propia métrica</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Marcar duda en este tema" type="button">
+<span aria-hidden="true">?</span><span>Tengo una duda</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-3-t1-p1">
+      Un loop solo ve la métrica que le diste. Si dijiste «reduce el CAC» (costo de adquisición de clientes,
+      es decir, cuánto cuesta en promedio conseguir un cliente nuevo), el loop va a encontrar <em>todos</em> las formas de bajar este número,
+      incluso las que traicionan el propósito real: abaratar la campaña atrayendo a gente que nunca va a comprar, recortar el soporte
+      posventa, prometer más de lo que se entrega. No es un fallo de ejecución: es el loop haciendo exactamente lo que le pediste,
+      con un número que se desconectó de la realidad que debía representar.
+    </p>
+<div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">🆕</span> ¿Nuevo aquí? Dos palabras antes de seguir</h3>
+<ul class="space-y-2 text-neutral-300 text-sm">
+<li><strong class="text-neutral-100">Ley de Goodhart:</strong> cuando una medida se convierte en objetivo, deja de ser una buena medida. El número que medías para saber cómo iban las cosas pasa a ser el número que el sistema optimiza directamente — y ya no son lo mismo.</li>
+<li><strong class="text-neutral-100">CAC:</strong> costo de adquisición de clientes. Cuánto gastas, en promedio, para conseguir un cliente nuevo. Por sí solo, es un número incompleto: hay que leerlo junto con el churn (tasa de cancelación) y el LTV (cuánto vale ese cliente a lo largo del tiempo).</li>
+</ul>
+</div>
+<figure class="mb-6">
+<img alt="Diagrama del embudo de crecimiento, en estilo de pizarra: la campaña lleva al tráfico, el tráfico lleva a la landing page, la landing al signup, el signup a la activación, la activación a la retención y la retención al LTV. Al lado, las cifras de churn, CAC y la razón LTV sobre CAC mayor que 3. Una flecha roja cierra el loop de mejor campaña a menor churn y a mayor LTV." class="w-full h-auto rounded-xl border border-dark-600" src="../../../assets/img/ex2-funil-crescimento.png"/>
+<figcaption class="text-sm text-neutral-400 mt-3">
+<strong class="text-neutral-300">Qué observar:</strong> un bucle instruido para «bajar el CAC» solo ve la caja campaña → tráfico.
+        No ve la flecha roja que conecta la campaña con la tasa de cancelación y el LTV. Bajar el CAC atrayendo tráfico barato y poco calificado
+        empeora la tasa de cancelación y reduce el LTV/CAC — el bucle declara la victoria (bajó el CAC) mientras el negocio empeora. Solo quien ve todo
+        el embudo se da cuenta del daño.
+      </figcaption>
+</figure>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+<h4 class="font-bold text-emerald-400 mb-4">✓ Métrica difícil de manipular</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Relación entre dos cosas que tiran en direcciones opuestas — LTV/CAC, no solo CAC</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Métrica medida con retraso (churn de 90 días), difícil de fingir a corto plazo</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Conjunto de 2-3 métricas contrapuestas que deben cumplirse juntas</span></li>
+</ul>
+</div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+<h4 class="font-bold text-red-400 mb-4">✗ Métrica fácil de manipular</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Número único, medido en el momento (CAC del día, sin considerar la retención)</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Conteo que ignora la calidad (líneas de código, tickets cerrados, mensajes enviados)</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Métrica que el propio ciclo mide y reporta sin auditoría externa</span></li>
+</ul>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-4">Conceptos clave</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Ley de Goodhart</div><p class="text-xs text-neutral-400">La medida objetivo deja de medir</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">No es un bug</div><p class="text-xs text-neutral-400">Y el loop obedeciendo</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Visión limitada</div><p class="text-xs text-neutral-400">Solo ve la métrica que le das</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Corrección</div><p class="text-xs text-neutral-400">Métricas en pares, nunca solas</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span>
+</button>
+</div>
+</section>
+<!-- ============ TOPICO 2 ============ -->
+<section class="mb-16" data-inema-topic="modulo-2-3#topico-2" id="topico-2">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">2</span>
+<h2 class="text-2xl font-bold">🌡️ Nota la ceguera hacia arriba</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Marcar duda en este tema" type="button">
+<span aria-hidden="true">?</span><span>Tengo una duda</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-3-t2-p1">
+      El loop persigue una referencia —el objetivo que definiste— y nada dentro de él puede preguntarse si esa referencia
+      es correcta. Un termostato mantiene 20 grados con una precisión impecable; nunca se preguntará si 20 es la
+      temperatura adecuada para esa habitación ese día. Solo sabe medir la distancia hasta 20 y actuar para reducirla.
+      Cuestionar el propio objetivo requiere a alguien <strong class="text-blue-400">afuera</strong> del loop: porque desde dentro,
+      el objetivo es el único suelo que existe.
+    </p>
+<div class="space-y-6 mb-6">
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">1</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">El loop es excelente dentro de su propio objetivo</h4>
+<p class="text-neutral-300 text-sm">Probado con el objetivo de «llegar a 20 grados», el termostato pasa todas las pruebas. El error no está en la ejecución.</p>
+</div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">2</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">El error está en quien eligió el objetivo</h4>
+<p class="text-neutral-300 text-sm">Si 20 grados es el objetivo equivocado para esa sala ese día, ninguna ejecución perfecta del bucle lo corrige.</p>
+</div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">3</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">Revisar el objetivo es un paso fuera del ciclo</h4>
+<p class="text-neutral-300 text-sm">Una persona, otro loop o un proceso separado debe preguntarse periódicamente «¿20 grados todavía tiene sentido?»; el propio loop nunca se hará esa pregunta por sí solo.</p>
+</div>
+</div>
+</div>
+<div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">📊</span> Dónde aparece esta ceguera en los agentes</h3>
+<ul class="space-y-2 text-neutral-300 text-sm">
+<li><strong>Agente de soporte</strong> — optimizado para «resolver en 1 turno»; nunca cuestiona si resolver rápido es el objetivo correcto para casos complejos</li>
+<li><strong>Agente de código</strong> — optimizado para «pasar las pruebas»; nunca cuestiona si las pruebas cubren el comportamiento correcto</li>
+<li><strong>Agente de contenido</strong> — optimizado para el «engagement»; nunca cuestiona si el contenido que más engagement genera es el que quieres publicar</li>
+</ul>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-4">Conceptos clave</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Referencia fija</div><p class="text-xs text-neutral-400">El loop no cuestiona el objetivo</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Óptimo local</div><p class="text-xs text-neutral-400">Perfecto dentro de su propio objetivo</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Revisión externa</div><p class="text-xs text-neutral-400">Solo desde afuera se cuestiona el objetivo</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Termostato</div><p class="text-xs text-neutral-400">La metáfora más honesta</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span>
+</button>
+</div>
+</section>
+<!-- ============ TOPICO 3 ============ -->
+<section class="mb-16" data-inema-topic="modulo-2-3#topico-3" id="topico-3">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">3</span>
+<h2 class="text-2xl font-bold">🌀 Descubre bucles que chocan</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Marcar duda en este tema" type="button">
+<span aria-hidden="true">?</span><span>Tengo una duda</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-3-t3-p1">
+      Un loop de velocidad entra en conflicto con un loop de calidad. Un loop de contratación presiona a un loop de cultura.
+      Cada uno, examinado por separado, pasa la prueba: hace exactamente lo que se pidió. El problema aparece
+      solo cuando miras los dos <em>juntos</em>. Es como tener dos aires acondicionados mal configurados en la misma habitación:
+      uno enfría porque subió la temperatura, el otro calienta porque bajó la temperatura — los dos «funcionan»,
+      pero el ambiente es inestable.
+    </p>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-4 overflow-hidden">
+<svg aria-label="Comparación lado a lado dividida por una línea vertical discontinua en el medio. A la izquierda, tres bucles dibujados de forma aislada, cada uno con su propio ciclo y su propia métrica, sin ninguna línea entre ellos, cada uno etiquetado correcto por separado. A la derecha, los mismos tres bucles con líneas rojas de interferencia entre ellos, el conjunto etiquetado como incorrecto; solo el grafo lo muestra." class="w-full h-auto" role="img" viewbox="0 0 1000 340">
+<defs>
+<lineargradient id="m23a-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#60a5fa"></stop><stop offset="1" stop-color="#3b82f6"></stop></lineargradient>
+<filter height="180%" id="m23a-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="m23a-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#3b82f6" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="m23a-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#60a5fa"></path></marker>
+<marker id="m23a-ahr" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#f87171"></path></marker>
+</defs>
+<rect fill="url(#m23a-grid)" height="340" width="1000" x="0" y="0"></rect>
+<path d="M500,10 L500,330" opacity="0.4" stroke="#9ca3af" stroke-dasharray="9 9" stroke-width="1.5"></path>
+<text fill="#bfdbfe" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="245" y="30">MALLA — cada uno por separado</text>
+<g font-family="Inter,sans-serif" font-size="11" font-weight="600">
+<circle cx="120" cy="80" fill="#0e1622" r="34" stroke="#60a5fa" stroke-width="2"></circle><text fill="#bfdbfe" text-anchor="middle" x="120" y="84">velocidad</text>
+<path d="M120,46 A34,34 0 1 1 119,46" fill="none" marker-end="url(#m23a-ah)" opacity="0.55" stroke="#60a5fa" stroke-width="1.6"></path>
+<circle cx="245" cy="160" fill="#0e1622" r="34" stroke="#60a5fa" stroke-width="2"></circle><text fill="#bfdbfe" text-anchor="middle" x="245" y="164">calidad</text>
+<path d="M245,126 A34,34 0 1 1 244,126" fill="none" marker-end="url(#m23a-ah)" opacity="0.55" stroke="#60a5fa" stroke-width="1.6"></path>
+<circle cx="370" cy="80" fill="#0e1622" r="34" stroke="#60a5fa" stroke-width="2"></circle><text fill="#bfdbfe" text-anchor="middle" x="370" y="84">contratación</text>
+<path d="M370,46 A34,34 0 1 1 369,46" fill="none" marker-end="url(#m23a-ah)" opacity="0.55" stroke="#60a5fa" stroke-width="1.6"></path>
+</g>
+<text fill="#bfdbfe" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="245" y="290">ninguna línea entre ellos; cada uno correcto por separado</text>
+<text fill="#fca5a5" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="750" y="30">EN SOLITARIO — los tres juntos</text>
+<g font-family="Inter,sans-serif" font-size="11" font-weight="600">
+<circle cx="620" cy="80" fill="#0e1622" r="34" stroke="#60a5fa" stroke-width="2"></circle><text fill="#bfdbfe" text-anchor="middle" x="620" y="84">velocidad</text>
+<path d="M620,46 A34,34 0 1 1 619,46" fill="none" marker-end="url(#m23a-ah)" opacity="0.55" stroke="#60a5fa" stroke-width="1.6"></path>
+<g filter="url(#m23a-glow)"><circle cx="745" cy="160" fill="#0e1622" r="34" stroke="url(#m23a-grad)" stroke-width="2"></circle></g>
+<text fill="#bfdbfe" text-anchor="middle" x="745" y="164">calidad</text>
+<path d="M745,126 A34,34 0 1 1 744,126" fill="none" marker-end="url(#m23a-ah)" opacity="0.55" stroke="#60a5fa" stroke-width="1.6"></path>
+<circle cx="870" cy="80" fill="#0e1622" r="34" stroke="#60a5fa" stroke-width="2"></circle><text fill="#bfdbfe" text-anchor="middle" x="870" y="84">contratación</text>
+<path d="M870,46 A34,34 0 1 1 869,46" fill="none" marker-end="url(#m23a-ah)" opacity="0.55" stroke="#60a5fa" stroke-width="1.6"></path>
+</g>
+<path d="M632,105 L718,142" fill="none" marker-end="url(#m23a-ahr)" stroke="#f87171" stroke-width="2"></path>
+<path d="M858,105 L772,142" fill="none" marker-end="url(#m23a-ahr)" stroke="#f87171" stroke-width="2"></path>
+<text fill="#fca5a5" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="745" y="290">el conjunto equivocado: solo el grafo muestra la interferencia</text>
+</svg>
+</div>
+<p class="text-sm text-neutral-400 mb-6">
+<strong class="text-neutral-300">Qué observar:</strong> los tres loops son idénticos en ambos lados: la única diferencia son
+      las dos líneas rojas del lado derecho. Representan la presión real que "ir más rápido" y "contratar más rápido"
+      ejercen sobre "mantener la calidad". Una mentalidad de loop único no tiene vocabulario para describir esa línea: solo existe
+      cuando dibujas los tres loops en el mismo grafo y conectas lo que interfiere con lo que.
+    </p>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-4">Conceptos clave</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Cada uno pasa</div><p class="text-xs text-neutral-400">Aislado, ninguno falla</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">El conjunto se equivoca</div><p class="text-xs text-neutral-400">Solo aparece cuando están los dos juntos</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Sin vocabulario</div><p class="text-xs text-neutral-400">Un bucle único no detecta interferencias</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Necesita un grafo</div><p class="text-xs text-neutral-400">Para trazar la línea roja</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span>
+</button>
+</div>
+</section>
+<!-- ============ TOPICO 4 ============ -->
+<section class="mb-16" data-inema-topic="modulo-2-3#topico-4" id="topico-4">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">4</span>
+<h2 class="text-2xl font-bold">📉 Desconfía de la medición que se degrada</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Marcar duda en este tema" type="button">
+<span aria-hidden="true">?</span><span>Tengo una duda</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-3-t4-p1">
+      Los sensores se desajustan. Los pipelines de datos se deterioran: un campo cambia de nombre, un filtro deja de ejecutarse y nadie se da cuenta.
+      La definición de la métrica cambia a escondidas (alguien redefine "usuario activo" y se olvida de avisar). La verificación,
+      poco a poco, pasa de comprobar la realidad a comparar un documento con otro: el número coincide con el anterior,
+      entonces "todo está bien". Pero los dos números pueden estar igualmente equivocados.
+    </p>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center"><span class="mr-2">⚠️</span> El fallo más silencioso de los cuatro</h3>
+<p class="text-neutral-300">
+        No hay una alerta cuando falla la medición, porque la alerta normalmente depende <em>de la misma medición que falló</em>.
+        Si el sensor de churn deja de contar correctamente, no va a activar una alerta que diga «estoy averiado» —
+        solo va a reportar un número incorrecto con la misma confianza de siempre. Por eso este fallo es el que más tiempo
+        pasa sin descubrirse.
+      </p>
+</div>
+<div class="space-y-6 mb-6">
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">1</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">El sensor se desajusta</h4>
+<p class="text-neutral-300 text-sm">El instrumento que captura el dato bruto pierde precisión poco a poco: un tracking de eventos que pierde el 10% de los clics por un nuevo bloqueador de anuncios.</p>
+</div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">2</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">El pipeline se deteriora</h4>
+<p class="text-neutral-300 text-sm">El camino entre el dato bruto y el número final tiene una etapa rota: un join que pierde filas, un filtro desactualizado, un job que falla en silencio.</p>
+</div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">3</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">La definición cambia por debajo</h4>
+<p class="text-neutral-300 text-sm">Alguien redefine "cliente activo" (30 días pasan a ser 60 días) para otro informe y el loop de verificación sigue usando la definición anterior sin saberlo.</p>
+</div>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-4">Conceptos clave</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Deterioro silencioso</div><p class="text-xs text-neutral-400">Nadie alerta sobre la falla</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Papel × realidad</div><p class="text-xs text-neutral-400">El número coincide, la realidad no</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Auditoría periódica</div><p class="text-xs text-neutral-400">Verifica la medición, no solo el resultado</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">También falla la alarma</div><p class="text-xs text-neutral-400">Usa el mismo dato que falló</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span>
+</button>
+</div>
+</section>
+<!-- ============ TOPICO 5 ============ -->
+<section class="mb-16" data-inema-topic="modulo-2-3#topico-5" id="topico-5">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">5</span>
+<h2 class="text-2xl font-bold">🍲 Limpia el contexto que se convirtió en sopa</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Marcar duda en este tema" type="button">
+<span aria-hidden="true">?</span><span>Tengo una duda</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-3-t5-p1">
+      En un loop de un solo nodo, todo sucede en la misma <strong class="text-blue-400">ventana de contexto</strong> — el espacio de texto que
+      el modelo puede ver de una vez, con las instrucciones, lo que ya se hizo y lo que falta. HTML sin procesar de una búsqueda, un
+      borrador a medio hacer, razonamiento de dos vueltas atrás: todo flotando junto a la hora de decidir el siguiente paso. Eso es lo que
+      produce la revisión falsa (el verificador aprueba porque está en el mismo contexto emocional de quien escribió —visto en el
+      módulo 2.2) y el «olvido» de la instrucción original, que sigue ahí, solo que ahogada en ruido.
+    </p>
+<div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Consejo práctico</h3>
+<p class="text-neutral-300">
+        Si el loop empieza a ignorar una instrucción que diste al principio, antes de reescribirla con más fuerza,
+        revisa el tamaño del contexto acumulado. Muchas veces el problema no es la instrucción: es que está en la página 1 de
+        un documento que ya llegó a la página 40.
+      </p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+<h4 class="font-bold text-emerald-400 mb-4">✓ Contexto limpio</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Solo entra en la ventana lo que es relevante para el paso actual</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Los borradores intermedios se resumen, no se acumulan completos</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>La instrucción original se reafirma en cada vuelta, no solo se lee una vez</span></li>
+</ul>
+</div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+<h4 class="font-bold text-red-400 mb-4">✗ Contexto revuelto</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>HTML sin procesar de búsquedas, resultados de herramientas y borradores, todo junto y sin limpiar</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>El razonamiento de iteraciones anteriores se mezcla y desaparece entre el razonamiento actual</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>La instrucción original quedó tan atrás que el modelo prioriza lo que está cerca</span></li>
+</ul>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-4">Conceptos clave</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Ventana de contexto</div><p class="text-xs text-neutral-400">Lo que el modelo ve de una sola vez</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Todo junto</div><p class="text-xs text-neutral-400">Nodo único que no separa capas</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Revisión ficticia</div><p class="text-xs text-neutral-400">Reaparece: contexto contaminado</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Resumen periódico</div><p class="text-xs text-neutral-400">Comprimir antes de ahogarte</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span>
+</button>
+</div>
+</section>
+<!-- ============ TOPICO 6 ============ -->
+<section class="mb-16" data-inema-topic="modulo-2-3#topico-6" id="topico-6">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">6</span>
+<h2 class="text-2xl font-bold">➡️ Acepta el límite de la forma: el bucle es secuencial</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Marcar duda en este tema" type="button">
+<span aria-hidden="true">?</span><span>Tengo una duda</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-3-t6-p1">
+      Un loop lee las fuentes una por una porque un loop es, por definición, algo que ocurre una cosa después de otra: discover, plan, act,
+      verify y de nuevo. No puede abrir diez frentes de trabajo al mismo tiempo y reunir los resultados después —
+      no porque le falte inteligencia, sino porque su propia forma es una cola. Este es el <strong class="text-blue-400">único</strong>
+      de los seis límites de este módulo que ningún prompt mejor, ningún verificador más preciso ni ninguna disciplina resuelve.
+    </p>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-4 overflow-hidden">
+<svg aria-label="Comparación lado a lado. A la izquierda, cuatro cajas en fila, una tras otra, con el tiempo de cada etapa sumándose al total. A la derecha, las mismas cuatro cajas abiertas en abanico, todas partiendo del mismo punto y convergiendo luego en un nodo de unión, en cian." class="w-full h-auto" role="img" viewbox="0 0 1000 300">
+<defs>
+<lineargradient id="m23b-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#60a5fa"></stop><stop offset="1" stop-color="#3b82f6"></stop></lineargradient>
+<filter height="180%" id="m23b-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="m23b-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#3b82f6" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="m23b-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#60a5fa"></path></marker>
+<marker id="m23b-ahc" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#38bdf8"></path></marker>
+</defs>
+<rect fill="url(#m23b-grid)" height="300" width="1000" x="0" y="0"></rect>
+<path d="M500,10 L500,290" opacity="0.4" stroke="#9ca3af" stroke-dasharray="9 9" stroke-width="1.5"></path>
+<text fill="#bfdbfe" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="245" y="30">SECUENCIAL — el bucle</text>
+<g fill="none" opacity="0.6" stroke="#60a5fa" stroke-width="1.8">
+<path d="M110,150 L142,150" marker-end="url(#m23b-ah)"></path>
+<path d="M222,150 L254,150" marker-end="url(#m23b-ah)"></path>
+<path d="M334,150 L366,150" marker-end="url(#m23b-ah)"></path>
+</g>
+<g font-family="Inter,sans-serif" font-size="12" font-weight="600">
+<rect fill="#0e1622" height="48" rx="10" stroke="#60a5fa" stroke-width="2" width="80" x="30" y="126"></rect><text fill="#bfdbfe" text-anchor="middle" x="70" y="156">fuente 1</text>
+<rect fill="#0e1622" height="48" rx="10" stroke="#60a5fa" stroke-width="2" width="80" x="142" y="126"></rect><text fill="#bfdbfe" text-anchor="middle" x="182" y="156">fuente 2</text>
+<rect fill="#0e1622" height="48" rx="10" stroke="#60a5fa" stroke-width="2" width="80" x="254" y="126"></rect><text fill="#bfdbfe" text-anchor="middle" x="294" y="156">fuente 3</text>
+<g filter="url(#m23b-glow)"><rect fill="#0e1622" height="48" rx="10" stroke="url(#m23b-grad)" stroke-width="2" width="80" x="366" y="126"></rect></g>
+<text fill="#bfdbfe" text-anchor="middle" x="406" y="156">fuente 4</text>
+</g>
+<text fill="#bfdbfe" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="245" y="230">tiempo total = suma de las cuatro etapas</text>
+<text fill="#7dd3fc" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="750" y="30">EN PARALELO — el grafo</text>
+<g fill="none" opacity="0.55" stroke="#38bdf8" stroke-width="1.6">
+<path d="M600,150 L650,90" marker-end="url(#m23b-ahc)"></path>
+<path d="M600,150 L650,128" marker-end="url(#m23b-ahc)"></path>
+<path d="M600,150 L650,172" marker-end="url(#m23b-ahc)"></path>
+<path d="M600,150 L650,210" marker-end="url(#m23b-ahc)"></path>
+<path d="M730,90 L800,145" marker-end="url(#m23b-ahc)"></path>
+<path d="M730,128 L800,148" marker-end="url(#m23b-ahc)"></path>
+<path d="M730,172 L800,152" marker-end="url(#m23b-ahc)"></path>
+<path d="M730,210 L800,155" marker-end="url(#m23b-ahc)"></path>
+</g>
+<circle cx="590" cy="150" fill="#0e1b26" r="10" stroke="#38bdf8" stroke-width="2"></circle>
+<g font-family="Inter,sans-serif" font-size="11" font-weight="600">
+<rect fill="#0e1b26" height="42" rx="10" stroke="#38bdf8" stroke-width="2" width="80" x="650" y="66"></rect><text fill="#bfe6ff" text-anchor="middle" x="690" y="92">fuente 1</text>
+<rect fill="#0e1b26" height="42" rx="10" stroke="#38bdf8" stroke-width="2" width="80" x="650" y="107"></rect><text fill="#bfe6ff" text-anchor="middle" x="690" y="133">fuente 2</text>
+<rect fill="#0e1b26" height="42" rx="10" stroke="#38bdf8" stroke-width="2" width="80" x="650" y="148"></rect><text fill="#bfe6ff" text-anchor="middle" x="690" y="174">fuente 3</text>
+<rect fill="#0e1b26" height="42" rx="10" stroke="#38bdf8" stroke-width="2" width="80" x="650" y="189"></rect><text fill="#bfe6ff" text-anchor="middle" x="690" y="215">fuente 4</text>
+</g>
+<circle cx="810" cy="150" fill="#0e1b26" r="12" stroke="#38bdf8" stroke-width="2"></circle><text fill="#7dd3fc" font-family="Inter,sans-serif" font-size="11" font-weight="600" text-anchor="middle" x="810" y="182">unión</text>
+<text fill="#7dd3fc" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="750" y="255">tiempo total ≈ la etapa más lenta, no la suma</text>
+</svg>
+</div>
+<p class="text-sm text-neutral-400 mb-6">
+<strong class="text-neutral-300">Qué observar:</strong> las cuatro cajas son las mismas de ambos lados — lo que cambia es la forma.
+      Del lado izquierdo, cada caja solo empieza cuando termina la anterior; así es como funciona un bucle, por definición.
+      Del lado derecho, el mismo trabajo se abre en <strong>fan-out</strong> (un nodo que inicia varios frentes al mismo tiempo)
+      y después converge en un nodo de unión (<strong>fan-in</strong>). Esto no es una mejora del prompt — es una estructura diferente.
+    </p>
+<!-- EXEMPLO COPY-RUN -->
+<div class="bg-dark-800 rounded-xl border border-blue-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-2 flex items-center"><span class="mr-2">🧪</span> Ejemplo práctico: audita un loop tuyo</h3>
+<p class="text-sm text-neutral-400 mb-4"><strong class="text-neutral-300">Objetivo:</strong> usar Claude Code para ejecutar las cuatro fallas estructurales de este módulo contra un loop real que ya tienes (un agente, una automatización, un script que se ejecuta en ciclo).</p>
+<div class="code-box bg-dark-900 rounded-lg border border-dark-600 p-4 mb-4 overflow-x-auto">
+<pre class="text-sm text-neutral-300">Audite o loop em &lt;caminho do arquivo ou descricao do processo&gt;.
+Responda em quatro blocos, sem suavizar:
+
+1. METRICA — liste a metrica principal que este loop otimiza.
+   Depois liste 3 formas concretas de mover essa metrica que
+   trairiam o proposito real do sistema (Goodhart).
+
+2. CEGUEIRA — diga quem, hoje, fica FORA deste loop e poderia
+   questionar se o alvo dele ainda faz sentido. Se a resposta
+   for "ninguem", diga isso claramente.
+
+3. COLISAO — aponte que OUTROS loops do meu sistema esta
+   metrica pressiona ou de quem ela rouba recurso/atencao.
+
+4. MEDICAO — aponte onde a medicao deste loop pode estar
+   decaindo sem alarme (sensor, pipeline, definicao mudada).
+
+Nao me diga que esta tudo bem sem antes tentar ativamente
+achar um problema em cada um dos quatro blocos.</pre>
+</div>
+<div class="bg-dark-700/50 rounded-lg p-4">
+<p class="text-sm text-neutral-300"><strong class="text-blue-400">Cómo verificar:</strong> si la respuesta del bloque 1 no incluye
+        ninguna forma de manipular la métrica, vuelve a pedirlo e insiste — siempre hay al menos una forma de cambiar un número
+        sin cumplir el propósito. Una respuesta "todo está bien" sin intentarlo es señal de un análisis perezoso, no de un loop saludable.</p>
+</div>
+</div>
+<!-- CHECAGEM LEVE -->
+<div class="inema-check mt-8 bg-dark-800 border border-dark-600 rounded-xl p-6 mb-6" data-inema-check="modulo-2-3#q1">
+<p class="font-medium mb-4">Verificación rápida (no bloquea nada): de los seis fallos de este módulo, ¿cuál no resuelve ninguna disciplina de métricas o revisión y solo se resuelve cambiando la estructura?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">Manipular la propia métrica (Goodhart)</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">La secuencialidad: el loop solo procesa una cosa a la vez, por su forma</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">La medición que decae con el tiempo</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-4">Conceptos clave</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Forma, no prompt</div><p class="text-xs text-neutral-400">Límite estructural, no de instrucciones</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Fan-out</div><p class="text-xs text-neutral-400">Un nodo activa varios frentes</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Fan-in</div><p class="text-xs text-neutral-400">Los frentes convergen en un nodo</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">El argumento honesto</div><p class="text-xs text-neutral-400">El único que justifica el grafo</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span>
+</button>
+</div>
+</section>
+<!-- ============ RESUMO ============ -->
+<section class="mb-12">
+<div class="bg-gradient-to-br from-blue-900/40 via-dark-800 to-dark-800 rounded-xl border border-blue-500/30 p-8">
+<h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">📌</span> Resumen del módulo</h2>
+<div class="space-y-4 mb-8">
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Goodhart</strong><span class="text-neutral-400"> — el loop solo ve la métrica indicada y encuentra formas de cambiarla que traicionan el propósito.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Ceguera hacia arriba</strong><span class="text-neutral-400"> — cuestionar el objetivo exige a alguien fuera del ciclo; desde dentro, el objetivo es el único punto de apoyo.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Los bucles chocan</strong><span class="text-neutral-400"> — cada uno es correcto por separado, pero el conjunto está mal; solo un grafo muestra la interferencia.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">La medición decae</strong><span class="text-neutral-400"> — la falla más silenciosa, porque la alarma depende de la misma medición que falló.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">El contexto se vuelve una sopa</strong><span class="text-neutral-400"> — tenerlo todo flotando en la misma ventana produce una revisión falsa y «olvidos».</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Secuencial por su forma</strong><span class="text-neutral-400"> — el único límite que ningún prompt resuelve; el argumento honesto a favor del grafo.</span></div></div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+<h3 class="font-semibold text-blue-400 mb-2">Lo que queda claro al final de la Trilha 2:</h3>
+<p class="text-neutral-300">
+          De los seis fallos de este módulo, tres se resuelven con disciplina: métricas en pares, revisión externa periódica y auditoría de la propia medición. Solo la secuencialidad exige cambiar de forma. Esto no significa que «el loop murió»: significa que un loop ya es un grafo —un grafo cuyo camino vuelve a un nodo anterior— y que compones loops en grafos más grandes justo cuando ese límite de forma empieza a salir caro.
+        </p>
+</div>
+<div class="flex flex-col sm:flex-row gap-4">
+<a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="modulo-2-2.html">← Módulo anterior</a>
+<a class="flex-1 text-center px-6 py-3 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-500 transition-colors" href="../trilha3/index.html">Ruta 3: Agentic × Loop × Graph →</a>
+</div>
+</div>
+</section>
+</main>
+</div>
+</div>
+<footer class="border-t border-dark-600 py-8 mt-16">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+<p>Graph Engineering — de loops a grafos · INEMA 2026</p>
+<p class="mt-2">
+<a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+<span class="text-neutral-600 mx-1">-</span>
+<a class="text-amber-700 hover:text-amber-600 dark:text-slate-300 dark:hover:text-slate-200" href="https://inema.pro" target="_blank">PRO</a>
+</p>
+</div>
+</footer>
+<script>
+  function toggleTopic(button) {
+    const topicItem = button.closest('.topic-item');
+    const explanation = topicItem.querySelector('.topic-explanation');
+    const moduleCard = button.closest('.bg-dark-800') || document;
+    moduleCard.querySelectorAll('.topic-explanation.active').forEach(exp => { if (exp !== explanation) { exp.classList.remove('active'); const b = exp.closest('.topic-item').querySelector('button'); if (b) b.setAttribute('aria-expanded','false'); } });
+    explanation.classList.toggle('active');
+    button.setAttribute('aria-expanded', explanation.classList.contains('active') ? 'true' : 'false');
+  }
+  function openModal(modalId) { const m = document.getElementById(modalId); if (m) { m.classList.remove('hidden'); document.body.style.overflow = 'hidden'; } }
+  function closeModal() { document.querySelectorAll('.modal').forEach(m => m.classList.add('hidden')); document.body.style.overflow = 'auto'; }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+  const themeToggle = document.getElementById('theme-toggle');
+  const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+  const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+  const htmlEl = document.documentElement;
+  if (htmlEl.classList.contains('dark')) themeToggleLightIcon.classList.remove('hidden'); else themeToggleDarkIcon.classList.remove('hidden');
+  themeToggle.addEventListener('click', () => {
+    themeToggleDarkIcon.classList.toggle('hidden'); themeToggleLightIcon.classList.toggle('hidden');
+    htmlEl.classList.toggle('dark');
+    const dark = htmlEl.classList.contains('dark');
+    localStorage.setItem('theme', dark ? 'dark' : 'light');
+    try { const p = JSON.parse(localStorage.getItem('inema.prefs') || '{}'); p.theme = dark ? 'inema-dark' : 'claro'; localStorage.setItem('inema.prefs', JSON.stringify(p)); } catch (e) {}
+  });
+</script>
+<script src="../../../assets/learn.js"></script>
+<script>
+  if (window.INEMA && typeof window.INEMA.init === 'function') { window.INEMA.init(); }
+  window.addEventListener('DOMContentLoaded', function () {
+    if (window.INEMA && INEMA.registerCheck) {
+      INEMA.registerCheck('modulo-2-3#q1', {
+        answer: 1,
+        explain: {
+          0: 'Nao. Burlar a metrica se ataca com metricas em par (LTV/CAC, nunca CAC sozinho) — e disciplina, nao mudanca de estrutura.',
+          1: 'Isso. Loop processa uma coisa de cada vez porque essa e a propria forma dele. Nenhum prompt, verificador ou disciplina de metrica muda isso — so abrir fan-out/fan-in num grafo resolve.',
+          2: 'Nao. Medicao que decai se ataca com auditoria periodica da propria medicao (sensor, pipeline, definicao) — tambem e disciplina, nao estrutura.'
+        }
+      });
+    }
+  });
+</script>
+</body>
+</html>

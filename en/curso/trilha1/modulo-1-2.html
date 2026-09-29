@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="loopgraph" name="inema-course"/>
+<title>Module 1.2 — Graphs in the real world | Graph Engineering</title>
+<script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'emerald' };
+      function clone(o) { var r = {}; for (var x in o) r[x] = o[x]; return r; }
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed === 'object') { for (var k in DEF) if (parsed[k] != null) p[k] = parsed[k]; } }
+        else { var legacy = localStorage.getItem('theme'); if (legacy === 'light') p.theme = 'claro'; else if (legacy === 'dark') p.theme = 'inema-dark'; }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = { 'inema-dark': { dark: true, attr: null, cs: 'dark' }, 'claro': { dark: false, attr: null, cs: 'light' }, 'sepia': { dark: false, attr: 'sepia', cs: 'light' }, 'foco': { dark: null, attr: 'foco', cs: null }, 'contraste': { dark: true, attr: 'contraste', cs: 'dark' } };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark === true) html.classList.add('dark'); else if (t.dark === false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark') ? 'dark' : 'light'));
+      html.setAttribute('data-font', p.font || 'inter'); html.setAttribute('data-accent', p.accent || 'emerald');
+      var s = html.style, scale = (+p.fontScale || 100);
+      s.setProperty('--inema-font-scale', (scale / 100).toString()); s.setProperty('font-size', scale + '%');
+      s.setProperty('--measure', (+p.lineWidth || 68) + 'ch'); s.setProperty('--lh-body', (+p.leading || 1.7).toString());
+      var fam = p.font === 'system' ? 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif' : (p.font === 'leitura' ? '"Atkinson Hyperlegible", "Inter", system-ui, sans-serif' : '"Inter", system-ui, sans-serif');
+      s.setProperty('--font-body', fam);
+      var ACC = { emerald: [152,76,45], blue: [217,91,60], purple: [258,90,66], amber: [38,92,50], teal: [174,72,41], rose: [350,89,60] };
+      var a = ACC[p.accent] || ACC.emerald;
+      s.setProperty('--accent-h', a[0]+''); s.setProperty('--accent-s', a[1]+'%'); s.setProperty('--accent-l', a[2]+'%');
+      s.setProperty('--accent', 'hsl(' + a[0] + ' ' + a[1] + '% ' + a[2] + '%)');
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme = 'dark'; } catch (e) {} }
+  })();
+  </script>
+<script data-inema-manifest="" type="application/json">
+  {
+    "course": "loopgraph",
+    "tracks": [
+      { "n": "1", "title": "Fundamentos: o grafo", "modules": [
+        { "id": "1-1", "title": "O que e um grafo", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
+        { "id": "1-2", "title": "Grafos no mundo real", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+        { "id": "1-3", "title": "Como se anda num grafo", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" }
+      ]},
+      { "n": "2", "title": "Loop Engineering", "modules": [
+        { "id": "2-1", "title": "Anatomia do loop", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
+        { "id": "2-2", "title": "O verificador e o gargalo", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
+        { "id": "2-3", "title": "Onde o loop quebra", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" }
+      ]},
+      { "n": "3", "title": "Agentic x Loop x Graph", "modules": [
+        { "id": "3-1", "title": "As cinco camadas", "topics": 6, "href": "curso/trilha3/modulo-3-1.html" },
+        { "id": "3-2", "title": "O comparativo de verdade", "topics": 6, "href": "curso/trilha3/modulo-3-2.html" },
+        { "id": "3-3", "title": "Mito x fato", "topics": 6, "href": "curso/trilha3/modulo-3-3.html" }
+      ]},
+      { "n": "4", "title": "Graph Engineering na pratica", "modules": [
+        { "id": "4-1", "title": "Nos, arestas e estado", "topics": 6, "href": "curso/trilha4/modulo-4-1.html" },
+        { "id": "4-2", "title": "Org graph x work graph", "topics": 6, "href": "curso/trilha4/modulo-4-2.html" },
+        { "id": "4-3", "title": "Falhas, harness e observabilidade", "topics": 6, "href": "curso/trilha4/modulo-4-3.html" }
+      ]},
+      { "n": "5", "title": "Mao na massa", "modules": [
+        { "id": "5-1", "title": "Do loop ao grafo", "topics": 6, "href": "curso/trilha5/modulo-5-1.html" },
+        { "id": "5-2", "title": "Grafos de negocio e de tarefas", "topics": 6, "href": "curso/trilha5/modulo-5-2.html" },
+        { "id": "5-3", "title": "Biblioteca de prompts", "topics": 6, "href": "curso/trilha5/modulo-5-3.html" }
+      ]}
+    ]
+  }
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }</script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../../assets/learn.css" rel="stylesheet"/>
+<link href="../../../assets/curso.css" rel="stylesheet"/>
+<link href="https://inematds.github.io/loopgraph/curso/trilha1/modulo-1-2.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/loopgraph/en/curso/trilha1/modulo-1-2.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/loopgraph/es/curso/trilha1/modulo-1-2.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha1/modulo-1-2.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="modulo-1-2.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">EN</a><a href="../../../es/curso/trilha1/modulo-1-2.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<a class="sr-only focus:not-sr-only focus:absolute focus:z-[60] focus:m-2 focus:px-4 focus:py-2 focus:rounded-lg focus:bg-dark-700" href="#conteudo">Skip to content</a>
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14 gap-2">
+<div class="flex items-center space-x-3 flex-shrink-0">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html">
+<span class="text-2xl">🕸️</span><span class="font-bold text-lg hidden lg:inline">Graph Engineering</span>
+</a>
+<span class="text-neutral-600 hidden sm:inline">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium hidden sm:inline" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+<span class="text-neutral-600 hidden sm:inline">-</span>
+<a class="text-amber-700 hover:text-amber-600 dark:text-slate-300 dark:hover:text-slate-200 text-sm font-medium hidden sm:inline" href="https://inema.pro" target="_blank">PRO</a>
+</div>
+<div class="flex items-center space-x-1">
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-emerald-400 bg-emerald-500/10" href="index.html"><span class="lg:hidden">T1</span><span class="hidden lg:inline">Fundamentals</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors" href="../trilha2/index.html"><span class="lg:hidden">T2</span><span class="hidden lg:inline">Loops</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors" href="../trilha3/index.html"><span class="lg:hidden">T3</span><span class="hidden lg:inline">Comparison</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors" href="../trilha4/index.html"><span class="lg:hidden">T4</span><span class="hidden lg:inline">Practice</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors" href="../trilha5/index.html"><span class="lg:hidden">T5</span><span class="hidden lg:inline">Hands-on</span></a>
+<button class="hidden sm:inline-flex items-center gap-1 px-2 py-1.5 rounded-lg text-sm text-neutral-400 hover:text-neutral-100 transition-colors" data-inema-journey-open="" title="My journey" type="button">
+<span aria-hidden="true">◷</span><span class="hidden xl:inline">Journey</span><span aria-hidden="true" class="inema-journey-badge hidden"></span>
+</button>
+<button aria-label="Toggle light/dark theme" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<nav aria-label="Navigation trail" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+<div class="flex items-center space-x-2 text-sm text-neutral-400">
+<a class="hover:text-emerald-400" href="../../index.html">Start</a><span>/</span>
+<a class="hover:text-emerald-400" href="index.html">Track 1</a><span>/</span>
+<span class="text-emerald-400">Module 1.2</span>
+</div>
+</nav>
+<header class="bg-gradient-to-br from-emerald-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600" data-inema-module="1-2" data-inema-track="1">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-emerald-500/20 text-emerald-400 text-xs font-semibold rounded-full mb-4">MODULE 1.2</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">🌍 Graphs in the real world</h1>
+<p class="text-lg text-neutral-400 max-w-3xl">
+      Six graphs you already use without knowing it. We start with your morning and end with the dependency graph
+      for your build—which is, technically, almost the same thing as an agent graph.
+    </p>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">6</div><div class="text-xs text-neutral-400">Topics</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">40</div><div class="text-xs text-neutral-400">Minutes</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">Basic</div><div class="text-xs text-neutral-400">Level</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">Applied</div><div class="text-xs text-neutral-400">Type</div></div>
+</div>
+<div class="mt-6 max-w-2xl bg-dark-800 rounded-xl border border-dark-600 p-4">
+<div class="flex items-center justify-between">
+<span class="text-sm text-neutral-300 font-semibold">Progress in this module</span>
+<div aria-label="Module 1.2 progress" aria-valuemax="100" aria-valuemin="0" class="inema-meter text-sm" data-inema-meter="modulo:1-2" role="progressbar">
+<span class="inema-meter-pct text-emerald-400 font-bold">0%</span><span class="inema-meter-count text-neutral-400 ml-2">0 of 6</span>
+</div>
+</div>
+</div>
+</div>
+</header>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="lg:grid lg:grid-cols-[220px_minmax(0,1fr)] lg:gap-10">
+<nav aria-label="Page index" class="hidden lg:block sticky top-24 self-start" data-inema-toc="">
+<p class="text-sm text-neutral-400 mb-3">Section <span class="inema-toc-pos">1</span> of <span class="inema-toc-total">6</span></p>
+<ul class="space-y-1 text-sm">
+<li><a class="inema-toc-link text-neutral-400 hover:text-emerald-400" href="#topico-1">1. Model your morning</a></li>
+<li><a class="inema-toc-link text-neutral-400 hover:text-emerald-400" href="#topico-2">2. Read the social graph</a></li>
+<li><a class="inema-toc-link text-neutral-400 hover:text-emerald-400" href="#topico-3">3. See the trade-off</a></li>
+<li><a class="inema-toc-link text-neutral-400 hover:text-emerald-400" href="#topico-4">4. Allocate in parallel</a></li>
+<li><a class="inema-toc-link text-neutral-400 hover:text-emerald-400" href="#topico-5">5. Link the documentation</a></li>
+<li><a class="inema-toc-link text-neutral-400 hover:text-emerald-400" href="#topico-6">6. Copy from the build</a></li>
+</ul>
+</nav>
+<main class="inema-prose" id="conteudo">
+<!-- TOPICO 1 -->
+<section class="mb-16" data-inema-topic="modulo-1-2#topico-1" id="topico-1">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">1</span>
+<h2 class="text-2xl font-bold">☕ Model Your Morning</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span>I have a question</span></button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-2-t1-p1">
+      You sleeping. You wake up. It takes 2 minutes to get up. Another 5 to brush your teeth. Another 3 until coffee is in the cup.
+      Each state is a <strong class="text-emerald-400">at the</strong>, each transition is a <strong class="text-emerald-400">edge</strong>,
+      and each interval is the <strong class="text-emerald-400">weight</strong>. You just modeled a process.
+    </p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-2-t1-p2">
+      Things get interesting when a <em>alternate path</em>. Say someone (or a robot) brings you coffee in bed:
+      now there's an edge that goes from “wake up” straight to “coffee,” skipping two nodes. The graph hasn't changed in nature—
+      it just gained an edge. And suddenly, there's a <strong>choice</strong> to be optimized.
+    </p>
+<figure class="mb-6">
+<img alt="Whiteboard-style diagram of a morning routine as a graph: wake up, get up, brush your teeth, make coffee, drink coffee, and leave home, connected by arrows weighted in minutes. A yellow arrow connects waking up directly to making coffee, with a weight of 5, labeled coffee ready or automated. Legend: circles are steps, arrows are relationships, and the number is the time weight." class="w-full h-auto rounded-xl border border-dark-600" src="../../../assets/img/ex1-rotina-manha.png"/>
+<figcaption class="text-sm text-neutral-400 mt-3">
+<strong class="text-neutral-300">What to look at:</strong> notice the graph doesn't end at coffee — it continues until “leave home.”
+        That matters: where you cut off the graph determines what question it answers. If your goal is “leave home earlier,”
+        the “have coffee” node (8 minutes to the door) matters more than all the savings from the yellow arrow.
+      </figcaption>
+</figure>
+<div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">🆕</span> New here? What “modeling” means</h3>
+<p class="text-neutral-300 text-sm">Modeling is choosing what becomes a node, what becomes an edge, and what becomes a weight. There is no abstractly “right” modeling — there is modeling <em>useful for the question you want to answer</em>. If the question is “how long will it take,” the weight is minutes. If it's “how much does it cost,” the weight is money.</p>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-emerald-400 mb-4">Key concepts</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">State = node</div><p class="text-xs text-neutral-400">Where you are</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Transition = edge</div><p class="text-xs text-neutral-400">How you get out of there</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Interval = weight</div><p class="text-xs text-neutral-400">How much it cost</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Shortcut = choice</div><p class="text-xs text-neutral-400">Where there's room to optimize</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TOPICO 2 -->
+<section class="mb-16" data-inema-topic="modulo-1-2#topico-2" id="topico-2">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">2</span>
+<h2 class="text-2xl font-bold">👥 Read the social graph</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span>I have a question</span></button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-2-t2-p1">
+      When LinkedIn says “you have 3 connections in common, add Lucas,” it’s giving you the result of a
+      graph traversal. Each person is a node. Each relationship is an edge with a weight: friendship, coworkers,
+      shared interests, other networks where you appear together. “Being three connections away” literally means
+      <em>three edges away</em>.
+    </p>
+<div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-4 overflow-hidden">
+<svg aria-label="A chain of four connected circles: you, Ana, Bruno, and Lucas. Each connection is labeled with the relationship type and edge number, showing that Lucas is three edges away from you." class="w-full h-auto" role="img" viewbox="0 0 1000 220">
+<defs>
+<lineargradient id="m12a-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#34d399"></stop><stop offset="1" stop-color="#10b981"></stop></lineargradient>
+<filter height="180%" id="m12a-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="m12a-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#10b981" opacity="0.12" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#m12a-grid)" height="220" width="1000" x="0" y="0"></rect>
+<g fill="none" opacity="0.6" stroke="#34d399" stroke-width="1.8">
+<path d="M186,100 L314,100"></path><path d="M486,100 L614,100"></path><path d="M786,100 L854,100"></path>
+</g>
+<g fill="#a7f3d0" font-family="Inter,sans-serif" font-size="12">
+<text text-anchor="middle" x="250" y="88">1 · work</text>
+<text text-anchor="middle" x="550" y="88">2 · college</text>
+<text text-anchor="middle" x="820" y="88">3 · theme</text>
+</g>
+<g font-family="Inter,sans-serif" font-size="14" font-weight="600">
+<g filter="url(#m12a-glow)"><circle cx="140" cy="100" fill="#0e2018" r="46" stroke="url(#m12a-grad)" stroke-width="2"></circle></g>
+<text fill="#34d399" text-anchor="middle" x="140" y="106">you</text>
+<circle cx="360" cy="100" fill="#0e2018" r="46" stroke="#34d399" stroke-width="2"></circle><text fill="#a7f3d0" text-anchor="middle" x="360" y="106">Ana</text>
+<circle cx="660" cy="100" fill="#0e2018" r="46" stroke="#34d399" stroke-width="2"></circle><text fill="#a7f3d0" text-anchor="middle" x="660" y="106">Bruno</text>
+<circle cx="900" cy="100" fill="#0e1b26" r="46" stroke="#38bdf8" stroke-width="2"></circle><text fill="#bfe6ff" text-anchor="middle" x="900" y="106">Lucas</text>
+</g>
+<text fill="#a7f3d0" font-family="Inter,sans-serif" font-size="13" text-anchor="middle" x="500" y="200">“3 connections away” = 3 edges along the path</text>
+</svg>
+</div>
+<p class="text-sm text-neutral-400 mb-6"><strong class="text-neutral-300">What to look at:</strong> the numbers 1, 2, 3 above the lines. “Degrees of separation” isn’t a metaphor — it’s the number of edges in the shortest path. And each edge’s label (work, college, topic) shows that edges can have <em>type</em>, not just weight.</p>
+<div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">📊</span> What the algorithm does with this</h3>
+<ul class="space-y-2 text-neutral-300 text-sm">
+<li><strong>Recommend a person:</strong> who is 2–3 edges away and has many neighbors in common</li>
+<li><strong>Recommend content:</strong> what the neighbors with high-weight edges consumed</li>
+<li><strong>Community detection:</strong> groups where almost everyone is connected to almost everyone</li>
+<li><strong>Find a bridge:</strong> the person who connects two groups that don’t know each other—the most valuable edge in the network</li>
+</ul>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-emerald-400 mb-4">Key concepts</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Degree of separation</div><p class="text-xs text-neutral-400">Distance in edges</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Typed edge</div><p class="text-xs text-neutral-400">The relationship has a name</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Undirected</div><p class="text-xs text-neutral-400">Friendship goes both ways</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Bridge</div><p class="text-xs text-neutral-400">The edge that connects worlds</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TOPICO 3 -->
+<section class="mb-16" data-inema-topic="modulo-1-2#topico-3" id="topico-3">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">3</span>
+<h2 class="text-2xl font-bold">📈 See the trade-off: CAC, churn, and LTV</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span>I have a question</span></button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-2-t3-p1">
+      This is the most important example in the module because it sets up the course’s central problem.
+      Campaign → traffic → signup → account created → activation → subscriber → (churn) → LTV.
+      The nodes are customer states; the edges are the conversion rates between them.
+    </p>
+<div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">🆕</span> New here? The three acronyms</h3>
+<ul class="space-y-2 text-neutral-300 text-sm">
+<li><strong class="text-neutral-100">CAC</strong> (customer acquisition cost): how much you spend, on average, to acquire a new customer.</li>
+<li><strong class="text-neutral-100">Churn</strong>: the rate of people who cancel. High churn = leaky bucket.</li>
+<li><strong class="text-neutral-100">LTV</strong> (lifetime value): how much money a customer gives you in total before leaving. If LTV isn’t much higher than CAC, the business loses money on every sale.</li>
+</ul>
+</div>
+<div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-4 overflow-hidden">
+<svg aria-label="Funnel as a graph: campaign leads to traffic, traffic to signup, signup to activation, activation to subscriber, and subscriber to LTV. A red edge runs from subscriber to churn. A dotted arrow shows that lowering the campaign's cost per acquisition increases churn, labeled “side effect invisible to the loop.”" class="w-full h-auto" role="img" viewbox="0 0 1000 300">
+<defs>
+<lineargradient id="m12b-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#34d399"></stop><stop offset="1" stop-color="#10b981"></stop></lineargradient>
+<filter height="180%" id="m12b-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="m12b-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#10b981" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="m12b-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#34d399"></path></marker>
+<marker id="m12b-ahr" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#f87171"></path></marker>
+</defs>
+<rect fill="url(#m12b-grid)" height="300" width="1000" x="0" y="0"></rect>
+<g fill="none" opacity="0.6" stroke="#34d399" stroke-width="1.8">
+<path d="M148,80 L188,80" marker-end="url(#m12b-ah)"></path>
+<path d="M316,80 L356,80" marker-end="url(#m12b-ah)"></path>
+<path d="M484,80 L524,80" marker-end="url(#m12b-ah)"></path>
+<path d="M652,80 L692,80" marker-end="url(#m12b-ah)"></path>
+<path d="M820,104 L820,166" marker-end="url(#m12b-ah)"></path>
+</g>
+<g fill="#a7f3d0" font-family="Inter,sans-serif" font-size="11.5">
+<text text-anchor="middle" x="168" y="68">2%</text>
+<text text-anchor="middle" x="336" y="68">30%</text>
+<text text-anchor="middle" x="504" y="68">45%</text>
+<text text-anchor="middle" x="672" y="68">12%</text>
+</g>
+<g font-family="Inter,sans-serif" font-size="12.5">
+<rect fill="#0e2018" height="48" rx="12" stroke="#34d399" stroke-width="2" width="130" x="18" y="56"></rect><text fill="#a7f3d0" text-anchor="middle" x="83" y="85">campaign</text>
+<rect fill="#0e2018" height="48" rx="12" stroke="#34d399" stroke-width="2" width="128" x="188" y="56"></rect><text fill="#a7f3d0" text-anchor="middle" x="252" y="85">traffic</text>
+<rect fill="#0e2018" height="48" rx="12" stroke="#34d399" stroke-width="2" width="128" x="356" y="56"></rect><text fill="#a7f3d0" text-anchor="middle" x="420" y="85">signup</text>
+<rect fill="#0e2018" height="48" rx="12" stroke="#34d399" stroke-width="2" width="128" x="524" y="56"></rect><text fill="#a7f3d0" text-anchor="middle" x="588" y="85">activation</text>
+<rect fill="#0e2018" height="48" rx="12" stroke="#34d399" stroke-width="2" width="128" x="692" y="56"></rect><text fill="#a7f3d0" text-anchor="middle" x="756" y="85">subscriber</text>
+<g filter="url(#m12b-glow)"><rect fill="#0e2018" height="48" rx="12" stroke="url(#m12b-grad)" stroke-width="2" width="128" x="756" y="166"></rect></g>
+<text fill="#34d399" font-weight="600" text-anchor="middle" x="820" y="195">LTV</text>
+<rect fill="#2a0f16" height="48" rx="12" stroke="#f87171" stroke-width="2" width="128" x="560" y="166"></rect><text fill="#fca5a5" text-anchor="middle" x="624" y="195">churn</text>
+</g>
+<path d="M756,104 L688,170" fill="none" marker-end="url(#m12b-ahr)" opacity="0.7" stroke="#f87171" stroke-width="1.8"></path>
+<path d="M83,104 C83,250 500,262 610,214" fill="none" marker-end="url(#m12b-ahr)" opacity="0.65" stroke="#f87171" stroke-dasharray="8 8" stroke-width="1.8"></path>
+<text fill="#fca5a5" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="360" y="285">Lowering campaign costs brings in colder leads → churn rises</text>
+</svg>
+</div>
+<p class="text-sm text-neutral-400 mb-6">
+<strong class="text-neutral-300">What to look at:</strong> the red dashed line at the bottom. An agent running in a loop with the goal
+      “lower acquisition cost” will see only the first edge and will <em>get right</em> its mission. But it can’t see the dashed line:
+      a cheaper lead is usually a colder lead, churn goes up, LTV goes down—and the business gets worse while the metric improves.
+      This is the technical reason <strong>a single metric never being enough</strong>.
+    </p>
+<figure class="mb-6">
+<img alt="Whiteboard-style diagram of the growth funnel as a graph: budget feeds into a campaign, the campaign generates traffic (reach/impressions), traffic leads to a landing page, the landing page to signup, signup to activation, activation to retention, and retention to LTV (revenue per user) and also to churn (drop-off, 1 minus retention). Churn and LTV point back to CAC and the campaign. A dashed line connects LTV to CAC, labeled healthy LTV-to-CAC ratio greater than 3. In red, a loop is labeled optimize CAC (lower cost or improve campaign quality), alongside the note that a better campaign generates better traffic, lower churn, and higher LTV. In the corner, a note says: a simple loop optimizes 1 metric; the graph shows the impact on the system." class="w-full h-auto rounded-xl border border-dark-600" src="../../../assets/img/ex2-funil-crescimento.png"/>
+<figcaption class="text-sm text-neutral-400 mt-3">
+<strong class="text-neutral-300">What to look at:</strong> the arrows <span class="text-red-400">red</span>, which close a <em>cycle</em>.
+        The funnel by itself would be a DAG (forward only). But CAC loops back to the campaign and churn loops back to the beginning—and that feedback is what gives the system behavior of its own.
+        An agent in a loop targets one box; the graph shows that pulling “lower CAC” moves churn, retention, and LTV together. Also notice the dashed label
+        <strong class="text-neutral-300">LTV/CAC &gt; 3</strong>: a constraint between two metrics—something a single metric can’t express on its own.
+      </figcaption>
+</figure>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-emerald-400 mb-4">Key concepts</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Customer state</div><p class="text-xs text-neutral-400">Each step is a node</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Conversion = weight</div><p class="text-xs text-neutral-400">The edge percentage</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Side effect</div><p class="text-xs text-neutral-400">Edge the loop can’t see</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Multi-metric</div><p class="text-xs text-neutral-400">Just one always misleads</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TOPICO 4 -->
+<section class="mb-16" data-inema-topic="modulo-1-2#topico-4" id="topico-4">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">4</span>
+<h2 class="text-2xl font-bold">🎫 Allocate in parallel: the backlog graph</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span>I have a question</span></button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-2-t4-p1">
+      Every large team eventually ends up with a process: first, a <strong>epic</strong> (the big goal), within it
+      <strong>stories</strong> (the usage stories), inside them <strong>tasks</strong>, and sometimes <strong>subtasks</strong>.
+      That <em>seems</em> a tree. It isn’t: one story almost always depends on another, and then the tree becomes a graph.
+    </p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-2-t4-p2">
+      And that’s why product managers like this design: the graph answers the question they ask every day —
+      <strong class="text-emerald-400">how many people can work here at the same time?</strong> If two branches don't
+      block each other, you can run two. When one task finishes, another slot opens up. If two subtasks are sequential,
+      there's no point in assigning two people to them.
+    </p>
+<div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-4 overflow-hidden">
+<svg aria-label="A backlog graph: an epic at the top branches into two stories. Each story has tasks below. A red dashed line connects the task on the right to the task on the left, indicating a cross-dependency. Two consecutive tasks are marked as blocked, one waiting on the other." class="w-full h-auto" role="img" viewbox="0 0 1000 320">
+<defs>
+<lineargradient id="m12c-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#34d399"></stop><stop offset="1" stop-color="#10b981"></stop></lineargradient>
+<filter height="180%" id="m12c-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="m12c-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#10b981" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="m12c-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#34d399"></path></marker>
+<marker id="m12c-ahr" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#f87171"></path></marker>
+</defs>
+<rect fill="url(#m12c-grid)" height="320" width="1000" x="0" y="0"></rect>
+<g fill="none" opacity="0.55" stroke="#34d399" stroke-width="1.8">
+<path d="M470,74 L300,118" marker-end="url(#m12c-ah)"></path>
+<path d="M530,74 L700,118" marker-end="url(#m12c-ah)"></path>
+<path d="M280,166 L200,210" marker-end="url(#m12c-ah)"></path>
+<path d="M320,166 L400,210" marker-end="url(#m12c-ah)"></path>
+<path d="M700,166 L700,210" marker-end="url(#m12c-ah)"></path>
+<path d="M700,258 L700,286" marker-end="url(#m12c-ah)"></path>
+</g>
+<g font-family="Inter,sans-serif" font-size="12.5">
+<g filter="url(#m12c-glow)"><rect fill="#0e2018" height="48" rx="12" stroke="url(#m12c-grad)" stroke-width="2" width="152" x="424" y="26"></rect></g>
+<text fill="#34d399" font-weight="600" text-anchor="middle" x="500" y="55">epic</text>
+<rect fill="#0e2018" height="48" rx="12" stroke="#34d399" stroke-width="2" width="168" x="216" y="118"></rect><text fill="#a7f3d0" text-anchor="middle" x="300" y="147">story A</text>
+<rect fill="#0e2018" height="48" rx="12" stroke="#34d399" stroke-width="2" width="168" x="616" y="118"></rect><text fill="#a7f3d0" text-anchor="middle" x="700" y="147">story B</text>
+<rect fill="#0e1b26" height="48" rx="12" stroke="#38bdf8" stroke-width="2" width="152" x="124" y="210"></rect><text fill="#bfe6ff" text-anchor="middle" x="200" y="239">task A1</text>
+<rect fill="#0e1b26" height="48" rx="12" stroke="#38bdf8" stroke-width="2" width="152" x="324" y="210"></rect><text fill="#bfe6ff" text-anchor="middle" x="400" y="239">task A2</text>
+<rect fill="#0e1b26" height="48" rx="12" stroke="#38bdf8" stroke-width="2" width="152" x="624" y="210"></rect><text fill="#bfe6ff" text-anchor="middle" x="700" y="239">task B1</text>
+<rect fill="#0e1b26" height="30" rx="9" stroke="#38bdf8" stroke-width="2" width="152" x="624" y="286"></rect><text fill="#bfe6ff" font-size="11.5" text-anchor="middle" x="700" y="306">subtask B1.1</text>
+</g>
+<path d="M624,234 L476,234" fill="none" marker-end="url(#m12c-ahr)" opacity="0.7" stroke="#f87171" stroke-dasharray="8 8" stroke-width="1.8"></path>
+<text fill="#fca5a5" font-family="Inter,sans-serif" font-size="11.5" text-anchor="middle" x="550" y="222">depends on</text>
+<text fill="#a7f3d0" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="200" y="290">free now</text>
+</svg>
+</div>
+<p class="text-sm text-neutral-400 mb-6">
+<strong class="text-neutral-300">What to look at:</strong> the red dashed line. Without it, this is a pretty little tree and you’d say
+      “3 people fit.” With it, task B1 can start only after A2—so in reality, only two workstreams can move forward now.
+      That single cross-edge is the difference between a plan that works and a team stuck waiting.
+    </p>
+<figure class="mb-6">
+<img alt="Whiteboard-style diagram of a software project: an EPIC at the top breaks down into Story A and Story B; Story A has Task 1 and Task 2, and Task 1 has two subtasks; Story B has Task 3 and Task 4, and Task 4 has one subtask. A red arrow goes from Task 2 to Task 3, labeled depends on, and a blue arrow goes from Task 3 to Task 1, labeled blocks. The legend distinguishes three edge types: decomposition in white, depends on (must finish first) in red, and blocks (prevents work from starting) in blue." class="w-full h-auto rounded-xl border border-dark-600" src="../../../assets/img/ex3-projeto-software.png"/>
+<figcaption class="text-sm text-neutral-400 mt-3">
+<strong class="text-neutral-300">What to look at:</strong> the legend in the lower-right corner. There are <strong>three different edge types</strong> in the same design —
+        and that distinction is what separates a nice-looking org chart from a useful graph. The white lines (decomposition) form the tree;
+        the <span class="text-red-400">red</span> e a <span class="text-blue-400">blue</span> are the ones that break the tree and turn it into a graph.
+        Count the fronts that can move forward now: Task 3 blocks Task 1, so the left half that looked free… isn't.
+      </figcaption>
+</figure>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+<h4 class="font-bold text-emerald-400 mb-4">✓ Break down the task to unblock progress</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Build the screen with fake data while the database doesn't exist</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Agree on the contract (the data format) first, and each side handles its own part</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Separate “what decides” from “what executes”</span></li>
+</ul>
+</div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+<h4 class="font-bold text-red-400 mb-4">✗ False parallelism</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Put 5 people (or 5 agents) in a branch that only releases 1 node at a time</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Calling two things “independent subtasks” when they both modify the same file</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Ignore the dependency because it's in another epic</span></li>
+</ul>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-emerald-400 mb-4">Key concepts</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Dependency</div><p class="text-xs text-neutral-400">Blocking edge</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Breadth</div><p class="text-xs text-neutral-400">How many fit now</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Unblocking</div><p class="text-xs text-neutral-400">Break it up to free up work</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Applies to agents</div><p class="text-xs text-neutral-400">Same account, different fleet</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TOPICO 5 -->
+<section class="mb-16" data-inema-topic="modulo-1-2#topico-5" id="topico-5">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">5</span>
+<h2 class="text-2xl font-bold">📚 Link the documentation the agent reads</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span>I have a question</span></button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-2-t5-p1">
+      The most common way to give an agent context today is to drop a folder full of files on it <code class="text-emerald-400">.md</code>
+      and hope for the best. The agent reads everything, burns through context, and still mixes old information with new. The alternative is to turn
+      this folder into a graph: each document becomes a node, and you declare <em>how</em> one document relates to the other.
+    </p>
+<div class="bg-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-emerald-400 mb-2 flex items-center"><span class="mr-2">🧪</span> Practical example: turn your docs folder into a graph</h3>
+<p class="text-sm text-neutral-400 mb-4"><strong class="text-neutral-300">Objective:</strong> go from “a pile of loose .md files” to a map the agent can navigate. Paste this prompt into Claude Code (or any agent with access to your files), inside the project folder.</p>
+<div class="code-box bg-dark-900 rounded-lg border border-dark-600 p-4 mb-4 overflow-x-auto">
+<pre class="text-sm text-neutral-300">Leia todos os arquivos .md em &lt;./docs&gt; e me devolva um grafo de conhecimento em JSON.
+
+Regras:
+- Cada arquivo e um no: { "id", "arquivo", "assunto_em_1_frase", "publico" }
+- Cada aresta e uma relacao TIPADA entre dois nos. Use SO estes tipos:
+  "pre_requisito_de" | "detalha" | "contradiz" | "substitui" | "exemplo_de"
+- Se dois documentos se contradizem, crie a aresta "contradiz" e explique
+  em uma frase QUAL afirmacao conflita.
+- Se um documento nao se liga a nenhum outro, liste-o em "orfaos".
+
+Formato de saida (so o JSON, sem texto em volta):
+{ "nos": [...], "arestas": [{"de","para","tipo","porque"}], "orfaos": [...] }</pre>
+</div>
+<div class="bg-dark-700/50 rounded-lg p-4">
+<p class="text-sm text-neutral-300"><strong class="text-emerald-400">How to verify:</strong> three signs that it worked—
+        (1) the JSON is valid; (2) there is at least one edge <code class="text-emerald-400">contradiz</code> or the list of
+        <code class="text-emerald-400">orfaos</code> isn't empty (real documentation always has junk); (3) you look at the field
+        <code class="text-emerald-400">porque</code> of 3 edges and agrees with them. If all the edges are “elaborates,” the agent was lazy — ask again and require a variety of types.</p>
+<p class="text-sm text-neutral-400 mt-3"><strong class="text-neutral-300">Switch:</strong> <code class="text-emerald-400">&lt;./docs&gt;</code> through your folder.</p>
+</div>
+</div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center"><span class="mr-2">⚠️</span> Don't confuse it with “graph engineering”</h3>
+<p class="text-neutral-300">
+        What you just created is a <strong>knowledge graph</strong>: a graph of <em>information</em> that the agent queries.
+        Graph engineering (Track 4) is a graph of <em>execution</em>: who runs, in what order, with which tools.
+        They’re different things, and the market mixes them up all the time. Track 3 has a table just to clear up that confusion.
+      </p>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-emerald-400 mb-4">Key concepts</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Doc = node</div><p class="text-xs text-neutral-400">One node per file</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Typed relationship</div><p class="text-xs text-neutral-400">Not all connections are the same</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Navigate &gt; read everything</div><p class="text-xs text-neutral-400">Less context burned</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">It's not the same</div><p class="text-xs text-neutral-400">Knowledge ≠ execution</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TOPICO 6 -->
+<section class="mb-16" data-inema-topic="modulo-1-2#topico-6" id="topico-6">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">6</span>
+<h2 class="text-2xl font-bold">🧱 Copy from the build: the dependency graph</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span>I have a question</span></button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-2-t6-p1">
+      This is the graph most like the one you’ll build in Track 4—and the good news is that it already exists and has worked
+      for decades. When you run <code class="text-emerald-400">npm install</code>, <code class="text-emerald-400">make</code> or
+      a CI pipeline: a tool builds a directed dependency graph and decides on its own what runs first,
+      what runs next, and what can run at the same time.
+    </p>
+<div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center"><span class="mr-2">🎯</span> Everything the build has already solved, your agent graph will need</h3>
+<ul class="space-y-2 text-neutral-300">
+<li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span><strong>Order:</strong> nothing runs before what it depends on (topological order)</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span><strong>Parallelism:</strong> independent branches run together</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span><strong>Cache:</strong> if nothing changed at that node, don't redo it</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span><strong>Cycle detection:</strong> circular dependency = explicit error, not a silent freeze</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span><strong>Resumption:</strong> did it fail midway? rerun only what was missing</span></li>
+</ul>
+<p class="text-neutral-400 text-sm mt-4">None of these ideas is new or exclusive to AI. That’s why many people in the orchestration world reacted to the “graph engineering” hype with a shrug—Track 3 tells that story honestly.</p>
+</div>
+<div class="inema-check mt-8 bg-dark-800 border border-dark-600 rounded-xl p-6 mb-6" data-inema-check="modulo-1-2#q1">
+<p class="font-medium mb-4">Quick check: In the campaign → ... → LTV funnel, an agent that only looks at acquisition cost can hurt the business. Why, in graph terms?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">Because the graph has a cycle and never ends</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">Because it optimizes the weight of ONE edge and can’t see the effect on the others</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">Because business graphs can’t have weights</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-emerald-400 mb-4">Key concepts</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Build DAG</div><p class="text-xs text-neutral-400">The ancestor of the work graph</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Cache per node</div><p class="text-xs text-neutral-400">Don't redo what hasn't changed</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Cycle = error</div><p class="text-xs text-neutral-400">Detected, not endured</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Resumption</div><p class="text-xs text-neutral-400">Reruns only what was missing</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<section class="mb-12">
+<div class="bg-gradient-to-br from-emerald-900/40 via-dark-800 to-dark-800 rounded-xl border border-emerald-500/30 p-8">
+<h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">📌</span> Module Summary</h2>
+<div class="space-y-4 mb-8">
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Modeling is choosing</strong><span class="text-neutral-400"> — what counts as a node, what counts as a weight, based on the question you want to answer.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Degree of separation is the distance in edges</strong><span class="text-neutral-400"> — and edges can have a type, not just a weight.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">One metric is never enough</strong><span class="text-neutral-400"> — optimizing one edge affects the others; the graph lets you see that.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Parallelism is a property of the graph</strong><span class="text-neutral-400"> — cross-dependency determines how many workstreams move forward.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Knowledge graph ≠ graph engineering</strong><span class="text-neutral-400"> — information the agent reads vs. execution the agent follows.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">The build already did this</strong><span class="text-neutral-400"> — ordering, parallelism, caching, cycle detection, and resumption.</span></div></div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+<h3 class="font-semibold text-emerald-400 mb-2">Next Module:</h3>
+<p class="text-neutral-300">1.3 — How to traverse a graph: traversal, shortest path, topological order, and cycle detection.</p>
+</div>
+<div class="flex flex-col sm:flex-row gap-4">
+<a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="modulo-1-1.html">← Previous Module</a>
+<a class="flex-1 text-center px-6 py-3 bg-emerald-600 text-white rounded-lg font-semibold hover:bg-emerald-500 transition-colors" href="modulo-1-3.html">Next Module →</a>
+</div>
+</div>
+</section>
+</main>
+</div>
+</div>
+<footer class="border-t border-dark-600 py-8 mt-16">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+<p>Graph Engineering — From Loops to Graphs · INEMA 2026</p>
+<p class="mt-2">
+<a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+<span class="text-neutral-600 mx-1">-</span>
+<a class="text-amber-700 hover:text-amber-600 dark:text-slate-300 dark:hover:text-slate-200" href="https://inema.pro" target="_blank">PRO</a>
+</p>
+</div>
+</footer>
+<script>
+  function toggleTopic(button) {
+    const topicItem = button.closest('.topic-item');
+    const explanation = topicItem.querySelector('.topic-explanation');
+    const moduleCard = button.closest('.bg-dark-800') || document;
+    moduleCard.querySelectorAll('.topic-explanation.active').forEach(exp => { if (exp !== explanation) { exp.classList.remove('active'); const b = exp.closest('.topic-item').querySelector('button'); if (b) b.setAttribute('aria-expanded','false'); } });
+    explanation.classList.toggle('active');
+    button.setAttribute('aria-expanded', explanation.classList.contains('active') ? 'true' : 'false');
+  }
+  function openModal(modalId) { const m = document.getElementById(modalId); if (m) { m.classList.remove('hidden'); document.body.style.overflow = 'hidden'; } }
+  function closeModal() { document.querySelectorAll('.modal').forEach(m => m.classList.add('hidden')); document.body.style.overflow = 'auto'; }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+  const themeToggle = document.getElementById('theme-toggle');
+  const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+  const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+  const htmlEl = document.documentElement;
+  if (htmlEl.classList.contains('dark')) themeToggleLightIcon.classList.remove('hidden'); else themeToggleDarkIcon.classList.remove('hidden');
+  themeToggle.addEventListener('click', () => {
+    themeToggleDarkIcon.classList.toggle('hidden'); themeToggleLightIcon.classList.toggle('hidden');
+    htmlEl.classList.toggle('dark');
+    const dark = htmlEl.classList.contains('dark');
+    localStorage.setItem('theme', dark ? 'dark' : 'light');
+    try { const p = JSON.parse(localStorage.getItem('inema.prefs') || '{}'); p.theme = dark ? 'inema-dark' : 'claro'; localStorage.setItem('inema.prefs', JSON.stringify(p)); } catch (e) {}
+  });
+</script>
+<script src="../../../assets/learn.js"></script>
+<script>
+  if (window.INEMA && typeof window.INEMA.init === 'function') { window.INEMA.init(); }
+  window.addEventListener('DOMContentLoaded', function () {
+    if (window.INEMA && INEMA.registerCheck) {
+      INEMA.registerCheck('modulo-1-2#q1', {
+        answer: 1,
+        explain: {
+          0: 'Nao. O funil desenhado nao tem ciclo — nao ha aresta voltando. O problema nao e terminacao, e visao parcial.',
+          1: 'Isso. O agente enxerga o peso de uma aresta so (custo de aquisicao) e otimiza esse numero. As arestas seguintes — ativacao, churn, LTV — mudam junto, e ele nao as ve. Por isso uma metrica nunca basta.',
+          2: 'Nao. Grafos de negocio nao so podem como quase sempre TEM peso: taxa de conversao, custo, receita. O peso e justamente o que permite ver o trade-off.'
+        }
+      });
+    }
+  });
+</script>
+</body>
+</html>

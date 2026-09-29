@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="loopgraph" name="inema-course"/>
+<title>Module 5.1 — From loop to graph | Graph Engineering</title>
+<script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'emerald' };
+      function clone(o) { var r = {}; for (var x in o) r[x] = o[x]; return r; }
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed === 'object') { for (var k in DEF) if (parsed[k] != null) p[k] = parsed[k]; } }
+        else { var legacy = localStorage.getItem('theme'); if (legacy === 'light') p.theme = 'claro'; else if (legacy === 'dark') p.theme = 'inema-dark'; }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = { 'inema-dark': { dark: true, attr: null, cs: 'dark' }, 'claro': { dark: false, attr: null, cs: 'light' }, 'sepia': { dark: false, attr: 'sepia', cs: 'light' }, 'foco': { dark: null, attr: 'foco', cs: null }, 'contraste': { dark: true, attr: 'contraste', cs: 'dark' } };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark === true) html.classList.add('dark'); else if (t.dark === false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark') ? 'dark' : 'light'));
+      html.setAttribute('data-font', p.font || 'inter'); html.setAttribute('data-accent', p.accent || 'emerald');
+      var s = html.style, scale = (+p.fontScale || 100);
+      s.setProperty('--inema-font-scale', (scale / 100).toString()); s.setProperty('font-size', scale + '%');
+      s.setProperty('--measure', (+p.lineWidth || 68) + 'ch'); s.setProperty('--lh-body', (+p.leading || 1.7).toString());
+      var fam = p.font === 'system' ? 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif' : (p.font === 'leitura' ? '"Atkinson Hyperlegible", "Inter", system-ui, sans-serif' : '"Inter", system-ui, sans-serif');
+      s.setProperty('--font-body', fam);
+      var ACC = { emerald: [152,76,45], blue: [217,91,60], purple: [258,90,66], amber: [38,92,50], teal: [174,72,41], rose: [350,89,60] };
+      var a = ACC[p.accent] || ACC.emerald;
+      s.setProperty('--accent-h', a[0]+''); s.setProperty('--accent-s', a[1]+'%'); s.setProperty('--accent-l', a[2]+'%');
+      s.setProperty('--accent', 'hsl(' + a[0] + ' ' + a[1] + '% ' + a[2] + '%)');
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme = 'dark'; } catch (e) {} }
+  })();
+  </script>
+<script data-inema-manifest="" type="application/json">
+  {
+    "course": "loopgraph",
+    "tracks": [
+      { "n": "1", "title": "Fundamentos: o grafo", "modules": [
+        { "id": "1-1", "title": "O que e um grafo", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
+        { "id": "1-2", "title": "Grafos no mundo real", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+        { "id": "1-3", "title": "Como se anda num grafo", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" }
+      ]},
+      { "n": "2", "title": "Loop Engineering", "modules": [
+        { "id": "2-1", "title": "Anatomia do loop", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
+        { "id": "2-2", "title": "O verificador e o gargalo", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
+        { "id": "2-3", "title": "Onde o loop quebra", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" }
+      ]},
+      { "n": "3", "title": "Agentic x Loop x Graph", "modules": [
+        { "id": "3-1", "title": "As cinco camadas", "topics": 6, "href": "curso/trilha3/modulo-3-1.html" },
+        { "id": "3-2", "title": "O comparativo de verdade", "topics": 6, "href": "curso/trilha3/modulo-3-2.html" },
+        { "id": "3-3", "title": "Mito x fato", "topics": 6, "href": "curso/trilha3/modulo-3-3.html" }
+      ]},
+      { "n": "4", "title": "Graph Engineering na pratica", "modules": [
+        { "id": "4-1", "title": "Nos, arestas e estado", "topics": 6, "href": "curso/trilha4/modulo-4-1.html" },
+        { "id": "4-2", "title": "Org graph x work graph", "topics": 6, "href": "curso/trilha4/modulo-4-2.html" },
+        { "id": "4-3", "title": "Falhas, harness e observabilidade", "topics": 6, "href": "curso/trilha4/modulo-4-3.html" }
+      ]},
+      { "n": "5", "title": "Mao na massa", "modules": [
+        { "id": "5-1", "title": "Do loop ao grafo", "topics": 6, "href": "curso/trilha5/modulo-5-1.html" },
+        { "id": "5-2", "title": "Grafos de negocio e de tarefas", "topics": 6, "href": "curso/trilha5/modulo-5-2.html" },
+        { "id": "5-3", "title": "Biblioteca de prompts", "topics": 6, "href": "curso/trilha5/modulo-5-3.html" }
+      ]}
+    ]
+  }
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }</script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../../assets/learn.css" rel="stylesheet"/>
+<link href="../../../assets/curso.css" rel="stylesheet"/>
+<link href="https://inematds.github.io/loopgraph/curso/trilha5/modulo-5-1.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/loopgraph/en/curso/trilha5/modulo-5-1.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/loopgraph/es/curso/trilha5/modulo-5-1.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha5/modulo-5-1.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="modulo-5-1.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">EN</a><a href="../../../es/curso/trilha5/modulo-5-1.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<a class="sr-only focus:not-sr-only focus:absolute focus:z-[60] focus:m-2 focus:px-4 focus:py-2 focus:rounded-lg focus:bg-dark-700" href="#conteudo">Skip to content</a>
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14 gap-2">
+<div class="flex items-center space-x-3 flex-shrink-0">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html">
+<span class="text-2xl">🕸️</span><span class="font-bold text-lg hidden lg:inline">Graph Engineering</span>
+</a>
+<span class="text-neutral-600 hidden sm:inline">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium hidden sm:inline" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+<span class="text-neutral-600 hidden sm:inline">-</span>
+<a class="text-amber-700 hover:text-amber-600 dark:text-slate-300 dark:hover:text-slate-200 text-sm font-medium hidden sm:inline" href="https://inema.pro" target="_blank">PRO</a>
+</div>
+<div class="flex items-center space-x-1">
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors" href="../trilha1/index.html"><span class="lg:hidden">T1</span><span class="hidden lg:inline">Fundamentals</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors" href="../trilha2/index.html"><span class="lg:hidden">T2</span><span class="hidden lg:inline">Loops</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors" href="../trilha3/index.html"><span class="lg:hidden">T3</span><span class="hidden lg:inline">Comparison</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors" href="../trilha4/index.html"><span class="lg:hidden">T4</span><span class="hidden lg:inline">Practice</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-teal-400 bg-teal-500/10" href="index.html"><span class="lg:hidden">T5</span><span class="hidden lg:inline">Hands-on</span></a>
+<button class="hidden sm:inline-flex items-center gap-1 px-2 py-1.5 rounded-lg text-sm text-neutral-400 hover:text-neutral-100 transition-colors" data-inema-journey-open="" title="My journey" type="button">
+<span aria-hidden="true">◷</span><span class="hidden xl:inline">Journey</span><span aria-hidden="true" class="inema-journey-badge hidden"></span>
+</button>
+<button aria-label="Toggle light/dark theme" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<nav aria-label="Navigation trail" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+<div class="flex items-center space-x-2 text-sm text-neutral-400">
+<a class="hover:text-teal-400" href="../../index.html">Start</a><span>/</span>
+<a class="hover:text-teal-400" href="index.html">Track 5</a><span>/</span>
+<span class="text-teal-400">Module 5.1</span>
+</div>
+</nav>
+<header class="bg-gradient-to-br from-teal-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600" data-inema-module="5-1" data-inema-track="5">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-teal-500/20 text-teal-400 text-xs font-semibold rounded-full mb-4">MODULE 5.1</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">🔀 From loop to graph</h1>
+<p class="text-lg text-neutral-400 max-w-3xl">
+      Migrating isn’t chasing a trend. It’s an engineering decision you back up with numbers.
+      This module is the practical step-by-step guide: the signals that justify migrating, the baseline you measure beforehand,
+      the context cuts that define the nodes, the contract between the edges—and the courage to roll back if it isn’t worth it.
+    </p>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-teal-400">6</div><div class="text-xs text-neutral-400">Topics</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-teal-400">45</div><div class="text-xs text-neutral-400">Minutes</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-teal-400">Practical</div><div class="text-xs text-neutral-400">Level</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-teal-400">Step by step</div><div class="text-xs text-neutral-400">Type</div></div>
+</div>
+<div class="mt-6 max-w-2xl bg-dark-800 rounded-xl border border-dark-600 p-4">
+<div class="flex items-center justify-between">
+<span class="text-sm text-neutral-300 font-semibold">Progress in this module</span>
+<div aria-label="Module 5.1 progress" aria-valuemax="100" aria-valuemin="0" class="inema-meter text-sm" data-inema-meter="modulo:5-1" role="progressbar">
+<span class="inema-meter-pct text-teal-400 font-bold">0%</span><span class="inema-meter-count text-neutral-400 ml-2">0 of 6</span>
+</div>
+</div>
+</div>
+</div>
+</header>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="lg:grid lg:grid-cols-[220px_minmax(0,1fr)] lg:gap-10">
+<nav aria-label="Page index" class="hidden lg:block sticky top-24 self-start" data-inema-toc="">
+<p class="text-sm text-neutral-400 mb-3">Section <span class="inema-toc-pos">1</span> of <span class="inema-toc-total">6</span></p>
+<ul class="space-y-1 text-sm">
+<li><a class="inema-toc-link text-neutral-400 hover:text-teal-400" href="#topico-1">1. Check the three signals</a></li>
+<li><a class="inema-toc-link text-neutral-400 hover:text-teal-400" href="#topico-2">2. Measure before making changes</a></li>
+<li><a class="inema-toc-link text-neutral-400 hover:text-teal-400" href="#topico-3">3. Cut at the right points</a></li>
+<li><a class="inema-toc-link text-neutral-400 hover:text-teal-400" href="#topico-4">4. Write the contract</a></li>
+<li><a class="inema-toc-link text-neutral-400 hover:text-teal-400" href="#topico-5">5. Add a return edge with a limit</a></li>
+<li><a class="inema-toc-link text-neutral-400 hover:text-teal-400" href="#topico-6">6. Compare and have the courage</a></li>
+</ul>
+</nav>
+<main class="inema-prose" id="conteudo">
+<!-- ============ TOPICO 1 ============ -->
+<section class="mb-16" data-inema-topic="modulo-5-1#topico-1" id="topico-1">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">1</span>
+<h2 class="text-2xl font-bold">🚦 Check the three signals before migrating</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button">
+<span aria-hidden="true">?</span><span>I have a question</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m5-1-t1-p1">
+      There are exactly three signals that justify replacing a loop with a graph. No other reason counts —
+      not "graphs seem more advanced," and not "everyone is doing it." If none of the three apply to your case,
+      migrating will only cost you complexity without any payoff.
+    </p>
+<div class="space-y-6 mb-6">
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-teal-500/20 flex items-center justify-center"><span class="text-teal-400 font-bold">a</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">You need to run parts at the same time</h4>
+<p class="text-neutral-300 text-sm">Search three sources, generate two variations, check two independent criteria—work that doesn’t depend on one another and that a sequential loop can only do one at a time.</p>
+</div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-teal-500/20 flex items-center justify-center"><span class="text-teal-400 font-bold">b</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">You need a reviewer who DOESN'T see how the work was done</h4>
+<p class="text-neutral-300 text-sm">In a single-context loop, the reviewer carries the same reasoning as the writer—and tends to approve their own work. Blind review requires a <strong class="text-teal-400">clean context</strong>: one that receives only the result, never the path to it.</p>
+</div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-teal-500/20 flex items-center justify-center"><span class="text-teal-400 font-bold">c</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">The context is turning into a swamp</h4>
+<p class="text-neutral-300 text-sm">After many rounds in the same loop, the agent accumulates so much in its context that it loses the original instruction — it starts to “forget” the goal. This is a sign that a responsibility needs to move to another node, with its own context.</p>
+</div>
+</div>
+</div>
+<div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">🆕</span> New here? Two words before you continue</h3>
+<ul class="space-y-2 text-neutral-300 text-sm">
+<li><strong class="text-neutral-100">Baseline:</strong> the current version’s numbers (cost, time, quality), measured BEFORE any change — without them, you’ll never know whether a migration was worthwhile.</li>
+<li><strong class="text-neutral-100">Clean context:</strong> a node that receives only what it needs to do its job—never the reasoning or draft from whoever handled the previous step.</li>
+</ul>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-teal-900/20 rounded-xl border border-teal-500/30 p-6">
+<h4 class="font-bold text-teal-400 mb-4">✓ Signs that authorize migration</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-teal-400">✓</span><span>There’s independent work that currently runs in a queue</span></li>
+<li class="flex items-start space-x-2"><span class="text-teal-400">✓</span><span>You need a judgment that doesn't see the draft</span></li>
+<li class="flex items-start space-x-2"><span class="text-teal-400">✓</span><span>The agent loses the original instruction after N rounds</span></li>
+</ul>
+</div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+<h4 class="font-bold text-red-400 mb-4">✗ Signs the problem lies elsewhere</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>"It's slow" — diagnose first: it could be a bad prompt, not the architecture</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>"The verifier approves anything" — change the verifier, not the structure</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>"It looks more professional to have multiple agents" — fashion isn't engineering</span></li>
+</ul>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-teal-400 mb-4">Key concepts</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">Three signals</div><p class="text-xs text-neutral-400">Parallelism, blind reviewer, swamp</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">No other one counts</div><p class="text-xs text-neutral-400">Trends don’t justify migrating</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">Weak verifier</div><p class="text-xs text-neutral-400">It’s almost always the real culprit</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">Clean context</div><p class="text-xs text-neutral-400">The foundation of blind review</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-500/20 border border-teal-500/30 text-teal-400 hover:bg-teal-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span>
+</button>
+</div>
+</section>
+<!-- ============ TOPICO 2 ============ -->
+<section class="mb-16" data-inema-topic="modulo-5-1#topico-2" id="topico-2">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">2</span>
+<h2 class="text-2xl font-bold">📏 Measure before making changes</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button">
+<span aria-hidden="true">?</span><span>I have a question</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m5-1-t2-p1">
+      Before touching any code, write down three numbers from the current version: <strong class="text-teal-400">cost per execution</strong>
+      (tokens or dollars), <strong class="text-teal-400">total time</strong> (from beginning to end) is a
+      <strong class="text-teal-400">quality measure</strong> that you can verify yourself — for example,
+      how many claims in the summary you manually checked and found correct, out of 10.
+    </p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m5-1-t2-p2">
+      Migrating without a baseline is faith, not engineering. Without these three numbers, you’ll never know whether the graph
+      delivered anything real or just traded one problem for another—one that looks better but costs more.
+    </p>
+<div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">📊</span> The three numbers you need to write down</h3>
+<ul class="space-y-2 text-neutral-300 text-sm">
+<li><strong>Cost per execution</strong> — tokens consumed or dollars spent in a typical run</li>
+<li><strong>Total time</strong> — from trigger to the finished final result</li>
+<li><strong>Verifiable quality</strong> — a sample you check yourself (e.g., 10 claims, how many are correct)</li>
+</ul>
+</div>
+<div class="bg-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-teal-400 mb-2 flex items-center"><span class="mr-2">🧪</span> Practical example: the baseline spreadsheet</h3>
+<p class="text-sm text-neutral-400 mb-4"><strong class="text-neutral-300">Objective:</strong> record the three numbers for the current version (the loop) before migrating, and the same block afterward — to make a real comparison in topic 6.</p>
+<div class="code-box bg-dark-900 rounded-lg border border-dark-600 p-4 mb-4 overflow-x-auto">
+<pre class="text-sm text-neutral-300">// linha-de-base.json — preencha ANTES de migrar
+{
+  "versao": "loop",
+  "data": "&lt;aaaa-mm-dd&gt;",
+  "custo_por_execucao_usd": &lt;numero&gt;,
+  "tempo_total_min": &lt;numero&gt;,
+  "qualidade": {
+    "amostra": 10,
+    "afirmacoes_corretas": &lt;numero de 0 a 10&gt;
+  },
+  "observacoes": "&lt;o que voce notou rodando 3-5 vezes&gt;"
+}
+
+// linha-de-base.json — preencha DEPOIS de migrar, MESMAS entradas
+{
+  "versao": "grafo",
+  "data": "&lt;aaaa-mm-dd&gt;",
+  "custo_por_execucao_usd": &lt;numero&gt;,
+  "tempo_total_min": &lt;numero&gt;,
+  "qualidade": {
+    "amostra": 10,
+    "afirmacoes_corretas": &lt;numero de 0 a 10&gt;
+  },
+  "observacoes": "&lt;o que mudou de verdade&gt;"
+}</pre>
+</div>
+<div class="bg-dark-700/50 rounded-lg p-4">
+<p class="text-sm text-neutral-300"><strong class="text-teal-400">How to verify:</strong> run each version 3 to 5 times with the same inputs before recording the results —
+        one number could be luck. If you can't fill in the three fields for the current version right now, stop: measure first,
+        migrate later.</p>
+</div>
+</div>
+<div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Practical tip</h3>
+<p class="text-neutral-300">
+        There is no perfect quality metric. The rule is simple: choose something you can check yourself without a new tool, and use the same criteria for both versions. Changing metrics midway invalidates the comparison.
+      </p>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-teal-400 mb-4">Key concepts</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">Baseline</div><p class="text-xs text-neutral-400">Numbers BEFORE migrating</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">Three numbers</div><p class="text-xs text-neutral-400">Cost, time, quality</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">Independently verifiable</div><p class="text-xs text-neutral-400">No new tool</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">Repeat 3-5x</div><p class="text-xs text-neutral-400">A single number could just be luck</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-500/20 border border-teal-500/30 text-teal-400 hover:bg-teal-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span>
+</button>
+</div>
+</section>
+<!-- ============ TOPICO 3 ============ -->
+<section class="mb-16" data-inema-topic="modulo-5-1#topico-3" id="topico-3">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">3</span>
+<h2 class="text-2xl font-bold">✂️ Cut at the Context-Switch Points</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button">
+<span aria-hidden="true">?</span><span>I have a question</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m5-1-t3-p1">
+      Break the loop where the <strong class="text-teal-400">responsibility</strong>, a <strong class="text-teal-400">tool</strong>
+      or the <strong class="text-teal-400">necessary context</strong>. Don't break it at arbitrary points—each cut needs to correspond
+      to one of these three changes, or you've just created more nodes without adding clarity.
+    </p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m5-1-t3-p2">
+      For the daily summary, that gives you three natural nodes: who <strong>search</strong> (needs the internet, produces notes),
+      who <strong>writes</strong> (doesn’t need the internet, only the notes), who <strong>check it</strong>
+      (needs the internet again to check facts, but must NOT see the draft being written).
+    </p>
+<div class="rounded-2xl border border-teal-500/30 bg-dark-900/40 p-3 sm:p-4 mb-4 overflow-hidden">
+<svg aria-label="Before-and-after comparison of the migration, divided by a vertical dashed line at x=500. On the left, a single large node with a circular arrow looping back to itself, with the labels search, raw HTML, draft, and review crowded inside it, called 1 sequential context. On the right, three nodes in a row: researcher with a fan of sources in cyan, then writer, then reviewer, with a red edge from reviewer back to writer labeled rejected max 2, and the labels notes, draft, and critiques on the edges, called 3 clean contexts, parallel in search." class="w-full h-auto" role="img" viewbox="0 0 1000 320">
+<defs>
+<lineargradient id="m51a-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#2dd4bf"></stop><stop offset="1" stop-color="#14b8a6"></stop></lineargradient>
+<filter height="180%" id="m51a-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="m51a-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#14b8a6" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="m51a-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#2dd4bf"></path></marker>
+<marker id="m51a-ahc" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#38bdf8"></path></marker>
+<marker id="m51a-ahr" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#f87171"></path></marker>
+</defs>
+<rect fill="url(#m51a-grid)" height="320" width="1000" x="0" y="0"></rect>
+<path d="M500,20 L500,300" opacity="0.4" stroke="#9ca3af" stroke-dasharray="9 9" stroke-width="1.5"></path>
+<text fill="#99f6e4" font-family="Inter,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="220" y="36">BEFORE</text>
+<g filter="url(#m51a-glow)"><circle cx="220" cy="150" fill="#0c1f1c" r="90" stroke="url(#m51a-grad)" stroke-width="2"></circle></g>
+<path d="M290,90 C340,110 340,190 290,210" fill="none" marker-end="url(#m51a-ah)" opacity="0.6" stroke="#2dd4bf" stroke-width="1.8"></path>
+<g fill="#99f6e4" font-family="Inter,sans-serif" font-size="12">
+<text text-anchor="middle" x="220" y="115">search</text>
+<text text-anchor="middle" x="220" y="140">Raw HTML</text>
+<text text-anchor="middle" x="220" y="165">draft</text>
+<text text-anchor="middle" x="220" y="190">review</text>
+</g>
+<text fill="#99f6e4" font-family="Inter,sans-serif" font-size="13" text-anchor="middle" x="220" y="270">1 context, sequential</text>
+<text fill="#99f6e4" font-family="Inter,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="750" y="36">AFTER</text>
+<g font-family="Inter,sans-serif" font-size="13">
+<rect fill="#0e1b26" height="48" rx="12" stroke="#38bdf8" stroke-width="2" width="120" x="565" y="86"></rect><text fill="#bfe6ff" text-anchor="middle" x="625" y="116">researcher</text>
+<rect fill="#0c1f1c" height="48" rx="12" stroke="#2dd4bf" stroke-width="2" width="110" x="745" y="86"></rect><text fill="#99f6e4" text-anchor="middle" x="800" y="116">writer</text>
+<g filter="url(#m51a-glow)"><rect fill="#0c1f1c" height="48" rx="12" stroke="url(#m51a-grad)" stroke-width="2" width="80" x="905" y="86"></rect></g>
+<text fill="#2dd4bf" font-weight="600" text-anchor="middle" x="945" y="116">reviewer</text>
+</g>
+<g fill="none" opacity="0.55" stroke="#38bdf8" stroke-width="1.6">
+<path d="M600,70 L560,50"></path><path d="M625,66 L625,50"></path><path d="M650,70 L680,50"></path>
+</g>
+<text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="625" y="42">range of sources</text>
+<path d="M685,110 L745,110" marker-end="url(#m51a-ah)" opacity="0.6" stroke="#2dd4bf" stroke-width="1.8"></path>
+<text fill="#99f6e4" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="715" y="100">notes</text>
+<path d="M855,110 L905,110" marker-end="url(#m51a-ah)" opacity="0.6" stroke="#2dd4bf" stroke-width="1.8"></path>
+<text fill="#99f6e4" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="880" y="100">draft</text>
+<path d="M905,140 C860,175 810,175 785,140" fill="none" marker-end="url(#m51a-ahr)" opacity="0.7" stroke="#f87171" stroke-width="1.8"></path>
+<text fill="#fca5a5" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="845" y="192">rejected (max 2)</text>
+<text fill="#99f6e4" font-family="Inter,sans-serif" font-size="13" text-anchor="middle" x="770" y="270">3 clean contexts, parallel search</text>
+</svg>
+</div>
+<p class="text-sm text-neutral-400 mb-6">
+<strong class="text-neutral-300">What to look at:</strong> on the left, everything is piled into one context—search, raw HTML, draft, and
+      review all jumbled together, turning on the same arrow. On the right, three separate boxes: the researcher has a range of cyan sources (can
+      run in parallel), passes <em>notes</em> to the writer, who returns a <em>draft</em> to the reviewer. Only the red edge loops back —
+      with a cap (max 2) and a label describing what it carries.
+    </p>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center"><span class="mr-2">⚠️</span> Wrong cut: breaking things up because it “looks nice”</h3>
+<p class="text-neutral-300">
+        If you can’t point to which of the three things changed (responsibility, tool, context) in a cut, it’s artificial.
+        A graph with artificial nodes is worse than the original loop: more prompts to write, more edges to maintain, and no real gain.
+      </p>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-teal-400 mb-4">Key concepts</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">Three reasons to cut</div><p class="text-xs text-neutral-400">Responsibility, tool, context</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">Researcher</div><p class="text-xs text-neutral-400">Needs internet access; produces notes</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">Writer</div><p class="text-xs text-neutral-400">Only needs the notes</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">Reviewer</div><p class="text-xs text-neutral-400">Internet again, but with clean context</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-500/20 border border-teal-500/30 text-teal-400 hover:bg-teal-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span>
+</button>
+</div>
+</section>
+<!-- ============ TOPICO 4 ============ -->
+<section class="mb-16" data-inema-topic="modulo-5-1#topico-4" id="topico-4">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">4</span>
+<h2 class="text-2xl font-bold">📜 Write the contract between nodes</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button">
+<span aria-hidden="true">?</span><span>I have a question</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m5-1-t4-p1">
+      Before writing any code, define what each edge carries — that’s the <strong class="text-teal-400">state schema</strong>,
+      the exact format of the data passed from one node to the next. The researcher returns <strong class="text-teal-400">notes</strong>
+      (not raw HTML — that’s the swamp coming back through the back door); the writer returns <strong class="text-teal-400">draft</strong>;
+      the reviewer returns <strong class="text-teal-400">approved + critiques</strong>.
+    </p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m5-1-t4-p2">
+      Also write down what explicitly does NOT pass: the writer’s reasoning doesn’t go to the reviewer. This isn’t a detail—
+      it’s the difference between a real reviewer and one that just agrees with the writer.
+    </p>
+<div class="bg-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-teal-400 mb-2 flex items-center"><span class="mr-2">🧪</span> Practical example: the migrated daily summary grafo.json</h3>
+<p class="text-sm text-neutral-400 mb-4"><strong class="text-neutral-300">Objective:</strong> see the full contract — three nodes with their own configs and edges with conditions (<code class="text-teal-400">quando</code>), payload (<code class="text-teal-400">passa</code>) and return ceiling (<code class="text-teal-400">max_voltas</code>).</p>
+<div class="code-box bg-dark-900 rounded-lg border border-dark-600 p-4 mb-4 overflow-x-auto">
+<pre class="text-sm text-neutral-300">// grafo.json — resumo diario migrado (loop -&gt; grafo)
+{
+  "nos": {
+    "pesquisador": {
+      "modelo": "&lt;modelo-rapido&gt;",
+      "ferramentas": ["busca_web", "leitor_rss"],
+      "contexto_limpo": false,
+      "produz": "notas"
+    },
+    "escritor": {
+      "modelo": "&lt;modelo-de-escrita&gt;",
+      "ferramentas": [],
+      "contexto_limpo": false,
+      "recebe": "notas",
+      "produz": "rascunho"
+    },
+    "revisor": {
+      "modelo": "&lt;modelo-rapido&gt;",
+      "ferramentas": ["busca_web"],
+      "contexto_limpo": true,
+      "recebe": "rascunho",
+      "produz": "aprovado_ou_criticas"
+    }
+  },
+  "arestas": [
+    { "de": "pesquisador", "para": "escritor", "passa": "notas" },
+    { "de": "escritor", "para": "revisor", "passa": "rascunho" },
+    {
+      "de": "revisor", "para": "escritor",
+      "quando": "aprovado == false",
+      "passa": "criticas",
+      "max_voltas": 2
+    }
+  ]
+}</pre>
+</div>
+<div class="bg-dark-700/50 rounded-lg p-4">
+<p class="text-sm text-neutral-300"><strong class="text-teal-400">How to verify:</strong> if the reviewer receives any field
+        besides the text and the criteria (for example, the researcher's notes or the writer's attempt history), the context
+        <code class="text-teal-400">contexto_limpo</code> isn't delivering on its promise—and you won't gain anything from the migration,
+        because the bias of "approving your own work" is still there, just spread across two nodes.</p>
+</div>
+</div>
+<div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center"><span class="mr-2">💡</span> The contract is what remains after the hype fades</h3>
+<p class="text-neutral-300">
+        Graph frameworks come and go. What remains is the discipline of stating, in writing, what each edge carries and what it should never carry. If you write this down before the code, implementation becomes mechanical translation; if you skip this step, the code becomes the only place where the contract exists — and nobody reviews code with the contract in mind.
+      </p>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-teal-400 mb-4">Key concepts</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">State schema</div><p class="text-xs text-neutral-400">Exact data format on the edge</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">Notes, not HTML</div><p class="text-xs text-neutral-400">Too much raw data, and the swamp is back</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">What does NOT pass</div><p class="text-xs text-neutral-400">Reasoning stays with whoever generated it</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">Before the code</div><p class="text-xs text-neutral-400">Write the contract first</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-500/20 border border-teal-500/30 text-teal-400 hover:bg-teal-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span>
+</button>
+</div>
+</section>
+<!-- ============ TOPICO 5 ============ -->
+<section class="mb-16" data-inema-topic="modulo-5-1#topico-5" id="topico-5">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">5</span>
+<h2 class="text-2xl font-bold">🔁 Add the return edge with a limit</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button">
+<span aria-hidden="true">?</span><span>I have a question</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m5-1-t5-p1">
+      The reviewer sends a rejection back to the writer — this is the return edge, the cycle inside the graph. It needs to
+      <strong class="text-teal-400">up to N passes</strong> is from a <strong class="text-teal-400">progress criteria</strong>:
+      "two rounds without improvement = give up and let me know" is a criterion; "keep trying until it works" isn’t.
+    </p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m5-1-t5-p2">
+      Without a cap, the bill is infinite—the same problem as any cycle without a stopping condition. Without a progress criterion,
+      you pay for N rounds even when two would have been enough to know it won’t improve.
+    </p>
+<div class="rounded-2xl border border-teal-500/30 bg-dark-900/40 p-3 sm:p-4 mb-4 overflow-hidden">
+<svg aria-label="Migration decision flowchart. A question box, “Can one loop still handle it?”, connects via a green arrow labeled yes to a box, “Improve the verifier.” The same question connects via a red arrow labeled no to a second question: “Do you need parallelism or a blind reviewer?” This second question connects via yes, highlighted with a glow, to “Build the graph,” and via no to “The problem is something else.”" class="w-full h-auto" role="img" viewbox="0 0 1000 300">
+<defs>
+<filter height="180%" id="m51b-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="m51b-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#14b8a6" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="m51b-ahg" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#34d399"></path></marker>
+<marker id="m51b-ahr" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#f87171"></path></marker>
+<marker id="m51b-aht" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#2dd4bf"></path></marker>
+</defs>
+<rect fill="url(#m51b-grid)" height="300" width="1000" x="0" y="0"></rect>
+<path d="M60,60 L230,60 L260,90 L230,120 L60,120 L30,90 Z" fill="#0c1f1c" stroke="#2dd4bf" stroke-width="2"></path>
+<text fill="#99f6e4" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="145" y="86">a loop still</text>
+<text fill="#99f6e4" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="145" y="103">from the account?</text>
+<path d="M145,120 L145,180" marker-end="url(#m51b-ahg)" stroke="#34d399" stroke-width="1.8"></path>
+<text fill="#6ee7b7" font-family="Inter,sans-serif" font-size="12" font-weight="600" x="170" y="155">yes</text>
+<rect fill="#0e2018" height="52" rx="12" stroke="#34d399" stroke-width="2" width="220" x="35" y="182"></rect>
+<text fill="#a7f3d0" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="145" y="213">improve the verifier</text>
+<path d="M260,90 L420,90" marker-end="url(#m51b-ahr)" stroke="#f87171" stroke-width="1.8"></path>
+<text fill="#fca5a5" font-family="Inter,sans-serif" font-size="12" font-weight="600" text-anchor="middle" x="340" y="80">no</text>
+<path d="M430,60 L640,60 L670,90 L640,120 L430,120 L400,90 Z" fill="#0c1f1c" stroke="#2dd4bf" stroke-width="2"></path>
+<text fill="#99f6e4" font-family="Inter,sans-serif" font-size="12.5" font-weight="600" text-anchor="middle" x="535" y="82">needs parallelism</text>
+<text fill="#99f6e4" font-family="Inter,sans-serif" font-size="12.5" font-weight="600" text-anchor="middle" x="535" y="100">OR a blind reviewer?</text>
+<path d="M535,120 L535,180" marker-end="url(#m51b-ahg)" stroke="#34d399" stroke-width="1.8"></path>
+<text fill="#6ee7b7" font-family="Inter,sans-serif" font-size="12" font-weight="600" x="560" y="155">yes</text>
+<g filter="url(#m51b-glow)"><rect fill="#0c1f1c" height="52" rx="12" stroke="#2dd4bf" stroke-width="2.5" width="220" x="425" y="182"></rect></g>
+<text fill="#2dd4bf" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="535" y="213">build the graph</text>
+<path d="M670,90 L830,90" marker-end="url(#m51b-ahr)" stroke="#f87171" stroke-width="1.8"></path>
+<text fill="#fca5a5" font-family="Inter,sans-serif" font-size="12" font-weight="600" text-anchor="middle" x="750" y="80">no</text>
+<path d="M900,60 L900,120" stroke="none"></path>
+<rect fill="#1f2937" height="52" rx="12" stroke="#6b7280" stroke-width="2" width="200" x="790" y="64"></rect>
+<text fill="#d1d5db" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="890" y="95">the problem is different</text>
+<text fill="#99f6e4" font-family="Inter,sans-serif" font-size="13" text-anchor="middle" x="500" y="270">only a "yes" to the second question authorizes building the graph</text>
+</svg>
+</div>
+<p class="text-sm text-neutral-400 mb-6">
+<strong class="text-neutral-300">What to look at:</strong> notice there are two questions, not one. The first filters out cases where you
+      didn't need to change anything (improve the verifier). Only if you reach the second question and answer "yes" does the glowing box —
+      "build the graph" — authorize the migration. Any other path leads back to the loop
+      or to a problem no graph can solve.
+    </p>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center"><span class="mr-2">⚠️</span> Without a cap, the bill is infinite</h3>
+<p class="text-neutral-300">
+        Every return edge you draw needs to include, alongside it, the maximum number of iterations and the criterion that stops it before that maximum. If you can’t write those two things in a sentence, the edge isn’t ready for production yet.
+      </p>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-teal-400 mb-4">Key concepts</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">Iteration cap</div><p class="text-xs text-neutral-400">Maximum N, never infinite</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">Progress criterion</div><p class="text-xs text-neutral-400">When to give up before the limit</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">A failure alerts you</div><p class="text-xs text-neutral-400">It doesn’t get stuck: it notifies you and stops</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">Edge = local cycle</div><p class="text-xs text-neutral-400">The loop lives inside the graph</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-500/20 border border-teal-500/30 text-teal-400 hover:bg-teal-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span>
+</button>
+</div>
+</section>
+<!-- ============ TOPICO 6 ============ -->
+<section class="mb-16" data-inema-topic="modulo-5-1#topico-6" id="topico-6">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">6</span>
+<h2 class="text-2xl font-bold">⚖️ Compare and Have the Courage to Backtrack</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button">
+<span aria-hidden="true">?</span><span>I have a question</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m5-1-t6-p1">
+      Run both — the loop and the graph — in parallel for a few days, with the <strong class="text-teal-400">same inputs</strong>.
+      Fill out the same baseline spreadsheet from topic 2 again. If the graph didn't improve any of the three numbers,
+      go back to the loop: you bought complexity without a payoff.
+    </p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m5-1-t6-p2">
+      Acknowledging this is part of the work, not a failure. It’s what separates engineering from fashion: engineering measures and decides based on the numbers;
+      fashion decides based on appearances and defends the decision afterward.
+    </p>
+<div class="space-y-6 mb-6">
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-teal-500/20 flex items-center justify-center"><span class="text-teal-400 font-bold">1</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">Check the three signals</h4>
+<p class="text-sm text-neutral-400">Parallelism, a blind reviewer, or context swamp—without one of the three, don't migrate.</p>
+</div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-teal-500/20 flex items-center justify-center"><span class="text-teal-400 font-bold">2</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">Measure the baseline</h4>
+<p class="text-sm text-neutral-400">Cost, time, and verifiable quality, from the loop version, repeated 3-5x.</p>
+</div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-teal-500/20 flex items-center justify-center"><span class="text-teal-400 font-bold">3</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">Cut at the right points</h4>
+<p class="text-sm text-neutral-400">Responsibility, tool, or context—never an arbitrary cutoff.</p>
+</div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-teal-500/20 flex items-center justify-center"><span class="text-teal-400 font-bold">4</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">Write the contract</h4>
+<p class="text-sm text-neutral-400">What each edge carries—and what it explicitly does not carry.</p>
+</div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-teal-500/20 flex items-center justify-center"><span class="text-teal-400 font-bold">5</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">Add the return edge with a cap</h4>
+<p class="text-sm text-neutral-400">Maximum N iterations + a progress criterion, never “keep trying until it works.”</p>
+</div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-teal-500/20 flex items-center justify-center"><span class="text-teal-400 font-bold">6</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">Compare and decide</h4>
+<p class="text-sm text-neutral-400">Same inputs, same spreadsheet. If there’s no improvement in all three numbers, go back to the loop.</p>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-teal-900/20 rounded-xl border border-teal-500/30 p-6">
+<h4 class="font-bold text-teal-400 mb-4">✓ Stick with the graph if</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-teal-400">✓</span><span>Total time dropped because of actual parallelism</span></li>
+<li class="flex items-start space-x-2"><span class="text-teal-400">✓</span><span>The quality improved because the reviewer really couldn’t see the draft</span></li>
+<li class="flex items-start space-x-2"><span class="text-teal-400">✓</span><span>The cost is worth the gain—you compared the two numbers side by side</span></li>
+</ul>
+</div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+<h4 class="font-bold text-red-400 mb-4">✗ Go back to the loop if</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>The cost went up, and none of the other two numbers improved</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>The quality is the same, but now there are more pieces to maintain</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>You can't say what improved — a sign that you didn't measure properly</span></li>
+</ul>
+</div>
+</div>
+<!-- CHECAGEM LEVE -->
+<div class="inema-check mt-8 bg-dark-800 border border-dark-600 rounded-xl p-6 mb-6" data-inema-check="modulo-5-1#q1">
+<p class="font-medium mb-4">Quick check (nothing is blocked): You migrated a daily summary to a 3-node graph, but the cost per run doubled and quality stayed the same. What should you do?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">Keep the graph — it is more modern; the cost pays off later</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">Return to the loop — none of the three numbers improved; only the cost got worse</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">Add another reviewer node to improve quality and justify the cost</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-teal-400 mb-4">Key concepts</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">Same inputs</div><p class="text-xs text-neutral-400">A fair comparison requires this</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">The three numbers</div><p class="text-xs text-neutral-400">Cost, time, quality — again</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">Going back isn't failure</div><p class="text-xs text-neutral-400">And part of the method</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">Engineering vs. hype</div><p class="text-xs text-neutral-400">The number decides, not the appearance</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-500/20 border border-teal-500/30 text-teal-400 hover:bg-teal-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span>
+</button>
+</div>
+</section>
+<!-- ============ RESUMO ============ -->
+<section class="mb-12">
+<div class="bg-gradient-to-br from-teal-900/40 via-dark-800 to-dark-800 rounded-xl border border-teal-500/30 p-8">
+<h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">📌</span> Module Summary</h2>
+<div class="space-y-4 mb-8">
+<div class="flex items-start space-x-3"><span class="text-teal-400 mt-1">✓</span><div><strong class="text-white">Three signals</strong><span class="text-neutral-400"> — true parallelism, a blind reviewer, or a context swamp. Without one of these, improve the loop.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-teal-400 mt-1">✓</span><div><strong class="text-white">Measure first</strong><span class="text-neutral-400"> — cost, time, and verifiable quality. Without a baseline, migration is a matter of faith.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-teal-400 mt-1">✓</span><div><strong class="text-white">The right cut</strong><span class="text-neutral-400"> — split where responsibility, tools, or context change, never arbitrarily.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-teal-400 mt-1">✓</span><div><strong class="text-white">Explicit contract</strong><span class="text-neutral-400"> — notes, draft, approved + critiques. What doesn’t pass matters just as much as what does.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-teal-400 mt-1">✓</span><div><strong class="text-white">Loop back with a ceiling</strong><span class="text-neutral-400"> — a maximum of N iterations plus a progress criterion; otherwise, the bill is infinite.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-teal-400 mt-1">✓</span><div><strong class="text-white">Compare and decide</strong><span class="text-neutral-400"> — same inputs, same spreadsheet. No improvement? Go back to the loop without guilt.</span></div></div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+<h3 class="font-semibold text-teal-400 mb-2">Next Module:</h3>
+<p class="text-neutral-300">5.2 — Business and task graphs: model the multi-metric funnel and the backlog with dependencies and blockers.</p>
+</div>
+<div class="flex flex-col sm:flex-row gap-4">
+<a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="../trilha4/modulo-4-3.html">← Track 4: Module 4.3</a>
+<a class="flex-1 text-center px-6 py-3 bg-teal-600 text-white rounded-lg font-semibold hover:bg-teal-500 transition-colors" href="modulo-5-2.html">Next Module →</a>
+</div>
+</div>
+</section>
+</main>
+</div>
+</div>
+<footer class="border-t border-dark-600 py-8 mt-16">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+<p>Graph Engineering — From Loops to Graphs · INEMA 2026</p>
+<p class="mt-2">
+<a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+<span class="text-neutral-600 mx-1">-</span>
+<a class="text-amber-700 hover:text-amber-600 dark:text-slate-300 dark:hover:text-slate-200" href="https://inema.pro" target="_blank">PRO</a>
+</p>
+</div>
+</footer>
+<script>
+  function toggleTopic(button) {
+    const topicItem = button.closest('.topic-item');
+    const explanation = topicItem.querySelector('.topic-explanation');
+    const moduleCard = button.closest('.bg-dark-800') || document;
+    moduleCard.querySelectorAll('.topic-explanation.active').forEach(exp => { if (exp !== explanation) { exp.classList.remove('active'); const b = exp.closest('.topic-item').querySelector('button'); if (b) b.setAttribute('aria-expanded','false'); } });
+    explanation.classList.toggle('active');
+    button.setAttribute('aria-expanded', explanation.classList.contains('active') ? 'true' : 'false');
+  }
+  function openModal(modalId) { const m = document.getElementById(modalId); if (m) { m.classList.remove('hidden'); document.body.style.overflow = 'hidden'; } }
+  function closeModal() { document.querySelectorAll('.modal').forEach(m => m.classList.add('hidden')); document.body.style.overflow = 'auto'; }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+  const themeToggle = document.getElementById('theme-toggle');
+  const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+  const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+  const htmlEl = document.documentElement;
+  if (htmlEl.classList.contains('dark')) themeToggleLightIcon.classList.remove('hidden'); else themeToggleDarkIcon.classList.remove('hidden');
+  themeToggle.addEventListener('click', () => {
+    themeToggleDarkIcon.classList.toggle('hidden'); themeToggleLightIcon.classList.toggle('hidden');
+    htmlEl.classList.toggle('dark');
+    const dark = htmlEl.classList.contains('dark');
+    localStorage.setItem('theme', dark ? 'dark' : 'light');
+    try { const p = JSON.parse(localStorage.getItem('inema.prefs') || '{}'); p.theme = dark ? 'inema-dark' : 'claro'; localStorage.setItem('inema.prefs', JSON.stringify(p)); } catch (e) {}
+  });
+</script>
+<script src="../../../assets/learn.js"></script>
+<script>
+  if (window.INEMA && typeof window.INEMA.init === 'function') { window.INEMA.init(); }
+  window.addEventListener('DOMContentLoaded', function () {
+    if (window.INEMA && INEMA.registerCheck) {
+      INEMA.registerCheck('modulo-5-1#q1', {
+        answer: 1,
+        explain: {
+          0: 'Nao. "Mais moderno" nao e criterio de engenharia. Se o custo dobrou e a qualidade nao mudou, o grafo custou mais e nao entregou nada em troca.',
+          1: 'Isso. Nenhum dos tres numeros (custo, tempo, qualidade) melhorou — na verdade o custo piorou. O topico 6 e claro: sem ganho, volte pro loop, sem culpa.',
+          2: 'Nao. Adicionar mais um no so aumenta o custo que ja esta alto, sem evidencia de que vai resolver a qualidade. Primeiro confirme a causa, so depois mexa na estrutura.'
+        }
+      });
+    }
+  });
+</script>
+</body>
+</html>

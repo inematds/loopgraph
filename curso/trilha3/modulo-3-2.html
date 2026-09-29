@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="pt-BR" class="dark">
+
+<html class="dark" lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="inema-course" content="loopgraph">
-  <title>Modulo 3.2 — O comparativo de verdade | Graph Engineering</title>
-  <script>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="loopgraph" name="inema-course"/>
+<title>Modulo 3.2 — O comparativo de verdade | Graph Engineering</title>
+<script>
   (function () {
     try {
       var html = document.documentElement;
@@ -35,7 +36,7 @@
     } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme = 'dark'; } catch (e) {} }
   })();
   </script>
-  <script type="application/json" data-inema-manifest>
+<script data-inema-manifest="" type="application/json">
   {
     "course": "loopgraph",
     "tracks": [
@@ -67,331 +68,299 @@
     ]
   }
   </script>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }</script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../../assets/learn.css">
-  <link rel="stylesheet" href="../../assets/curso.css">
-</head>
-<body class="bg-dark-900 text-neutral-100 min-h-screen">
-
-<a href="#conteudo" class="sr-only focus:not-sr-only focus:absolute focus:z-[60] focus:m-2 focus:px-4 focus:py-2 focus:rounded-lg focus:bg-dark-700">Pular para o conteudo</a>
-
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }</script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../assets/learn.css" rel="stylesheet"/>
+<link href="../../assets/curso.css" rel="stylesheet"/>
+<link href="https://inematds.github.io/loopgraph/curso/trilha3/modulo-3-2.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/loopgraph/en/curso/trilha3/modulo-3-2.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/loopgraph/es/curso/trilha3/modulo-3-2.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="modulo-3-2.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">PT</a><a href="../../en/curso/trilha3/modulo-3-2.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="../../es/curso/trilha3/modulo-3-2.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<a class="sr-only focus:not-sr-only focus:absolute focus:z-[60] focus:m-2 focus:px-4 focus:py-2 focus:rounded-lg focus:bg-dark-700" href="#conteudo">Pular para o conteudo</a>
 <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
-  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex justify-between items-center h-14 gap-2">
-      <div class="flex items-center space-x-3 flex-shrink-0">
-        <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
-          <span class="text-2xl">🕸️</span><span class="font-bold text-lg hidden lg:inline">Graph Engineering</span>
-        </a>
-        <span class="text-neutral-600 hidden sm:inline">|</span>
-        <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium hidden sm:inline">INEMA.CLUB</a>
-        <span class="text-neutral-600 hidden sm:inline">-</span>
-        <a href="https://inema.pro" target="_blank" class="text-amber-700 hover:text-amber-600 dark:text-slate-300 dark:hover:text-slate-200 text-sm font-medium hidden sm:inline">PRO</a>
-      </div>
-      <div class="flex items-center space-x-1">
-        <a href="../trilha1/index.html" class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors"><span class="lg:hidden">T1</span><span class="hidden lg:inline">Fundamentos</span></a>
-        <a href="../trilha2/index.html" class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors"><span class="lg:hidden">T2</span><span class="hidden lg:inline">Loops</span></a>
-        <a href="index.html" class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-purple-400 bg-purple-500/10"><span class="lg:hidden">T3</span><span class="hidden lg:inline">Comparativo</span></a>
-        <a href="../trilha4/index.html" class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors"><span class="lg:hidden">T4</span><span class="hidden lg:inline">Pratica</span></a>
-        <a href="../trilha5/index.html" class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors"><span class="lg:hidden">T5</span><span class="hidden lg:inline">Mao na massa</span></a>
-        <button type="button" data-inema-journey-open class="hidden sm:inline-flex items-center gap-1 px-2 py-1.5 rounded-lg text-sm text-neutral-400 hover:text-neutral-100 transition-colors" title="Minha jornada">
-          <span aria-hidden="true">◷</span><span class="hidden xl:inline">Jornada</span><span class="inema-journey-badge hidden" aria-hidden="true"></span>
-        </button>
-        <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" aria-label="Alternar tema claro/escuro">
-          <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
-          <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
-        </button>
-      </div>
-    </div>
-  </div>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14 gap-2">
+<div class="flex items-center space-x-3 flex-shrink-0">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html">
+<span class="text-2xl">🕸️</span><span class="font-bold text-lg hidden lg:inline">Graph Engineering</span>
+</a>
+<span class="text-neutral-600 hidden sm:inline">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium hidden sm:inline" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+<span class="text-neutral-600 hidden sm:inline">-</span>
+<a class="text-amber-700 hover:text-amber-600 dark:text-slate-300 dark:hover:text-slate-200 text-sm font-medium hidden sm:inline" href="https://inema.pro" target="_blank">PRO</a>
+</div>
+<div class="flex items-center space-x-1">
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors" href="../trilha1/index.html"><span class="lg:hidden">T1</span><span class="hidden lg:inline">Fundamentos</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors" href="../trilha2/index.html"><span class="lg:hidden">T2</span><span class="hidden lg:inline">Loops</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-purple-400 bg-purple-500/10" href="index.html"><span class="lg:hidden">T3</span><span class="hidden lg:inline">Comparativo</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors" href="../trilha4/index.html"><span class="lg:hidden">T4</span><span class="hidden lg:inline">Pratica</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors" href="../trilha5/index.html"><span class="lg:hidden">T5</span><span class="hidden lg:inline">Mao na massa</span></a>
+<button class="hidden sm:inline-flex items-center gap-1 px-2 py-1.5 rounded-lg text-sm text-neutral-400 hover:text-neutral-100 transition-colors" data-inema-journey-open="" title="Minha jornada" type="button">
+<span aria-hidden="true">◷</span><span class="hidden xl:inline">Jornada</span><span aria-hidden="true" class="inema-journey-badge hidden"></span>
+</button>
+<button aria-label="Alternar tema claro/escuro" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
 </nav>
-
-<nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4" aria-label="Trilha de navegacao">
-  <div class="flex items-center space-x-2 text-sm text-neutral-400">
-    <a href="../../index.html" class="hover:text-purple-400">Inicio</a><span>/</span>
-    <a href="index.html" class="hover:text-purple-400">Trilha 3</a><span>/</span>
-    <span class="text-purple-400">Modulo 3.2</span>
-  </div>
+<nav aria-label="Trilha de navegacao" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+<div class="flex items-center space-x-2 text-sm text-neutral-400">
+<a class="hover:text-purple-400" href="../../index.html">Inicio</a><span>/</span>
+<a class="hover:text-purple-400" href="index.html">Trilha 3</a><span>/</span>
+<span class="text-purple-400">Modulo 3.2</span>
+</div>
 </nav>
-
 <header class="bg-gradient-to-br from-purple-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600" data-inema-module="3-2" data-inema-track="3">
-  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-    <span class="inline-block px-3 py-1 bg-purple-500/20 text-purple-400 text-xs font-semibold rounded-full mb-4">MODULO 3.2</span>
-    <h1 class="text-3xl sm:text-4xl font-bold mb-4">⚖️ O comparativo de verdade</h1>
-    <p class="text-lg text-neutral-400 max-w-3xl">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-purple-500/20 text-purple-400 text-xs font-semibold rounded-full mb-4">MODULO 3.2</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">⚖️ O comparativo de verdade</h1>
+<p class="text-lg text-neutral-400 max-w-3xl">
       Agentic, loop e graph nao sao um ranking — sao <strong class="text-purple-400">tres estruturas diferentes</strong> pra
       tres tamanhos de problema. Este e o modulo que voce guarda: o mesmo caso, construido nas tres formas,
       pra voce ver com os proprios olhos onde cada uma ganha e onde cada uma cobra o preco.
     </p>
-    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8 max-w-2xl">
-      <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">6</div><div class="text-xs text-neutral-400">Topicos</div></div>
-      <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">45</div><div class="text-xs text-neutral-400">Minutos</div></div>
-      <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">Central</div><div class="text-xs text-neutral-400">Nivel</div></div>
-      <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">Comparativo</div><div class="text-xs text-neutral-400">Tipo</div></div>
-    </div>
-    <div class="mt-6 max-w-2xl bg-dark-800 rounded-xl border border-dark-600 p-4">
-      <div class="flex items-center justify-between">
-        <span class="text-sm text-neutral-300 font-semibold">Progresso deste modulo</span>
-        <div data-inema-meter="modulo:3-2" class="inema-meter text-sm" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="Progresso do modulo 3.2">
-          <span class="inema-meter-pct text-purple-400 font-bold">0%</span><span class="inema-meter-count text-neutral-400 ml-2">0 de 6</span>
-        </div>
-      </div>
-    </div>
-  </div>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">6</div><div class="text-xs text-neutral-400">Topicos</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">45</div><div class="text-xs text-neutral-400">Minutos</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">Central</div><div class="text-xs text-neutral-400">Nivel</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">Comparativo</div><div class="text-xs text-neutral-400">Tipo</div></div>
+</div>
+<div class="mt-6 max-w-2xl bg-dark-800 rounded-xl border border-dark-600 p-4">
+<div class="flex items-center justify-between">
+<span class="text-sm text-neutral-300 font-semibold">Progresso deste modulo</span>
+<div aria-label="Progresso do modulo 3.2" aria-valuemax="100" aria-valuemin="0" class="inema-meter text-sm" data-inema-meter="modulo:3-2" role="progressbar">
+<span class="inema-meter-pct text-purple-400 font-bold">0%</span><span class="inema-meter-count text-neutral-400 ml-2">0 de 6</span>
+</div>
+</div>
+</div>
+</div>
 </header>
-
 <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 <div class="lg:grid lg:grid-cols-[220px_minmax(0,1fr)] lg:gap-10">
-
-  <nav data-inema-toc aria-label="Indice da pagina" class="hidden lg:block sticky top-24 self-start">
-    <p class="text-sm text-neutral-400 mb-3">Secao <span class="inema-toc-pos">1</span> de <span class="inema-toc-total">6</span></p>
-    <ul class="space-y-1 text-sm">
-      <li><a href="#topico-1" class="inema-toc-link text-neutral-400 hover:text-purple-400">1. Entenda agentic</a></li>
-      <li><a href="#topico-2" class="inema-toc-link text-neutral-400 hover:text-purple-400">2. Entenda loop</a></li>
-      <li><a href="#topico-3" class="inema-toc-link text-neutral-400 hover:text-purple-400">3. Entenda graph</a></li>
-      <li><a href="#topico-4" class="inema-toc-link text-neutral-400 hover:text-purple-400">4. O mesmo caso, tres formatos</a></li>
-      <li><a href="#topico-5" class="inema-toc-link text-neutral-400 hover:text-purple-400">5. O que o grafo da de novo</a></li>
-      <li><a href="#topico-6" class="inema-toc-link text-neutral-400 hover:text-purple-400">6. O que o grafo cobra</a></li>
-    </ul>
-  </nav>
-
-  <main id="conteudo" class="inema-prose">
-
-  <!-- ============ TOPICO 1 ============ -->
-  <section id="topico-1" class="mb-16" data-inema-topic="modulo-3-2#topico-1">
-    <div class="flex items-center space-x-4 mb-6">
-      <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">1</span>
-      <h2 class="text-2xl font-bold">🧭 Entenda "agentic": um agente com ferramentas e julgamento</h2>
-      <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar duvida neste topico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm">
-        <span aria-hidden="true">?</span><span>Tenho duvida</span>
-      </button>
-    </div>
-
-    <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-2-t1-p1">
+<nav aria-label="Indice da pagina" class="hidden lg:block sticky top-24 self-start" data-inema-toc="">
+<p class="text-sm text-neutral-400 mb-3">Secao <span class="inema-toc-pos">1</span> de <span class="inema-toc-total">6</span></p>
+<ul class="space-y-1 text-sm">
+<li><a class="inema-toc-link text-neutral-400 hover:text-purple-400" href="#topico-1">1. Entenda agentic</a></li>
+<li><a class="inema-toc-link text-neutral-400 hover:text-purple-400" href="#topico-2">2. Entenda loop</a></li>
+<li><a class="inema-toc-link text-neutral-400 hover:text-purple-400" href="#topico-3">3. Entenda graph</a></li>
+<li><a class="inema-toc-link text-neutral-400 hover:text-purple-400" href="#topico-4">4. O mesmo caso, tres formatos</a></li>
+<li><a class="inema-toc-link text-neutral-400 hover:text-purple-400" href="#topico-5">5. O que o grafo da de novo</a></li>
+<li><a class="inema-toc-link text-neutral-400 hover:text-purple-400" href="#topico-6">6. O que o grafo cobra</a></li>
+</ul>
+</nav>
+<main class="inema-prose" id="conteudo">
+<!-- ============ TOPICO 1 ============ -->
+<section class="mb-16" data-inema-topic="modulo-3-2#topico-1" id="topico-1">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">1</span>
+<h2 class="text-2xl font-bold">🧭 Entenda "agentic": um agente com ferramentas e julgamento</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Marcar duvida neste topico" type="button">
+<span aria-hidden="true">?</span><span>Tenho duvida</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-2-t1-p1">
       "Agentic" descreve um jeito de usar um modelo, nao uma arquitetura. Voce descreve o objetivo, entrega
       um conjunto de ferramentas (busca, terminal, editor de arquivo) e deixa o modelo decidir, passo a passo,
       o que fazer a seguir. Nao ha um diagrama previo do caminho — o caminho e descoberto em tempo real,
       dentro da propria conversa.
     </p>
-
-    <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
-      <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">🆕</span> Novo aqui? Duas palavras antes de seguir</h3>
-      <ul class="space-y-2 text-neutral-300 text-sm">
-        <li><strong class="text-neutral-100">Julgamento do modelo:</strong> a decisao de "o que fazer agora" acontece dentro da cabeca do modelo, token a token — nao existe uma linha de codigo que diz "depois disso, faca aquilo".</li>
-        <li><strong class="text-neutral-100">Teste de saida:</strong> uma condicao explicita e verificavel que diz quando o trabalho terminou (ex.: "os testes passaram"). Agentic puro raramente tem um; ele para quando o modelo "acha" que acabou.</li>
-      </ul>
-    </div>
-
-    <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-2-t1-p2">
+<div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">🆕</span> Novo aqui? Duas palavras antes de seguir</h3>
+<ul class="space-y-2 text-neutral-300 text-sm">
+<li><strong class="text-neutral-100">Julgamento do modelo:</strong> a decisao de "o que fazer agora" acontece dentro da cabeca do modelo, token a token — nao existe uma linha de codigo que diz "depois disso, faca aquilo".</li>
+<li><strong class="text-neutral-100">Teste de saida:</strong> uma condicao explicita e verificavel que diz quando o trabalho terminou (ex.: "os testes passaram"). Agentic puro raramente tem um; ele para quando o modelo "acha" que acabou.</li>
+</ul>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-2-t1-p2">
       Isso nao e defeito, e a caracteristica. Serve exatamente pra tarefa aberta e exploratoria — "investiga esse bug
       estranho", "le esse repositorio e me conta o que faz" — coisa que roda uma vez, onde voce nao sabe de antemao
       quais passos vai precisar. Tentar desenhar o fluxograma antes seria perda de tempo: voce nao sabe o fluxo ainda.
     </p>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-      <div class="bg-purple-900/20 rounded-xl border border-purple-500/30 p-6">
-        <h4 class="font-bold text-purple-400 mb-4">✓ Agentic serve bem quando</h4>
-        <ul class="space-y-3 text-neutral-300 text-sm">
-          <li class="flex items-start space-x-2"><span class="text-purple-400">✓</span><span>A tarefa e exploratoria — voce nao sabe os passos de antemao</span></li>
-          <li class="flex items-start space-x-2"><span class="text-purple-400">✓</span><span>Roda uma vez ou poucas vezes, sob supervisao humana</span></li>
-          <li class="flex items-start space-x-2"><span class="text-purple-400">✓</span><span>O custo de um passo errado e baixo e reversivel</span></li>
-        </ul>
-      </div>
-      <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
-        <h4 class="font-bold text-red-400 mb-4">✗ Agentic cobra caro quando</h4>
-        <ul class="space-y-3 text-neutral-300 text-sm">
-          <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>A tarefa se repete todo dia — voce reexplica o mesmo objetivo sempre</span></li>
-          <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Precisa de garantia de "isso sempre vai acontecer nessa ordem"</span></li>
-          <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Ninguem consegue prever o custo de tokens porque o caminho muda a cada rodada</span></li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
-      <h3 class="text-lg font-semibold text-purple-400 mb-4">Conceitos-chave</h3>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Decisao</div><p class="text-xs text-neutral-400">Mora na cabeca do modelo</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Ferramentas</div><p class="text-xs text-neutral-400">Voce da, ele escolhe usar</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Sem ciclo desenhado</div><p class="text-xs text-neutral-400">Caminho descoberto na hora</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Tarefa aberta</div><p class="text-xs text-neutral-400">Roda uma vez, exploratoria</p></div>
-      </div>
-    </div>
-
-    <div class="flex justify-start mt-6">
-      <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors">
-        <span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span>
-      </button>
-    </div>
-  </section>
-
-  <!-- ============ TOPICO 2 ============ -->
-  <section id="topico-2" class="mb-16" data-inema-topic="modulo-3-2#topico-2">
-    <div class="flex items-center space-x-4 mb-6">
-      <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">2</span>
-      <h2 class="text-2xl font-bold">🔁 Entenda "loop": o ciclo desenhado com teste de saida</h2>
-      <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar duvida neste topico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm">
-        <span aria-hidden="true">?</span><span>Tenho duvida</span>
-      </button>
-    </div>
-
-    <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-2-t2-p1">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-purple-900/20 rounded-xl border border-purple-500/30 p-6">
+<h4 class="font-bold text-purple-400 mb-4">✓ Agentic serve bem quando</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-purple-400">✓</span><span>A tarefa e exploratoria — voce nao sabe os passos de antemao</span></li>
+<li class="flex items-start space-x-2"><span class="text-purple-400">✓</span><span>Roda uma vez ou poucas vezes, sob supervisao humana</span></li>
+<li class="flex items-start space-x-2"><span class="text-purple-400">✓</span><span>O custo de um passo errado e baixo e reversivel</span></li>
+</ul>
+</div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+<h4 class="font-bold text-red-400 mb-4">✗ Agentic cobra caro quando</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>A tarefa se repete todo dia — voce reexplica o mesmo objetivo sempre</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Precisa de garantia de "isso sempre vai acontecer nessa ordem"</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Ninguem consegue prever o custo de tokens porque o caminho muda a cada rodada</span></li>
+</ul>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-purple-400 mb-4">Conceitos-chave</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Decisao</div><p class="text-xs text-neutral-400">Mora na cabeca do modelo</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Ferramentas</div><p class="text-xs text-neutral-400">Voce da, ele escolhe usar</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Sem ciclo desenhado</div><p class="text-xs text-neutral-400">Caminho descoberto na hora</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Tarefa aberta</div><p class="text-xs text-neutral-400">Roda uma vez, exploratoria</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como lido</span>
+</button>
+</div>
+</section>
+<!-- ============ TOPICO 2 ============ -->
+<section class="mb-16" data-inema-topic="modulo-3-2#topico-2" id="topico-2">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">2</span>
+<h2 class="text-2xl font-bold">🔁 Entenda "loop": o ciclo desenhado com teste de saida</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Marcar duvida neste topico" type="button">
+<span aria-hidden="true">?</span><span>Tenho duvida</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-2-t2-p1">
       No loop voce para de escrever prompt e comeca a projetar ciclo. Em vez de confiar que o modelo vai lembrar
       de verificar o proprio trabalho, voce escreve isso em codigo: descobrir → planejar → agir → verificar → parar.
       A estrutura sai da cabeca do modelo e vira algo que voce le, versiona e testa.
     </p>
-
-    <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
-      <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center"><span class="mr-2">💡</span> A condicao de parada e o que muda tudo</h3>
-      <p class="text-neutral-300 mb-4">
+<div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center"><span class="mr-2">💡</span> A condicao de parada e o que muda tudo</h3>
+<p class="text-neutral-300 mb-4">
         Um loop so vira loop de verdade quando existe um <strong class="text-purple-400">teste de saida</strong> explicito —
         algo que voce pode rodar e que responde sim/nao: "os testes passaram", "o schema validou", "a nota do revisor
         e maior que 8". Sem esse teste, voce so tem um agentic com mais uma volta.
       </p>
-      <ul class="space-y-2 text-neutral-300">
-        <li class="flex items-start space-x-2"><span class="text-purple-400 mt-1">•</span><span>O modelo ainda decide <em>o que fazer</em> dentro de cada etapa, mas nao decide mais <em>a ordem das etapas</em></span></li>
-        <li class="flex items-start space-x-2"><span class="text-purple-400 mt-1">•</span><span>Voce ganha reprodutibilidade: o mesmo processo roda igual na segunda-feira e na sexta</span></li>
-        <li class="flex items-start space-x-2"><span class="text-purple-400 mt-1">•</span><span>Voce paga com engenharia: alguem precisa escrever e manter esse ciclo</span></li>
-      </ul>
-    </div>
-
-    <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-2-t2-p2">
+<ul class="space-y-2 text-neutral-300">
+<li class="flex items-start space-x-2"><span class="text-purple-400 mt-1">•</span><span>O modelo ainda decide <em>o que fazer</em> dentro de cada etapa, mas nao decide mais <em>a ordem das etapas</em></span></li>
+<li class="flex items-start space-x-2"><span class="text-purple-400 mt-1">•</span><span>Voce ganha reprodutibilidade: o mesmo processo roda igual na segunda-feira e na sexta</span></li>
+<li class="flex items-start space-x-2"><span class="text-purple-400 mt-1">•</span><span>Voce paga com engenharia: alguem precisa escrever e manter esse ciclo</span></li>
+</ul>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-2-t2-p2">
       Serve pra tarefa repetivel com criterio de sucesso verificavel: gerar um relatorio toda manha, corrigir um bug
       ate os testes ficarem verdes, escrever um texto ate passar num checklist de qualidade. Se voce roda a mesma
       coisa mais de uma vez e sabe dizer quando ela deu certo, o loop e a estrutura certa.
     </p>
-
-    <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
-      <h3 class="text-lg font-semibold text-purple-400 mb-4">Conceitos-chave</h3>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Ciclo desenhado</div><p class="text-xs text-neutral-400">Descobrir/planejar/agir/verificar/parar</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Teste de saida</div><p class="text-xs text-neutral-400">Condicao verificavel, nao "achismo"</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Estrutura em codigo</div><p class="text-xs text-neutral-400">Sai da cabeca, vira artefato</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Tarefa repetivel</div><p class="text-xs text-neutral-400">Roda toda vez, criterio claro</p></div>
-      </div>
-    </div>
-
-    <div class="flex justify-start mt-6">
-      <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors">
-        <span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span>
-      </button>
-    </div>
-  </section>
-
-  <!-- ============ TOPICO 3 ============ -->
-  <section id="topico-3" class="mb-16" data-inema-topic="modulo-3-2#topico-3">
-    <div class="flex items-center space-x-4 mb-6">
-      <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">3</span>
-      <h2 class="text-2xl font-bold">🕸️ Entenda "graph": loops compostos com arestas explicitas</h2>
-      <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar duvida neste topico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm">
-        <span aria-hidden="true">?</span><span>Tenho duvida</span>
-      </button>
-    </div>
-
-    <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-2-t3-p1">
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-purple-400 mb-4">Conceitos-chave</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Ciclo desenhado</div><p class="text-xs text-neutral-400">Descobrir/planejar/agir/verificar/parar</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Teste de saida</div><p class="text-xs text-neutral-400">Condicao verificavel, nao "achismo"</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Estrutura em codigo</div><p class="text-xs text-neutral-400">Sai da cabeca, vira artefato</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Tarefa repetivel</div><p class="text-xs text-neutral-400">Roda toda vez, criterio claro</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como lido</span>
+</button>
+</div>
+</section>
+<!-- ============ TOPICO 3 ============ -->
+<section class="mb-16" data-inema-topic="modulo-3-2#topico-3" id="topico-3">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">3</span>
+<h2 class="text-2xl font-bold">🕸️ Entenda "graph": loops compostos com arestas explicitas</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Marcar duvida neste topico" type="button">
+<span aria-hidden="true">?</span><span>Tenho duvida</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-2-t3-p1">
       Um grafo (nesse sentido de arquitetura de agentes) e varios loops ligados por arestas escritas
       <strong class="text-purple-400">antes</strong> de rodar. Cada no do grafo e, ele mesmo, um loop — com seu proprio
       modelo, suas proprias ferramentas, suas proprias permissoes e sua propria instrucao. O caminho <em>entre</em>
       os nos e o que o grafo acrescenta.
     </p>
-
-    <div class="rounded-2xl border border-purple-500/30 bg-dark-900/40 p-3 sm:p-4 mb-4 overflow-hidden">
-      <svg viewBox="0 0 1000 260" class="w-full h-auto" role="img" aria-label="Uma caixa grande rotulada grafo contendo tres caixas menores lado a lado, cada uma rotulada loop, com setas entre elas. Cada caixa loop tem uma pequena seta curva interna indicando ciclo proprio.">
-        <defs>
-          <linearGradient id="m32a-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c084fc"/><stop offset="1" stop-color="#a855f7"/></linearGradient>
-          <filter id="m32a-glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-          <pattern id="m32a-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#a855f7" opacity="0.12"/></pattern>
-          <marker id="m32a-ah" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#c084fc"/></marker>
-        </defs>
-        <rect x="0" y="0" width="1000" height="260" fill="url(#m32a-grid)"/>
-        <rect x="30" y="40" width="940" height="190" rx="18" fill="none" stroke="#a855f7" stroke-width="2" stroke-dasharray="10 6" opacity="0.55"/>
-        <text x="500" y="28" text-anchor="middle" fill="#e9d5ff" font-family="Inter,sans-serif" font-size="14" font-weight="600">grafo — o caminho entre os nos e escrito antes de rodar</text>
-
-        <g stroke="#c084fc" stroke-width="1.8" opacity="0.6" fill="none">
-          <path d="M330,135 L390,135" marker-end="url(#m32a-ah)"/>
-          <path d="M650,135 L710,135" marker-end="url(#m32a-ah)"/>
-        </g>
-
-        <g font-family="Inter,sans-serif" font-size="13" font-weight="600">
-          <rect x="90" y="85" width="240" height="100" rx="14" fill="#1a1230" stroke="#a855f7" stroke-width="2"/>
-          <text x="210" y="120" text-anchor="middle" fill="#e9d5ff">no A</text>
-          <text x="210" y="140" text-anchor="middle" fill="#c4b5fd" font-size="11" font-weight="400">loop</text>
-          <path d="M180,155 C180,175 240,175 240,155" stroke="#c084fc" stroke-width="1.6" fill="none" marker-end="url(#m32a-ah)" opacity="0.7"/>
-
-          <g filter="url(#m32a-glow)"><rect x="390" y="85" width="220" height="100" rx="14" fill="#1a1230" stroke="url(#m32a-grad)" stroke-width="2"/></g>
-          <text x="500" y="120" text-anchor="middle" fill="#f3e8ff">no B</text>
-          <text x="500" y="140" text-anchor="middle" fill="#c4b5fd" font-size="11" font-weight="400">loop</text>
-          <path d="M460,155 C460,175 540,175 540,155" stroke="#c084fc" stroke-width="1.6" fill="none" marker-end="url(#m32a-ah)" opacity="0.7"/>
-
-          <rect x="710" y="85" width="220" height="100" rx="14" fill="#1a1230" stroke="#a855f7" stroke-width="2"/>
-          <text x="820" y="120" text-anchor="middle" fill="#e9d5ff">no C</text>
-          <text x="820" y="140" text-anchor="middle" fill="#c4b5fd" font-size="11" font-weight="400">loop</text>
-          <path d="M780,155 C780,175 860,175 860,155" stroke="#c084fc" stroke-width="1.6" fill="none" marker-end="url(#m32a-ah)" opacity="0.7"/>
-        </g>
-        <text x="500" y="215" text-anchor="middle" fill="#c4b5fd" font-family="Inter,sans-serif" font-size="12.5">cada caixa continua sendo um loop — o que muda e a aresta ENTRE elas, escrita antes de rodar</text>
-      </svg>
-    </div>
-    <p class="text-sm text-neutral-400 mb-6">
-      <strong class="text-neutral-300">O que olhar:</strong> a caixa tracejada e nova, mas o conteudo de dentro nao e —
+<div class="rounded-2xl border border-purple-500/30 bg-dark-900/40 p-3 sm:p-4 mb-4 overflow-hidden">
+<svg aria-label="Uma caixa grande rotulada grafo contendo tres caixas menores lado a lado, cada uma rotulada loop, com setas entre elas. Cada caixa loop tem uma pequena seta curva interna indicando ciclo proprio." class="w-full h-auto" role="img" viewbox="0 0 1000 260">
+<defs>
+<lineargradient id="m32a-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#c084fc"></stop><stop offset="1" stop-color="#a855f7"></stop></lineargradient>
+<filter height="180%" id="m32a-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="m32a-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#a855f7" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="m32a-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#c084fc"></path></marker>
+</defs>
+<rect fill="url(#m32a-grid)" height="260" width="1000" x="0" y="0"></rect>
+<rect fill="none" height="190" opacity="0.55" rx="18" stroke="#a855f7" stroke-dasharray="10 6" stroke-width="2" width="940" x="30" y="40"></rect>
+<text fill="#e9d5ff" font-family="Inter,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="500" y="28">grafo — o caminho entre os nos e escrito antes de rodar</text>
+<g fill="none" opacity="0.6" stroke="#c084fc" stroke-width="1.8">
+<path d="M330,135 L390,135" marker-end="url(#m32a-ah)"></path>
+<path d="M650,135 L710,135" marker-end="url(#m32a-ah)"></path>
+</g>
+<g font-family="Inter,sans-serif" font-size="13" font-weight="600">
+<rect fill="#1a1230" height="100" rx="14" stroke="#a855f7" stroke-width="2" width="240" x="90" y="85"></rect>
+<text fill="#e9d5ff" text-anchor="middle" x="210" y="120">no A</text>
+<text fill="#c4b5fd" font-size="11" font-weight="400" text-anchor="middle" x="210" y="140">loop</text>
+<path d="M180,155 C180,175 240,175 240,155" fill="none" marker-end="url(#m32a-ah)" opacity="0.7" stroke="#c084fc" stroke-width="1.6"></path>
+<g filter="url(#m32a-glow)"><rect fill="#1a1230" height="100" rx="14" stroke="url(#m32a-grad)" stroke-width="2" width="220" x="390" y="85"></rect></g>
+<text fill="#f3e8ff" text-anchor="middle" x="500" y="120">no B</text>
+<text fill="#c4b5fd" font-size="11" font-weight="400" text-anchor="middle" x="500" y="140">loop</text>
+<path d="M460,155 C460,175 540,175 540,155" fill="none" marker-end="url(#m32a-ah)" opacity="0.7" stroke="#c084fc" stroke-width="1.6"></path>
+<rect fill="#1a1230" height="100" rx="14" stroke="#a855f7" stroke-width="2" width="220" x="710" y="85"></rect>
+<text fill="#e9d5ff" text-anchor="middle" x="820" y="120">no C</text>
+<text fill="#c4b5fd" font-size="11" font-weight="400" text-anchor="middle" x="820" y="140">loop</text>
+<path d="M780,155 C780,175 860,175 860,155" fill="none" marker-end="url(#m32a-ah)" opacity="0.7" stroke="#c084fc" stroke-width="1.6"></path>
+</g>
+<text fill="#c4b5fd" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="500" y="215">cada caixa continua sendo um loop — o que muda e a aresta ENTRE elas, escrita antes de rodar</text>
+</svg>
+</div>
+<p class="text-sm text-neutral-400 mb-6">
+<strong class="text-neutral-300">O que olhar:</strong> a caixa tracejada e nova, mas o conteudo de dentro nao e —
       cada no ainda tem sua propria voltinha (o "loop" escrito dentro dele). O grafo nao substitui o loop, ele
       <em>compoe</em> loops. E o que o proximo topico vai construir com um caso real.
     </p>
-
-    <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
-      <h3 class="text-lg font-semibold text-purple-400 mb-4">Conceitos-chave</h3>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">No = loop</div><p class="text-xs text-neutral-400">Cada no tem seu proprio ciclo</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Aresta pre-escrita</div><p class="text-xs text-neutral-400">O caminho existe antes de rodar</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Isolamento</div><p class="text-xs text-neutral-400">Modelo, ferramentas e permissoes proprios por no</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Composicao</div><p class="text-xs text-neutral-400">Grafo compoe, nao substitui, o loop</p></div>
-      </div>
-    </div>
-
-    <div class="flex justify-start mt-6">
-      <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors">
-        <span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span>
-      </button>
-    </div>
-  </section>
-
-  <!-- ============ TOPICO 4 ============ -->
-  <section id="topico-4" class="mb-16" data-inema-topic="modulo-3-2#topico-4">
-    <div class="flex items-center space-x-4 mb-6">
-      <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">4</span>
-      <h2 class="text-2xl font-bold">📰 Construa o mesmo caso nos tres formatos</h2>
-      <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar duvida neste topico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm">
-        <span aria-hidden="true">?</span><span>Tenho duvida</span>
-      </button>
-    </div>
-
-    <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-2-t4-p1">
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-purple-400 mb-4">Conceitos-chave</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">No = loop</div><p class="text-xs text-neutral-400">Cada no tem seu proprio ciclo</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Aresta pre-escrita</div><p class="text-xs text-neutral-400">O caminho existe antes de rodar</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Isolamento</div><p class="text-xs text-neutral-400">Modelo, ferramentas e permissoes proprios por no</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Composicao</div><p class="text-xs text-neutral-400">Grafo compoe, nao substitui, o loop</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como lido</span>
+</button>
+</div>
+</section>
+<!-- ============ TOPICO 4 ============ -->
+<section class="mb-16" data-inema-topic="modulo-3-2#topico-4" id="topico-4">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">4</span>
+<h2 class="text-2xl font-bold">📰 Construa o mesmo caso nos tres formatos</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Marcar duvida neste topico" type="button">
+<span aria-hidden="true">?</span><span>Tenho duvida</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-2-t4-p1">
       O caso e um <strong class="text-purple-400">resumo diario de pesquisa</strong>: toda manha o sistema le algumas
       fontes sobre um tema, escreve um resumo de uma pagina, e confere se o resumo esta correto antes de mandar.
       Vamos construir esse mesmo objetivo tres vezes — e comparar o que acontece em cada versao.
     </p>
-
-    <div class="space-y-6 mb-6">
-      <div class="flex items-start space-x-4">
-        <div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center"><span class="text-purple-400 font-bold">1</span></div>
-        <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
-          <h4 class="font-semibold text-white mb-2">Como loop unico sobrecarregado</h4>
-          <p class="text-sm text-neutral-400 mb-3">Um agente faz tudo numa janela so: busca fontes, escreve, revisa.</p>
-          <p class="text-neutral-300 text-sm">
+<div class="space-y-6 mb-6">
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center"><span class="text-purple-400 font-bold">1</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">Como loop unico sobrecarregado</h4>
+<p class="text-sm text-neutral-400 mb-3">Um agente faz tudo numa janela so: busca fontes, escreve, revisa.</p>
+<p class="text-neutral-300 text-sm">
             Ele abre as fontes uma por uma — <strong class="text-purple-400">porque loop e sequencial por forma</strong> —
             e despeja o HTML bruto de cada uma no mesmo <strong class="text-purple-400">contexto</strong>
             (a janela de texto que o modelo esta "vendo" naquele momento). Quando chega na hora de revisar, esse
             contexto virou um pantano: HTML cru, prosa meio escrita e raciocinio anterior tudo boiando junto.
             E o pior: ele revisa no mesmo contexto onde escreveu — entao tende a carimbar o proprio trabalho.
           </p>
-        </div>
-      </div>
-      <div class="flex items-start space-x-4">
-        <div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center"><span class="text-purple-400 font-bold">2</span></div>
-        <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
-          <h4 class="font-semibold text-white mb-2">Como grafo pequeno</h4>
-          <p class="text-sm text-neutral-400 mb-3">Tres nos, estado fluindo entre eles, cada um com contexto proprio.</p>
-          <p class="text-neutral-300 text-sm">
-            <strong class="text-purple-400">Pesquisador</strong> abre em <em>N fontes em paralelo</em> — isso e
+</div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center"><span class="text-purple-400 font-bold">2</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">Como grafo pequeno</h4>
+<p class="text-sm text-neutral-400 mb-3">Tres nos, estado fluindo entre eles, cada um com contexto proprio.</p>
+<p class="text-neutral-300 text-sm">
+<strong class="text-purple-400">Pesquisador</strong> abre em <em>N fontes em paralelo</em> — isso e
             <strong class="text-purple-400">fan-out</strong>: abrir uma tarefa em varios ramos ao mesmo tempo. Ele entrega
             so as notas (nao o HTML cru) pro <strong class="text-purple-400">escritor</strong>, que recebe um
             <strong class="text-purple-400">contexto limpo</strong> — sem o lixo da busca, so o que importa pra escrever.
@@ -399,122 +368,108 @@
             contexto novo: ve so o texto e o criterio de qualidade, com uma aresta de volta "reprovado" pro escritor
             se nao passar.
           </p>
-        </div>
-      </div>
-    </div>
-
-    <div class="rounded-2xl border border-purple-500/30 bg-dark-900/40 p-3 sm:p-4 mb-4 overflow-hidden">
-      <svg viewBox="0 0 1000 280" class="w-full h-auto" role="img" aria-label="O daily brief como grafo: pesquisador com um leque de N fontes saindo dele, seta para escritor rotulada notas, escritor com seta para revisor rotulada rascunho, e uma aresta vermelha de volta do revisor para o escritor rotulada reprovado e criticas.">
-        <defs>
-          <linearGradient id="m32b-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c084fc"/><stop offset="1" stop-color="#a855f7"/></linearGradient>
-          <filter id="m32b-glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-          <pattern id="m32b-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#a855f7" opacity="0.12"/></pattern>
-          <marker id="m32b-ah" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#c084fc"/></marker>
-          <marker id="m32b-ahc" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#38bdf8"/></marker>
-          <marker id="m32b-ahr" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#f87171"/></marker>
-        </defs>
-        <rect x="0" y="0" width="1000" height="280" fill="url(#m32b-grid)"/>
-
-        <g stroke="#38bdf8" stroke-width="1.6" opacity="0.55" fill="none">
-          <path d="M60,70 L155,120" marker-end="url(#m32b-ahc)"/>
-          <path d="M60,120 L155,120" marker-end="url(#m32b-ahc)"/>
-          <path d="M60,170 L155,120" marker-end="url(#m32b-ahc)"/>
-        </g>
-        <g font-family="Inter,sans-serif" font-size="11" fill="#9ad6ff">
-          <circle cx="45" cy="70" r="16" fill="#0e1b26" stroke="#38bdf8" stroke-width="1.6"/><text x="45" y="74" text-anchor="middle">f1</text>
-          <circle cx="45" cy="120" r="16" fill="#0e1b26" stroke="#38bdf8" stroke-width="1.6"/><text x="45" y="124" text-anchor="middle">f2</text>
-          <circle cx="45" cy="170" r="16" fill="#0e1b26" stroke="#38bdf8" stroke-width="1.6"/><text x="45" y="174" text-anchor="middle">fN</text>
-        </g>
-
-        <g font-family="Inter,sans-serif" font-size="14" font-weight="600">
-          <rect x="155" y="80" width="170" height="80" rx="14" fill="#1a1230" stroke="#a855f7" stroke-width="2"/>
-          <text x="240" y="115" text-anchor="middle" fill="#e9d5ff">pesquisador</text>
-          <text x="240" y="135" text-anchor="middle" fill="#c4b5fd" font-size="11" font-weight="400">fan-out em N fontes</text>
-        </g>
-
-        <path d="M325,120 L400,120" stroke="#c084fc" stroke-width="1.8" opacity="0.7" fill="none" marker-end="url(#m32b-ah)"/>
-        <text x="362" y="108" text-anchor="middle" fill="#e9d5ff" font-family="Inter,sans-serif" font-size="12">notas</text>
-
-        <g font-family="Inter,sans-serif" font-size="14" font-weight="600">
-          <rect x="400" y="80" width="170" height="80" rx="14" fill="#1a1230" stroke="#a855f7" stroke-width="2"/>
-          <text x="485" y="115" text-anchor="middle" fill="#e9d5ff">escritor</text>
-          <text x="485" y="135" text-anchor="middle" fill="#c4b5fd" font-size="11" font-weight="400">contexto limpo</text>
-        </g>
-
-        <path d="M570,120 L645,120" stroke="#c084fc" stroke-width="1.8" opacity="0.7" fill="none" marker-end="url(#m32b-ah)"/>
-        <text x="607" y="108" text-anchor="middle" fill="#e9d5ff" font-family="Inter,sans-serif" font-size="12">rascunho</text>
-
-        <g font-family="Inter,sans-serif" font-size="14" font-weight="600">
-          <g filter="url(#m32b-glow)"><rect x="645" y="80" width="170" height="80" rx="14" fill="#1a1230" stroke="url(#m32b-grad)" stroke-width="2"/></g>
-          <text x="730" y="115" text-anchor="middle" fill="#f3e8ff">revisor</text>
-          <text x="730" y="135" text-anchor="middle" fill="#c4b5fd" font-size="11" font-weight="400">contexto novo</text>
-        </g>
-
-        <path d="M645,150 C560,215 500,215 486,161" stroke="#f87171" stroke-width="1.8" opacity="0.75" fill="none" stroke-dasharray="8 6" marker-end="url(#m32b-ahr)"/>
-        <text x="565" y="235" text-anchor="middle" fill="#fca5a5" font-family="Inter,sans-serif" font-size="12.5">reprovado + criticas (volta pro escritor)</text>
-
-        <path d="M815,120 L900,120" stroke="#34d399" stroke-width="1.8" opacity="0.7" fill="none" marker-end="url(#m32b-ah)"/>
-        <text x="920" y="124" text-anchor="middle" fill="#a7f3d0" font-family="Inter,sans-serif" font-size="12">envia</text>
-      </svg>
-    </div>
-    <p class="text-sm text-neutral-400 mb-6">
-      <strong class="text-neutral-300">O que olhar:</strong> tres coisas cruzam as arestas — <em>notas</em>, <em>rascunho</em>
+</div>
+</div>
+</div>
+<div class="rounded-2xl border border-purple-500/30 bg-dark-900/40 p-3 sm:p-4 mb-4 overflow-hidden">
+<svg aria-label="O daily brief como grafo: pesquisador com um leque de N fontes saindo dele, seta para escritor rotulada notas, escritor com seta para revisor rotulada rascunho, e uma aresta vermelha de volta do revisor para o escritor rotulada reprovado e criticas." class="w-full h-auto" role="img" viewbox="0 0 1000 280">
+<defs>
+<lineargradient id="m32b-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#c084fc"></stop><stop offset="1" stop-color="#a855f7"></stop></lineargradient>
+<filter height="180%" id="m32b-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="m32b-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#a855f7" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="m32b-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#c084fc"></path></marker>
+<marker id="m32b-ahc" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#38bdf8"></path></marker>
+<marker id="m32b-ahr" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#f87171"></path></marker>
+</defs>
+<rect fill="url(#m32b-grid)" height="280" width="1000" x="0" y="0"></rect>
+<g fill="none" opacity="0.55" stroke="#38bdf8" stroke-width="1.6">
+<path d="M60,70 L155,120" marker-end="url(#m32b-ahc)"></path>
+<path d="M60,120 L155,120" marker-end="url(#m32b-ahc)"></path>
+<path d="M60,170 L155,120" marker-end="url(#m32b-ahc)"></path>
+</g>
+<g fill="#9ad6ff" font-family="Inter,sans-serif" font-size="11">
+<circle cx="45" cy="70" fill="#0e1b26" r="16" stroke="#38bdf8" stroke-width="1.6"></circle><text text-anchor="middle" x="45" y="74">f1</text>
+<circle cx="45" cy="120" fill="#0e1b26" r="16" stroke="#38bdf8" stroke-width="1.6"></circle><text text-anchor="middle" x="45" y="124">f2</text>
+<circle cx="45" cy="170" fill="#0e1b26" r="16" stroke="#38bdf8" stroke-width="1.6"></circle><text text-anchor="middle" x="45" y="174">fN</text>
+</g>
+<g font-family="Inter,sans-serif" font-size="14" font-weight="600">
+<rect fill="#1a1230" height="80" rx="14" stroke="#a855f7" stroke-width="2" width="170" x="155" y="80"></rect>
+<text fill="#e9d5ff" text-anchor="middle" x="240" y="115">pesquisador</text>
+<text fill="#c4b5fd" font-size="11" font-weight="400" text-anchor="middle" x="240" y="135">fan-out em N fontes</text>
+</g>
+<path d="M325,120 L400,120" fill="none" marker-end="url(#m32b-ah)" opacity="0.7" stroke="#c084fc" stroke-width="1.8"></path>
+<text fill="#e9d5ff" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="362" y="108">notas</text>
+<g font-family="Inter,sans-serif" font-size="14" font-weight="600">
+<rect fill="#1a1230" height="80" rx="14" stroke="#a855f7" stroke-width="2" width="170" x="400" y="80"></rect>
+<text fill="#e9d5ff" text-anchor="middle" x="485" y="115">escritor</text>
+<text fill="#c4b5fd" font-size="11" font-weight="400" text-anchor="middle" x="485" y="135">contexto limpo</text>
+</g>
+<path d="M570,120 L645,120" fill="none" marker-end="url(#m32b-ah)" opacity="0.7" stroke="#c084fc" stroke-width="1.8"></path>
+<text fill="#e9d5ff" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="607" y="108">rascunho</text>
+<g font-family="Inter,sans-serif" font-size="14" font-weight="600">
+<g filter="url(#m32b-glow)"><rect fill="#1a1230" height="80" rx="14" stroke="url(#m32b-grad)" stroke-width="2" width="170" x="645" y="80"></rect></g>
+<text fill="#f3e8ff" text-anchor="middle" x="730" y="115">revisor</text>
+<text fill="#c4b5fd" font-size="11" font-weight="400" text-anchor="middle" x="730" y="135">contexto novo</text>
+</g>
+<path d="M645,150 C560,215 500,215 486,161" fill="none" marker-end="url(#m32b-ahr)" opacity="0.75" stroke="#f87171" stroke-dasharray="8 6" stroke-width="1.8"></path>
+<text fill="#fca5a5" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="565" y="235">reprovado + criticas (volta pro escritor)</text>
+<path d="M815,120 L900,120" fill="none" marker-end="url(#m32b-ah)" opacity="0.7" stroke="#34d399" stroke-width="1.8"></path>
+<text fill="#a7f3d0" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="920" y="124">envia</text>
+</svg>
+</div>
+<p class="text-sm text-neutral-400 mb-6">
+<strong class="text-neutral-300">O que olhar:</strong> tres coisas cruzam as arestas — <em>notas</em>, <em>rascunho</em>
       e <em>criticas</em> — e nenhuma delas e o HTML bruto das fontes. Isso e o que separa a versao grafo da versao
       loop unico: cada no recebe so o que precisa, nunca o transcript inteiro do no anterior. (<strong class="text-neutral-300">Transcript</strong>
       = o historico completo de uma conversa/execucao, com todo o raciocinio intermediario — util pra depurar, pesado demais
       pra passar adiante como entrada.)
     </p>
-
-    <div class="overflow-x-auto mb-6">
-      <table class="w-full text-sm">
-        <thead>
-          <tr class="border-b border-dark-600 text-left">
-            <th class="py-3 pr-4 text-neutral-400 font-semibold">Dimensao</th>
-            <th class="py-3 pr-4 text-neutral-300 font-semibold">agentic</th>
-            <th class="py-3 pr-4 text-blue-400 font-semibold">loop</th>
-            <th class="py-3 text-purple-400 font-semibold">graph</th>
-          </tr>
-        </thead>
-        <tbody class="divide-y divide-dark-600">
-          <tr><td class="py-3 pr-4 text-neutral-400">Quem decide o proximo passo</td><td class="py-3 pr-4 text-neutral-300">o modelo, a cada token</td><td class="py-3 pr-4 text-neutral-300">o modelo, dentro de um ciclo fixo</td><td class="py-3 text-neutral-300">o modelo, dentro de cada no; o roteamento entre nos e fixo</td></tr>
-          <tr><td class="py-3 pr-4 text-neutral-400">Onde mora a estrutura</td><td class="py-3 pr-4 text-neutral-300">na cabeca do modelo</td><td class="py-3 pr-4 text-neutral-300">em codigo, um ciclo</td><td class="py-3 text-neutral-300">em codigo, um diagrama de nos e arestas</td></tr>
-          <tr><td class="py-3 pr-4 text-neutral-400">Paralelismo</td><td class="py-3 pr-4 text-neutral-300">nenhum nativo</td><td class="py-3 pr-4 text-neutral-300">nenhum — o loop e sequencial por forma</td><td class="py-3 text-neutral-300">fan-out/fan-in de primeira classe</td></tr>
-          <tr><td class="py-3 pr-4 text-neutral-400">Contexto</td><td class="py-3 pr-4 text-neutral-300">uma janela so, cresce sem limite</td><td class="py-3 pr-4 text-neutral-300">uma janela por volta do ciclo</td><td class="py-3 text-neutral-300">um contexto limpo por no</td></tr>
-          <tr><td class="py-3 pr-4 text-neutral-400">Como voce depura</td><td class="py-3 pr-4 text-neutral-300">lendo o transcript inteiro</td><td class="py-3 pr-4 text-neutral-300">lendo o transcript de cada volta</td><td class="py-3 text-neutral-300">lendo o diagrama + o estado em cada aresta</td></tr>
-          <tr><td class="py-3 pr-4 text-neutral-400">Custo de manutencao</td><td class="py-3 pr-4 text-neutral-300">baixo (so o prompt)</td><td class="py-3 pr-4 text-neutral-300">medio (ciclo + condicao de parada)</td><td class="py-3 text-neutral-300">alto (N prompts + state schema + roteamento)</td></tr>
-          <tr><td class="py-3 pr-4 text-neutral-400">Quando usar</td><td class="py-3 pr-4 text-neutral-300">tarefa aberta, roda uma vez</td><td class="py-3 pr-4 text-neutral-300">tarefa repetivel, um agente basta</td><td class="py-3 text-neutral-300">tarefa repetivel que precisa de especializacao/paralelismo real</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
-      <h3 class="text-lg font-semibold text-purple-400 mb-4">Conceitos-chave</h3>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Mesmo caso</div><p class="text-xs text-neutral-400">Daily brief nos tres formatos</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Fan-out</div><p class="text-xs text-neutral-400">Abrir 1 tarefa em N ramos</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Contexto limpo</div><p class="text-xs text-neutral-400">Cada no ve so o que precisa</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Aresta de volta</div><p class="text-xs text-neutral-400">Reprovado leva de volta ao escritor</p></div>
-      </div>
-    </div>
-
-    <div class="flex justify-start mt-6">
-      <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors">
-        <span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span>
-      </button>
-    </div>
-  </section>
-
-  <!-- ============ TOPICO 5 ============ -->
-  <section id="topico-5" class="mb-16" data-inema-topic="modulo-3-2#topico-5">
-    <div class="flex items-center space-x-4 mb-6">
-      <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">5</span>
-      <h2 class="text-2xl font-bold">✨ Saiba o que o grafo da de genuinamente novo</h2>
-      <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar duvida neste topico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm">
-        <span aria-hidden="true">?</span><span>Tenho duvida</span>
-      </button>
-    </div>
-
-    <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-2-t5-p1">
+<div class="overflow-x-auto mb-6">
+<table class="w-full text-sm">
+<thead>
+<tr class="border-b border-dark-600 text-left">
+<th class="py-3 pr-4 text-neutral-400 font-semibold">Dimensao</th>
+<th class="py-3 pr-4 text-neutral-300 font-semibold">agentic</th>
+<th class="py-3 pr-4 text-blue-400 font-semibold">loop</th>
+<th class="py-3 text-purple-400 font-semibold">graph</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-dark-600">
+<tr><td class="py-3 pr-4 text-neutral-400">Quem decide o proximo passo</td><td class="py-3 pr-4 text-neutral-300">o modelo, a cada token</td><td class="py-3 pr-4 text-neutral-300">o modelo, dentro de um ciclo fixo</td><td class="py-3 text-neutral-300">o modelo, dentro de cada no; o roteamento entre nos e fixo</td></tr>
+<tr><td class="py-3 pr-4 text-neutral-400">Onde mora a estrutura</td><td class="py-3 pr-4 text-neutral-300">na cabeca do modelo</td><td class="py-3 pr-4 text-neutral-300">em codigo, um ciclo</td><td class="py-3 text-neutral-300">em codigo, um diagrama de nos e arestas</td></tr>
+<tr><td class="py-3 pr-4 text-neutral-400">Paralelismo</td><td class="py-3 pr-4 text-neutral-300">nenhum nativo</td><td class="py-3 pr-4 text-neutral-300">nenhum — o loop e sequencial por forma</td><td class="py-3 text-neutral-300">fan-out/fan-in de primeira classe</td></tr>
+<tr><td class="py-3 pr-4 text-neutral-400">Contexto</td><td class="py-3 pr-4 text-neutral-300">uma janela so, cresce sem limite</td><td class="py-3 pr-4 text-neutral-300">uma janela por volta do ciclo</td><td class="py-3 text-neutral-300">um contexto limpo por no</td></tr>
+<tr><td class="py-3 pr-4 text-neutral-400">Como voce depura</td><td class="py-3 pr-4 text-neutral-300">lendo o transcript inteiro</td><td class="py-3 pr-4 text-neutral-300">lendo o transcript de cada volta</td><td class="py-3 text-neutral-300">lendo o diagrama + o estado em cada aresta</td></tr>
+<tr><td class="py-3 pr-4 text-neutral-400">Custo de manutencao</td><td class="py-3 pr-4 text-neutral-300">baixo (so o prompt)</td><td class="py-3 pr-4 text-neutral-300">medio (ciclo + condicao de parada)</td><td class="py-3 text-neutral-300">alto (N prompts + state schema + roteamento)</td></tr>
+<tr><td class="py-3 pr-4 text-neutral-400">Quando usar</td><td class="py-3 pr-4 text-neutral-300">tarefa aberta, roda uma vez</td><td class="py-3 pr-4 text-neutral-300">tarefa repetivel, um agente basta</td><td class="py-3 text-neutral-300">tarefa repetivel que precisa de especializacao/paralelismo real</td></tr>
+</tbody>
+</table>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-purple-400 mb-4">Conceitos-chave</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Mesmo caso</div><p class="text-xs text-neutral-400">Daily brief nos tres formatos</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Fan-out</div><p class="text-xs text-neutral-400">Abrir 1 tarefa em N ramos</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Contexto limpo</div><p class="text-xs text-neutral-400">Cada no ve so o que precisa</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Aresta de volta</div><p class="text-xs text-neutral-400">Reprovado leva de volta ao escritor</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como lido</span>
+</button>
+</div>
+</section>
+<!-- ============ TOPICO 5 ============ -->
+<section class="mb-16" data-inema-topic="modulo-3-2#topico-5" id="topico-5">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">5</span>
+<h2 class="text-2xl font-bold">✨ Saiba o que o grafo da de genuinamente novo</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Marcar duvida neste topico" type="button">
+<span aria-hidden="true">?</span><span>Tenho duvida</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-2-t5-p1">
       Sao tres coisas concretas, nao uma vibe de "mais avancado". Primeiro: <strong class="text-purple-400">nos paralelos
       especializados</strong> com contextos limpos e separados — o pesquisador nao carrega o vocabulario de revisor,
       o revisor nao carrega o ruido da busca. Segundo: <strong class="text-purple-400">fan-out e fan-in</strong> como
@@ -522,139 +477,125 @@
       <strong class="text-purple-400">fluxo de controle explicito e auditavel</strong> — o caminho e um diagrama que
       voce le, nao algo que voce reconstroi lendo um transcript de 40 mil tokens.
     </p>
-
-    <div class="rounded-2xl border border-purple-500/30 bg-dark-900/40 p-3 sm:p-4 mb-4 overflow-hidden">
-      <svg viewBox="0 0 1000 260" class="w-full h-auto" role="img" aria-label="Divisoria tracejada vertical no meio. A esquerda, profundidade: uma cadeia vertical, um unico no com varias voltas, seta descendo ate fim. A direita, largura: um fan-out horizontal, um plano se abrindo em N agentes ciano que convergem num unico resultado.">
-        <defs>
-          <linearGradient id="m32c-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c084fc"/><stop offset="1" stop-color="#a855f7"/></linearGradient>
-          <filter id="m32c-glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-          <pattern id="m32c-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#a855f7" opacity="0.12"/></pattern>
-          <marker id="m32c-ah" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#a855f7"/></marker>
-          <marker id="m32c-ahc" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#38bdf8"/></marker>
-        </defs>
-        <rect x="0" y="0" width="1000" height="260" fill="url(#m32c-grid)"/>
-        <path d="M500,20 L500,240" stroke="#9ca3af" stroke-width="1.5" stroke-dasharray="9 9" opacity="0.4"/>
-
-        <text x="230" y="34" text-anchor="middle" fill="#e9d5ff" font-family="Inter,sans-serif" font-size="13" font-weight="600">PROFUNDIDADE — o loop</text>
-        <g font-family="Inter,sans-serif" font-size="13">
-          <rect x="170" y="56" width="120" height="44" rx="12" fill="#1a1230" stroke="#a855f7" stroke-width="2"/><text x="230" y="83" text-anchor="middle" fill="#e9d5ff">no</text>
-          <path d="M290,78 C330,78 330,110 290,110" stroke="#c084fc" stroke-width="1.8" fill="none" marker-end="url(#m32c-ah)" opacity="0.7"/>
-          <rect x="170" y="110" width="120" height="44" rx="12" fill="#1a1230" stroke="#a855f7" stroke-width="2"/><text x="230" y="137" text-anchor="middle" fill="#e9d5ff">no</text>
-          <path d="M290,132 C330,132 330,164 290,164" stroke="#c084fc" stroke-width="1.8" fill="none" marker-end="url(#m32c-ah)" opacity="0.7"/>
-          <rect x="170" y="164" width="120" height="44" rx="12" fill="#1a1230" stroke="#a855f7" stroke-width="2"/><text x="230" y="191" text-anchor="middle" fill="#e9d5ff">no</text>
-          <path d="M230,208 L230,225" stroke="#c084fc" stroke-width="1.8" opacity="0.7"/>
-          <g filter="url(#m32c-glow)"><rect x="170" y="225" width="120" height="20" rx="8" fill="#1a1230" stroke="url(#m32c-grad)" stroke-width="2"/></g>
-          <text x="230" y="239" text-anchor="middle" fill="#f3e8ff" font-size="11">fim</text>
-        </g>
-
-        <text x="750" y="34" text-anchor="middle" fill="#9ad6ff" font-family="Inter,sans-serif" font-size="13" font-weight="600">LARGURA — o grafo</text>
-        <g font-family="Inter,sans-serif" font-size="12">
-          <rect x="600" y="118" width="90" height="40" rx="10" fill="#1a1230" stroke="#a855f7" stroke-width="2"/><text x="645" y="143" text-anchor="middle" fill="#e9d5ff">plano</text>
-        </g>
-        <g stroke="#38bdf8" stroke-width="1.6" opacity="0.6" fill="none">
-          <path d="M690,128 L760,80" marker-end="url(#m32c-ahc)"/>
-          <path d="M690,138 L760,138" marker-end="url(#m32c-ahc)"/>
-          <path d="M690,148 L760,196" marker-end="url(#m32c-ahc)"/>
-        </g>
-        <g font-family="Inter,sans-serif" font-size="11" fill="#bfe6ff">
-          <circle cx="785" cy="72" r="24" fill="#0e1b26" stroke="#38bdf8" stroke-width="1.8"/><text x="785" y="76" text-anchor="middle">ag1</text>
-          <circle cx="785" cy="138" r="24" fill="#0e1b26" stroke="#38bdf8" stroke-width="1.8"/><text x="785" y="142" text-anchor="middle">ag2</text>
-          <circle cx="785" cy="204" r="24" fill="#0e1b26" stroke="#38bdf8" stroke-width="1.8"/><text x="785" y="208" text-anchor="middle">agN</text>
-        </g>
-        <g stroke="#38bdf8" stroke-width="1.6" opacity="0.6" fill="none">
-          <path d="M809,80 L870,130" marker-end="url(#m32c-ahc)"/>
-          <path d="M809,138 L870,138" marker-end="url(#m32c-ahc)"/>
-          <path d="M809,196 L870,146" marker-end="url(#m32c-ahc)"/>
-        </g>
-        <rect x="870" y="118" width="100" height="40" rx="10" fill="#1a1230" stroke="#a855f7" stroke-width="2"/><text x="920" y="143" text-anchor="middle" font-family="Inter,sans-serif" font-size="12" fill="#e9d5ff">resultado</text>
-      </svg>
-    </div>
-    <p class="text-sm text-neutral-400 mb-6">
-      <strong class="text-neutral-300">O que olhar:</strong> os dois lados resolvem "fazer mais coisa" de jeitos opostos.
+<div class="rounded-2xl border border-purple-500/30 bg-dark-900/40 p-3 sm:p-4 mb-4 overflow-hidden">
+<svg aria-label="Divisoria tracejada vertical no meio. A esquerda, profundidade: uma cadeia vertical, um unico no com varias voltas, seta descendo ate fim. A direita, largura: um fan-out horizontal, um plano se abrindo em N agentes ciano que convergem num unico resultado." class="w-full h-auto" role="img" viewbox="0 0 1000 260">
+<defs>
+<lineargradient id="m32c-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#c084fc"></stop><stop offset="1" stop-color="#a855f7"></stop></lineargradient>
+<filter height="180%" id="m32c-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="m32c-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#a855f7" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="m32c-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#a855f7"></path></marker>
+<marker id="m32c-ahc" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#38bdf8"></path></marker>
+</defs>
+<rect fill="url(#m32c-grid)" height="260" width="1000" x="0" y="0"></rect>
+<path d="M500,20 L500,240" opacity="0.4" stroke="#9ca3af" stroke-dasharray="9 9" stroke-width="1.5"></path>
+<text fill="#e9d5ff" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="230" y="34">PROFUNDIDADE — o loop</text>
+<g font-family="Inter,sans-serif" font-size="13">
+<rect fill="#1a1230" height="44" rx="12" stroke="#a855f7" stroke-width="2" width="120" x="170" y="56"></rect><text fill="#e9d5ff" text-anchor="middle" x="230" y="83">no</text>
+<path d="M290,78 C330,78 330,110 290,110" fill="none" marker-end="url(#m32c-ah)" opacity="0.7" stroke="#c084fc" stroke-width="1.8"></path>
+<rect fill="#1a1230" height="44" rx="12" stroke="#a855f7" stroke-width="2" width="120" x="170" y="110"></rect><text fill="#e9d5ff" text-anchor="middle" x="230" y="137">no</text>
+<path d="M290,132 C330,132 330,164 290,164" fill="none" marker-end="url(#m32c-ah)" opacity="0.7" stroke="#c084fc" stroke-width="1.8"></path>
+<rect fill="#1a1230" height="44" rx="12" stroke="#a855f7" stroke-width="2" width="120" x="170" y="164"></rect><text fill="#e9d5ff" text-anchor="middle" x="230" y="191">no</text>
+<path d="M230,208 L230,225" opacity="0.7" stroke="#c084fc" stroke-width="1.8"></path>
+<g filter="url(#m32c-glow)"><rect fill="#1a1230" height="20" rx="8" stroke="url(#m32c-grad)" stroke-width="2" width="120" x="170" y="225"></rect></g>
+<text fill="#f3e8ff" font-size="11" text-anchor="middle" x="230" y="239">fim</text>
+</g>
+<text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="750" y="34">LARGURA — o grafo</text>
+<g font-family="Inter,sans-serif" font-size="12">
+<rect fill="#1a1230" height="40" rx="10" stroke="#a855f7" stroke-width="2" width="90" x="600" y="118"></rect><text fill="#e9d5ff" text-anchor="middle" x="645" y="143">plano</text>
+</g>
+<g fill="none" opacity="0.6" stroke="#38bdf8" stroke-width="1.6">
+<path d="M690,128 L760,80" marker-end="url(#m32c-ahc)"></path>
+<path d="M690,138 L760,138" marker-end="url(#m32c-ahc)"></path>
+<path d="M690,148 L760,196" marker-end="url(#m32c-ahc)"></path>
+</g>
+<g fill="#bfe6ff" font-family="Inter,sans-serif" font-size="11">
+<circle cx="785" cy="72" fill="#0e1b26" r="24" stroke="#38bdf8" stroke-width="1.8"></circle><text text-anchor="middle" x="785" y="76">ag1</text>
+<circle cx="785" cy="138" fill="#0e1b26" r="24" stroke="#38bdf8" stroke-width="1.8"></circle><text text-anchor="middle" x="785" y="142">ag2</text>
+<circle cx="785" cy="204" fill="#0e1b26" r="24" stroke="#38bdf8" stroke-width="1.8"></circle><text text-anchor="middle" x="785" y="208">agN</text>
+</g>
+<g fill="none" opacity="0.6" stroke="#38bdf8" stroke-width="1.6">
+<path d="M809,80 L870,130" marker-end="url(#m32c-ahc)"></path>
+<path d="M809,138 L870,138" marker-end="url(#m32c-ahc)"></path>
+<path d="M809,196 L870,146" marker-end="url(#m32c-ahc)"></path>
+</g>
+<rect fill="#1a1230" height="40" rx="10" stroke="#a855f7" stroke-width="2" width="100" x="870" y="118"></rect><text fill="#e9d5ff" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="920" y="143">resultado</text>
+</svg>
+</div>
+<p class="text-sm text-neutral-400 mb-6">
+<strong class="text-neutral-300">O que olhar:</strong> os dois lados resolvem "fazer mais coisa" de jeitos opostos.
       O loop cresce pra <em>baixo</em> — mais voltas no mesmo no. O grafo cresce pra <em>fora</em> — mais nos rodando
       ao mesmo tempo. Nao da pra fazer um fan-out real dentro de um loop unico; ele so sabe repetir, nao dividir.
     </p>
-
-    <figure class="mb-6">
-      <img src="../../assets/img/graph-engineering-panorama.png"
-           alt="Panorama em quatro estagios mostrando a evolucao de agentic para loop e depois para graph, com uma faixa horizontal comparando loop (ciclo unico, sequencial) e graph (nos paralelos ligados por arestas com fan-out e fan-in)."
-           class="w-full h-auto rounded-xl border border-dark-600">
-      <figcaption class="text-sm text-neutral-400 mt-3">
-        <strong class="text-neutral-300">O que olhar:</strong> a faixa que separa loop de graph nesse panorama e a mesma
+<figure class="mb-6">
+<img alt="Panorama em quatro estagios mostrando a evolucao de agentic para loop e depois para graph, com uma faixa horizontal comparando loop (ciclo unico, sequencial) e graph (nos paralelos ligados por arestas com fan-out e fan-in)." class="w-full h-auto rounded-xl border border-dark-600" src="../../assets/img/graph-engineering-panorama.png"/>
+<figcaption class="text-sm text-neutral-400 mt-3">
+<strong class="text-neutral-300">O que olhar:</strong> a faixa que separa loop de graph nesse panorama e a mesma
         divisoria do SVG acima — profundidade de um lado, largura do outro. Os quatro estagios nao sao um ranking de
         maturidade; sao quatro respostas a perguntas diferentes sobre o mesmo problema.
       </figcaption>
-    </figure>
-
-    <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
-      <h3 class="text-lg font-semibold text-purple-400 mb-4">Conceitos-chave</h3>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">No especializado</div><p class="text-xs text-neutral-400">Contexto limpo e separado</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Fan-in</div><p class="text-xs text-neutral-400">Juntar os N ramos de volta</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Auditavel</div><p class="text-xs text-neutral-400">Diagrama que se le, nao se reconstroi</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Largura x profundidade</div><p class="text-xs text-neutral-400">Grafo cresce pra fora, loop pra baixo</p></div>
-      </div>
-    </div>
-
-    <div class="flex justify-start mt-6">
-      <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors">
-        <span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span>
-      </button>
-    </div>
-  </section>
-
-  <!-- ============ TOPICO 6 ============ -->
-  <section id="topico-6" class="mb-16" data-inema-topic="modulo-3-2#topico-6">
-    <div class="flex items-center space-x-4 mb-6">
-      <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">6</span>
-      <h2 class="text-2xl font-bold">💸 Saiba o que o grafo cobra</h2>
-      <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar duvida neste topico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm">
-        <span aria-hidden="true">?</span><span>Tenho duvida</span>
-      </button>
-    </div>
-
-    <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-2-t6-p1">
+</figure>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-purple-400 mb-4">Conceitos-chave</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">No especializado</div><p class="text-xs text-neutral-400">Contexto limpo e separado</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Fan-in</div><p class="text-xs text-neutral-400">Juntar os N ramos de volta</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Auditavel</div><p class="text-xs text-neutral-400">Diagrama que se le, nao se reconstroi</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Largura x profundidade</div><p class="text-xs text-neutral-400">Grafo cresce pra fora, loop pra baixo</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como lido</span>
+</button>
+</div>
+</section>
+<!-- ============ TOPICO 6 ============ -->
+<section class="mb-16" data-inema-topic="modulo-3-2#topico-6" id="topico-6">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">6</span>
+<h2 class="text-2xl font-bold">💸 Saiba o que o grafo cobra</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Marcar duvida neste topico" type="button">
+<span aria-hidden="true">?</span><span>Tenho duvida</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-2-t6-p1">
       Nada disso e de graca. Voce passa a manter <strong class="text-purple-400">tres prompts</strong> em vez de um —
       cada no tem sua propria instrucao, e as tres precisam evoluir juntas sem quebrar as arestas entre elas.
       Voce precisa definir um <strong class="text-purple-400">state schema</strong>: o formato exato do que o
       pesquisador entrega pro escritor, do que o escritor entrega pro revisor. Sem esse contrato escrito, os nos
       comecam a se desentender sobre o que "notas" ou "rascunho" significam.
     </p>
-
-    <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
-      <h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center"><span class="mr-2">⚠️</span> Modos de falha que so existem no grafo</h3>
-      <ul class="space-y-2 text-neutral-300 text-sm">
-        <li><strong>Merge que engole uma fonte em silencio</strong> — o fan-in junta 5 ramos, um falhou, e ninguem percebeu que faltou uma fonte no resumo final.</li>
-        <li><strong>Roteamento que fica indo e voltando pra sempre</strong> — a aresta "reprovado" manda de volta pro escritor, que escreve de novo, que e reprovado de novo, sem limite de tentativas.</li>
-        <li><strong>Estado que vaza de um no pro outro</strong> — o contexto que deveria estar limpo carrega lixo do no anterior porque o state schema nao foi respeitado.</li>
-      </ul>
-    </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-      <div class="bg-purple-900/20 rounded-xl border border-purple-500/30 p-6">
-        <h4 class="font-bold text-purple-400 mb-4">✓ A sobrecarga compra qualidade quando</h4>
-        <ul class="space-y-3 text-neutral-300 text-sm">
-          <li class="flex items-start space-x-2"><span class="text-purple-400">✓</span><span>A tarefa roda todo dia — o custo fixo de montar o grafo se paga em repeticoes</span></li>
-          <li class="flex items-start space-x-2"><span class="text-purple-400">✓</span><span>Existe paralelismo real a explorar (N fontes, N ramos)</span></li>
-          <li class="flex items-start space-x-2"><span class="text-purple-400">✓</span><span>Especializar cada no de fato melhora o resultado (revisor com criterio proprio)</span></li>
-        </ul>
-      </div>
-      <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
-        <h4 class="font-bold text-red-400 mb-4">✗ A sobrecarga e imposto puro quando</h4>
-        <ul class="space-y-3 text-neutral-300 text-sm">
-          <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>A tarefa roda uma vez — voce nunca recupera o custo de montar tres prompts</span></li>
-          <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Nao ha nada pra paralelizar — e um processo genuinamente sequencial</span></li>
-          <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Um unico no, com todas as ferramentas e todas as instrucoes — isso e loop reinventado; a estrutura de grafo nao esta fazendo nada</span></li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- EXEMPLO COPY-RUN -->
-    <div class="bg-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
-      <h3 class="text-lg font-semibold text-purple-400 mb-2 flex items-center"><span class="mr-2">🧪</span> Exemplo pratico: grafo degenerado x grafo de verdade</h3>
-      <p class="text-sm text-neutral-400 mb-4"><strong class="text-neutral-300">Objetivo:</strong> comparar o mesmo <code class="text-purple-400">grafo.json</code> do daily brief em dois formatos — o "grafo de um no so" (nome de grafo, corpo de loop) e o de tres nos (grafo de verdade) — e ver a diferenca no proprio arquivo.</p>
-
-      <div class="code-box bg-dark-900 rounded-lg border border-dark-600 p-4 mb-4 overflow-x-auto">
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center"><span class="mr-2">⚠️</span> Modos de falha que so existem no grafo</h3>
+<ul class="space-y-2 text-neutral-300 text-sm">
+<li><strong>Merge que engole uma fonte em silencio</strong> — o fan-in junta 5 ramos, um falhou, e ninguem percebeu que faltou uma fonte no resumo final.</li>
+<li><strong>Roteamento que fica indo e voltando pra sempre</strong> — a aresta "reprovado" manda de volta pro escritor, que escreve de novo, que e reprovado de novo, sem limite de tentativas.</li>
+<li><strong>Estado que vaza de um no pro outro</strong> — o contexto que deveria estar limpo carrega lixo do no anterior porque o state schema nao foi respeitado.</li>
+</ul>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-purple-900/20 rounded-xl border border-purple-500/30 p-6">
+<h4 class="font-bold text-purple-400 mb-4">✓ A sobrecarga compra qualidade quando</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-purple-400">✓</span><span>A tarefa roda todo dia — o custo fixo de montar o grafo se paga em repeticoes</span></li>
+<li class="flex items-start space-x-2"><span class="text-purple-400">✓</span><span>Existe paralelismo real a explorar (N fontes, N ramos)</span></li>
+<li class="flex items-start space-x-2"><span class="text-purple-400">✓</span><span>Especializar cada no de fato melhora o resultado (revisor com criterio proprio)</span></li>
+</ul>
+</div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+<h4 class="font-bold text-red-400 mb-4">✗ A sobrecarga e imposto puro quando</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>A tarefa roda uma vez — voce nunca recupera o custo de montar tres prompts</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Nao ha nada pra paralelizar — e um processo genuinamente sequencial</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Um unico no, com todas as ferramentas e todas as instrucoes — isso e loop reinventado; a estrutura de grafo nao esta fazendo nada</span></li>
+</ul>
+</div>
+</div>
+<!-- EXEMPLO COPY-RUN -->
+<div class="bg-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-purple-400 mb-2 flex items-center"><span class="mr-2">🧪</span> Exemplo pratico: grafo degenerado x grafo de verdade</h3>
+<p class="text-sm text-neutral-400 mb-4"><strong class="text-neutral-300">Objetivo:</strong> comparar o mesmo <code class="text-purple-400">grafo.json</code> do daily brief em dois formatos — o "grafo de um no so" (nome de grafo, corpo de loop) e o de tres nos (grafo de verdade) — e ver a diferenca no proprio arquivo.</p>
+<div class="code-box bg-dark-900 rounded-lg border border-dark-600 p-4 mb-4 overflow-x-auto">
 <pre class="text-sm text-neutral-300">// grafo.json — VERSAO DEGENERADA (1 no, todas as ferramentas, todas as instrucoes)
 {
   "nodes": [
@@ -683,86 +624,78 @@
     { "from": "revisor", "to": "escritor", "quando": "reprovado", "carrega": "criticas", "limite_voltas": 2 }
   ]
 }</pre>
-      </div>
-
-      <div class="bg-dark-700/50 rounded-lg p-4">
-        <p class="text-sm text-neutral-300"><strong class="text-purple-400">Como verificar:</strong> conte os <code class="text-purple-400">edges</code>.
+</div>
+<div class="bg-dark-700/50 rounded-lg p-4">
+<p class="text-sm text-neutral-300"><strong class="text-purple-400">Como verificar:</strong> conte os <code class="text-purple-400">edges</code>.
         Se a versao "grafo" do seu projeto tiver zero arestas ou um unico no com todas as ferramentas, e a versao degenerada —
         um loop disfarcado. Se tiver arestas com <code class="text-purple-400">carrega</code> definido (o que passa de um no pro outro),
         e um grafo de verdade.</p>
-        <p class="text-sm text-neutral-400 mt-3"><strong class="text-neutral-300">Teste de vies:</strong> peca pro Claude Code julgar uma tarefa sua
+<p class="text-sm text-neutral-400 mt-3"><strong class="text-neutral-300">Teste de vies:</strong> peca pro Claude Code julgar uma tarefa sua
         e dizer se ela merece agentic, loop ou graph — <em>exigindo que ele justifique por que as outras duas nao servem</em>.
         Se ele responder "grafo" pra uma tarefa que roda <code class="text-purple-400">&lt;uma vez so&gt;</code>, isso e viés de hype.
         Peca o custo de manutencao: quantos prompts, qual state schema, qual modo de falha novo ele esta assumindo.</p>
-      </div>
-    </div>
-
-    <!-- CHECAGEM LEVE -->
-    <div data-inema-check="modulo-3-2#q1" class="inema-check mt-8 bg-dark-800 border border-dark-600 rounded-xl p-6 mb-6">
-      <p class="font-medium mb-4">Checagem rapida (nao bloqueia nada): voce tem um grafo com UM unico no, que tem todas as ferramentas e todas as instrucoes do processo. O que isso realmente e?</p>
-      <div class="inema-check-options space-y-2">
-        <button type="button" data-inema-check-option="0" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">Um grafo otimizado, porque tem menos partes móveis</button>
-        <button type="button" data-inema-check-option="1" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">Um loop reinventado com nome de grafo — a estrutura de grafo nao esta fazendo nada</button>
-        <button type="button" data-inema-check-option="2" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">Um caso agentic, porque so tem um agente rodando</button>
-      </div>
-      <div data-inema-check-feedback class="mt-4 text-sm" role="status" aria-live="polite"></div>
-    </div>
-
-    <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
-      <h3 class="text-lg font-semibold text-purple-400 mb-4">Conceitos-chave</h3>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">State schema</div><p class="text-xs text-neutral-400">O contrato entre nos</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">N prompts</div><p class="text-xs text-neutral-400">Um por no, evoluindo juntos</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Falhas novas</div><p class="text-xs text-neutral-400">Merge, loop de roteamento, vazamento</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Nó degenerado</div><p class="text-xs text-neutral-400">1 no com tudo = loop disfarcado</p></div>
-      </div>
-    </div>
-
-    <div class="flex justify-start mt-6">
-      <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors">
-        <span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span>
-      </button>
-    </div>
-  </section>
-
-  <!-- ============ RESUMO ============ -->
-  <section class="mb-12">
-    <div class="bg-gradient-to-br from-purple-900/40 via-dark-800 to-dark-800 rounded-xl border border-purple-500/30 p-8">
-      <h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">📌</span> Resumo do Modulo</h2>
-      <div class="space-y-4 mb-8">
-        <div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">Agentic</strong><span class="text-neutral-400"> — decisao na cabeca do modelo, sem ciclo desenhado; serve pra tarefa aberta que roda uma vez.</span></div></div>
-        <div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">Loop</strong><span class="text-neutral-400"> — ciclo desenhado com teste de saida explicito; serve pra tarefa repetivel com criterio verificavel.</span></div></div>
-        <div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">Graph</strong><span class="text-neutral-400"> — loops compostos, com arestas explicitas escritas antes de rodar; cada no e seu proprio loop.</span></div></div>
-        <div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">O que e novo de verdade</strong><span class="text-neutral-400"> — nos especializados com contexto limpo, fan-out/fan-in, fluxo auditavel.</span></div></div>
-        <div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">O que e rebatismo</strong><span class="text-neutral-400"> — a palavra "grafo"; maquina de estados e orquestracao ja existiam antes.</span></div></div>
-        <div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">A frase que sobrevive</strong><span class="text-neutral-400"> — "um loop e um no do grafo". Voce nao gradua de loop pra grafo; compoe loops em grafos quando um loop deixa de bastar.</span></div></div>
-      </div>
-      <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
-        <h3 class="font-semibold text-purple-400 mb-2">Proximo Modulo:</h3>
-        <p class="text-neutral-300">3.3 — Mito x fato: separando o que o graph engineering promete do que ele de fato entrega.</p>
-      </div>
-      <div class="flex flex-col sm:flex-row gap-4">
-        <a href="modulo-3-1.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">← Modulo Anterior</a>
-        <a href="modulo-3-3.html" class="flex-1 text-center px-6 py-3 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-500 transition-colors">Proximo Modulo →</a>
-      </div>
-    </div>
-  </section>
-
-  </main>
 </div>
 </div>
-
+<!-- CHECAGEM LEVE -->
+<div class="inema-check mt-8 bg-dark-800 border border-dark-600 rounded-xl p-6 mb-6" data-inema-check="modulo-3-2#q1">
+<p class="font-medium mb-4">Checagem rapida (nao bloqueia nada): voce tem um grafo com UM unico no, que tem todas as ferramentas e todas as instrucoes do processo. O que isso realmente e?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">Um grafo otimizado, porque tem menos partes móveis</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">Um loop reinventado com nome de grafo — a estrutura de grafo nao esta fazendo nada</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">Um caso agentic, porque so tem um agente rodando</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-purple-400 mb-4">Conceitos-chave</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">State schema</div><p class="text-xs text-neutral-400">O contrato entre nos</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">N prompts</div><p class="text-xs text-neutral-400">Um por no, evoluindo juntos</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Falhas novas</div><p class="text-xs text-neutral-400">Merge, loop de roteamento, vazamento</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Nó degenerado</div><p class="text-xs text-neutral-400">1 no com tudo = loop disfarcado</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como lido</span>
+</button>
+</div>
+</section>
+<!-- ============ RESUMO ============ -->
+<section class="mb-12">
+<div class="bg-gradient-to-br from-purple-900/40 via-dark-800 to-dark-800 rounded-xl border border-purple-500/30 p-8">
+<h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">📌</span> Resumo do Modulo</h2>
+<div class="space-y-4 mb-8">
+<div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">Agentic</strong><span class="text-neutral-400"> — decisao na cabeca do modelo, sem ciclo desenhado; serve pra tarefa aberta que roda uma vez.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">Loop</strong><span class="text-neutral-400"> — ciclo desenhado com teste de saida explicito; serve pra tarefa repetivel com criterio verificavel.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">Graph</strong><span class="text-neutral-400"> — loops compostos, com arestas explicitas escritas antes de rodar; cada no e seu proprio loop.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">O que e novo de verdade</strong><span class="text-neutral-400"> — nos especializados com contexto limpo, fan-out/fan-in, fluxo auditavel.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">O que e rebatismo</strong><span class="text-neutral-400"> — a palavra "grafo"; maquina de estados e orquestracao ja existiam antes.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">A frase que sobrevive</strong><span class="text-neutral-400"> — "um loop e um no do grafo". Voce nao gradua de loop pra grafo; compoe loops em grafos quando um loop deixa de bastar.</span></div></div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+<h3 class="font-semibold text-purple-400 mb-2">Proximo Modulo:</h3>
+<p class="text-neutral-300">3.3 — Mito x fato: separando o que o graph engineering promete do que ele de fato entrega.</p>
+</div>
+<div class="flex flex-col sm:flex-row gap-4">
+<a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="modulo-3-1.html">← Modulo Anterior</a>
+<a class="flex-1 text-center px-6 py-3 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-500 transition-colors" href="modulo-3-3.html">Proximo Modulo →</a>
+</div>
+</div>
+</section>
+</main>
+</div>
+</div>
 <footer class="border-t border-dark-600 py-8 mt-16">
-  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
-    <p>Graph Engineering — de loops a grafos · INEMA 2026</p>
-    <p class="mt-2">
-      <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a>
-      <span class="text-neutral-600 mx-1">-</span>
-      <a href="https://inema.pro" target="_blank" class="text-amber-700 hover:text-amber-600 dark:text-slate-300 dark:hover:text-slate-200">PRO</a>
-    </p>
-  </div>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+<p>Graph Engineering — de loops a grafos · INEMA 2026</p>
+<p class="mt-2">
+<a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+<span class="text-neutral-600 mx-1">-</span>
+<a class="text-amber-700 hover:text-amber-600 dark:text-slate-300 dark:hover:text-slate-200" href="https://inema.pro" target="_blank">PRO</a>
+</p>
+</div>
 </footer>
-
 <script>
   function toggleTopic(button) {
     const topicItem = button.closest('.topic-item');

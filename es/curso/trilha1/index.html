@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="loopgraph" name="inema-course"/>
+<title>Trilha 1 — Fundamentos: el grafo | Graph Engineering</title>
+<script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'emerald' };
+      function clone(o) { var r = {}; for (var x in o) r[x] = o[x]; return r; }
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed === 'object') { for (var k in DEF) if (parsed[k] != null) p[k] = parsed[k]; } }
+        else { var legacy = localStorage.getItem('theme'); if (legacy === 'light') p.theme = 'claro'; else if (legacy === 'dark') p.theme = 'inema-dark'; }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = { 'inema-dark': { dark: true, attr: null, cs: 'dark' }, 'claro': { dark: false, attr: null, cs: 'light' }, 'sepia': { dark: false, attr: 'sepia', cs: 'light' }, 'foco': { dark: null, attr: 'foco', cs: null }, 'contraste': { dark: true, attr: 'contraste', cs: 'dark' } };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark === true) html.classList.add('dark'); else if (t.dark === false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark') ? 'dark' : 'light'));
+      html.setAttribute('data-font', p.font || 'inter'); html.setAttribute('data-accent', p.accent || 'emerald');
+      var s = html.style, scale = (+p.fontScale || 100);
+      s.setProperty('--inema-font-scale', (scale / 100).toString()); s.setProperty('font-size', scale + '%');
+      s.setProperty('--measure', (+p.lineWidth || 68) + 'ch'); s.setProperty('--lh-body', (+p.leading || 1.7).toString());
+      var fam = p.font === 'system' ? 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif' : (p.font === 'leitura' ? '"Atkinson Hyperlegible", "Inter", system-ui, sans-serif' : '"Inter", system-ui, sans-serif');
+      s.setProperty('--font-body', fam);
+      var ACC = { emerald: [152,76,45], blue: [217,91,60], purple: [258,90,66], amber: [38,92,50], teal: [174,72,41], rose: [350,89,60] };
+      var a = ACC[p.accent] || ACC.emerald;
+      s.setProperty('--accent-h', a[0]+''); s.setProperty('--accent-s', a[1]+'%'); s.setProperty('--accent-l', a[2]+'%');
+      s.setProperty('--accent', 'hsl(' + a[0] + ' ' + a[1] + '% ' + a[2] + '%)');
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme = 'dark'; } catch (e) {} }
+  })();
+  </script>
+<script data-inema-manifest="" type="application/json">
+  {
+    "course": "loopgraph",
+    "tracks": [
+      { "n": "1", "title": "Fundamentos: o grafo", "modules": [
+        { "id": "1-1", "title": "O que e um grafo", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
+        { "id": "1-2", "title": "Grafos no mundo real", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+        { "id": "1-3", "title": "Como se anda num grafo", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" }
+      ]},
+      { "n": "2", "title": "Loop Engineering", "modules": [
+        { "id": "2-1", "title": "Anatomia do loop", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
+        { "id": "2-2", "title": "O verificador e o gargalo", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
+        { "id": "2-3", "title": "Onde o loop quebra", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" }
+      ]},
+      { "n": "3", "title": "Agentic x Loop x Graph", "modules": [
+        { "id": "3-1", "title": "As cinco camadas", "topics": 6, "href": "curso/trilha3/modulo-3-1.html" },
+        { "id": "3-2", "title": "O comparativo de verdade", "topics": 6, "href": "curso/trilha3/modulo-3-2.html" },
+        { "id": "3-3", "title": "Mito x fato", "topics": 6, "href": "curso/trilha3/modulo-3-3.html" }
+      ]},
+      { "n": "4", "title": "Graph Engineering na pratica", "modules": [
+        { "id": "4-1", "title": "Nos, arestas e estado", "topics": 6, "href": "curso/trilha4/modulo-4-1.html" },
+        { "id": "4-2", "title": "Org graph x work graph", "topics": 6, "href": "curso/trilha4/modulo-4-2.html" },
+        { "id": "4-3", "title": "Falhas, harness e observabilidade", "topics": 6, "href": "curso/trilha4/modulo-4-3.html" }
+      ]},
+      { "n": "5", "title": "Mao na massa", "modules": [
+        { "id": "5-1", "title": "Do loop ao grafo", "topics": 6, "href": "curso/trilha5/modulo-5-1.html" },
+        { "id": "5-2", "title": "Grafos de negocio e de tarefas", "topics": 6, "href": "curso/trilha5/modulo-5-2.html" },
+        { "id": "5-3", "title": "Biblioteca de prompts", "topics": 6, "href": "curso/trilha5/modulo-5-3.html" }
+      ]}
+    ]
+  }
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }</script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../../assets/learn.css" rel="stylesheet"/>
+<link href="../../../assets/curso.css" rel="stylesheet"/>
+<link href="https://inematds.github.io/loopgraph/curso/trilha1/" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/loopgraph/en/curso/trilha1/" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/loopgraph/es/curso/trilha1/" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha1/" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="../../../en/curso/trilha1/" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="./" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">ES</a></div>
+<a class="sr-only focus:not-sr-only focus:absolute focus:z-[60] focus:m-2 focus:px-4 focus:py-2 focus:rounded-lg focus:bg-dark-700" href="#conteudo">Saltar al contenido</a>
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14 gap-2">
+<div class="flex items-center space-x-3 flex-shrink-0">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html">
+<span class="text-2xl">🕸️</span><span class="font-bold text-lg hidden lg:inline">Graph Engineering</span>
+</a>
+<span class="text-neutral-600 hidden sm:inline">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium hidden sm:inline" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+<span class="text-neutral-600 hidden sm:inline">-</span>
+<a class="text-amber-700 hover:text-amber-600 dark:text-slate-300 dark:hover:text-slate-200 text-sm font-medium hidden sm:inline" href="https://inema.pro" target="_blank">PRO</a>
+</div>
+<div class="flex items-center space-x-1">
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-emerald-400 bg-emerald-500/10" href="index.html"><span class="lg:hidden">T1</span><span class="hidden lg:inline">Fundamentos</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors" href="../trilha2/index.html"><span class="lg:hidden">T2</span><span class="hidden lg:inline">Bucles</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors" href="../trilha3/index.html"><span class="lg:hidden">T3</span><span class="hidden lg:inline">Comparativo</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors" href="../trilha4/index.html"><span class="lg:hidden">T4</span><span class="hidden lg:inline">Práctica</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors" href="../trilha5/index.html"><span class="lg:hidden">T5</span><span class="hidden lg:inline">Manos a la obra</span></a>
+<button class="hidden sm:inline-flex items-center gap-1 px-2 py-1.5 rounded-lg text-sm text-neutral-400 hover:text-neutral-100 transition-colors" data-inema-journey-open="" title="Mi recorrido" type="button">
+<span aria-hidden="true">◷</span><span class="hidden xl:inline">Recorrido</span><span aria-hidden="true" class="inema-journey-badge hidden"></span>
+</button>
+<button aria-label="Alternar entre tema claro y oscuro" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<main id="conteudo">
+<header class="bg-gradient-to-br from-emerald-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600" data-inema-track="1">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-emerald-500/20 text-emerald-400 text-xs font-semibold rounded-full mb-4">RUTA 1</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">🔵 Fundamentos: el grafo</h1>
+<p class="text-lg text-neutral-400 max-w-3xl">
+      Antes de hablar de “graph engineering”, lo básico: <strong class="text-emerald-400">qué es un grafo</strong>.
+      Es la estructura de datos más simple después de la lista — solo dos ingredientes, nodos y aristas — y ya usas
+      una decena de ellas cada día sin saberlo. Esta ruta define <em>cada</em> término la primera vez que aparece.
+    </p>
+<div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mt-8 mb-6 overflow-hidden">
+<svg aria-label="Hero de la ruta: cinco círculos verdes conectados por líneas etiquetadas. Un círculo central se conecta con cuatro vecinos; dos conexiones muestran un número encima, que indica el peso de la arista." class="w-full h-auto" role="img" viewbox="0 0 1000 250">
+<defs>
+<lineargradient id="t1-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#34d399"></stop><stop offset="1" stop-color="#10b981"></stop></lineargradient>
+<filter height="180%" id="t1-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="t1-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#10b981" opacity="0.12" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#t1-grid)" height="250" width="1000" x="0" y="0"></rect>
+<g fill="none" opacity="0.55" stroke="#34d399" stroke-width="1.8">
+<path d="M500,125 L250,70"></path><path d="M500,125 L250,190"></path>
+<path d="M500,125 L760,70"></path><path d="M500,125 L760,190"></path>
+<path d="M250,70 L250,190"></path>
+</g>
+<g fill="none" opacity="0.5" stroke="#38bdf8" stroke-dasharray="7 7" stroke-width="1.8">
+<path d="M760,70 L760,190"></path>
+</g>
+<g fill="#9ad6ff" font-family="Inter,sans-serif" font-size="12">
+<text text-anchor="middle" x="368" y="86">peso 2</text>
+<text text-anchor="middle" x="368" y="176">peso 5</text>
+<text x="790" y="132">arista</text>
+</g>
+<g font-family="Inter,sans-serif" font-size="13" font-weight="600">
+<circle cx="250" cy="70" fill="#0e2018" r="34" stroke="#34d399" stroke-width="2"></circle><text fill="#a7f3d0" text-anchor="middle" x="250" y="75">en el</text>
+<circle cx="250" cy="190" fill="#0e2018" r="34" stroke="#34d399" stroke-width="2"></circle><text fill="#a7f3d0" text-anchor="middle" x="250" y="195">en el</text>
+<circle cx="760" cy="70" fill="#0e2018" r="34" stroke="#34d399" stroke-width="2"></circle><text fill="#a7f3d0" text-anchor="middle" x="760" y="75">en el</text>
+<circle cx="760" cy="190" fill="#0e2018" r="34" stroke="#34d399" stroke-width="2"></circle><text fill="#a7f3d0" text-anchor="middle" x="760" y="195">en el</text>
+</g>
+<g filter="url(#t1-glow)"><circle cx="500" cy="125" fill="#0e2018" r="44" stroke="url(#t1-grad)" stroke-width="2"></circle></g>
+<text fill="#34d399" font-family="Inter,sans-serif" font-size="15" font-weight="600" text-anchor="middle" x="500" y="120">en el</text>
+<text fill="#a7f3d0" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="500" y="138">(nodo)</text>
+<text fill="#a7f3d0" font-family="Inter,sans-serif" font-size="13" text-anchor="middle" x="500" y="230">grafo = nodos + aristas. Solo eso.</text>
+</svg>
+</div>
+<p class="text-sm text-neutral-400 max-w-3xl mb-8">
+<strong class="text-neutral-300">Qué observar:</strong> los círculos son los <em>nodos</em> (las cosas) y las líneas son las <em>aristas</em> (las conexiones).
+      Dos líneas incluyen un número: ese número es el <em>peso</em>, y es lo que transforma un dibujo bonito en una estructura sobre la que se puede calcular
+      (el camino más corto, más barato, más rápido). Recuerda estas tres palabras: nodo, arista, peso.
+    </p>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">3</div><div class="text-xs text-neutral-400">Módulos</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">18</div><div class="text-xs text-neutral-400">Temas</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">~2h</div><div class="text-xs text-neutral-400">Duración</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">Básico</div><div class="text-xs text-neutral-400">Nivel</div></div>
+</div>
+<div class="mt-6 max-w-2xl bg-dark-800 rounded-xl border border-dark-600 p-4">
+<div class="flex items-center justify-between">
+<span class="text-sm text-neutral-300 font-semibold">Progreso de la ruta</span>
+<div aria-label="Progreso de la ruta 1" aria-valuemax="100" aria-valuemin="0" class="inema-meter text-sm" data-inema-meter="trilha:1" role="progressbar">
+<span class="inema-meter-pct text-emerald-400 font-bold">0%</span><span class="inema-meter-count text-neutral-400 ml-2">0 de 18</span>
+</div>
+</div>
+</div>
+</div>
+</header>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<!-- ===================== MAPA DA TRILHA ===================== -->
+<section class="mb-12">
+<h2 class="text-2xl font-bold mb-6">Mapa de la ruta</h2>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+<a class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-emerald-500/30 p-5 transition-all" href="#modulo-1-1">
+<div class="flex items-center justify-between mb-2"><span class="text-emerald-400 font-bold text-sm">1.1</span><span class="text-xs text-neutral-500">~40 min</span></div>
+<h3 class="font-semibold mb-1 group-hover:text-emerald-400 transition-colors">🔵 Qué es un grafo</h3>
+<p class="text-xs text-neutral-400">Dos ingredientes, nada más</p>
+</a>
+<a class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-emerald-500/30 p-5 transition-all" href="#modulo-1-2">
+<div class="flex items-center justify-between mb-2"><span class="text-emerald-400 font-bold text-sm">1.2</span><span class="text-xs text-neutral-500">~40 min</span></div>
+<h3 class="font-semibold mb-1 group-hover:text-emerald-400 transition-colors">🌍 Grafos en el mundo real</h3>
+<p class="text-xs text-neutral-400">Tu mañana ya es un</p>
+</a>
+<a class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-emerald-500/30 p-5 transition-all" href="#modulo-1-3">
+<div class="flex items-center justify-between mb-2"><span class="text-emerald-400 font-bold text-sm">1.3</span><span class="text-xs text-neutral-500">~40 min</span></div>
+<h3 class="font-semibold mb-1 group-hover:text-emerald-400 transition-colors">🧭 Cómo se recorre un grafo</h3>
+<p class="text-xs text-neutral-400">Quién se ejecuta antes que quién</p>
+</a>
+</div>
+</section>
+<h2 class="text-2xl font-bold mb-6">Contenido detallado</h2>
+<!-- ===================== MODULO 1.1 ===================== -->
+<div class="bg-dark-800 rounded-xl border border-dark-600 mb-6" data-inema-module="1-1" data-inema-track="1" id="modulo-1-1">
+<div class="p-6 border-b border-dark-600">
+<div class="flex items-center justify-between mb-2"><span class="text-emerald-400 font-bold">1.1</span><span class="text-xs text-neutral-500">~40 min</span></div>
+<h3 class="text-2xl font-bold mb-2">🔵 Qué es un grafo</h3>
+<p class="text-neutral-400 text-sm">Nodo, arista, dirección, peso, ciclo. Es la diferencia entre grafo, árbol y lista, y eso es lo que hace que todo lo demás tenga sentido.</p>
+</div>
+<div class="divide-y divide-dark-600">
+<div class="topic-item">
+<button aria-controls="p-1-1-1" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<span class="text-lg">⚪</span>
+<div><span class="font-medium">El nodo (node)</span><span class="text-neutral-500 text-sm ml-2">- la cosa</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4" id="p-1-1-1">
+<div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-emerald-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">El nodo es una <em>cosa</em> de tu mundo: una persona, una tarea, un paso del proceso, un agente de IA. En el código aparece como <code class="text-emerald-400">n</code> o <code class="text-emerald-400">node</code>.</p></div>
+<div><span class="text-emerald-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Elegir qué se convierte en un nodo es la primera decisión de modelado — y la que más suele fallar. Si el nodo es demasiado grande, el grafo no ayuda en nada; si es demasiado pequeño, te ahogas en detalles.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Nodo = sustantivo. Un nodo tiene identidad (puedes señalarlo) y puede contener datos (etiqueta, costo, responsable, estado).</p></div>
+</div>
+</div>
+</div>
+<div class="topic-item">
+<button aria-controls="p-1-1-2" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<span class="text-lg">➖</span>
+<div><span class="font-medium">La arista (edge)</span><span class="text-neutral-500 text-sm ml-2">- el vínculo</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4" id="p-1-1-2">
+<div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-emerald-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">La arista es la <em>relación</em> entre dos nodos. En código, <code class="text-emerald-400">e</code> o <code class="text-emerald-400">edge</code>. «Depende de», «se convierte en», «conoce», «pasa el resultado a».</p></div>
+<div><span class="text-emerald-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">En un sistema de agentes, la arista es donde reside la decisión: «si se aprobó, va por aquí; si se rechazó, vuelve por allá». Y el valor está más en las aristas que en los nodos.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Arista = verbo. Puede tener tipo (arista tipada), dirección y peso. Un grafo sin aristas es solo una lista de cosas sueltas.</p></div>
+</div>
+</div>
+</div>
+<div class="topic-item">
+<button aria-controls="p-1-1-3" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<span class="text-lg">➡️</span>
+<div><span class="font-medium">Dirección</span><span class="text-neutral-500 text-sm ml-2">- calle de un solo sentido</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4" id="p-1-1-3">
+<div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-emerald-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">En un grafo <strong>dirigido</strong>, aquí, la arista tiene una flecha: va de A hacia B y no vuelve por ahí. En un grafo no dirigido, la conexión funciona en ambos sentidos (la amistad, por ejemplo).</p></div>
+<div><span class="text-emerald-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Todo flujo de trabajo de agentes es dirigido: el investigador entrega al escritor, no al revés. La dirección es lo que da orden al sistema.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Dirigido = flecha = orden. Si quieres volver, eso es otra arista (y puede tener su propia regla: «solo vuelve si se rechazó»).</p></div>
+</div>
+</div>
+</div>
+<div class="topic-item">
+<button aria-controls="p-1-1-4" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<span class="text-lg">⚖️</span>
+<div><span class="font-medium">Peso (edge weight)</span><span class="text-neutral-500 text-sm ml-2">- cuánto cuesta pasar</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4" id="p-1-1-4">
+<div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-emerald-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Un número colgado de la arista: minutos, reales, tokens, probabilidad, distancia. Es lo que convierte un «dibujo» en una «estructura calculable».</p></div>
+<div><span class="text-emerald-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Sin peso solo sabes <em>si</em> se puede avanzar; con el peso, lo sabes <em>qué camino vale la pena</em>. Y ahí entran la búsqueda y la optimización.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">El peso puede ser costo (minimizar) o beneficio (maximizar). En un grafo de agentes, el peso suele ser latencia, costo en tokens o confianza.</p></div>
+</div>
+</div>
+</div>
+<div class="topic-item">
+<button aria-controls="p-1-1-5" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<span class="text-lg">🔁</span>
+<div><span class="font-medium">Ciclo</span><span class="text-neutral-500 text-sm ml-2">- cuando el camino regresa</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4" id="p-1-1-5">
+<div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-emerald-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Un camino que sale de un nodo y vuelve a él. Si un grafo dirigido no tiene ningún ciclo, es un <strong>DAG</strong> (grafo dirigido acíclico).</p></div>
+<div><span class="text-emerald-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Este es el punto de inflexión de todo el curso: <strong>un bucle es un ciclo</strong>. El bucle es el grafo más simple que existe — un nodo con una arista que vuelve a sí mismo.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">DAG = sin vuelta = termina solo. Con ciclo = puede repetirse = necesita una condición de parada; si no, se ejecuta para siempre.</p></div>
+</div>
+</div>
+</div>
+<div class="topic-item">
+<button aria-controls="p-1-1-6" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<span class="text-lg">🌳</span>
+<div><span class="font-medium">Grafo × árbol × lista</span><span class="text-neutral-500 text-sm ml-2">- toda la familia</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4" id="p-1-1-6">
+<div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-emerald-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Lista = cada elemento tiene un siguiente. Árbol = cada nodo tiene un solo padre, sin ciclos. Grafo = cualquier cosa se conecta con cualquier cosa. Las listas y los árboles son casos particulares de grafos.</p></div>
+<div><span class="text-emerald-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Mucha gente dibuja un árbol (epic → story → task) y cree que con eso lo resolvió — hasta que aparece la dependencia cruzada entre dos ramas. Ahí el árbol se convirtió en grafo.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Si existe una dependencia cruzada, es un grafo. No fuerces un árbol en un problema que es un grafo: solo ocultarás la dependencia real.</p></div>
+</div>
+</div>
+</div>
+</div>
+<div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+<button class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors" onclick="openModal('modal-1-1')">Ver en modal</button>
+<a class="px-4 py-2 text-sm bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg transition-colors" href="modulo-1-1.html">Ver completo</a>
+</div>
+</div>
+<!-- ===================== MODULO 1.2 ===================== -->
+<div class="bg-dark-800 rounded-xl border border-dark-600 mb-6" data-inema-module="1-2" data-inema-track="1" id="modulo-1-2">
+<div class="p-6 border-b border-dark-600">
+<div class="flex items-center justify-between mb-2"><span class="text-emerald-400 font-bold">1.2</span><span class="text-xs text-neutral-500">~40 min</span></div>
+<h3 class="text-2xl font-bold mb-2">🌍 Grafos en el mundo real</h3>
+<p class="text-neutral-400 text-sm">Tu mañana, LinkedIn, el funnel de tu SaaS, el backlog del equipo y la documentación que lee tu agente. Todos son grafos.</p>
+</div>
+<div class="divide-y divide-dark-600">
+<div class="topic-item">
+<button aria-controls="p-1-2-1" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<span class="text-lg">☕</span>
+<div><span class="font-medium">Tu mañana</span><span class="text-neutral-500 text-sm ml-2">- despertarse, levantarse, café</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4" id="p-1-2-1">
+<div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-emerald-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Despertar → levantarse → cepillarse los dientes → café. Cada etapa es un nodo; el tiempo entre ellas es el peso de la arista (2 min, 5 min, 3 min).</p></div>
+<div><span class="text-emerald-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Y el ejemplo más pequeño que ya lo muestra todo: nodos, aristas dirigidas, pesos en minutos y un camino alternativo (alguien te lleva el café a la cama) que salta un nodo.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Modelar = elegir qué es nodo y qué es peso. Camino alternativo = otra arista, no otro grafo.</p></div>
+</div>
+</div>
+</div>
+<div class="topic-item">
+<button aria-controls="p-1-2-2" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<span class="text-lg">👥</span>
+<div><span class="font-medium">El grafo social</span><span class="text-neutral-500 text-sm ml-2">- “3 conexiones en común”</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4" id="p-1-2-2">
+<div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-emerald-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Cada persona es un nodo; cada relación es una arista con peso (amistad, trabajo, temas en común). “Estás a 3 conexiones de Lucas” = 3 aristas de distancia.</p></div>
+<div><span class="text-emerald-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Y el ejemplo que muestra que el algoritmo <em>navega</em> el grafo para decidir qué mostrarte. La misma idea se aplica a tu agente mientras navega por la documentación.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Distancia en aristas = «grados de separación». Peso de la arista = fuerza del loop. Recomendación = recorrido con criterio.</p></div>
+</div>
+</div>
+</div>
+<div class="topic-item">
+<button aria-controls="p-1-2-3" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<span class="text-lg">📈</span>
+<div><span class="font-medium">El grafo de tu negocio</span><span class="text-neutral-500 text-sm ml-2">- CAC, churn, LTV</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4" id="p-1-2-3">
+<div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-emerald-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Campaña → tráfico → registro → activación → suscriptor → cancelación → LTV. Los nodos son estados del cliente; las aristas son tasas de conversión.</p></div>
+<div><span class="text-emerald-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Y el ejemplo que expone el problema central del curso: optimizar <em>una</em> una arista (bajar el CAC) puede empeorar otra (subir el churn) sin que nadie se dé cuenta.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Una métrica nunca es suficiente. El grafo es lo que te permite ver el efecto secundario en vez de solo el efecto principal.</p></div>
+</div>
+</div>
+</div>
+<div class="topic-item">
+<button aria-controls="p-1-2-4" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<span class="text-lg">🎫</span>
+<div><span class="font-medium">El grafo del backlog</span><span class="text-neutral-500 text-sm ml-2">- epic, story, task</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4" id="p-1-2-4">
+<div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-emerald-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">La épica contiene historias, la historia contiene tareas y la tarea contiene subtareas. Parece un árbol, hasta que una historia depende de otra. Ahí se convierte en un grafo.</p></div>
+<div><span class="text-emerald-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Así es como un PM decide cuántas personas (o cuántos agentes) pueden trabajar en paralelo: el grafo indica qué ramas no se bloquean entre sí.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Arista de dependencia = bloqueo. Ramas independientes = posible paralelismo. Dividir la tarea y diseñar el grafo para no bloquear a nadie.</p></div>
+</div>
+</div>
+</div>
+<div class="topic-item">
+<button aria-controls="p-1-2-5" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<span class="text-lg">📚</span>
+<div><span class="font-medium">Grafo de información para el agente</span><span class="text-neutral-500 text-sm ml-2">- en vez de un .md suelto</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4" id="p-1-2-5">
+<div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-emerald-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">En vez de soltar decenas de archivos <code class="text-emerald-400">.md</code> sueltos en carpetas, conectas los documentos entre sí e indicas el tipo de vínculo (“prerrequisito de”, “contradice”, “detalla”).</p></div>
+<div><span class="text-emerald-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">El agente deja de leerlo todo y pasa a <em>navegar</em>: entra por el nodo correcto y sigue las aristas relevantes. Menos contexto desperdiciado, más precisión.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Atención: esto es <strong>grafo de conocimiento</strong>, primo, pero no sinónimo, de graph engineering. La Trilha 3 separa los dos.</p></div>
+</div>
+</div>
+</div>
+<div class="topic-item">
+<button aria-controls="p-1-2-6" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<span class="text-lg">🧱</span>
+<div><span class="font-medium">Grafo de dependencias</span><span class="text-neutral-500 text-sm ml-2">- build, import, deploy</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4" id="p-1-2-6">
+<div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-emerald-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Módulo A importa B, B importa C. O <code class="text-emerald-400">npm</code>, o <code class="text-emerald-400">make</code>, tu CI: todos construyen un grafo dirigido y deciden el orden a partir de él.</p></div>
+<div><span class="text-emerald-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Es el ejemplo más cercano a lo que harás con agentes: el build ya resuelve “qué se ejecuta en paralelo” y “qué espera”, exactamente como un grafo de trabajo.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Dependencia circular = ciclo = error de build. La herramienta detecta ciclos; tu grafo de agentes también tendrá que detectarlos.</p></div>
+</div>
+</div>
+</div>
+</div>
+<div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+<button class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors" onclick="openModal('modal-1-2')">Ver en modal</button>
+<a class="px-4 py-2 text-sm bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg transition-colors" href="modulo-1-2.html">Ver completo</a>
+</div>
+</div>
+<!-- ===================== MODULO 1.3 ===================== -->
+<div class="bg-dark-800 rounded-xl border border-dark-600 mb-6" data-inema-module="1-3" data-inema-track="1" id="modulo-1-3">
+<div class="p-6 border-b border-dark-600">
+<div class="flex items-center justify-between mb-2"><span class="text-emerald-400 font-bold">1.3</span><span class="text-xs text-neutral-500">~40 min</span></div>
+<h3 class="text-2xl font-bold mb-2">🧭 Cómo se recorre un grafo</h3>
+<p class="text-neutral-400 text-sm">Recorrido, camino mínimo, orden topológico, paralelismo y detección de ciclos: el conjunto de herramientas que usarás en la Trilha 4.</p>
+</div>
+<div class="divide-y divide-dark-600">
+<div class="topic-item">
+<button aria-controls="p-1-3-1" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<span class="text-lg">🚶</span>
+<div><span class="font-medium">Recorrido: amplitud × profundidad</span><span class="text-neutral-500 text-sm ml-2">- BFS y DFS</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4" id="p-1-3-1">
+<div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-emerald-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">En <strong>anchura</strong> (BFS) visitas a todos los vecinos antes de bajar; en <strong>profundidad</strong> (DFS) bajas por un camino hasta el final antes de volver.</p></div>
+<div><span class="text-emerald-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Es la misma elección que haces con agentes: explorar muchas opciones superficialmente (amplitud) o seguir una línea hasta el final (profundidad).</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">La anchura encuentra primero lo más cercano. La profundidad encuentra <em>una</em> responde rápido. Marca quién ya visitaste — si no, el ciclo se convierte en un loop infinito.</p></div>
+</div>
+</div>
+</div>
+<div class="topic-item">
+<button aria-controls="p-1-3-2" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<span class="text-lg">🛣️</span>
+<div><span class="font-medium">Ruta mínima</span><span class="text-neutral-500 text-sm ml-2">- por qué importa el peso</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4" id="p-1-3-2">
+<div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-emerald-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Encontrar la ruta de menor costo entre dos nodos sumando los pesos de las aristas. El camino con menos saltos no siempre es el más barato.</p></div>
+<div><span class="text-emerald-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">En un grafo de agentes, el «costo» es en tokens, latencia o riesgo. Elegir la ruta es elegir cuánto vas a gastar para llegar al mismo resultado.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Menos aristas ≠ más barato. Si el peso cambia con el tiempo (latencia de API), la ruta óptima también cambia.</p></div>
+</div>
+</div>
+</div>
+<div class="topic-item">
+<button aria-controls="p-1-3-3" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<span class="text-lg">📋</span>
+<div><span class="font-medium">Orden topológico</span><span class="text-neutral-500 text-sm ml-2">- quién se ejecuta antes que quién</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4" id="p-1-3-3">
+<div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-emerald-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Una secuencia de ejecución válida en un DAG: nada se ejecuta antes de aquello de lo que depende. Es lo que el <code class="text-emerald-400">make</code> calcula.</p></div>
+<div><span class="text-emerald-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Es literalmente el planificador de tu grafo de agentes: indica qué ya puede ejecutarse y qué tiene que esperar.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Solo existe un orden topológico si no hay ciclos. Si el algoritmo no puede ordenar, encontró una dependencia circular.</p></div>
+</div>
+</div>
+</div>
+<div class="topic-item">
+<button aria-controls="p-1-3-4" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<span class="text-lg">⚡</span>
+<div><span class="font-medium">Cuánto cabe en paralelo</span><span class="text-neutral-500 text-sm ml-2">- amplitud del nivel</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4" id="p-1-3-4">
+<div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-emerald-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Cuántos nodos están listos al mismo tiempo. Si dos ramas no se bloquean entre sí, caben dos trabajadores: dos devs o dos agentes.</p></div>
+<div><span class="text-emerald-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Así dimensionas la flota: no sirve lanzar 20 agentes si el grafo solo libera 3 nodos a la vez.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">El paralelismo es una propiedad del grafo, no de tu entusiasmo. Divide la tarea en partes que no se bloqueen entre sí <em>aumenta</em> el ancho.</p></div>
+</div>
+</div>
+</div>
+<div class="topic-item">
+<button aria-controls="p-1-3-5" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<span class="text-lg">🌀</span>
+<div><span class="font-medium">Ciclo, interbloqueo y detección</span><span class="text-neutral-500 text-sm ml-2">- el bucle que no se detiene</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4" id="p-1-3-5">
+<div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-emerald-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">B espera a A, A espera a B: nadie avanza. En un grafo de agentes, esto se convierte en un enrutamiento que va y viene entre dos nodos para siempre.</p></div>
+<div><span class="text-emerald-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Y uno de los modos de falla <em>nuevos</em> que aporta el grafo y que el bucle no tenía. Necesita un límite de repeticiones y una detección explícita.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Todo ciclo necesita una salida: límite de iteraciones, criterio de progreso o aprobación humana. Ciclo sin salida = factura infinita.</p></div>
+</div>
+</div>
+</div>
+<div class="topic-item">
+<button aria-controls="p-1-3-6" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<span class="text-lg">🔍</span>
+<div><span class="font-medium">Cómo se representa un grafo</span><span class="text-neutral-500 text-sm ml-2">- lista de adyacencia</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4" id="p-1-3-6">
+<div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-emerald-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">En la práctica, un diccionario: para cada nodo, la lista de vecinos. <code class="text-emerald-400">{"pesquisa": ["escrita"], "escrita": ["revisao"]}</code>.</p></div>
+<div><span class="text-emerald-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Porque así es como vas a escribir tu grafo de agentes en JSON/YAML y entregárselo al orquestador — sin ningún framework si no quieres.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">La lista de adyacencia sirve para casi todo. Guarda también los datos del nodo (modelo, herramientas, prompt) — eso es lo que lo convierte en un grafo <em>agéntico</em>.</p></div>
+</div>
+</div>
+</div>
+</div>
+<div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+<button class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors" onclick="openModal('modal-1-3')">Ver en modal</button>
+<a class="px-4 py-2 text-sm bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg transition-colors" href="modulo-1-3.html">Ver completo</a>
+</div>
+</div>
+<!-- Navegacao -->
+<div class="flex flex-col sm:flex-row gap-4 mt-12">
+<a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="../../index.html">← Inicio del curso</a>
+<a class="flex-1 text-center px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-500 transition-colors" href="../trilha2/index.html">Trilha 2: Loop Engineering →</a>
+</div>
+</div>
+</main>
+<!-- MODAIS -->
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" id="modal-1-1" onclick="if(event.target === this) closeModal()">
+<div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
+<div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0">
+<div class="flex items-center space-x-3"><span class="text-emerald-400 font-bold">1.1</span><span class="font-semibold">Qué es un grafo</span></div>
+<button aria-label="Cerrar" class="text-neutral-400 hover:text-white text-2xl leading-none" onclick="closeModal()">×</button>
+</div>
+<iframe class="flex-1 w-full rounded-b-xl" src="modulo-1-1.html" title="Módulo 1.1"></iframe>
+</div>
+</div>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" id="modal-1-2" onclick="if(event.target === this) closeModal()">
+<div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
+<div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0">
+<div class="flex items-center space-x-3"><span class="text-emerald-400 font-bold">1.2</span><span class="font-semibold">Grafos en el mundo real</span></div>
+<button aria-label="Cerrar" class="text-neutral-400 hover:text-white text-2xl leading-none" onclick="closeModal()">×</button>
+</div>
+<iframe class="flex-1 w-full rounded-b-xl" src="modulo-1-2.html" title="Módulo 1.2"></iframe>
+</div>
+</div>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" id="modal-1-3" onclick="if(event.target === this) closeModal()">
+<div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
+<div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0">
+<div class="flex items-center space-x-3"><span class="text-emerald-400 font-bold">1.3</span><span class="font-semibold">Cómo se recorre un grafo</span></div>
+<button aria-label="Cerrar" class="text-neutral-400 hover:text-white text-2xl leading-none" onclick="closeModal()">×</button>
+</div>
+<iframe class="flex-1 w-full rounded-b-xl" src="modulo-1-3.html" title="Módulo 1.3"></iframe>
+</div>
+</div>
+<footer class="border-t border-dark-600 py-8 mt-16">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+<p>Graph Engineering — de loops a grafos · INEMA 2026</p>
+<p class="mt-2">
+<a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+<span class="text-neutral-600 mx-1">-</span>
+<a class="text-amber-700 hover:text-amber-600 dark:text-slate-300 dark:hover:text-slate-200" href="https://inema.pro" target="_blank">PRO</a>
+</p>
+</div>
+</footer>
+<script>
+  function toggleTopic(button) {
+    const topicItem = button.closest('.topic-item');
+    const explanation = topicItem.querySelector('.topic-explanation');
+    const moduleCard = button.closest('.bg-dark-800') || document;
+    moduleCard.querySelectorAll('.topic-explanation.active').forEach(exp => { if (exp !== explanation) { exp.classList.remove('active'); const b = exp.closest('.topic-item').querySelector('button'); if (b) b.setAttribute('aria-expanded','false'); } });
+    explanation.classList.toggle('active');
+    button.setAttribute('aria-expanded', explanation.classList.contains('active') ? 'true' : 'false');
+  }
+  function openModal(modalId) { const m = document.getElementById(modalId); if (m) { m.classList.remove('hidden'); document.body.style.overflow = 'hidden'; } }
+  function closeModal() { document.querySelectorAll('.modal').forEach(m => m.classList.add('hidden')); document.body.style.overflow = 'auto'; }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+  const themeToggle = document.getElementById('theme-toggle');
+  const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+  const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+  const htmlEl = document.documentElement;
+  if (htmlEl.classList.contains('dark')) themeToggleLightIcon.classList.remove('hidden'); else themeToggleDarkIcon.classList.remove('hidden');
+  themeToggle.addEventListener('click', () => {
+    themeToggleDarkIcon.classList.toggle('hidden'); themeToggleLightIcon.classList.toggle('hidden');
+    htmlEl.classList.toggle('dark');
+    const dark = htmlEl.classList.contains('dark');
+    localStorage.setItem('theme', dark ? 'dark' : 'light');
+    try { const p = JSON.parse(localStorage.getItem('inema.prefs') || '{}'); p.theme = dark ? 'inema-dark' : 'claro'; localStorage.setItem('inema.prefs', JSON.stringify(p)); } catch (e) {}
+  });
+</script>
+<script src="../../../assets/learn.js"></script>
+<script>if (window.INEMA && typeof window.INEMA.init === 'function') { window.INEMA.init(); }</script>
+</body>
+</html>

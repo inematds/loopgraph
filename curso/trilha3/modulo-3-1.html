@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="pt-BR" class="dark">
+
+<html class="dark" lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="inema-course" content="loopgraph">
-  <title>Modulo 3.1 — As cinco camadas | Graph Engineering</title>
-  <script>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="loopgraph" name="inema-course"/>
+<title>Modulo 3.1 — As cinco camadas | Graph Engineering</title>
+<script>
   (function () {
     try {
       var html = document.documentElement;
@@ -35,7 +36,7 @@
     } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme = 'dark'; } catch (e) {} }
   })();
   </script>
-  <script type="application/json" data-inema-manifest>
+<script data-inema-manifest="" type="application/json">
   {
     "course": "loopgraph",
     "tracks": [
@@ -67,476 +68,426 @@
     ]
   }
   </script>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }</script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../../assets/learn.css">
-  <link rel="stylesheet" href="../../assets/curso.css">
-</head>
-<body class="bg-dark-900 text-neutral-100 min-h-screen">
-
-<a href="#conteudo" class="sr-only focus:not-sr-only focus:absolute focus:z-[60] focus:m-2 focus:px-4 focus:py-2 focus:rounded-lg focus:bg-dark-700">Pular para o conteudo</a>
-
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }</script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../assets/learn.css" rel="stylesheet"/>
+<link href="../../assets/curso.css" rel="stylesheet"/>
+<link href="https://inematds.github.io/loopgraph/curso/trilha3/modulo-3-1.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/loopgraph/en/curso/trilha3/modulo-3-1.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/loopgraph/es/curso/trilha3/modulo-3-1.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="modulo-3-1.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">PT</a><a href="../../en/curso/trilha3/modulo-3-1.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="../../es/curso/trilha3/modulo-3-1.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<a class="sr-only focus:not-sr-only focus:absolute focus:z-[60] focus:m-2 focus:px-4 focus:py-2 focus:rounded-lg focus:bg-dark-700" href="#conteudo">Pular para o conteudo</a>
 <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
-  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex justify-between items-center h-14 gap-2">
-      <div class="flex items-center space-x-3 flex-shrink-0">
-        <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
-          <span class="text-2xl">🕸️</span><span class="font-bold text-lg hidden lg:inline">Graph Engineering</span>
-        </a>
-        <span class="text-neutral-600 hidden sm:inline">|</span>
-        <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium hidden sm:inline">INEMA.CLUB</a>
-        <span class="text-neutral-600 hidden sm:inline">-</span>
-        <a href="https://inema.pro" target="_blank" class="text-amber-700 hover:text-amber-600 dark:text-slate-300 dark:hover:text-slate-200 text-sm font-medium hidden sm:inline">PRO</a>
-      </div>
-      <div class="flex items-center space-x-1">
-        <a href="../trilha1/index.html" class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors"><span class="lg:hidden">T1</span><span class="hidden lg:inline">Fundamentos</span></a>
-        <a href="../trilha2/index.html" class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors"><span class="lg:hidden">T2</span><span class="hidden lg:inline">Loops</span></a>
-        <a href="index.html" class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-purple-400 bg-purple-500/10"><span class="lg:hidden">T3</span><span class="hidden lg:inline">Comparativo</span></a>
-        <a href="../trilha4/index.html" class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors"><span class="lg:hidden">T4</span><span class="hidden lg:inline">Pratica</span></a>
-        <a href="../trilha5/index.html" class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors"><span class="lg:hidden">T5</span><span class="hidden lg:inline">Mao na massa</span></a>
-        <button type="button" data-inema-journey-open class="hidden sm:inline-flex items-center gap-1 px-2 py-1.5 rounded-lg text-sm text-neutral-400 hover:text-neutral-100 transition-colors" title="Minha jornada">
-          <span aria-hidden="true">◷</span><span class="hidden xl:inline">Jornada</span><span class="inema-journey-badge hidden" aria-hidden="true"></span>
-        </button>
-        <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" aria-label="Alternar tema claro/escuro">
-          <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
-          <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
-        </button>
-      </div>
-    </div>
-  </div>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14 gap-2">
+<div class="flex items-center space-x-3 flex-shrink-0">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html">
+<span class="text-2xl">🕸️</span><span class="font-bold text-lg hidden lg:inline">Graph Engineering</span>
+</a>
+<span class="text-neutral-600 hidden sm:inline">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium hidden sm:inline" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+<span class="text-neutral-600 hidden sm:inline">-</span>
+<a class="text-amber-700 hover:text-amber-600 dark:text-slate-300 dark:hover:text-slate-200 text-sm font-medium hidden sm:inline" href="https://inema.pro" target="_blank">PRO</a>
+</div>
+<div class="flex items-center space-x-1">
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors" href="../trilha1/index.html"><span class="lg:hidden">T1</span><span class="hidden lg:inline">Fundamentos</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors" href="../trilha2/index.html"><span class="lg:hidden">T2</span><span class="hidden lg:inline">Loops</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-purple-400 bg-purple-500/10" href="index.html"><span class="lg:hidden">T3</span><span class="hidden lg:inline">Comparativo</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors" href="../trilha4/index.html"><span class="lg:hidden">T4</span><span class="hidden lg:inline">Pratica</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors" href="../trilha5/index.html"><span class="lg:hidden">T5</span><span class="hidden lg:inline">Mao na massa</span></a>
+<button class="hidden sm:inline-flex items-center gap-1 px-2 py-1.5 rounded-lg text-sm text-neutral-400 hover:text-neutral-100 transition-colors" data-inema-journey-open="" title="Minha jornada" type="button">
+<span aria-hidden="true">◷</span><span class="hidden xl:inline">Jornada</span><span aria-hidden="true" class="inema-journey-badge hidden"></span>
+</button>
+<button aria-label="Alternar tema claro/escuro" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
 </nav>
-
-<nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4" aria-label="Trilha de navegacao">
-  <div class="flex items-center space-x-2 text-sm text-neutral-400">
-    <a href="../../index.html" class="hover:text-purple-400">Inicio</a><span>/</span>
-    <a href="index.html" class="hover:text-purple-400">Trilha 3</a><span>/</span>
-    <span class="text-purple-400">Modulo 3.1</span>
-  </div>
+<nav aria-label="Trilha de navegacao" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+<div class="flex items-center space-x-2 text-sm text-neutral-400">
+<a class="hover:text-purple-400" href="../../index.html">Inicio</a><span>/</span>
+<a class="hover:text-purple-400" href="index.html">Trilha 3</a><span>/</span>
+<span class="text-purple-400">Modulo 3.1</span>
+</div>
 </nav>
-
 <header class="bg-gradient-to-br from-purple-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600" data-inema-module="3-1" data-inema-track="3">
-  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-    <span class="inline-block px-3 py-1 bg-purple-500/20 text-purple-400 text-xs font-semibold rounded-full mb-4">MODULO 3.1</span>
-    <h1 class="text-3xl sm:text-4xl font-bold mb-4">🪜 As cinco camadas</h1>
-    <p class="text-lg text-neutral-400 max-w-3xl">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-purple-500/20 text-purple-400 text-xs font-semibold rounded-full mb-4">MODULO 3.1</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">🪜 As cinco camadas</h1>
+<p class="text-lg text-neutral-400 max-w-3xl">
       Prompt, contexto, harness, loop, grafo. Cinco camadas, cada uma <strong class="text-purple-400">embrulhando</strong> a de baixo.
       A maioria dos problemas de agente que voce achava que era "prompt ruim" mora numa camada mais funda —
       e subir de camada sem dominar a de baixo so multiplica o problema.
     </p>
-    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8 max-w-2xl">
-      <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">6</div><div class="text-xs text-neutral-400">Topicos</div></div>
-      <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">40</div><div class="text-xs text-neutral-400">Minutos</div></div>
-      <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">Intermediario</div><div class="text-xs text-neutral-400">Nivel</div></div>
-      <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">Base</div><div class="text-xs text-neutral-400">Tipo</div></div>
-    </div>
-    <div class="mt-6 max-w-2xl bg-dark-800 rounded-xl border border-dark-600 p-4">
-      <div class="flex items-center justify-between">
-        <span class="text-sm text-neutral-300 font-semibold">Progresso deste modulo</span>
-        <div data-inema-meter="modulo:3-1" class="inema-meter text-sm" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="Progresso do modulo 3.1">
-          <span class="inema-meter-pct text-purple-400 font-bold">0%</span><span class="inema-meter-count text-neutral-400 ml-2">0 de 6</span>
-        </div>
-      </div>
-    </div>
-  </div>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">6</div><div class="text-xs text-neutral-400">Topicos</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">40</div><div class="text-xs text-neutral-400">Minutos</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">Intermediario</div><div class="text-xs text-neutral-400">Nivel</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">Base</div><div class="text-xs text-neutral-400">Tipo</div></div>
+</div>
+<div class="mt-6 max-w-2xl bg-dark-800 rounded-xl border border-dark-600 p-4">
+<div class="flex items-center justify-between">
+<span class="text-sm text-neutral-300 font-semibold">Progresso deste modulo</span>
+<div aria-label="Progresso do modulo 3.1" aria-valuemax="100" aria-valuemin="0" class="inema-meter text-sm" data-inema-meter="modulo:3-1" role="progressbar">
+<span class="inema-meter-pct text-purple-400 font-bold">0%</span><span class="inema-meter-count text-neutral-400 ml-2">0 de 6</span>
+</div>
+</div>
+</div>
+</div>
 </header>
-
 <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 <div class="lg:grid lg:grid-cols-[220px_minmax(0,1fr)] lg:gap-10">
-
-  <nav data-inema-toc aria-label="Indice da pagina" class="hidden lg:block sticky top-24 self-start">
-    <p class="text-sm text-neutral-400 mb-3">Secao <span class="inema-toc-pos">1</span> de <span class="inema-toc-total">6</span></p>
-    <ul class="space-y-1 text-sm">
-      <li><a href="#topico-1" class="inema-toc-link text-neutral-400 hover:text-purple-400">1. Comece pelo prompt</a></li>
-      <li><a href="#topico-2" class="inema-toc-link text-neutral-400 hover:text-purple-400">2. Controle o contexto</a></li>
-      <li><a href="#topico-3" class="inema-toc-link text-neutral-400 hover:text-purple-400">3. Monte o harness</a></li>
-      <li><a href="#topico-4" class="inema-toc-link text-neutral-400 hover:text-purple-400">4. Desenhe o loop</a></li>
-      <li><a href="#topico-5" class="inema-toc-link text-neutral-400 hover:text-purple-400">5. Ligue os loops num grafo</a></li>
-      <li><a href="#topico-6" class="inema-toc-link text-neutral-400 hover:text-purple-400">6. Compare os dois harnesses</a></li>
-    </ul>
-  </nav>
-
-  <main id="conteudo" class="inema-prose">
-
-  <!-- ============ TOPICO 1 ============ -->
-  <section id="topico-1" class="mb-16" data-inema-topic="modulo-3-1#topico-1">
-    <div class="flex items-center space-x-4 mb-6">
-      <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">1</span>
-      <h2 class="text-2xl font-bold">💬 Comece pelo prompt: o que voce pede</h2>
-      <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar duvida neste topico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm">
-        <span aria-hidden="true">?</span><span>Tenho duvida</span>
-      </button>
-    </div>
-
-    <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-1-t1-p1">
+<nav aria-label="Indice da pagina" class="hidden lg:block sticky top-24 self-start" data-inema-toc="">
+<p class="text-sm text-neutral-400 mb-3">Secao <span class="inema-toc-pos">1</span> de <span class="inema-toc-total">6</span></p>
+<ul class="space-y-1 text-sm">
+<li><a class="inema-toc-link text-neutral-400 hover:text-purple-400" href="#topico-1">1. Comece pelo prompt</a></li>
+<li><a class="inema-toc-link text-neutral-400 hover:text-purple-400" href="#topico-2">2. Controle o contexto</a></li>
+<li><a class="inema-toc-link text-neutral-400 hover:text-purple-400" href="#topico-3">3. Monte o harness</a></li>
+<li><a class="inema-toc-link text-neutral-400 hover:text-purple-400" href="#topico-4">4. Desenhe o loop</a></li>
+<li><a class="inema-toc-link text-neutral-400 hover:text-purple-400" href="#topico-5">5. Ligue os loops num grafo</a></li>
+<li><a class="inema-toc-link text-neutral-400 hover:text-purple-400" href="#topico-6">6. Compare os dois harnesses</a></li>
+</ul>
+</nav>
+<main class="inema-prose" id="conteudo">
+<!-- ============ TOPICO 1 ============ -->
+<section class="mb-16" data-inema-topic="modulo-3-1#topico-1" id="topico-1">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">1</span>
+<h2 class="text-2xl font-bold">💬 Comece pelo prompt: o que voce pede</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Marcar duvida neste topico" type="button">
+<span aria-hidden="true">?</span><span>Tenho duvida</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-1-t1-p1">
       A primeira camada e a que todo mundo conhece: o <strong class="text-purple-400">prompt</strong>, o texto que voce escreve pedindo
       alguma coisa pro modelo. E tambem a camada onde a maioria das pessoas empaca — quando o agente faz besteira, o reflexo e
       "deixa eu reescrever o prompt". As vezes funciona. Na maioria das vezes, so adia o problema.
     </p>
-
-    <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-1-t1-p2">
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-1-t1-p2">
       Melhorar prompt tem <strong class="text-purple-400">retorno decrescente</strong> rapido: as primeiras melhorias (ser especifico,
       dar exemplo, pedir formato de saida) resolvem muita coisa. Depois de um certo ponto, adicionar mais instrucao no prompt
       para de mexer no resultado. Isso e sinal — nao de que voce escreveu mal, mas de que o problema mudou de endereco.
     </p>
-
-    <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
-      <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">🆕</span> Novo aqui? Tres palavras antes de seguir</h3>
-      <ul class="space-y-2 text-neutral-300 text-sm">
-        <li><strong class="text-neutral-100">Harness:</strong> a infraestrutura em volta do modelo — quais ferramentas ele tem, que permissoes, como a saida e capturada. Sem harness, o modelo so conversa; com harness, ele age.</li>
-        <li><strong class="text-neutral-100">Janela de contexto:</strong> a quantidade de texto (medida em tokens) que o modelo consegue "ver" de uma vez ao responder. Passou do limite, ele esquece o que veio antes.</li>
-        <li><strong class="text-neutral-100">Orcamento de token:</strong> quanto texto (entrada + saida) voce se permite gastar numa chamada ou numa tarefa inteira — e o limite pratico de custo e de contexto.</li>
-      </ul>
-    </div>
-
-    <div class="rounded-2xl border border-purple-500/30 bg-dark-900/40 p-3 sm:p-4 mb-4 overflow-hidden">
-      <svg viewBox="0 0 1000 420" class="w-full h-auto" role="img" aria-label="Escada de cinco degraus subindo da esquerda para a direita: prompt, contexto, harness, loop e grafo. Uma linha tracejada acompanha o topo dos degraus. O ultimo degrau, grafo, tem brilho e esta destacado.">
-        <defs>
-          <linearGradient id="m31a-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c084fc"/><stop offset="1" stop-color="#a855f7"/></linearGradient>
-          <filter id="m31a-glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-          <pattern id="m31a-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#a855f7" opacity="0.12"/></pattern>
-        </defs>
-        <rect x="0" y="0" width="1000" height="420" fill="url(#m31a-grid)"/>
-        <path d="M90,360 L230,300 L390,240 L570,175 L780,95" fill="none" stroke="#38bdf8" stroke-width="1.6" stroke-dasharray="9 9" opacity="0.5"/>
-
-        <g font-family="Inter,sans-serif" font-weight="600">
-          <rect x="40" y="360" width="140" height="40" rx="8" fill="#1a1230" stroke="#c084fc" stroke-width="2"/>
-          <text x="110" y="386" text-anchor="middle" fill="#e9d5ff" font-size="15">prompt</text>
-          <text x="110" y="415" text-anchor="middle" fill="#c4b5fd" font-size="11" font-weight="400">o que voce pede</text>
-
-          <rect x="200" y="300" width="150" height="40" rx="8" fill="#1a1230" stroke="#c084fc" stroke-width="2"/>
-          <text x="275" y="326" text-anchor="middle" fill="#e9d5ff" font-size="15">contexto</text>
-          <text x="275" y="355" text-anchor="middle" fill="#c4b5fd" font-size="11" font-weight="400">o que ele sabe</text>
-
-          <rect x="370" y="240" width="150" height="40" rx="8" fill="#1a1230" stroke="#c084fc" stroke-width="2"/>
-          <text x="445" y="266" text-anchor="middle" fill="#e9d5ff" font-size="15">harness</text>
-          <text x="445" y="295" text-anchor="middle" fill="#c4b5fd" font-size="11" font-weight="400">o que ele pode fazer</text>
-
-          <rect x="540" y="175" width="150" height="40" rx="8" fill="#1a1230" stroke="#c084fc" stroke-width="2"/>
-          <text x="615" y="201" text-anchor="middle" fill="#e9d5ff" font-size="15">loop</text>
-          <text x="615" y="230" text-anchor="middle" fill="#c4b5fd" font-size="11" font-weight="400">quantas vezes tenta</text>
-
-          <g filter="url(#m31a-glow)"><rect x="750" y="95" width="150" height="40" rx="8" fill="#1a1230" stroke="url(#m31a-grad)" stroke-width="2"/></g>
-          <text x="825" y="121" text-anchor="middle" fill="#e9d5ff" font-size="15">grafo</text>
-          <text x="825" y="150" text-anchor="middle" fill="#c084fc" font-size="11" font-weight="400">como os loops se ligam</text>
-        </g>
-        <text x="500" y="30" text-anchor="middle" fill="#c4b5fd" font-family="Inter,sans-serif" font-size="13">cada degrau embrulha o de baixo — voce nao troca um pelo outro</text>
-      </svg>
-    </div>
-    <p class="text-sm text-neutral-400 mb-6">
-      <strong class="text-neutral-300">O que olhar:</strong> a linha tracejada sobe sem quebrar — cada degrau esta em cima do anterior,
+<div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">🆕</span> Novo aqui? Tres palavras antes de seguir</h3>
+<ul class="space-y-2 text-neutral-300 text-sm">
+<li><strong class="text-neutral-100">Harness:</strong> a infraestrutura em volta do modelo — quais ferramentas ele tem, que permissoes, como a saida e capturada. Sem harness, o modelo so conversa; com harness, ele age.</li>
+<li><strong class="text-neutral-100">Janela de contexto:</strong> a quantidade de texto (medida em tokens) que o modelo consegue "ver" de uma vez ao responder. Passou do limite, ele esquece o que veio antes.</li>
+<li><strong class="text-neutral-100">Orcamento de token:</strong> quanto texto (entrada + saida) voce se permite gastar numa chamada ou numa tarefa inteira — e o limite pratico de custo e de contexto.</li>
+</ul>
+</div>
+<div class="rounded-2xl border border-purple-500/30 bg-dark-900/40 p-3 sm:p-4 mb-4 overflow-hidden">
+<svg aria-label="Escada de cinco degraus subindo da esquerda para a direita: prompt, contexto, harness, loop e grafo. Uma linha tracejada acompanha o topo dos degraus. O ultimo degrau, grafo, tem brilho e esta destacado." class="w-full h-auto" role="img" viewbox="0 0 1000 420">
+<defs>
+<lineargradient id="m31a-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#c084fc"></stop><stop offset="1" stop-color="#a855f7"></stop></lineargradient>
+<filter height="180%" id="m31a-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="m31a-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#a855f7" opacity="0.12" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#m31a-grid)" height="420" width="1000" x="0" y="0"></rect>
+<path d="M90,360 L230,300 L390,240 L570,175 L780,95" fill="none" opacity="0.5" stroke="#38bdf8" stroke-dasharray="9 9" stroke-width="1.6"></path>
+<g font-family="Inter,sans-serif" font-weight="600">
+<rect fill="#1a1230" height="40" rx="8" stroke="#c084fc" stroke-width="2" width="140" x="40" y="360"></rect>
+<text fill="#e9d5ff" font-size="15" text-anchor="middle" x="110" y="386">prompt</text>
+<text fill="#c4b5fd" font-size="11" font-weight="400" text-anchor="middle" x="110" y="415">o que voce pede</text>
+<rect fill="#1a1230" height="40" rx="8" stroke="#c084fc" stroke-width="2" width="150" x="200" y="300"></rect>
+<text fill="#e9d5ff" font-size="15" text-anchor="middle" x="275" y="326">contexto</text>
+<text fill="#c4b5fd" font-size="11" font-weight="400" text-anchor="middle" x="275" y="355">o que ele sabe</text>
+<rect fill="#1a1230" height="40" rx="8" stroke="#c084fc" stroke-width="2" width="150" x="370" y="240"></rect>
+<text fill="#e9d5ff" font-size="15" text-anchor="middle" x="445" y="266">harness</text>
+<text fill="#c4b5fd" font-size="11" font-weight="400" text-anchor="middle" x="445" y="295">o que ele pode fazer</text>
+<rect fill="#1a1230" height="40" rx="8" stroke="#c084fc" stroke-width="2" width="150" x="540" y="175"></rect>
+<text fill="#e9d5ff" font-size="15" text-anchor="middle" x="615" y="201">loop</text>
+<text fill="#c4b5fd" font-size="11" font-weight="400" text-anchor="middle" x="615" y="230">quantas vezes tenta</text>
+<g filter="url(#m31a-glow)"><rect fill="#1a1230" height="40" rx="8" stroke="url(#m31a-grad)" stroke-width="2" width="150" x="750" y="95"></rect></g>
+<text fill="#e9d5ff" font-size="15" text-anchor="middle" x="825" y="121">grafo</text>
+<text fill="#c084fc" font-size="11" font-weight="400" text-anchor="middle" x="825" y="150">como os loops se ligam</text>
+</g>
+<text fill="#c4b5fd" font-family="Inter,sans-serif" font-size="13" text-anchor="middle" x="500" y="30">cada degrau embrulha o de baixo — voce nao troca um pelo outro</text>
+</svg>
+</div>
+<p class="text-sm text-neutral-400 mb-6">
+<strong class="text-neutral-300">O que olhar:</strong> a linha tracejada sobe sem quebrar — cada degrau esta em cima do anterior,
       nao no lugar dele. O brilho fica so no ultimo degrau, "grafo", que e o horizonte deste modulo. Guarde a ordem: e nela que
       voce vai diagnosticar onde um agente quebrado esta realmente travado.
     </p>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-      <div class="bg-purple-900/20 rounded-xl border border-purple-500/30 p-6">
-        <h4 class="font-bold text-purple-400 mb-4">✓ Prompt resolve</h4>
-        <ul class="space-y-3 text-neutral-300 text-sm">
-          <li class="flex items-start space-x-2"><span class="text-purple-400">✓</span><span>Formato de saida errado (pediu texto, veio JSON malformado)</span></li>
-          <li class="flex items-start space-x-2"><span class="text-purple-400">✓</span><span>Tom ou nivel de detalhe fora do esperado</span></li>
-          <li class="flex items-start space-x-2"><span class="text-purple-400">✓</span><span>Ambiguidade genuina na instrucao ("resuma" — em quantas linhas?)</span></li>
-        </ul>
-      </div>
-      <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
-        <h4 class="font-bold text-red-400 mb-4">✗ Prompt nao resolve</h4>
-        <ul class="space-y-3 text-neutral-300 text-sm">
-          <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>O agente nao tem acesso ao arquivo que precisa ler (e harness)</span></li>
-          <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Ele "esqueceu" uma instrucao dada 40 mil tokens atras (e contexto)</span></li>
-          <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Ele para de tentar de novo depois do primeiro erro (e loop)</span></li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
-      <h3 class="text-lg font-semibold text-purple-400 mb-4">Conceitos-chave</h3>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Camada 1</div><p class="text-xs text-neutral-400">A mais visivel, a mais tentada</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Retorno decrescente</div><p class="text-xs text-neutral-400">Melhora rapido, depois emperra</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Sintoma vs causa</div><p class="text-xs text-neutral-400">Prompt ruim as vezes e sintoma de outra camada</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Teste do platô</div><p class="text-xs text-neutral-400">Parou de melhorar? Suba de camada</p></div>
-      </div>
-    </div>
-
-    <div class="flex justify-start mt-6">
-      <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors">
-        <span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span>
-      </button>
-    </div>
-  </section>
-
-  <!-- ============ TOPICO 2 ============ -->
-  <section id="topico-2" class="mb-16" data-inema-topic="modulo-3-1#topico-2">
-    <div class="flex items-center space-x-4 mb-6">
-      <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">2</span>
-      <h2 class="text-2xl font-bold">🧠 Controle o contexto: o que ele sabe</h2>
-      <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar duvida neste topico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm">
-        <span aria-hidden="true">?</span><span>Tenho duvida</span>
-      </button>
-    </div>
-
-    <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-1-t2-p1">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-purple-900/20 rounded-xl border border-purple-500/30 p-6">
+<h4 class="font-bold text-purple-400 mb-4">✓ Prompt resolve</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-purple-400">✓</span><span>Formato de saida errado (pediu texto, veio JSON malformado)</span></li>
+<li class="flex items-start space-x-2"><span class="text-purple-400">✓</span><span>Tom ou nivel de detalhe fora do esperado</span></li>
+<li class="flex items-start space-x-2"><span class="text-purple-400">✓</span><span>Ambiguidade genuina na instrucao ("resuma" — em quantas linhas?)</span></li>
+</ul>
+</div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+<h4 class="font-bold text-red-400 mb-4">✗ Prompt nao resolve</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>O agente nao tem acesso ao arquivo que precisa ler (e harness)</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Ele "esqueceu" uma instrucao dada 40 mil tokens atras (e contexto)</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Ele para de tentar de novo depois do primeiro erro (e loop)</span></li>
+</ul>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-purple-400 mb-4">Conceitos-chave</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Camada 1</div><p class="text-xs text-neutral-400">A mais visivel, a mais tentada</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Retorno decrescente</div><p class="text-xs text-neutral-400">Melhora rapido, depois emperra</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Sintoma vs causa</div><p class="text-xs text-neutral-400">Prompt ruim as vezes e sintoma de outra camada</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Teste do platô</div><p class="text-xs text-neutral-400">Parou de melhorar? Suba de camada</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como lido</span>
+</button>
+</div>
+</section>
+<!-- ============ TOPICO 2 ============ -->
+<section class="mb-16" data-inema-topic="modulo-3-1#topico-2" id="topico-2">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">2</span>
+<h2 class="text-2xl font-bold">🧠 Controle o contexto: o que ele sabe</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Marcar duvida neste topico" type="button">
+<span aria-hidden="true">?</span><span>Tenho duvida</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-1-t2-p1">
       A segunda camada e o <strong class="text-purple-400">contexto</strong>: tudo que o agente "enxerga" no momento de agir — arquivos
       abertos, historico da conversa, documentacao anexada, saida de uma ferramenta que ele acabou de rodar. O prompt e o que voce
       pede; o contexto e o que ele sabe enquanto responde. Sao coisas diferentes, e confundi-las e o erro mais comum depois do prompt.
     </p>
-
-    <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-1-t2-p2">
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-1-t2-p2">
       Todo modelo tem uma <strong class="text-purple-400">janela de contexto</strong> limitada. Quando ela enche de coisa irrelevante —
       logs verbosos, arquivos que ninguem precisa, historico repetido — o modelo comeca a "esquecer" o que importa, mesmo que a
       instrucao original estivesse perfeita. Contexto errado derruba prompt bom; nao existe prompt bom o suficiente pra compensar
       uma janela de contexto poluida.
     </p>
-
-    <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
-      <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">📊</span> O que costuma entupir a janela de contexto</h3>
-      <ul class="space-y-2 text-neutral-300 text-sm">
-        <li><strong>Saida de ferramenta bruta</strong> — um log de 500 linhas quando so 3 importavam</li>
-        <li><strong>Historico acumulado</strong> — 40 idas e vindas de uma conversa que devia ter sido resetada</li>
-        <li><strong>Documentacao inteira</strong> — colar o manual todo em vez do trecho relevante</li>
-        <li><strong>Instrucao desatualizada</strong> — regra antiga que ninguem removeu e ainda compete por atencao</li>
-      </ul>
-    </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-      <div class="bg-purple-900/20 rounded-xl border border-purple-500/30 p-6">
-        <h4 class="font-bold text-purple-400 mb-4">✓ Contexto bem cuidado</h4>
-        <ul class="space-y-3 text-neutral-300 text-sm">
-          <li class="flex items-start space-x-2"><span class="text-purple-400">✓</span><span>So o trecho de arquivo que sera editado, nao o repositorio inteiro</span></li>
-          <li class="flex items-start space-x-2"><span class="text-purple-400">✓</span><span>Saida de ferramenta resumida antes de voltar pro modelo</span></li>
-          <li class="flex items-start space-x-2"><span class="text-purple-400">✓</span><span>Historico podado quando a tarefa muda de fase</span></li>
-        </ul>
-      </div>
-      <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
-        <h4 class="font-bold text-red-400 mb-4">✗ Contexto que sabota</h4>
-        <ul class="space-y-3 text-neutral-300 text-sm">
-          <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Colar tudo "pra garantir" — o modelo nao pesa importancia igual voce</span></li>
-          <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Deixar erro de uma tentativa anterior contaminar a proxima sem marcar que foi resolvido</span></li>
-          <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Nunca podar — a janela so cresce ate estourar</span></li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
-      <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Dica pratica</h3>
-      <p class="text-neutral-300">
+<div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">📊</span> O que costuma entupir a janela de contexto</h3>
+<ul class="space-y-2 text-neutral-300 text-sm">
+<li><strong>Saida de ferramenta bruta</strong> — um log de 500 linhas quando so 3 importavam</li>
+<li><strong>Historico acumulado</strong> — 40 idas e vindas de uma conversa que devia ter sido resetada</li>
+<li><strong>Documentacao inteira</strong> — colar o manual todo em vez do trecho relevante</li>
+<li><strong>Instrucao desatualizada</strong> — regra antiga que ninguem removeu e ainda compete por atencao</li>
+</ul>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-purple-900/20 rounded-xl border border-purple-500/30 p-6">
+<h4 class="font-bold text-purple-400 mb-4">✓ Contexto bem cuidado</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-purple-400">✓</span><span>So o trecho de arquivo que sera editado, nao o repositorio inteiro</span></li>
+<li class="flex items-start space-x-2"><span class="text-purple-400">✓</span><span>Saida de ferramenta resumida antes de voltar pro modelo</span></li>
+<li class="flex items-start space-x-2"><span class="text-purple-400">✓</span><span>Historico podado quando a tarefa muda de fase</span></li>
+</ul>
+</div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+<h4 class="font-bold text-red-400 mb-4">✗ Contexto que sabota</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Colar tudo "pra garantir" — o modelo nao pesa importancia igual voce</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Deixar erro de uma tentativa anterior contaminar a proxima sem marcar que foi resolvido</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Nunca podar — a janela so cresce ate estourar</span></li>
+</ul>
+</div>
+</div>
+<div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Dica pratica</h3>
+<p class="text-neutral-300">
         Antes de reescrever um prompt que "nao esta funcionando", olhe pra dentro da janela de contexto naquele momento. Se tem
         coisa ali que voce mesmo nao conseguiria usar pra responder direito, o modelo tambem nao vai conseguir. Limpar contexto
         costuma resolver o que reescrever prompt nao resolveu.
       </p>
-    </div>
-
-    <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
-      <h3 class="text-lg font-semibold text-purple-400 mb-4">Conceitos-chave</h3>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Camada 2</div><p class="text-xs text-neutral-400">O que o agente sabe, nao o que voce pede</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Janela finita</div><p class="text-xs text-neutral-400">Tem teto de tokens, sempre</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Poluicao</div><p class="text-xs text-neutral-400">Irrelevante compete com o que importa</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Podar &gt; acumular</div><p class="text-xs text-neutral-400">Contexto pede curadoria continua</p></div>
-      </div>
-    </div>
-
-    <div class="flex justify-start mt-6">
-      <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors">
-        <span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span>
-      </button>
-    </div>
-  </section>
-
-  <!-- ============ TOPICO 3 ============ -->
-  <section id="topico-3" class="mb-16" data-inema-topic="modulo-3-1#topico-3">
-    <div class="flex items-center space-x-4 mb-6">
-      <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">3</span>
-      <h2 class="text-2xl font-bold">🧰 Monte o harness: com o que ele age</h2>
-      <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar duvida neste topico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm">
-        <span aria-hidden="true">?</span><span>Tenho duvida</span>
-      </button>
-    </div>
-
-    <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-1-t3-p1">
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-purple-400 mb-4">Conceitos-chave</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Camada 2</div><p class="text-xs text-neutral-400">O que o agente sabe, nao o que voce pede</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Janela finita</div><p class="text-xs text-neutral-400">Tem teto de tokens, sempre</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Poluicao</div><p class="text-xs text-neutral-400">Irrelevante compete com o que importa</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Podar &gt; acumular</div><p class="text-xs text-neutral-400">Contexto pede curadoria continua</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como lido</span>
+</button>
+</div>
+</section>
+<!-- ============ TOPICO 3 ============ -->
+<section class="mb-16" data-inema-topic="modulo-3-1#topico-3" id="topico-3">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">3</span>
+<h2 class="text-2xl font-bold">🧰 Monte o harness: com o que ele age</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Marcar duvida neste topico" type="button">
+<span aria-hidden="true">?</span><span>Tenho duvida</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-1-t3-p1">
       A terceira camada e o <strong class="text-purple-400">harness</strong>: a infraestrutura em volta do modelo. Quais ferramentas
       ele tem (ler arquivo, rodar comando, chamar uma API), com que permissoes, como a saida de cada ferramenta e capturada e
       devolvida pro modelo, o que acontece quando uma ferramenta falha (retentativa — tentar de novo automaticamente), e quanto
       orcamento de token a tarefa inteira tem pra gastar.
     </p>
-
-    <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-1-t3-p2">
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-1-t3-p2">
       Prompt diz <em>o que</em>; harness diz <em>com o que</em>. Um agente com prompt perfeito e harness pobre (sem acesso ao
       arquivo certo, sem permissao pra rodar o comando que resolveria o problema) fica travado do mesmo jeito — e nenhuma
       reescrita de prompt destrava, porque o problema nunca esteve no texto.
     </p>
-
-    <div class="space-y-6 mb-6">
-      <div class="flex items-start space-x-4">
-        <div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center"><span class="text-purple-400 font-bold">1</span></div>
-        <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
-          <h4 class="font-semibold text-white mb-2">Ferramentas e permissoes</h4>
-          <p class="text-sm text-neutral-400 mb-3">O que o agente pode chamar, e o que ele pode fazer com cada chamada.</p>
-          <p class="text-neutral-300 text-sm">Ler e diferente de escrever; escrever num arquivo e diferente de rodar um comando no sistema. Cada nivel e uma decisao de risco.</p>
-        </div>
-      </div>
-      <div class="flex items-start space-x-4">
-        <div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center"><span class="text-purple-400 font-bold">2</span></div>
-        <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
-          <h4 class="font-semibold text-white mb-2">Captura de saida e retentativa</h4>
-          <p class="text-sm text-neutral-400 mb-3">O que volta pro modelo depois de uma chamada de ferramenta, e o que acontece se ela falhar.</p>
-          <p class="text-neutral-300 text-sm"><strong class="text-purple-400">Retentativa (retry):</strong> tentar de novo automaticamente apos uma falha, geralmente com limite de tentativas.</p>
-        </div>
-      </div>
-      <div class="flex items-start space-x-4">
-        <div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center"><span class="text-purple-400 font-bold">3</span></div>
-        <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
-          <h4 class="font-semibold text-white mb-2">Orcamento de token</h4>
-          <p class="text-sm text-neutral-400 mb-3">O teto de gasto (entrada + saida) pra chamada ou pra tarefa inteira.</p>
-          <p class="text-neutral-300 text-sm">Sem orcamento definido, um agente com loop pode consumir credito indefinidamente antes de alguem perceber.</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
-      <h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center"><span class="mr-2">⚠️</span> Sinal de que o problema e harness, nao prompt</h3>
-      <p class="text-neutral-300">
+<div class="space-y-6 mb-6">
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center"><span class="text-purple-400 font-bold">1</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">Ferramentas e permissoes</h4>
+<p class="text-sm text-neutral-400 mb-3">O que o agente pode chamar, e o que ele pode fazer com cada chamada.</p>
+<p class="text-neutral-300 text-sm">Ler e diferente de escrever; escrever num arquivo e diferente de rodar um comando no sistema. Cada nivel e uma decisao de risco.</p>
+</div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center"><span class="text-purple-400 font-bold">2</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">Captura de saida e retentativa</h4>
+<p class="text-sm text-neutral-400 mb-3">O que volta pro modelo depois de uma chamada de ferramenta, e o que acontece se ela falhar.</p>
+<p class="text-neutral-300 text-sm"><strong class="text-purple-400">Retentativa (retry):</strong> tentar de novo automaticamente apos uma falha, geralmente com limite de tentativas.</p>
+</div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center"><span class="text-purple-400 font-bold">3</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">Orcamento de token</h4>
+<p class="text-sm text-neutral-400 mb-3">O teto de gasto (entrada + saida) pra chamada ou pra tarefa inteira.</p>
+<p class="text-neutral-300 text-sm">Sem orcamento definido, um agente com loop pode consumir credito indefinidamente antes de alguem perceber.</p>
+</div>
+</div>
+</div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center"><span class="mr-2">⚠️</span> Sinal de que o problema e harness, nao prompt</h3>
+<p class="text-neutral-300">
         Se voce pede a mesma coisa de dois jeitos diferentes e o agente falha do mesmo jeito nos dois — checando arquivo errado,
         sem permissao pra rodar o teste, sem ferramenta pra validar o proprio trabalho — o prompt nao e o gargalo. E a
         infraestrutura em volta que precisa mudar.
       </p>
-    </div>
-
-    <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
-      <h3 class="text-lg font-semibold text-purple-400 mb-4">Conceitos-chave</h3>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Camada 3</div><p class="text-xs text-neutral-400">Com o que ele age, nao o que ele sabe</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Ferramentas</div><p class="text-xs text-neutral-400">O que esta disponivel pra chamar</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Permissao</div><p class="text-xs text-neutral-400">O que ele pode, nao so o que existe</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Orcamento de token</div><p class="text-xs text-neutral-400">O teto de gasto da tarefa</p></div>
-      </div>
-    </div>
-
-    <div class="flex justify-start mt-6">
-      <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors">
-        <span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span>
-      </button>
-    </div>
-  </section>
-
-  <!-- ============ TOPICO 4 ============ -->
-  <section id="topico-4" class="mb-16" data-inema-topic="modulo-3-1#topico-4">
-    <div class="flex items-center space-x-4 mb-6">
-      <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">4</span>
-      <h2 class="text-2xl font-bold">🔁 Desenhe o loop: quantas vezes e como para</h2>
-      <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar duvida neste topico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm">
-        <span aria-hidden="true">?</span><span>Tenho duvida</span>
-      </button>
-    </div>
-
-    <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-1-t4-p1">
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-purple-400 mb-4">Conceitos-chave</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Camada 3</div><p class="text-xs text-neutral-400">Com o que ele age, nao o que ele sabe</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Ferramentas</div><p class="text-xs text-neutral-400">O que esta disponivel pra chamar</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Permissao</div><p class="text-xs text-neutral-400">O que ele pode, nao so o que existe</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Orcamento de token</div><p class="text-xs text-neutral-400">O teto de gasto da tarefa</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como lido</span>
+</button>
+</div>
+</section>
+<!-- ============ TOPICO 4 ============ -->
+<section class="mb-16" data-inema-topic="modulo-3-1#topico-4" id="topico-4">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">4</span>
+<h2 class="text-2xl font-bold">🔁 Desenhe o loop: quantas vezes e como para</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Marcar duvida neste topico" type="button">
+<span aria-hidden="true">?</span><span>Tenho duvida</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-1-t4-p1">
       A quarta camada e o <strong class="text-purple-400">loop</strong>: quantas vezes o agente tenta e como ele sabe que terminou.
       Essa e a Trilha 2 inteira condensada — descobrir, planejar, agir, verificar, parar. E a camada onde voce para de escrever
       prompt e passa a <em>projetar ciclo</em>: nao e mais sobre o que pedir numa unica chamada, e sobre como o sistema se
       comporta ao longo de varias.
     </p>
-
-    <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-1-t4-p2">
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-1-t4-p2">
       Um agente pode ter prompt otimo, contexto limpo e harness bem montado e ainda falhar — porque ninguem desenhou a condicao
       de parada, ou porque o verificador (o que decide se o resultado ta bom) esta ausente ou fraco. Nesse ponto, mais prompt
       nao ajuda: o que falta e desenho de loop.
     </p>
-
-    <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
-      <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center"><span class="mr-2">🎯</span> A pergunta que muda quando voce sobe pra esta camada</h3>
-      <p class="text-neutral-100 text-lg mb-3">Nao e mais "o que eu peco?" — e "<strong class="text-purple-400">quantas voltas isso leva, e o que me diz que acabou?</strong>"</p>
-      <p class="text-neutral-300">
+<div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center"><span class="mr-2">🎯</span> A pergunta que muda quando voce sobe pra esta camada</h3>
+<p class="text-neutral-100 text-lg mb-3">Nao e mais "o que eu peco?" — e "<strong class="text-purple-400">quantas voltas isso leva, e o que me diz que acabou?</strong>"</p>
+<p class="text-neutral-300">
         Se a resposta for "nao sei, ele para quando cansa" ou "nao sei, roda ate estourar o orcamento", o loop nao esta
         desenhado — esta acontecendo por acidente.
       </p>
-    </div>
-
-    <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
-      <h3 class="text-lg font-semibold text-purple-400 mb-4">Conceitos-chave</h3>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Camada 4</div><p class="text-xs text-neutral-400">Quantas vezes e como sabe que terminou</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Condicao de parada</div><p class="text-xs text-neutral-400">Sem ela, roda pra sempre</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Verificador</div><p class="text-xs text-neutral-400">O que decide se passou</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Projetar &gt; pedir</div><p class="text-xs text-neutral-400">Sistema, nao chamada unica</p></div>
-      </div>
-    </div>
-
-    <div class="flex justify-start mt-6">
-      <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors">
-        <span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span>
-      </button>
-    </div>
-  </section>
-
-  <!-- ============ TOPICO 5 ============ -->
-  <section id="topico-5" class="mb-16" data-inema-topic="modulo-3-1#topico-5">
-    <div class="flex items-center space-x-4 mb-6">
-      <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">5</span>
-      <h2 class="text-2xl font-bold">🕸️ Ligue os loops num grafo: quantos e como se conectam</h2>
-      <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar duvida neste topico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm">
-        <span aria-hidden="true">?</span><span>Tenho duvida</span>
-      </button>
-    </div>
-
-    <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-1-t5-p1">
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-purple-400 mb-4">Conceitos-chave</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Camada 4</div><p class="text-xs text-neutral-400">Quantas vezes e como sabe que terminou</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Condicao de parada</div><p class="text-xs text-neutral-400">Sem ela, roda pra sempre</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Verificador</div><p class="text-xs text-neutral-400">O que decide se passou</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Projetar &gt; pedir</div><p class="text-xs text-neutral-400">Sistema, nao chamada unica</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como lido</span>
+</button>
+</div>
+</section>
+<!-- ============ TOPICO 5 ============ -->
+<section class="mb-16" data-inema-topic="modulo-3-1#topico-5" id="topico-5">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">5</span>
+<h2 class="text-2xl font-bold">🕸️ Ligue os loops num grafo: quantos e como se conectam</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Marcar duvida neste topico" type="button">
+<span aria-hidden="true">?</span><span>Tenho duvida</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-1-t5-p1">
       A quinta camada so faz sentido depois das outras quatro: <strong class="text-purple-400">quantos loops voce tem, e como eles
       se ligam</strong>. Um grafo, aqui, e literalmente varios loops (ou nos sem loop nenhum) conectados por arestas — o pesquisador
       manda pro escritor, o escritor manda pro revisor, o revisor pode devolver pro escritor. Cada um desses e um no; a rede toda
       e o grafo.
     </p>
-
-    <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-1-t5-p2">
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-1-t5-p2">
       Subir pra esta camada sem dominar as quatro de baixo <strong class="text-purple-400">multiplica o problema em vez de
       resolver</strong>. Se um loop individual ja nao tem condicao de parada clara, colocar tres desses loops num grafo nao cria
       tres problemas — cria um problema combinatorio, porque agora cada loop mal desenhado pode contaminar os vizinhos.
     </p>
-
-    <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
-      <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Dica pratica</h3>
-      <p class="text-neutral-300">
+<div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Dica pratica</h3>
+<p class="text-neutral-300">
         Antes de desenhar um grafo, pergunte: cada no individual, isolado, ja funciona como loop — com condicao de parada e
         verificador proprios? Se a resposta pra qualquer um deles for nao, resolva ali primeiro. Grafo nao conserta loop
         quebrado, so espalha a quebra.
       </p>
-    </div>
-
-    <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
-      <h3 class="text-lg font-semibold text-purple-400 mb-4">Conceitos-chave</h3>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Camada 5</div><p class="text-xs text-neutral-400">Quantos loops e como se ligam</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">No = loop (ou menos)</div><p class="text-xs text-neutral-400">Cada no pode ser um loop inteiro</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Pre-requisito</div><p class="text-xs text-neutral-400">So sobe quem domina a camada 4</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Multiplica, nao resolve</div><p class="text-xs text-neutral-400">Grafo sobre loop quebrado piora</p></div>
-      </div>
-    </div>
-
-    <div class="flex justify-start mt-6">
-      <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors">
-        <span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span>
-      </button>
-    </div>
-  </section>
-
-  <!-- ============ TOPICO 6 ============ -->
-  <section id="topico-6" class="mb-16" data-inema-topic="modulo-3-1#topico-6">
-    <div class="flex items-center space-x-4 mb-6">
-      <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">6</span>
-      <h2 class="text-2xl font-bold">⚖️ Compare os dois harnesses: script × runtime distribuido</h2>
-      <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar duvida neste topico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm">
-        <span aria-hidden="true">?</span><span>Tenho duvida</span>
-      </button>
-    </div>
-
-    <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-1-t6-p1">
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-purple-400 mb-4">Conceitos-chave</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Camada 5</div><p class="text-xs text-neutral-400">Quantos loops e como se ligam</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">No = loop (ou menos)</div><p class="text-xs text-neutral-400">Cada no pode ser um loop inteiro</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Pre-requisito</div><p class="text-xs text-neutral-400">So sobe quem domina a camada 4</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Multiplica, nao resolve</div><p class="text-xs text-neutral-400">Grafo sobre loop quebrado piora</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como lido</span>
+</button>
+</div>
+</section>
+<!-- ============ TOPICO 6 ============ -->
+<section class="mb-16" data-inema-topic="modulo-3-1#topico-6" id="topico-6">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">6</span>
+<h2 class="text-2xl font-bold">⚖️ Compare os dois harnesses: script × runtime distribuido</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Marcar duvida neste topico" type="button">
+<span aria-hidden="true">?</span><span>Tenho duvida</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-1-t6-p1">
       O harness de UM loop cabe num script: entrada de prompt, janela de contexto, orcamento de token, logica de retentativa,
       captura de saida. Voce escreve isso numa tarde. O harness de um GRAFO faz tudo isso <strong class="text-purple-400">e mais</strong>:
       roteamento de mensagem entre nos, isolamento de falha de um no (um no cair nao pode derrubar o grafo inteiro), consistencia
       de estado entre nos (o que um no sabe tem que bater com o que o proximo espera), criacao dinamica de no (o grafo decide em
       tempo de execucao que precisa de mais um no), e <strong class="text-purple-400">observabilidade</strong> do grafo inteiro.
     </p>
-
-    <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-1-t6-p2">
-      <strong class="text-neutral-100">Observabilidade</strong>, aqui, e a capacidade de responder: quais nos rodaram, em que
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-1-t6-p2">
+<strong class="text-neutral-100">Observabilidade</strong>, aqui, e a capacidade de responder: quais nos rodaram, em que
       ordem, com que latencia (tempo de execucao). Num script de um loop so, essa pergunta e trivial — rodou uma vez, rodou de
       novo, parou. Num grafo com nos paralelos e roteamento condicional, sem instrumentacao voce simplesmente nao sabe o que
       aconteceu. E exatamente por isso que frameworks de orquestracao (ferramentas que coordenam varios agentes/nos) ganham
@@ -544,67 +495,61 @@
       distribuido</strong> — um sistema onde varias partes rodam de forma coordenada, cada uma podendo falhar independente das
       outras — em vez de deixar cada equipe reinventar isso na mao.
     </p>
-
-    <div class="rounded-2xl border border-purple-500/30 bg-dark-900/40 p-3 sm:p-4 mb-4 overflow-hidden">
-      <svg viewBox="0 0 1000 340" class="w-full h-auto" role="img" aria-label="Duas caixas lado a lado. A esquerda, uma caixa pequena rotulada harness de loop contendo quatro caixinhas: contexto, orcamento, retry, saida. A direita, uma caixa grande rotulada harness de grafo, com brilho, contendo cinco caixinhas maiores: roteamento, isolamento de falha, consistencia de estado, spawn dinamico, observabilidade — mostrando que o harness de grafo e muito maior.">
-        <defs>
-          <linearGradient id="m31b-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c084fc"/><stop offset="1" stop-color="#a855f7"/></linearGradient>
-          <filter id="m31b-glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-          <pattern id="m31b-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#a855f7" opacity="0.12"/></pattern>
-        </defs>
-        <rect x="0" y="0" width="1000" height="340" fill="url(#m31b-grid)"/>
-
-        <rect x="30" y="60" width="240" height="220" rx="14" fill="#150f26" stroke="#c084fc" stroke-width="2" opacity="0.8"/>
-        <text x="150" y="90" text-anchor="middle" fill="#e9d5ff" font-family="Inter,sans-serif" font-size="14" font-weight="600">harness de loop</text>
-        <g font-family="Inter,sans-serif" font-size="11.5" fill="#c4b5fd">
-          <rect x="50" y="108" width="90" height="36" rx="8" fill="#1a1230" stroke="#c084fc" stroke-width="1.5"/><text x="95" y="130" text-anchor="middle">contexto</text>
-          <rect x="150" y="108" width="100" height="36" rx="8" fill="#1a1230" stroke="#c084fc" stroke-width="1.5"/><text x="200" y="130" text-anchor="middle">orcamento</text>
-          <rect x="50" y="154" width="90" height="36" rx="8" fill="#1a1230" stroke="#c084fc" stroke-width="1.5"/><text x="95" y="176" text-anchor="middle">retry</text>
-          <rect x="150" y="154" width="100" height="36" rx="8" fill="#1a1230" stroke="#c084fc" stroke-width="1.5"/><text x="200" y="176" text-anchor="middle">saida</text>
-        </g>
-        <text x="150" y="260" text-anchor="middle" fill="#c4b5fd" font-family="Inter,sans-serif" font-size="12">cabe num script</text>
-
-        <g filter="url(#m31b-glow)"><rect x="320" y="30" width="650" height="280" rx="16" fill="#150f26" stroke="url(#m31b-grad)" stroke-width="2.5"/></g>
-        <text x="645" y="62" text-anchor="middle" fill="#e9d5ff" font-family="Inter,sans-serif" font-size="15" font-weight="600">harness de grafo</text>
-        <g font-family="Inter,sans-serif" font-size="12" fill="#e9d5ff" font-weight="600">
-          <rect x="345" y="82" width="185" height="52" rx="10" fill="#1a1230" stroke="#a855f7" stroke-width="1.5"/><text x="437" y="112" text-anchor="middle">roteamento entre nos</text>
-          <rect x="545" y="82" width="200" height="52" rx="10" fill="#1a1230" stroke="#a855f7" stroke-width="1.5"/><text x="645" y="112" text-anchor="middle">isolamento de falha</text>
-          <rect x="760" y="82" width="185" height="52" rx="10" fill="#1a1230" stroke="#a855f7" stroke-width="1.5"/><text x="852" y="112" text-anchor="middle">consistencia de estado</text>
-          <rect x="345" y="150" width="185" height="52" rx="10" fill="#1a1230" stroke="#a855f7" stroke-width="1.5"/><text x="437" y="180" text-anchor="middle">spawn dinamico de no</text>
-          <rect x="545" y="150" width="400" height="52" rx="10" fill="#1a1230" stroke="url(#m31b-grad)" stroke-width="2"/><text x="745" y="180" text-anchor="middle">observabilidade (quem/ordem/latencia)</text>
-        </g>
-        <text x="645" y="240" text-anchor="middle" fill="#c084fc" font-family="Inter,sans-serif" font-size="13">e mais parecido com um runtime distribuido do que com um script</text>
-      </svg>
-    </div>
-    <p class="text-sm text-neutral-400 mb-6">
-      <strong class="text-neutral-300">O que olhar:</strong> compare o tamanho das duas caixas. A caixa da esquerda tem 4 responsabilidades
+<div class="rounded-2xl border border-purple-500/30 bg-dark-900/40 p-3 sm:p-4 mb-4 overflow-hidden">
+<svg aria-label="Duas caixas lado a lado. A esquerda, uma caixa pequena rotulada harness de loop contendo quatro caixinhas: contexto, orcamento, retry, saida. A direita, uma caixa grande rotulada harness de grafo, com brilho, contendo cinco caixinhas maiores: roteamento, isolamento de falha, consistencia de estado, spawn dinamico, observabilidade — mostrando que o harness de grafo e muito maior." class="w-full h-auto" role="img" viewbox="0 0 1000 340">
+<defs>
+<lineargradient id="m31b-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#c084fc"></stop><stop offset="1" stop-color="#a855f7"></stop></lineargradient>
+<filter height="180%" id="m31b-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="m31b-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#a855f7" opacity="0.12" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#m31b-grid)" height="340" width="1000" x="0" y="0"></rect>
+<rect fill="#150f26" height="220" opacity="0.8" rx="14" stroke="#c084fc" stroke-width="2" width="240" x="30" y="60"></rect>
+<text fill="#e9d5ff" font-family="Inter,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="150" y="90">harness de loop</text>
+<g fill="#c4b5fd" font-family="Inter,sans-serif" font-size="11.5">
+<rect fill="#1a1230" height="36" rx="8" stroke="#c084fc" stroke-width="1.5" width="90" x="50" y="108"></rect><text text-anchor="middle" x="95" y="130">contexto</text>
+<rect fill="#1a1230" height="36" rx="8" stroke="#c084fc" stroke-width="1.5" width="100" x="150" y="108"></rect><text text-anchor="middle" x="200" y="130">orcamento</text>
+<rect fill="#1a1230" height="36" rx="8" stroke="#c084fc" stroke-width="1.5" width="90" x="50" y="154"></rect><text text-anchor="middle" x="95" y="176">retry</text>
+<rect fill="#1a1230" height="36" rx="8" stroke="#c084fc" stroke-width="1.5" width="100" x="150" y="154"></rect><text text-anchor="middle" x="200" y="176">saida</text>
+</g>
+<text fill="#c4b5fd" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="150" y="260">cabe num script</text>
+<g filter="url(#m31b-glow)"><rect fill="#150f26" height="280" rx="16" stroke="url(#m31b-grad)" stroke-width="2.5" width="650" x="320" y="30"></rect></g>
+<text fill="#e9d5ff" font-family="Inter,sans-serif" font-size="15" font-weight="600" text-anchor="middle" x="645" y="62">harness de grafo</text>
+<g fill="#e9d5ff" font-family="Inter,sans-serif" font-size="12" font-weight="600">
+<rect fill="#1a1230" height="52" rx="10" stroke="#a855f7" stroke-width="1.5" width="185" x="345" y="82"></rect><text text-anchor="middle" x="437" y="112">roteamento entre nos</text>
+<rect fill="#1a1230" height="52" rx="10" stroke="#a855f7" stroke-width="1.5" width="200" x="545" y="82"></rect><text text-anchor="middle" x="645" y="112">isolamento de falha</text>
+<rect fill="#1a1230" height="52" rx="10" stroke="#a855f7" stroke-width="1.5" width="185" x="760" y="82"></rect><text text-anchor="middle" x="852" y="112">consistencia de estado</text>
+<rect fill="#1a1230" height="52" rx="10" stroke="#a855f7" stroke-width="1.5" width="185" x="345" y="150"></rect><text text-anchor="middle" x="437" y="180">spawn dinamico de no</text>
+<rect fill="#1a1230" height="52" rx="10" stroke="url(#m31b-grad)" stroke-width="2" width="400" x="545" y="150"></rect><text text-anchor="middle" x="745" y="180">observabilidade (quem/ordem/latencia)</text>
+</g>
+<text fill="#c084fc" font-family="Inter,sans-serif" font-size="13" text-anchor="middle" x="645" y="240">e mais parecido com um runtime distribuido do que com um script</text>
+</svg>
+</div>
+<p class="text-sm text-neutral-400 mb-6">
+<strong class="text-neutral-300">O que olhar:</strong> compare o tamanho das duas caixas. A caixa da esquerda tem 4 responsabilidades
       e cabe numa tarde de trabalho. A caixa da direita tem 5 responsabilidades — e cada uma delas, sozinha, e um projeto de
       engenharia (isolamento de falha, por exemplo, e o assunto inteiro de sistemas distribuidos classicos). Isso explica por que
       "so adicionar mais um agente" nunca e "so".
     </p>
-
-    <div class="bg-dark-900/60 rounded-xl border border-dark-600 overflow-hidden mb-6">
-      <div class="overflow-x-auto">
-        <table class="w-full text-sm text-left">
-          <thead class="bg-dark-800 text-neutral-400">
-            <tr><th class="px-4 py-3">Responsabilidade</th><th class="px-4 py-3">Harness de loop</th><th class="px-4 py-3">Harness de grafo</th></tr>
-          </thead>
-          <tbody class="divide-y divide-dark-700 text-neutral-300">
-            <tr><td class="px-4 py-3 font-semibold text-neutral-100">Entrada de prompt</td><td class="px-4 py-3">1 ponto de entrada</td><td class="px-4 py-3">1 por no, roteado</td></tr>
-            <tr><td class="px-4 py-3 font-semibold text-neutral-100">Falha</td><td class="px-4 py-3">Para o loop inteiro</td><td class="px-4 py-3">Isolada, nao derruba o grafo</td></tr>
-            <tr><td class="px-4 py-3 font-semibold text-neutral-100">Estado</td><td class="px-4 py-3">Uma variavel local</td><td class="px-4 py-3">Precisa de schema entre nos</td></tr>
-            <tr><td class="px-4 py-3 font-semibold text-neutral-100">Observabilidade</td><td class="px-4 py-3">Um log linear</td><td class="px-4 py-3">Trace de nos, ordem, latencia</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- EXEMPLO COPY-RUN -->
-    <div class="bg-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
-      <h3 class="text-lg font-semibold text-purple-400 mb-2 flex items-center"><span class="mr-2">🧪</span> Exemplo pratico: diagnostique em qual camada esta o problema</h3>
-      <p class="text-sm text-neutral-400 mb-4"><strong class="text-neutral-300">Objetivo:</strong> parar de reescrever prompt no escuro. Um prompt pronto pra rodar no Claude Code (ou qualquer assistente agentico) que forca a passar pelas cinco camadas antes de aceitar "melhore o prompt" como resposta.</p>
-
-      <div class="code-box bg-dark-900 rounded-lg border border-dark-600 p-4 mb-4 overflow-x-auto">
+<div class="bg-dark-900/60 rounded-xl border border-dark-600 overflow-hidden mb-6">
+<div class="overflow-x-auto">
+<table class="w-full text-sm text-left">
+<thead class="bg-dark-800 text-neutral-400">
+<tr><th class="px-4 py-3">Responsabilidade</th><th class="px-4 py-3">Harness de loop</th><th class="px-4 py-3">Harness de grafo</th></tr>
+</thead>
+<tbody class="divide-y divide-dark-700 text-neutral-300">
+<tr><td class="px-4 py-3 font-semibold text-neutral-100">Entrada de prompt</td><td class="px-4 py-3">1 ponto de entrada</td><td class="px-4 py-3">1 por no, roteado</td></tr>
+<tr><td class="px-4 py-3 font-semibold text-neutral-100">Falha</td><td class="px-4 py-3">Para o loop inteiro</td><td class="px-4 py-3">Isolada, nao derruba o grafo</td></tr>
+<tr><td class="px-4 py-3 font-semibold text-neutral-100">Estado</td><td class="px-4 py-3">Uma variavel local</td><td class="px-4 py-3">Precisa de schema entre nos</td></tr>
+<tr><td class="px-4 py-3 font-semibold text-neutral-100">Observabilidade</td><td class="px-4 py-3">Um log linear</td><td class="px-4 py-3">Trace de nos, ordem, latencia</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- EXEMPLO COPY-RUN -->
+<div class="bg-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-purple-400 mb-2 flex items-center"><span class="mr-2">🧪</span> Exemplo pratico: diagnostique em qual camada esta o problema</h3>
+<p class="text-sm text-neutral-400 mb-4"><strong class="text-neutral-300">Objetivo:</strong> parar de reescrever prompt no escuro. Um prompt pronto pra rodar no Claude Code (ou qualquer assistente agentico) que forca a passar pelas cinco camadas antes de aceitar "melhore o prompt" como resposta.</p>
+<div class="code-box bg-dark-900 rounded-lg border border-dark-600 p-4 mb-4 overflow-x-auto">
 <pre class="text-sm text-neutral-300">Meu agente faz &lt;o que ele faz de errado&gt; quando eu peco &lt;a tarefa&gt;.
 
 Antes de sugerir qualquer mudanca, analise as cinco camadas NESTA ORDEM
@@ -623,84 +568,76 @@ e descarte cada uma explicitamente antes de passar pra proxima:
 
 Para cada camada, diga "descartada" ou "e aqui" com uma frase de
 justificativa. So recomende uma mudanca depois de passar pelas cinco.</pre>
-      </div>
-
-      <div class="bg-dark-700/50 rounded-lg p-4">
-        <p class="text-sm text-neutral-300"><strong class="text-purple-400">Como verificar:</strong> se a resposta for so
+</div>
+<div class="bg-dark-700/50 rounded-lg p-4">
+<p class="text-sm text-neutral-300"><strong class="text-purple-400">Como verificar:</strong> se a resposta for so
         "melhore o prompt assim..." sem mencionar as outras quatro camadas, o modelo pulou o diagnostico — peca de novo,
         insistindo pra ele descartar camada por camada, na ordem, antes de recomendar qualquer coisa.</p>
-        <p class="text-sm text-neutral-400 mt-3"><strong class="text-neutral-300">Agora troque pelo seu:</strong> substitua
+<p class="text-sm text-neutral-400 mt-3"><strong class="text-neutral-300">Agora troque pelo seu:</strong> substitua
         <code class="text-purple-400">&lt;o que ele faz de errado&gt;</code> e <code class="text-purple-400">&lt;a tarefa&gt;</code>
         pelo caso real que voce tem em maos.</p>
-      </div>
-    </div>
-
-    <!-- CHECAGEM LEVE -->
-    <div data-inema-check="modulo-3-1#q1" class="inema-check mt-8 bg-dark-800 border border-dark-600 rounded-xl p-6 mb-6">
-      <p class="font-medium mb-4">Checagem rapida (nao bloqueia nada): seu agente com UM so loop ja funciona bem sozinho, mas voce quer adicionar um segundo agente que revisa o resultado dele. O que essa mudanca exige que um harness de loop simples nao tinha?</p>
-      <div class="inema-check-options space-y-2">
-        <button type="button" data-inema-check-option="0" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">So um prompt melhor pedindo pra ele "revisar tambem"</button>
-        <button type="button" data-inema-check-option="1" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">Roteamento entre os dois nos, estado consistente entre eles e observabilidade de quem rodou quando</button>
-        <button type="button" data-inema-check-option="2" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">Nada — harness de loop ja cobre qualquer numero de agentes</button>
-      </div>
-      <div data-inema-check-feedback class="mt-4 text-sm" role="status" aria-live="polite"></div>
-    </div>
-
-    <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
-      <h3 class="text-lg font-semibold text-purple-400 mb-4">Conceitos-chave</h3>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Script × runtime</div><p class="text-xs text-neutral-400">Diferenca de porte, nao de grau</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">5 responsabilidades novas</div><p class="text-xs text-neutral-400">Roteamento, isolamento, estado, spawn, observabilidade</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Observabilidade</div><p class="text-xs text-neutral-400">Quem rodou, em que ordem, com que latencia</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Orquestracao</div><p class="text-xs text-neutral-400">Por isso frameworks ganham tracao aqui</p></div>
-      </div>
-    </div>
-
-    <div class="flex justify-start mt-6">
-      <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors">
-        <span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span>
-      </button>
-    </div>
-  </section>
-
-  <!-- ============ RESUMO ============ -->
-  <section class="mb-12">
-    <div class="bg-gradient-to-br from-purple-900/40 via-dark-800 to-dark-800 rounded-xl border border-purple-500/30 p-8">
-      <h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">📌</span> Resumo do Modulo</h2>
-      <div class="space-y-4 mb-8">
-        <div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">Prompt = o que voce pede</strong><span class="text-neutral-400"> — a camada mais visivel, com retorno decrescente rapido.</span></div></div>
-        <div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">Contexto = o que ele sabe</strong><span class="text-neutral-400"> — janela finita; contexto poluido derruba prompt bom.</span></div></div>
-        <div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">Harness = com o que ele age</strong><span class="text-neutral-400"> — ferramentas, permissoes, retentativa, orcamento de token.</span></div></div>
-        <div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">Loop = quantas vezes e como para</strong><span class="text-neutral-400"> — a Trilha 2 inteira, condensada numa camada.</span></div></div>
-        <div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">Grafo = quantos loops e como se ligam</strong><span class="text-neutral-400"> — so faz sentido depois das quatro de baixo dominadas.</span></div></div>
-        <div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">Harness de grafo e runtime distribuido</strong><span class="text-neutral-400"> — roteamento, isolamento de falha, estado, spawn dinamico, observabilidade.</span></div></div>
-      </div>
-      <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
-        <h3 class="font-semibold text-purple-400 mb-2">Proximo Modulo:</h3>
-        <p class="text-neutral-300">3.2 — O comparativo de verdade: agentic, loop e graph lado a lado, no mesmo caso — o daily brief.</p>
-      </div>
-      <div class="flex flex-col sm:flex-row gap-4">
-        <a href="../trilha2/modulo-2-3.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">← Trilha 2: Modulo 2.3</a>
-        <a href="modulo-3-2.html" class="flex-1 text-center px-6 py-3 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-500 transition-colors">Proximo Modulo →</a>
-      </div>
-    </div>
-  </section>
-
-  </main>
 </div>
 </div>
-
+<!-- CHECAGEM LEVE -->
+<div class="inema-check mt-8 bg-dark-800 border border-dark-600 rounded-xl p-6 mb-6" data-inema-check="modulo-3-1#q1">
+<p class="font-medium mb-4">Checagem rapida (nao bloqueia nada): seu agente com UM so loop ja funciona bem sozinho, mas voce quer adicionar um segundo agente que revisa o resultado dele. O que essa mudanca exige que um harness de loop simples nao tinha?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">So um prompt melhor pedindo pra ele "revisar tambem"</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">Roteamento entre os dois nos, estado consistente entre eles e observabilidade de quem rodou quando</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">Nada — harness de loop ja cobre qualquer numero de agentes</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-purple-400 mb-4">Conceitos-chave</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Script × runtime</div><p class="text-xs text-neutral-400">Diferenca de porte, nao de grau</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">5 responsabilidades novas</div><p class="text-xs text-neutral-400">Roteamento, isolamento, estado, spawn, observabilidade</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Observabilidade</div><p class="text-xs text-neutral-400">Quem rodou, em que ordem, com que latencia</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-purple-400 font-semibold text-sm mb-1">Orquestracao</div><p class="text-xs text-neutral-400">Por isso frameworks ganham tracao aqui</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como lido</span>
+</button>
+</div>
+</section>
+<!-- ============ RESUMO ============ -->
+<section class="mb-12">
+<div class="bg-gradient-to-br from-purple-900/40 via-dark-800 to-dark-800 rounded-xl border border-purple-500/30 p-8">
+<h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">📌</span> Resumo do Modulo</h2>
+<div class="space-y-4 mb-8">
+<div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">Prompt = o que voce pede</strong><span class="text-neutral-400"> — a camada mais visivel, com retorno decrescente rapido.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">Contexto = o que ele sabe</strong><span class="text-neutral-400"> — janela finita; contexto poluido derruba prompt bom.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">Harness = com o que ele age</strong><span class="text-neutral-400"> — ferramentas, permissoes, retentativa, orcamento de token.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">Loop = quantas vezes e como para</strong><span class="text-neutral-400"> — a Trilha 2 inteira, condensada numa camada.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">Grafo = quantos loops e como se ligam</strong><span class="text-neutral-400"> — so faz sentido depois das quatro de baixo dominadas.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">Harness de grafo e runtime distribuido</strong><span class="text-neutral-400"> — roteamento, isolamento de falha, estado, spawn dinamico, observabilidade.</span></div></div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+<h3 class="font-semibold text-purple-400 mb-2">Proximo Modulo:</h3>
+<p class="text-neutral-300">3.2 — O comparativo de verdade: agentic, loop e graph lado a lado, no mesmo caso — o daily brief.</p>
+</div>
+<div class="flex flex-col sm:flex-row gap-4">
+<a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="../trilha2/modulo-2-3.html">← Trilha 2: Modulo 2.3</a>
+<a class="flex-1 text-center px-6 py-3 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-500 transition-colors" href="modulo-3-2.html">Proximo Modulo →</a>
+</div>
+</div>
+</section>
+</main>
+</div>
+</div>
 <footer class="border-t border-dark-600 py-8 mt-16">
-  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
-    <p>Graph Engineering — de loops a grafos · INEMA 2026</p>
-    <p class="mt-2">
-      <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a>
-      <span class="text-neutral-600 mx-1">-</span>
-      <a href="https://inema.pro" target="_blank" class="text-amber-700 hover:text-amber-600 dark:text-slate-300 dark:hover:text-slate-200">PRO</a>
-    </p>
-  </div>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+<p>Graph Engineering — de loops a grafos · INEMA 2026</p>
+<p class="mt-2">
+<a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+<span class="text-neutral-600 mx-1">-</span>
+<a class="text-amber-700 hover:text-amber-600 dark:text-slate-300 dark:hover:text-slate-200" href="https://inema.pro" target="_blank">PRO</a>
+</p>
+</div>
 </footer>
-
 <script>
   function toggleTopic(button) {
     const topicItem = button.closest('.topic-item');

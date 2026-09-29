@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="loopgraph" name="inema-course"/>
+<title>Módulo 5.3 — Biblioteca de prompts | Graph Engineering</title>
+<script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'teal' };
+      function clone(o) { var r = {}; for (var x in o) r[x] = o[x]; return r; }
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed === 'object') { for (var k in DEF) if (parsed[k] != null) p[k] = parsed[k]; } }
+        else { var legacy = localStorage.getItem('theme'); if (legacy === 'light') p.theme = 'claro'; else if (legacy === 'dark') p.theme = 'inema-dark'; }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = { 'inema-dark': { dark: true, attr: null, cs: 'dark' }, 'claro': { dark: false, attr: null, cs: 'light' }, 'sepia': { dark: false, attr: 'sepia', cs: 'light' }, 'foco': { dark: null, attr: 'foco', cs: null }, 'contraste': { dark: true, attr: 'contraste', cs: 'dark' } };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark === true) html.classList.add('dark'); else if (t.dark === false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark') ? 'dark' : 'light'));
+      html.setAttribute('data-font', p.font || 'inter'); html.setAttribute('data-accent', p.accent || 'teal');
+      var s = html.style, scale = (+p.fontScale || 100);
+      s.setProperty('--inema-font-scale', (scale / 100).toString()); s.setProperty('font-size', scale + '%');
+      s.setProperty('--measure', (+p.lineWidth || 68) + 'ch'); s.setProperty('--lh-body', (+p.leading || 1.7).toString());
+      var fam = p.font === 'system' ? 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif' : (p.font === 'leitura' ? '"Atkinson Hyperlegible", "Inter", system-ui, sans-serif' : '"Inter", system-ui, sans-serif');
+      s.setProperty('--font-body', fam);
+      var ACC = { emerald: [152,76,45], blue: [217,91,60], purple: [258,90,66], amber: [38,92,50], teal: [174,72,41], rose: [350,89,60] };
+      var a = ACC[p.accent] || ACC.teal;
+      s.setProperty('--accent-h', a[0]+''); s.setProperty('--accent-s', a[1]+'%'); s.setProperty('--accent-l', a[2]+'%');
+      s.setProperty('--accent', 'hsl(' + a[0] + ' ' + a[1] + '% ' + a[2] + '%)');
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme = 'dark'; } catch (e) {} }
+  })();
+  </script>
+<script data-inema-manifest="" type="application/json">
+  {
+    "course": "loopgraph",
+    "tracks": [
+      { "n": "1", "title": "Fundamentos: o grafo", "modules": [
+        { "id": "1-1", "title": "O que e um grafo", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
+        { "id": "1-2", "title": "Grafos no mundo real", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+        { "id": "1-3", "title": "Como se anda num grafo", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" }
+      ]},
+      { "n": "2", "title": "Loop Engineering", "modules": [
+        { "id": "2-1", "title": "Anatomia do loop", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
+        { "id": "2-2", "title": "O verificador e o gargalo", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
+        { "id": "2-3", "title": "Onde o loop quebra", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" }
+      ]},
+      { "n": "3", "title": "Agentic x Loop x Graph", "modules": [
+        { "id": "3-1", "title": "As cinco camadas", "topics": 6, "href": "curso/trilha3/modulo-3-1.html" },
+        { "id": "3-2", "title": "O comparativo de verdade", "topics": 6, "href": "curso/trilha3/modulo-3-2.html" },
+        { "id": "3-3", "title": "Mito x fato", "topics": 6, "href": "curso/trilha3/modulo-3-3.html" }
+      ]},
+      { "n": "4", "title": "Graph Engineering na pratica", "modules": [
+        { "id": "4-1", "title": "Nos, arestas e estado", "topics": 6, "href": "curso/trilha4/modulo-4-1.html" },
+        { "id": "4-2", "title": "Org graph x work graph", "topics": 6, "href": "curso/trilha4/modulo-4-2.html" },
+        { "id": "4-3", "title": "Falhas, harness e observabilidade", "topics": 6, "href": "curso/trilha4/modulo-4-3.html" }
+      ]},
+      { "n": "5", "title": "Mao na massa", "modules": [
+        { "id": "5-1", "title": "Do loop ao grafo", "topics": 6, "href": "curso/trilha5/modulo-5-1.html" },
+        { "id": "5-2", "title": "Grafos de negocio e de tarefas", "topics": 6, "href": "curso/trilha5/modulo-5-2.html" },
+        { "id": "5-3", "title": "Biblioteca de prompts", "topics": 6, "href": "curso/trilha5/modulo-5-3.html" }
+      ]}
+    ]
+  }
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }</script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../../assets/learn.css" rel="stylesheet"/>
+<link href="../../../assets/curso.css" rel="stylesheet"/>
+<link href="https://inematds.github.io/loopgraph/curso/trilha5/modulo-5-3.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/loopgraph/en/curso/trilha5/modulo-5-3.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/loopgraph/es/curso/trilha5/modulo-5-3.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha5/modulo-5-3.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="../../../en/curso/trilha5/modulo-5-3.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="modulo-5-3.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">ES</a></div>
+<a class="sr-only focus:not-sr-only focus:absolute focus:z-[60] focus:m-2 focus:px-4 focus:py-2 focus:rounded-lg focus:bg-dark-700" href="#conteudo">Saltar al contenido</a>
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14 gap-2">
+<div class="flex items-center space-x-3 flex-shrink-0">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html">
+<span class="text-2xl">🕸️</span><span class="font-bold text-lg hidden lg:inline">Graph Engineering</span>
+</a>
+<span class="text-neutral-600 hidden sm:inline">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium hidden sm:inline" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+<span class="text-neutral-600 hidden sm:inline">-</span>
+<a class="text-amber-700 hover:text-amber-600 dark:text-slate-300 dark:hover:text-slate-200 text-sm font-medium hidden sm:inline" href="https://inema.pro" target="_blank">PRO</a>
+</div>
+<div class="flex items-center space-x-1">
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors" href="../trilha1/index.html"><span class="lg:hidden">T1</span><span class="hidden lg:inline">Fundamentos</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors" href="../trilha2/index.html"><span class="lg:hidden">T2</span><span class="hidden lg:inline">Bucles</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors" href="../trilha3/index.html"><span class="lg:hidden">T3</span><span class="hidden lg:inline">Comparativo</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors" href="../trilha4/index.html"><span class="lg:hidden">T4</span><span class="hidden lg:inline">Práctica</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-teal-400 bg-teal-500/10" href="index.html"><span class="lg:hidden">T5</span><span class="hidden lg:inline">Manos a la obra</span></a>
+<button class="hidden sm:inline-flex items-center gap-1 px-2 py-1.5 rounded-lg text-sm text-neutral-400 hover:text-neutral-100 transition-colors" data-inema-journey-open="" title="Mi recorrido" type="button">
+<span aria-hidden="true">◷</span><span class="hidden xl:inline">Recorrido</span><span aria-hidden="true" class="inema-journey-badge hidden"></span>
+</button>
+<button aria-label="Alternar entre tema claro y oscuro" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<nav aria-label="Ruta de navegación" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+<div class="flex items-center space-x-2 text-sm text-neutral-400">
+<a class="hover:text-teal-400" href="../../index.html">Inicio</a><span>/</span>
+<a class="hover:text-teal-400" href="index.html">Ruta 5</a><span>/</span>
+<span class="text-teal-400">Módulo 5.3</span>
+</div>
+</nav>
+<header class="bg-gradient-to-br from-teal-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600" data-inema-module="5-3" data-inema-track="5">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-teal-500/20 text-teal-400 text-xs font-semibold rounded-full mb-4">MÓDULO 5.3</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">📋 Biblioteca de prompts</h1>
+<p class="text-lg text-neutral-400 max-w-3xl">
+      Este es el módulo al que volverás para consultar. Seis prompts listos, probados, con la señal exacta
+      de que la respuesta sirvió y qué hacer cuando no sirvió. Pega, ejecuta, verifica — en ese orden.
+    </p>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-teal-400">6</div><div class="text-xs text-neutral-400">Temas</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-teal-400">35</div><div class="text-xs text-neutral-400">Minutos</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-teal-400">Práctico</div><div class="text-xs text-neutral-400">Nivel</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-teal-400">Consulta</div><div class="text-xs text-neutral-400">Tipo</div></div>
+</div>
+<div class="mt-6 max-w-2xl bg-dark-800 rounded-xl border border-dark-600 p-4">
+<div class="flex items-center justify-between">
+<span class="text-sm text-neutral-300 font-semibold">Progreso de este módulo</span>
+<div aria-label="Progreso del módulo 5.3" aria-valuemax="100" aria-valuemin="0" class="inema-meter text-sm" data-inema-meter="modulo:5-3" role="progressbar">
+<span class="inema-meter-pct text-teal-400 font-bold">0%</span><span class="inema-meter-count text-neutral-400 ml-2">0 de 6</span>
+</div>
+</div>
+</div>
+</div>
+</header>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="lg:grid lg:grid-cols-[220px_minmax(0,1fr)] lg:gap-10">
+<nav aria-label="Índice de la página" class="hidden lg:block sticky top-24 self-start" data-inema-toc="">
+<p class="text-sm text-neutral-400 mb-3">Sección <span class="inema-toc-pos">1</span> de <span class="inema-toc-total">6</span></p>
+<ul class="space-y-1 text-sm">
+<li><a class="inema-toc-link text-neutral-400 hover:text-teal-400" href="#topico-1">1. Diseña el grafo</a></li>
+<li><a class="inema-toc-link text-neutral-400 hover:text-teal-400" href="#topico-2">2. El grafo se convierte en script</a></li>
+<li><a class="inema-toc-link text-neutral-400 hover:text-teal-400" href="#topico-3">3. Audita el grafo</a></li>
+<li><a class="inema-toc-link text-neutral-400 hover:text-teal-400" href="#topico-4">4. Colisión entre loops</a></li>
+<li><a class="inema-toc-link text-neutral-400 hover:text-teal-400" href="#topico-5">5. Esquema de estado</a></li>
+<li><a class="inema-toc-link text-neutral-400 hover:text-teal-400" href="#topico-6">6. Primero el verificador</a></li>
+</ul>
+</nav>
+<main class="inema-prose" id="conteudo">
+<p class="text-neutral-300 mb-6 leading-relaxed">
+    Ya sabes qué son un nodo, una arista, un estado, un verificador y un límite de costo; fue todo el curso.
+    Este módulo no enseña conceptos nuevos. Lo empaqueta todo en <strong class="text-teal-400">seis prompts de copiar y ejecutar</strong>,
+    cada uno resuelve una parte concreta del trabajo de ingeniería de grafos. Usa la tabla de abajo para encontrar rápidamente
+    qué prompt sirve para lo que tienes entre manos ahora.
+  </p>
+<div class="overflow-x-auto mb-6">
+<table class="w-full text-sm">
+<thead>
+<tr class="border-b border-dark-600 text-left text-neutral-400">
+<th class="py-2 pr-4 font-semibold">Prompt</th>
+<th class="py-2 pr-4 font-semibold">Úsalo cuando</th>
+<th class="py-2 font-semibold">Lo que devuelve</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-dark-600">
+<tr><td class="py-3 pr-4 text-teal-400 font-semibold">1. Diseña el grafo</td><td class="py-3 pr-4 text-neutral-300">Tienes un proceso descrito en texto corrido, sin estructura</td><td class="py-3 text-neutral-400">JSON con nodos, aristas y preguntas sobre ambigüedades</td></tr>
+<tr><td class="py-3 pr-4 text-teal-400 font-semibold">2. El grafo se convierte en script</td><td class="py-3 pr-4 text-neutral-300">Ya tienes un grafo.json y quieres el código que lo ejecuta</td><td class="py-3 text-neutral-400">Script que recorre el grafo con un límite de costo y de vueltas</td></tr>
+<tr><td class="py-3 pr-4 text-teal-400 font-semibold">3. Audita el grafo</td><td class="py-3 pr-4 text-neutral-300">Quieres encontrar defectos antes de ejecutar en producción</td><td class="py-3 text-neutral-400">Lista de los cinco defectos estructurales, uno por uno</td></tr>
+<tr><td class="py-3 pr-4 text-teal-400 font-semibold">4. Colisión entre loops</td><td class="py-3 pr-4 text-neutral-300">Tienes varios objetivos automatizados ejecutándose al mismo tiempo</td><td class="py-3 text-neutral-400">Pares en tensión, métrica-efecto secundario, restricción faltante</td></tr>
+<tr><td class="py-3 pr-4 text-teal-400 font-semibold">5. Esquema de estado</td><td class="py-3 pr-4 text-neutral-300">Dos nodos vecinos y no sabes qué pasa entre ellos</td><td class="py-3 text-neutral-400">Contrato de la arista en JSON Schema, con lo que NO debe pasar</td></tr>
+<tr><td class="py-3 pr-4 text-teal-400 font-semibold">6. Primero el verificador</td><td class="py-3 pr-4 text-neutral-300">Un agente que entrega algo malo y tú no sabes cómo medirlo</td><td class="py-3 text-neutral-400">Verificador + caso de prueba fallido; solo después, el prompt del agente</td></tr>
+</tbody>
+</table>
+</div>
+<div class="rounded-2xl border border-teal-500/30 bg-dark-900/40 p-3 sm:p-4 mb-4 overflow-hidden">
+<svg aria-label="Diagrama de flujo de decisión: la caja con la pregunta «¿qué tienes en tus manos?» en la parte superior se abre en cinco ramas. Un proceso en texto lleva al prompt 1. Un grafo.json lleva a los prompts 2 o 3. Varios objetivos automatizados llevan al prompt 4. Dos nodos que no se entienden llevan al prompt 5. Un agente que entrega cosas de mala calidad lleva al prompt 6, destacado con un resplandor." class="w-full h-auto" role="img" viewbox="0 0 1000 460">
+<defs>
+<lineargradient id="m53-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#2dd4bf"></stop><stop offset="1" stop-color="#14b8a6"></stop></lineargradient>
+<filter height="180%" id="m53-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="2.2"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="m53-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#14b8a6" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="m53-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#2dd4bf"></path></marker>
+</defs>
+<rect fill="url(#m53-grid)" height="460" width="1000" x="0" y="0"></rect>
+<g filter="url(#m53-glow)"><rect fill="#0c1f1c" height="56" rx="14" stroke="url(#m53-grad)" stroke-width="2" width="340" x="330" y="20"></rect></g>
+<text fill="#99f6e4" font-family="Inter,sans-serif" font-size="15" font-weight="700" text-anchor="middle" x="500" y="54">¿qué tienes a mano?</text>
+<g fill="none" opacity="0.55" stroke="#2dd4bf" stroke-width="1.6">
+<path d="M420,76 C300,110 130,140 100,168" marker-end="url(#m53-ah)"></path>
+<path d="M460,76 C400,110 330,140 320,168" marker-end="url(#m53-ah)"></path>
+<path d="M540,76 C560,110 560,140 550,168" marker-end="url(#m53-ah)"></path>
+<path d="M580,76 C650,110 720,140 740,168" marker-end="url(#m53-ah)"></path>
+<path d="M620,76 C760,115 900,145 920,168" marker-end="url(#m53-ah)"></path>
+</g>
+<g font-family="Inter,sans-serif" font-size="12.5">
+<rect fill="#0c1f1c" height="60" rx="12" stroke="#2dd4bf" stroke-width="2" width="160" x="20" y="168"></rect>
+<text fill="#99f6e4" text-anchor="middle" x="100" y="194">un proceso</text>
+<text fill="#99f6e4" text-anchor="middle" x="100" y="212">en texto</text>
+<rect fill="#0c1f1c" height="60" rx="12" stroke="#2dd4bf" stroke-width="2" width="160" x="240" y="168"></rect>
+<text fill="#99f6e4" text-anchor="middle" x="320" y="194">un</text>
+<text fill="#99f6e4" text-anchor="middle" x="320" y="212">grafo.json</text>
+<rect fill="#0e1b26" height="60" rx="12" stroke="#38bdf8" stroke-width="2" width="170" x="465" y="168"></rect>
+<text fill="#bfe6ff" text-anchor="middle" x="550" y="188">varios objetivos</text>
+<text fill="#bfe6ff" text-anchor="middle" x="550" y="205">automatizados</text>
+<text fill="#bfe6ff" font-size="11" text-anchor="middle" x="550" y="222">(bucles/agentes)</text>
+<rect fill="#0c1f1c" height="60" rx="12" stroke="#2dd4bf" stroke-width="2" width="170" x="655" y="168"></rect>
+<text fill="#99f6e4" text-anchor="middle" x="740" y="194">dos nodos que</text>
+<text fill="#99f6e4" text-anchor="middle" x="740" y="212">no se entienden</text>
+<rect fill="#0e1b26" height="60" rx="12" stroke="#38bdf8" stroke-width="2" width="140" x="845" y="168"></rect>
+<text fill="#bfe6ff" text-anchor="middle" x="915" y="188">agente que</text>
+<text fill="#bfe6ff" text-anchor="middle" x="915" y="205">entrega algo</text>
+<text fill="#bfe6ff" font-size="11" text-anchor="middle" x="915" y="222">malo</text>
+</g>
+<g fill="none" opacity="0.5" stroke="#2dd4bf" stroke-width="1.6">
+<path d="M100,228 L100,260" marker-end="url(#m53-ah)"></path>
+<path d="M300,228 C300,250 265,255 250,264" marker-end="url(#m53-ah)"></path>
+<path d="M350,228 C350,250 380,255 395,264" marker-end="url(#m53-ah)"></path>
+<path d="M550,228 L550,260" marker-end="url(#m53-ah)"></path>
+<path d="M740,228 L740,260" marker-end="url(#m53-ah)"></path>
+<path d="M915,228 L915,260" marker-end="url(#m53-ah)"></path>
+</g>
+<g font-family="Inter,sans-serif" font-size="13" font-weight="700">
+<rect fill="#0c1f1c" height="46" rx="12" stroke="#2dd4bf" stroke-width="2" width="140" x="30" y="264"></rect><text fill="#5eead4" text-anchor="middle" x="100" y="292">prompt 1</text>
+<rect fill="#0c1f1c" height="46" rx="12" stroke="#2dd4bf" stroke-width="2" width="140" x="180" y="264"></rect><text fill="#5eead4" text-anchor="middle" x="250" y="292">prompt 2</text>
+<rect fill="#0c1f1c" height="46" rx="12" stroke="#2dd4bf" stroke-width="2" width="140" x="325" y="264"></rect><text fill="#5eead4" text-anchor="middle" x="395" y="292">prompt 3</text>
+<rect fill="#0c1f1c" height="46" rx="12" stroke="#2dd4bf" stroke-width="2" width="140" x="480" y="264"></rect><text fill="#5eead4" text-anchor="middle" x="550" y="292">prompt 4</text>
+<rect fill="#0c1f1c" height="46" rx="12" stroke="#2dd4bf" stroke-width="2" width="140" x="670" y="264"></rect><text fill="#5eead4" text-anchor="middle" x="740" y="292">prompt 5</text>
+<g filter="url(#m53-glow)"><rect fill="#0c1f1c" height="46" rx="12" stroke="url(#m53-grad)" stroke-width="2.4" width="140" x="845" y="264"></rect></g>
+<text fill="#2dd4bf" text-anchor="middle" x="915" y="292">prompt 6</text>
+</g>
+<text fill="#5eead4" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="500" y="345">los prompts 2 y 3 parten del mismo grafo.json — script ejecutable × auditoría</text>
+<text fill="#5eead4" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="500" y="370">prompt 6 tiene brillo a propósito: si solo tienes una cosa que guardar de este módulo, es este</text>
+<text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="500" y="410">todos los prompts aquí incluyen «cómo verificar» — el agente estará de acuerdo contigo si se lo permites</text>
+</svg>
+</div>
+<p class="text-sm text-neutral-400 mb-10">
+<strong class="text-neutral-300">Qué observar:</strong> el cuadro de arriba solo tiene cinco salidas: siempre partes de lo que
+    tienes (texto, grafo.json, lista de objetivos, dos nodos o una salida mala), no de lo que quieres producir.
+    Fíjate también en que dos ramas (grafo.json) llevan a prompts diferentes: una audita y la otra ejecuta. Son etapas distintas.
+  </p>
+<div class="flex items-center gap-4 mb-10">
+<div class="flex-1 h-px bg-dark-600"></div>
+</div>
+<h2 class="text-2xl font-bold mb-6">Contenido detallado</h2>
+<!-- ============ TOPICO 1 ============ -->
+<section class="mb-16" data-inema-topic="modulo-5-3#topico-1" id="topico-1">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">1</span>
+<h2 class="text-2xl font-bold">🗺️ Diseña el grafo de mi proceso</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Marcar duda en este tema" type="button">
+<span aria-hidden="true">?</span><span>Tengo una duda</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m5-3-t1-p1">
+<strong class="text-teal-400">Objetivo:</strong> describes un proceso a tu manera, en texto corrido, como
+      se lo explicarías a un colega nuevo. El agente devuelve la primera versión estructurada: nodos, aristas y una lista de
+      lo que quedó ambiguo. Úsalo cuando todavía no existe ningún grafo, solo el desorden en tu cabeza.
+    </p>
+<div class="code-box bg-dark-900 rounded-lg border border-dark-600 p-4 mb-4 overflow-x-auto">
+<pre class="text-sm text-neutral-300">Voce e um engenheiro de grafos. Vou colar a descricao de um processo em texto
+corrido. Sua tarefa:
+
+1. Identifique os NOS — cada unidade de trabalho, decisao ou papel envolvido.
+2. Identifique as ARESTAS — o que liga um no a outro, e QUANDO essa aresta e
+   seguida (nunca escreva uma aresta sem a condicao "quando").
+3. Devolva SOMENTE um JSON no formato abaixo, sem comentario fora do JSON:
+
+{
+  "nos": [
+    { "id": "&lt;nome-curto&gt;", "papel": "&lt;o que esse no faz&gt;",
+      "modelo_sugerido": "&lt;ex: gpt-4o-mini, claude-haiku, humano&gt;",
+      "ferramentas": ["&lt;ferramenta 1&gt;", "&lt;ferramenta 2&gt;"] }
+  ],
+  "arestas": [
+    { "de": "&lt;id do no de origem&gt;", "para": "&lt;id do no de destino&gt;",
+      "quando": "&lt;condicao exata, nunca 'sempre' se houver alternativa&gt;",
+      "passa": "&lt;o que atravessa essa aresta — que dado&gt;" }
+  ],
+  "perguntas": [
+    "&lt;o que ficou ambiguo na minha descricao e precisa de resposta minha&gt;"
+  ]
+}
+
+Processo: &lt;cole aqui a descricao em texto corrido do seu processo&gt;</pre>
+</div>
+<div class="bg-dark-700/50 rounded-lg p-4 mb-6">
+<strong class="text-teal-400">Cómo verificar:</strong>
+<span class="text-neutral-300 text-sm"> abre el campo <code class="text-teal-400">arestas</code> y mira el valor de
+      <code class="text-teal-400">quando</code> en cada una. Si TODAS dicen "siempre", el agente dibujó un pipeline
+      lineal, no tu proceso real — casi todo proceso de más de tres pasos tiene al menos una decisión.
+      Pídele que vuelva a intentarlo: "identifica dónde hay una decisión real — dónde el camino cambia según alguna condición".</span>
+</div>
+<div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">🆕</span> ¿Nuevo aquí? Dos palabras antes de seguir</h3>
+<ul class="space-y-2 text-neutral-300 text-sm">
+<li><strong class="text-neutral-100">Entrada huérfana:</strong> una situación posible que ninguna arista cubre: el flujo llega ahí y no sabe adónde ir. Vuelve a aparecer en el prompt 3.</li>
+<li><strong class="text-neutral-100">Cardinalidad:</strong> cuántas cosas deben llegar (o salir) de un nodo para que avance — «todas», «cualquiera» o «al menos N». Aparece en el prompt 3.</li>
+</ul>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-teal-400 mb-4">Conceptos clave</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">Punto de partida</div><p class="text-xs text-neutral-400">Texto corrido, sin estructura</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">Salida</div><p class="text-xs text-neutral-400">JSON: nodos, aristas, preguntas</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">Señal de pipeline falso</div><p class="text-xs text-neutral-400">Todo «cuando» = siempre</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">Próximo paso</div><p class="text-xs text-neutral-400">Se convierte en grafo.json para el prompt 2/3</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-500/20 border border-teal-500/30 text-teal-400 hover:bg-teal-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span>
+</button>
+</div>
+</section>
+<!-- ============ TOPICO 2 ============ -->
+<section class="mb-16" data-inema-topic="modulo-5-3#topico-2" id="topico-2">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">2</span>
+<h2 class="text-2xl font-bold">⚙️ Convierte el grafo en un script</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Marcar duda en este tema" type="button">
+<span aria-hidden="true">?</span><span>Tengo una duda</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m5-3-t2-p1">
+<strong class="text-teal-400">Objetivo:</strong> este es el segundo paso del método de dos etapas — primero tú
+      dibujas el grafo (prompt 1), después tú generas el código que lo ejecuta de verdad. Usa este cuando ya tienes un
+      <code class="text-teal-400">grafo.json</code> aprobado y quiere salir del papel para ponerse en marcha.
+    </p>
+<div class="code-box bg-dark-900 rounded-lg border border-dark-600 p-4 mb-4 overflow-x-auto">
+<pre class="text-sm text-neutral-300">Aqui esta o grafo.json de um processo (colado abaixo). Escreva um script em
+&lt;Python ou Node, escolha&gt; que:
+
+1. Carregue esse grafo.json.
+2. Percorra os nos a partir de "&lt;no-inicial&gt;", respeitando a condicao
+   "quando" de cada aresta antes de segui-la.
+3. Para cada no, execute a acao descrita em "papel" (pode ser uma chamada de
+   LLM, uma funcao, ou um print de placeholder se ainda nao tiver a
+   implementacao real).
+4. Aplique um TETO DE CUSTO total (em &lt;tokens ou dolares&gt;, defina um
+   valor) — se ultrapassar, pare e reporte onde parou.
+5. Para toda aresta de volta (uma aresta cujo destino ja foi visitado antes
+   no mesmo caminho), exija um campo "max_voltas" no grafo.json e FALHE
+   explicitamente se esse campo nao existir naquela aresta.
+6. Logue cada no executado com: nome do no, duracao em ms, custo estimado,
+   timestamp.
+
+grafo.json:
+&lt;cole aqui o conteudo do seu grafo.json&gt;</pre>
+</div>
+<div class="bg-dark-700/50 rounded-lg p-4 mb-6">
+<strong class="text-teal-400">Cómo verificar:</strong>
+<span class="text-neutral-300 text-sm"> toma el grafo.json que usaste, borra el campo <code class="text-teal-400">max_voltas</code>
+      de una sola arista de vuelta y vuelve a ejecutar el script. TIENE que fallar a propósito, con un mensaje claro
+      que señale qué arista no tiene límite. Si se ejecuta igual (o entra en un loop silencioso), el script no
+      implementó el bloqueo: pídele explícitamente que agregue esa verificación.</span>
+</div>
+<div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Consejo práctico</h3>
+<p class="text-neutral-300 text-sm">
+        Pide siempre el log estructurado (nombre, duración, costo, timestamp), incluso en un borrador. Es el embrión de tu
+        observabilidad (módulo 4.3): sin log por nodo, nunca sabrás qué paso consumió el presupuesto cuando el
+        grafo crezca.
+      </p>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-teal-400 mb-4">Conceptos clave</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">Método de 2 etapas</div><p class="text-xs text-neutral-400">Diseña y luego ejecuta</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">Límite de costo</div><p class="text-xs text-neutral-400">Se detiene y avisa cuando se excede el límite</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">Límite de vueltas</div><p class="text-xs text-neutral-400">Obligatorio en una arista de retorno</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">Registro por nodo</div><p class="text-xs text-neutral-400">Duración, costo, marca de tiempo</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-500/20 border border-teal-500/30 text-teal-400 hover:bg-teal-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span>
+</button>
+</div>
+</section>
+<!-- ============ TOPICO 3 ============ -->
+<section class="mb-16" data-inema-topic="modulo-5-3#topico-3" id="topico-3">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">3</span>
+<h2 class="text-2xl font-bold">🔍 Audita mi grafo</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Marcar duda en este tema" type="button">
+<span aria-hidden="true">?</span><span>Tengo una duda</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m5-3-t3-p1">
+<strong class="text-teal-400">Objetivo:</strong> busca cinco defectos estructurales específicos en un grafo.json
+      antes de que pase a producción. Usa este prompt antes de ejecutar cualquier cosa con un costo real y antes de mostrarle el grafo
+      al equipo como si estuviera listo.
+    </p>
+<div class="code-box bg-dark-900 rounded-lg border border-dark-600 p-4 mb-4 overflow-x-auto">
+<pre class="text-sm text-neutral-300">Audite o grafo.json abaixo. Procure especificamente estes cinco defeitos —
+nao pule nenhum, mesmo que o grafo pareca limpo:
+
+1. CICLO SEM TETO DE VOLTAS — alguma aresta de volta (destino ja visitado)
+   sem campo "max_voltas"?
+2. ARESTA CONDICIONAL SEM "QUANDO" — alguma aresta com valor generico tipo
+   "sempre" ou "quando" ausente, saindo de um no que tem mais de uma
+   aresta de saida?
+3. ENTRADA ORFA — existe alguma combinacao de condicoes que NENHUMA aresta
+   cobre? (ex: no de decisao com "aprovado"/"reprovado" mas falta o caso
+   "sem resposta")
+4. JUNCAO SEM CHECAGEM DE CARDINALIDADE — algum no recebe de multiplas
+   arestas (fan-in) sem dizer se precisa de TODAS chegarem, QUALQUER UMA,
+   ou um numero minimo?
+5. NO SEM TETO DE CUSTO — algum no (principalmente os que chamam LLM ou
+   ferramenta externa) sem limite de custo/tokens/tempo definido?
+
+Para cada defeito encontrado, aponte: o id do no/aresta exato, por que e
+um problema, e uma correcao sugerida em uma frase. Se nao encontrar nenhum
+defeito de um tipo, diga explicitamente "nao encontrado" para aquele tipo
+— nao pule a categoria.
+
+grafo.json:
+&lt;cole aqui o conteudo do seu grafo.json&gt;</pre>
+</div>
+<div class="bg-dark-700/50 rounded-lg p-4 mb-6">
+<strong class="text-teal-400">Cómo verificar:</strong>
+<span class="text-neutral-300 text-sm"> toma un grafo.json que sepas que es correcto y rómpelo a propósito —
+      borra un "quando", quita un "max_voltas", elimina el límite de costo de un nodo. Ejecuta la auditoría. Si no señala
+      el defecto que acabas de introducir, el prompt es demasiado débil y necesitas reforzar la instrucción "no te saltes
+      la categoría" o dividirlo en cinco llamadas separadas, una por defecto.</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-teal-900/20 rounded-xl border border-teal-500/30 p-6">
+<h4 class="font-bold text-teal-400 mb-4">✓ Auditoría bien aplicada</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-teal-400">✓</span><span>Ejecutarlo antes de cada cambio grande en el grafo, no solo en la primera versión</span></li>
+<li class="flex items-start space-x-2"><span class="text-teal-400">✓</span><span>Probar periódicamente el prompt con un grafo roto a propósito</span></li>
+<li class="flex items-start space-x-2"><span class="text-teal-400">✓</span><span>Guardar explícitamente el «no encontrado»: se convierte en un historial de lo que ya se verificó</span></li>
+</ul>
+</div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+<h4 class="font-bold text-red-400 mb-4">✗ Auditoría mal aplicada</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Ejecutarlo una vez y nunca más, aunque el grafo cambie cada semana</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Aceptar «parece que todo está bien» sin pasar por las cinco categorías</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Ejecutarlo solo en el propio grafo: nunca probarlo con un caso roto conocido</span></li>
+</ul>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-teal-400 mb-4">Conceptos clave</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">5 defectos fijos</div><p class="text-xs text-neutral-400">Ciclo, condición, nodo huérfano, cardinalidad, costo</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">Entrada huérfana</div><p class="text-xs text-neutral-400">Caso que ninguna arista cubre</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">Cardinalidad</div><p class="text-xs text-neutral-400">Todas × cualquiera × mínimo N</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">Prueba del prompt</div><p class="text-xs text-neutral-400">Contra un grafo roto a propósito</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-500/20 border border-teal-500/30 text-teal-400 hover:bg-teal-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span>
+</button>
+</div>
+</section>
+<!-- ============ TOPICO 4 ============ -->
+<section class="mb-16" data-inema-topic="modulo-5-3#topico-4" id="topico-4">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">4</span>
+<h2 class="text-2xl font-bold">💥 Encuentra la colisión entre bucles</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Marcar duda en este tema" type="button">
+<span aria-hidden="true">?</span><span>Tengo una duda</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m5-3-t4-p1">
+<strong class="text-teal-400">Objetivo:</strong> enumeras los objetivos automatizados (loops o agentes) que ya
+      se ejecutan en tu operación, y el agente señala cuáles se presionan mutuamente, qué métrica de uno es un efecto colateral
+      del otro y qué restricción entre métricas falta. Úsalo cuando hay más de un loop ejecutándose al mismo
+      tiempo: el escenario del módulo 2.3, pero aplicado a tu caso.
+    </p>
+<div class="code-box bg-dark-900 rounded-lg border border-dark-600 p-4 mb-4 overflow-x-auto">
+<pre class="text-sm text-neutral-300">Aqui esta a lista de objetivos automatizados (loops ou agentes) que rodam
+na minha operacao hoje:
+
+1. &lt;objetivo 1 — ex: "loop de suporte: fecha ticket em menos de 2h"&gt;
+2. &lt;objetivo 2 — ex: "loop de vendas: maximiza conversao do funil"&gt;
+3. &lt;objetivo 3 — ex: "loop de qualidade: reduz taxa de reembolso"&gt;
+
+Para cada PAR desses objetivos, responda:
+
+1. Eles se PRESSIONAM MUTUAMENTE? Ou seja, otimizar um piora o outro?
+2. Existe alguma METRICA que e efeito colateral direto de outro loop?
+   (ex: "tempo de fechamento" cai, mas "reincidencia" sobe)
+3. Que RESTRICAO entre metricas esta faltando no meu sistema hoje?
+   (ex: "fechar rapido, MAS reincidencia abaixo de X%")
+
+Nao me diga que nao ha colisao nenhuma sem antes checar cada par
+explicitamente, um por um, e escrever o resultado do par.</pre>
+</div>
+<div class="bg-dark-700/50 rounded-lg p-4 mb-6">
+<strong class="text-teal-400">Cómo verificar:</strong>
+<span class="text-neutral-300 text-sm"> si la respuesta dice "no hay colisión entre estos objetivos", vuelve a pedirlo,
+      exigiendo que compruebe cada par. En cualquier operación real con más de dos objetivos automatizados, siempre existe
+      al menos una tensión — si el agente no encontró ninguna, no revisó lo suficiente.</span>
+</div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center"><span class="mr-2">⚠️</span> El agente está de acuerdo contigo por defecto</h3>
+<p class="text-neutral-300 text-sm">
+        Esta es la razón por la que existe cada sección de «cómo verificar» en este módulo: un modelo de lenguaje tiende a validar tu
+        pregunta, no a cuestionarla. Si preguntas «¿hay una colisión?» de una forma que suena como si ya esperaras un «no»,
+        es probable que responda «no» incluso cuando sí la hay. Formula el prompt para exigir una comprobación explícita — como
+        hicimos aquí, pidiendo comparar cada par — en vez de aceptar un veredicto general.
+      </p>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-teal-400 mb-4">Conceptos clave</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">Par a par</div><p class="text-xs text-neutral-400">Verificación explícita, no veredicto general</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">Efecto secundario</div><p class="text-xs text-neutral-400">Métrica de uno que reacciona al otro</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">Falta una restricción</div><p class="text-xs text-neutral-400">El «pero» que le falta a tu sistema</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">&gt;2 objetivos</div><p class="text-xs text-neutral-400">Siempre hay tensión en algún par</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-500/20 border border-teal-500/30 text-teal-400 hover:bg-teal-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span>
+</button>
+</div>
+</section>
+<!-- ============ TOPICO 5 ============ -->
+<section class="mb-16" data-inema-topic="modulo-5-3#topico-5" id="topico-5">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">5</span>
+<h2 class="text-2xl font-bold">📐 Escribe el state schema entre dos nodos</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Marcar duda en este tema" type="button">
+<span aria-hidden="true">?</span><span>Tengo una duda</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m5-3-t5-p1">
+<strong class="text-teal-400">Objetivo:</strong> dados dos nodos vecinos, este prompt define el contrato exacto de la
+      arista entre ellos: nombres de los campos, formato, qué es obligatorio y qué explícitamente NO debe pasar. Úsalo
+      cuando dos nodos «no se entienden»: uno envía demasiados datos, muy pocos o en el formato equivocado.
+    </p>
+<div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">🆕</span> ¿Nuevo aquí? Una palabra antes de seguir</h3>
+<ul class="space-y-2 text-neutral-300 text-sm">
+<li><strong class="text-neutral-100">State schema:</strong> la definición formal de lo que pasa por una arista: como un contrato entre dos nodos que dice exactamente qué campos, en qué formato y qué queda fuera. Sin eso, cada nodo interpreta los datos de manera diferente.</li>
+</ul>
+</div>
+<div class="code-box bg-dark-900 rounded-lg border border-dark-600 p-4 mb-4 overflow-x-auto">
+<pre class="text-sm text-neutral-300">Dados estes dois nos vizinhos do meu grafo:
+
+NO A (origem): &lt;nome e o que ele faz&gt;
+NO B (destino): &lt;nome e o que ele faz&gt;
+
+Escreva o STATE SCHEMA da aresta entre eles — o contrato exato do que
+atravessa essa ligacao. Devolva:
+
+1. CAMPOS — nome de cada campo que passa de A para B.
+2. FORMATO — tipo de cada campo (string, numero, enum, lista, objeto) e
+   um exemplo de valor.
+3. OBRIGATORIO x OPCIONAL — quais campos B nao funciona sem, quais sao
+   so contexto extra.
+4. O QUE EXPLICITAMENTE NAO DEVE PASSAR — liste pelo menos 3 coisas que A
+   NAO deve mandar pra B (ex: raciocinio bruto do modelo, saida crua de
+   ferramenta, historico completo da conversa) e por que cada uma
+   incharia ou confundiria o no B.
+
+Devolva em JSON Schema simplificado, pronto pra colar como validacao.</pre>
+</div>
+<div class="bg-dark-700/50 rounded-lg p-4 mb-6">
+<strong class="text-teal-400">Cómo verificar:</strong>
+<span class="text-neutral-300 text-sm"> mira la lista del punto 4. Si está vacía o dice "nada debe
+      bloquearse", el schema está incompleto: siempre hay algo que no debe pasar (razonamiento bruto del
+      modelo, salida sin procesar de una herramienta, historial completo). Pide específicamente ese punto de nuevo.</span>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-teal-400 mb-4">Conceptos clave</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">Contrato de la arista</div><p class="text-xs text-neutral-400">Lo que atraviesa, formato y obligatoriedad</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">Lo que NO pasa</div><p class="text-xs text-neutral-400">Siempre hay algo: nunca una lista vacía</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">JSON Schema</div><p class="text-xs text-neutral-400">Formato listo para validar en código</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">Los vecinos</div><p class="text-xs text-neutral-400">Un par a la vez, no todo el grafo</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-500/20 border border-teal-500/30 text-teal-400 hover:bg-teal-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span>
+</button>
+</div>
+</section>
+<!-- ============ TOPICO 6 ============ -->
+<section class="mb-16" data-inema-topic="modulo-5-3#topico-6" id="topico-6">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">6</span>
+<h2 class="text-2xl font-bold">✅ Escribe el verificador antes del prompt</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Marcar duda en este tema" type="button">
+<span aria-hidden="true">?</span><span>Tengo una duda</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m5-3-t6-p1">
+<strong class="text-teal-400">Objetivo:</strong> invierte el orden normal de trabajo. En vez de escribir el prompt
+      del agente y solo después pensar cómo evaluar el resultado, primero escribes <em>cómo vas a saber que funcionó</em>
+      — con un caso de prueba negativo incluido — y solo entonces pide el prompt del agente. Usa este cuando un agente ya está
+      entregando resultados deficientes y te das cuenta de que nunca definiste realmente qué significa «bueno» en ese caso.
+    </p>
+<div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">🆕</span> ¿Nuevo aquí? Una palabra antes de seguir</h3>
+<ul class="space-y-2 text-neutral-300 text-sm">
+<li><strong class="text-neutral-100">Caso de prueba incorrecto:</strong> un ejemplo de salida que parece buena a primera vista, pero está mal — la verdadera prueba de un verificador no es aprobar el caso bueno, sino rechazar el caso engañoso.</li>
+</ul>
+</div>
+<div class="code-box bg-dark-900 rounded-lg border border-dark-600 p-4 mb-4 overflow-x-auto">
+<pre class="text-sm text-neutral-300">Antes de escrever o prompt do agente, quero o VERIFICADOR primeiro. O no
+vai fazer: &lt;descreva a tarefa do no, ex: "resumir um ticket de suporte em
+ate 3 frases"&gt;.
+
+1. Escreva uma funcao ou checklist de verificacao que recebe a SAIDA do no
+   e devolve aprovado/reprovado com o motivo.
+2. Inclua pelo menos um CASO RUIM DE TESTE — um exemplo de saida que
+   PARECE boa a primeira vista mas esta errada (ex: resumo de 3 frases
+   que omite a informacao mais importante do ticket), e o verificador tem
+   que reprovar esse caso.
+3. SO DEPOIS escreva o prompt do agente que gera essa saida.
+
+Devolva nesta ordem: (a) verificador, (b) caso ruim de teste + resultado
+esperado do verificador nesse caso, (c) prompt do agente.</pre>
+</div>
+<div class="bg-dark-700/50 rounded-lg p-4 mb-6">
+<strong class="text-teal-400">Cómo verificar:</strong>
+<span class="text-neutral-300 text-sm"> toma exactamente el caso malo de prueba que apareció en la respuesta y ejecuta el
+      verificador contra él, de forma aislada. Si el verificador aprueba ese caso, está roto: todo el loop
+      construido encima convergerá en algo que solo PARECE bueno, nunca en algo que sea realmente bueno.</span>
+</div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center"><span class="mr-2">⚠️</span> Este es el prompt más importante de la biblioteca</h3>
+<p class="text-neutral-300 text-sm">
+        Todos los «cómo verificar» de este módulo existen porque un agente tiende a darte la razón cuando el prompt es
+        impreciso, y un verificador escrito después del agente, sin un caso desfavorable, hereda esa misma imprecisión. Escribir el
+        verificador primero, con un caso que engañe, es la única forma de saber si realmente está midiendo algo o
+        solo validando lo que ya esperabas ver.
+      </p>
+</div>
+<!-- CHECAGEM LEVE -->
+<div class="inema-check mt-8 bg-dark-800 border border-dark-600 rounded-xl p-6 mb-6" data-inema-check="modulo-5-3#q1">
+<p class="font-medium mb-4">Verificación rápida (no bloquea nada): escribiste un verificador, lo probaste con el caso malo y, aun así, aprobó el caso malo. ¿Qué significa eso?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">El caso malo no era realmente malo: puedes continuar</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">El verificador está roto y hay que reescribirlo antes de que se convierta en el cuello de botella del ciclo</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">El agente que genera la salida tiene que cambiar; el verificador tiene razón</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-teal-400 mb-4">Conceptos clave</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">Orden invertido</div><p class="text-xs text-neutral-400">Verificador antes del prompt</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">Caso incorrecto</div><p class="text-xs text-neutral-400">Parece bueno, está mal</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">Verificador averiado</div><p class="text-xs text-neutral-400">Aprueba el caso malo = falla</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-teal-400 font-semibold text-sm mb-1">Límite de calidad</div><p class="text-xs text-neutral-400">El loop no pasa del verificador</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-500/20 border border-teal-500/30 text-teal-400 hover:bg-teal-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span>
+</button>
+</div>
+</section>
+<!-- ============ RESUMO / FECHAMENTO DO CURSO ============ -->
+<section class="mb-12">
+<div class="bg-gradient-to-br from-teal-900/40 via-dark-800 to-dark-800 rounded-xl border border-teal-500/30 p-8">
+<h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">📌</span> Resumen del módulo</h2>
+<div class="space-y-4 mb-8">
+<div class="flex items-start space-x-3"><span class="text-teal-400 mt-1">✓</span><div><strong class="text-white">Prompt 1 — dibuja el grafo</strong><span class="text-neutral-400"> — un proceso en texto se convierte en nodos, aristas y preguntas.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-teal-400 mt-1">✓</span><div><strong class="text-white">Prompt 2 — conviértelo en script</strong><span class="text-neutral-400"> — grafo.json se convierte en código con un límite de costo y de vueltas.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-teal-400 mt-1">✓</span><div><strong class="text-white">Prompt 3 — audita</strong><span class="text-neutral-400"> — cinco defectos fijos, probados contra un grafo roto a propósito.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-teal-400 mt-1">✓</span><div><strong class="text-white">Prompt 4 — colisión entre loops</strong><span class="text-neutral-400"> — objetivo por objetivo, siempre hay tensión cuando hay más de dos objetivos.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-teal-400 mt-1">✓</span><div><strong class="text-white">Prompt 5 — state schema</strong><span class="text-neutral-400"> — contrato de la arista, siempre con lo que NO debe pasar.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-teal-400 mt-1">✓</span><div><strong class="text-white">Prompt 6 — el verificador primero</strong><span class="text-neutral-400"> — lo más importante: pruébalo con un caso desfavorable antes de confiar en él.</span></div></div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+<h3 class="font-semibold text-teal-400 mb-2 flex items-center"><span class="mr-2">🎯</span> Fin del curso — lo que queda</h3>
+<p class="text-neutral-300 mb-3">
+          Uno <strong class="text-blue-400">loop</strong> ya es un <strong class="text-teal-400">grafo</strong> — un grafo
+          cuyo camino vuelve a un nodo anterior. No pasas de ciclos a grafos como si fuera una graduación; tú <strong>compone</strong> bucles
+          en grafos cuando un bucle deja de ser suficiente, y eso se paga con nuevos prompts, esquemas de estado y modos de falla.
+          Ajusta primero el bucle. Solo entonces vale la pena componer.
+        </p>
+<p class="text-neutral-300">
+          Y el mensaje final del curso: quien sabe qué son un nodo y una arista asimila el próximo término de moda en cinco minutos: lee el anuncio, encuentra el nodo y la arista debajo del nombre nuevo y sigue trabajando. Quien no lo sabe deja todo para volver a estudiar cada semana. La IA es una palanca de lo que ya sabes, no un sustituto de conocer los fundamentos.
+        </p>
+</div>
+<div class="flex flex-col sm:flex-row gap-4">
+<a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="modulo-5-2.html">← Módulo anterior</a>
+<a class="flex-1 text-center px-6 py-3 bg-teal-600 text-white rounded-lg font-semibold hover:bg-teal-500 transition-colors" href="../../index.html">Completar el curso →</a>
+</div>
+</div>
+</section>
+</main>
+</div>
+</div>
+<footer class="border-t border-dark-600 py-8 mt-16">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+<p>Graph Engineering — de loops a grafos · INEMA 2026</p>
+<p class="mt-2">
+<a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+<span class="text-neutral-600 mx-1">-</span>
+<a class="text-amber-700 hover:text-amber-600 dark:text-slate-300 dark:hover:text-slate-200" href="https://inema.pro" target="_blank">PRO</a>
+</p>
+</div>
+</footer>
+<script>
+  function toggleTopic(button) {
+    const topicItem = button.closest('.topic-item');
+    const explanation = topicItem.querySelector('.topic-explanation');
+    const moduleCard = button.closest('.bg-dark-800') || document;
+    moduleCard.querySelectorAll('.topic-explanation.active').forEach(exp => { if (exp !== explanation) { exp.classList.remove('active'); const b = exp.closest('.topic-item').querySelector('button'); if (b) b.setAttribute('aria-expanded','false'); } });
+    explanation.classList.toggle('active');
+    button.setAttribute('aria-expanded', explanation.classList.contains('active') ? 'true' : 'false');
+  }
+  function openModal(modalId) { const m = document.getElementById(modalId); if (m) { m.classList.remove('hidden'); document.body.style.overflow = 'hidden'; } }
+  function closeModal() { document.querySelectorAll('.modal').forEach(m => m.classList.add('hidden')); document.body.style.overflow = 'auto'; }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+  const themeToggle = document.getElementById('theme-toggle');
+  const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+  const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+  const htmlEl = document.documentElement;
+  if (htmlEl.classList.contains('dark')) themeToggleLightIcon.classList.remove('hidden'); else themeToggleDarkIcon.classList.remove('hidden');
+  themeToggle.addEventListener('click', () => {
+    themeToggleDarkIcon.classList.toggle('hidden'); themeToggleLightIcon.classList.toggle('hidden');
+    htmlEl.classList.toggle('dark');
+    const dark = htmlEl.classList.contains('dark');
+    localStorage.setItem('theme', dark ? 'dark' : 'light');
+    try { const p = JSON.parse(localStorage.getItem('inema.prefs') || '{}'); p.theme = dark ? 'inema-dark' : 'claro'; localStorage.setItem('inema.prefs', JSON.stringify(p)); } catch (e) {}
+  });
+</script>
+<script src="../../../assets/learn.js"></script>
+<script>
+  if (window.INEMA && typeof window.INEMA.init === 'function') { window.INEMA.init(); }
+  window.addEventListener('DOMContentLoaded', function () {
+    if (window.INEMA && INEMA.registerCheck) {
+      INEMA.registerCheck('modulo-5-3#q1', {
+        answer: 1,
+        explain: {
+          0: 'Nao. Se o caso ruim de teste foi bem escolhido — parece bom mas esta errado — o verificador deveria reprova-lo. Aprovar significa falha no verificador, nao no caso de teste.',
+          1: 'Isso. Um verificador que aprova o caso ruim esta medindo a coisa errada. Ele precisa ser reescrito ANTES de virar o gargalo de qualidade de um loop — senao o loop inteiro converge pra algo que so parece bom.',
+          2: 'Nao ainda. Antes de mexer no agente, conserte o verificador — sem um verificador confiavel, voce nao tem como saber se a mudanca no agente melhorou ou piorou nada.'
+        }
+      });
+    }
+  });
+</script>
+</body>
+</html>

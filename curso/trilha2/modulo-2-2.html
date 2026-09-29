@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="pt-BR" class="dark">
+
+<html class="dark" lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="inema-course" content="loopgraph">
-  <title>Modulo 2.2 — O verificador e o gargalo | Graph Engineering</title>
-  <script>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="loopgraph" name="inema-course"/>
+<title>Modulo 2.2 — O verificador e o gargalo | Graph Engineering</title>
+<script>
   (function () {
     try {
       var html = document.documentElement;
@@ -35,7 +36,7 @@
     } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme = 'dark'; } catch (e) {} }
   })();
   </script>
-  <script type="application/json" data-inema-manifest>
+<script data-inema-manifest="" type="application/json">
   {
     "course": "loopgraph",
     "tracks": [
@@ -67,545 +68,497 @@
     ]
   }
   </script>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }</script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../../assets/learn.css">
-  <link rel="stylesheet" href="../../assets/curso.css">
-</head>
-<body class="bg-dark-900 text-neutral-100 min-h-screen">
-
-<a href="#conteudo" class="sr-only focus:not-sr-only focus:absolute focus:z-[60] focus:m-2 focus:px-4 focus:py-2 focus:rounded-lg focus:bg-dark-700">Pular para o conteudo</a>
-
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }</script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../assets/learn.css" rel="stylesheet"/>
+<link href="../../assets/curso.css" rel="stylesheet"/>
+<link href="https://inematds.github.io/loopgraph/curso/trilha2/modulo-2-2.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/loopgraph/en/curso/trilha2/modulo-2-2.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/loopgraph/es/curso/trilha2/modulo-2-2.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="modulo-2-2.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">PT</a><a href="../../en/curso/trilha2/modulo-2-2.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="../../es/curso/trilha2/modulo-2-2.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<a class="sr-only focus:not-sr-only focus:absolute focus:z-[60] focus:m-2 focus:px-4 focus:py-2 focus:rounded-lg focus:bg-dark-700" href="#conteudo">Pular para o conteudo</a>
 <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
-  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex justify-between items-center h-14 gap-2">
-      <div class="flex items-center space-x-3 flex-shrink-0">
-        <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
-          <span class="text-2xl">🕸️</span><span class="font-bold text-lg hidden lg:inline">Graph Engineering</span>
-        </a>
-        <span class="text-neutral-600 hidden sm:inline">|</span>
-        <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium hidden sm:inline">INEMA.CLUB</a>
-        <span class="text-neutral-600 hidden sm:inline">-</span>
-        <a href="https://inema.pro" target="_blank" class="text-amber-700 hover:text-amber-600 dark:text-slate-300 dark:hover:text-slate-200 text-sm font-medium hidden sm:inline">PRO</a>
-      </div>
-      <div class="flex items-center space-x-1">
-        <a href="../trilha1/index.html" class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors"><span class="lg:hidden">T1</span><span class="hidden lg:inline">Fundamentos</span></a>
-        <a href="index.html" class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-blue-400 bg-blue-500/10"><span class="lg:hidden">T2</span><span class="hidden lg:inline">Loops</span></a>
-        <a href="../trilha3/index.html" class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors"><span class="lg:hidden">T3</span><span class="hidden lg:inline">Comparativo</span></a>
-        <a href="../trilha4/index.html" class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors"><span class="lg:hidden">T4</span><span class="hidden lg:inline">Pratica</span></a>
-        <a href="../trilha5/index.html" class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors"><span class="lg:hidden">T5</span><span class="hidden lg:inline">Mao na massa</span></a>
-        <button type="button" data-inema-journey-open class="hidden sm:inline-flex items-center gap-1 px-2 py-1.5 rounded-lg text-sm text-neutral-400 hover:text-neutral-100 transition-colors" title="Minha jornada">
-          <span aria-hidden="true">◷</span><span class="hidden xl:inline">Jornada</span><span class="inema-journey-badge hidden" aria-hidden="true"></span>
-        </button>
-        <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" aria-label="Alternar tema claro/escuro">
-          <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
-          <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
-        </button>
-      </div>
-    </div>
-  </div>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14 gap-2">
+<div class="flex items-center space-x-3 flex-shrink-0">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html">
+<span class="text-2xl">🕸️</span><span class="font-bold text-lg hidden lg:inline">Graph Engineering</span>
+</a>
+<span class="text-neutral-600 hidden sm:inline">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium hidden sm:inline" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+<span class="text-neutral-600 hidden sm:inline">-</span>
+<a class="text-amber-700 hover:text-amber-600 dark:text-slate-300 dark:hover:text-slate-200 text-sm font-medium hidden sm:inline" href="https://inema.pro" target="_blank">PRO</a>
+</div>
+<div class="flex items-center space-x-1">
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors" href="../trilha1/index.html"><span class="lg:hidden">T1</span><span class="hidden lg:inline">Fundamentos</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-blue-400 bg-blue-500/10" href="index.html"><span class="lg:hidden">T2</span><span class="hidden lg:inline">Loops</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors" href="../trilha3/index.html"><span class="lg:hidden">T3</span><span class="hidden lg:inline">Comparativo</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors" href="../trilha4/index.html"><span class="lg:hidden">T4</span><span class="hidden lg:inline">Pratica</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors" href="../trilha5/index.html"><span class="lg:hidden">T5</span><span class="hidden lg:inline">Mao na massa</span></a>
+<button class="hidden sm:inline-flex items-center gap-1 px-2 py-1.5 rounded-lg text-sm text-neutral-400 hover:text-neutral-100 transition-colors" data-inema-journey-open="" title="Minha jornada" type="button">
+<span aria-hidden="true">◷</span><span class="hidden xl:inline">Jornada</span><span aria-hidden="true" class="inema-journey-badge hidden"></span>
+</button>
+<button aria-label="Alternar tema claro/escuro" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
 </nav>
-
-<nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4" aria-label="Trilha de navegacao">
-  <div class="flex items-center space-x-2 text-sm text-neutral-400">
-    <a href="../../index.html" class="hover:text-blue-400">Inicio</a><span>/</span>
-    <a href="index.html" class="hover:text-blue-400">Trilha 2</a><span>/</span>
-    <span class="text-blue-400">Modulo 2.2</span>
-  </div>
+<nav aria-label="Trilha de navegacao" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+<div class="flex items-center space-x-2 text-sm text-neutral-400">
+<a class="hover:text-blue-400" href="../../index.html">Inicio</a><span>/</span>
+<a class="hover:text-blue-400" href="index.html">Trilha 2</a><span>/</span>
+<span class="text-blue-400">Modulo 2.2</span>
+</div>
 </nav>
-
 <header class="bg-gradient-to-br from-blue-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600" data-inema-module="2-2" data-inema-track="2">
-  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-    <span class="inline-block px-3 py-1 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full mb-4">MODULO 2.2</span>
-    <h1 class="text-3xl sm:text-4xl font-bold mb-4">🔬 O verificador e o gargalo</h1>
-    <p class="text-lg text-neutral-400 max-w-3xl">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full mb-4">MODULO 2.2</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">🔬 O verificador e o gargalo</h1>
+<p class="text-lg text-neutral-400 max-w-3xl">
       O loop persegue o que o <strong class="text-blue-400">verificador</strong> aprova — nada mais. Pare de escrever prompts,
       comece a escrever verificadores: eles definem o teto de qualidade de tudo que o loop produz, e este modulo mostra
       como construir um verificador que aguenta o peso.
     </p>
-    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8 max-w-2xl">
-      <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">6</div><div class="text-xs text-neutral-400">Topicos</div></div>
-      <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">40</div><div class="text-xs text-neutral-400">Minutos</div></div>
-      <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">Intermediario</div><div class="text-xs text-neutral-400">Nivel</div></div>
-      <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">Pratico</div><div class="text-xs text-neutral-400">Tipo</div></div>
-    </div>
-    <div class="mt-6 max-w-2xl bg-dark-800 rounded-xl border border-dark-600 p-4">
-      <div class="flex items-center justify-between">
-        <span class="text-sm text-neutral-300 font-semibold">Progresso deste modulo</span>
-        <div data-inema-meter="modulo:2-2" class="inema-meter text-sm" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="Progresso do modulo 2.2">
-          <span class="inema-meter-pct text-blue-400 font-bold">0%</span><span class="inema-meter-count text-neutral-400 ml-2">0 de 6</span>
-        </div>
-      </div>
-    </div>
-  </div>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">6</div><div class="text-xs text-neutral-400">Topicos</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">40</div><div class="text-xs text-neutral-400">Minutos</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">Intermediario</div><div class="text-xs text-neutral-400">Nivel</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">Pratico</div><div class="text-xs text-neutral-400">Tipo</div></div>
+</div>
+<div class="mt-6 max-w-2xl bg-dark-800 rounded-xl border border-dark-600 p-4">
+<div class="flex items-center justify-between">
+<span class="text-sm text-neutral-300 font-semibold">Progresso deste modulo</span>
+<div aria-label="Progresso do modulo 2.2" aria-valuemax="100" aria-valuemin="0" class="inema-meter text-sm" data-inema-meter="modulo:2-2" role="progressbar">
+<span class="inema-meter-pct text-blue-400 font-bold">0%</span><span class="inema-meter-count text-neutral-400 ml-2">0 de 6</span>
+</div>
+</div>
+</div>
+</div>
 </header>
-
 <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 <div class="lg:grid lg:grid-cols-[220px_minmax(0,1fr)] lg:gap-10">
-
-  <nav data-inema-toc aria-label="Indice da pagina" class="hidden lg:block sticky top-24 self-start">
-    <p class="text-sm text-neutral-400 mb-3">Secao <span class="inema-toc-pos">1</span> de <span class="inema-toc-total">6</span></p>
-    <ul class="space-y-1 text-sm">
-      <li><a href="#topico-1" class="inema-toc-link text-neutral-400 hover:text-blue-400">1. Aceite o teto</a></li>
-      <li><a href="#topico-2" class="inema-toc-link text-neutral-400 hover:text-blue-400">2. Empilhe a escada</a></li>
-      <li><a href="#topico-3" class="inema-toc-link text-neutral-400 hover:text-blue-400">3. Nao carimbe</a></li>
-      <li><a href="#topico-4" class="inema-toc-link text-neutral-400 hover:text-blue-400">4. Escolha a referencia</a></li>
-      <li><a href="#topico-5" class="inema-toc-link text-neutral-400 hover:text-blue-400">5. Vigie o vigia</a></li>
-      <li><a href="#topico-6" class="inema-toc-link text-neutral-400 hover:text-blue-400">6. Escreva antes</a></li>
-    </ul>
-  </nav>
-
-  <main id="conteudo" class="inema-prose">
-
-  <!-- ============ TOPICO 1 ============ -->
-  <section id="topico-1" class="mb-16" data-inema-topic="modulo-2-2#topico-1">
-    <div class="flex items-center space-x-4 mb-6">
-      <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">1</span>
-      <h2 class="text-2xl font-bold">🎯 Aceite que o verificador e o teto</h2>
-      <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar duvida neste topico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm">
-        <span aria-hidden="true">?</span><span>Tenho duvida</span>
-      </button>
-    </div>
-
-    <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-2-t1-p1">
+<nav aria-label="Indice da pagina" class="hidden lg:block sticky top-24 self-start" data-inema-toc="">
+<p class="text-sm text-neutral-400 mb-3">Secao <span class="inema-toc-pos">1</span> de <span class="inema-toc-total">6</span></p>
+<ul class="space-y-1 text-sm">
+<li><a class="inema-toc-link text-neutral-400 hover:text-blue-400" href="#topico-1">1. Aceite o teto</a></li>
+<li><a class="inema-toc-link text-neutral-400 hover:text-blue-400" href="#topico-2">2. Empilhe a escada</a></li>
+<li><a class="inema-toc-link text-neutral-400 hover:text-blue-400" href="#topico-3">3. Nao carimbe</a></li>
+<li><a class="inema-toc-link text-neutral-400 hover:text-blue-400" href="#topico-4">4. Escolha a referencia</a></li>
+<li><a class="inema-toc-link text-neutral-400 hover:text-blue-400" href="#topico-5">5. Vigie o vigia</a></li>
+<li><a class="inema-toc-link text-neutral-400 hover:text-blue-400" href="#topico-6">6. Escreva antes</a></li>
+</ul>
+</nav>
+<main class="inema-prose" id="conteudo">
+<!-- ============ TOPICO 1 ============ -->
+<section class="mb-16" data-inema-topic="modulo-2-2#topico-1" id="topico-1">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">1</span>
+<h2 class="text-2xl font-bold">🎯 Aceite que o verificador e o teto</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Marcar duvida neste topico" type="button">
+<span aria-hidden="true">?</span><span>Tenho duvida</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-2-t1-p1">
       No topico 5 do modulo anterior voce viu o passo <strong class="text-blue-400">verificar</strong> do loop
       descobrir/planejar/agir/verificar/parar. Este modulo inteiro e sobre esse unico passo, porque ele
       define o que o loop <em>persegue</em>. O loop nao para no que voce queria — ele para no que o verificador
       aprovou. Se o verificador aceita qualquer coisa, o loop entrega qualquer coisa.
     </p>
-
-    <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
-      <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">🆕</span> Novo aqui? Duas palavras antes de seguir</h3>
-      <ul class="space-y-2 text-neutral-300 text-sm">
-        <li><strong class="text-neutral-100">Verificador:</strong> qualquer coisa que checa se um resultado esta bom — pode ser codigo (um teste), pode ser outro modelo de IA, pode ser uma pessoa.</li>
-        <li><strong class="text-neutral-100">Teto de qualidade:</strong> o melhor resultado possivel que aquele sistema consegue produzir. Nenhum loop supera o criterio que o aprova.</li>
-      </ul>
-    </div>
-
-    <div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-4 overflow-hidden">
-      <svg viewBox="0 0 1000 220" class="w-full h-auto" role="img" aria-label="Funil de verificacao: varias tentativas entram largas em cima, afunilam por um gargalo estreito rotulado verificador, e so uma fatia estreita sai aprovada embaixo. Legenda: o funil so entrega o que o gargalo deixa passar.">
-        <defs>
-          <linearGradient id="m22a-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#60a5fa"/><stop offset="1" stop-color="#3b82f6"/></linearGradient>
-          <filter id="m22a-glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-          <pattern id="m22a-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#3b82f6" opacity="0.12"/></pattern>
-        </defs>
-        <rect x="0" y="0" width="1000" height="220" fill="url(#m22a-grid)"/>
-        <g font-family="Inter,sans-serif" font-size="12" font-weight="600" fill="#bfdbfe">
-          <circle cx="220" cy="40" r="16" fill="#0e1622" stroke="#60a5fa" stroke-width="2"/>
-          <circle cx="320" cy="40" r="16" fill="#0e1622" stroke="#60a5fa" stroke-width="2"/>
-          <circle cx="420" cy="40" r="16" fill="#0e1622" stroke="#60a5fa" stroke-width="2"/>
-          <circle cx="520" cy="40" r="16" fill="#0e1622" stroke="#60a5fa" stroke-width="2"/>
-          <circle cx="620" cy="40" r="16" fill="#0e1622" stroke="#60a5fa" stroke-width="2"/>
-          <circle cx="720" cy="40" r="16" fill="#0e1622" stroke="#60a5fa" stroke-width="2"/>
-        </g>
-        <path d="M170,60 L830,60 L560,150 L440,150 Z" fill="url(#m22a-grad)" opacity="0.18" stroke="#60a5fa" stroke-width="1.8"/>
-        <g filter="url(#m22a-glow)"><rect x="430" y="150" width="140" height="34" rx="8" fill="#0e1622" stroke="#3b82f6" stroke-width="2"/></g>
-        <text x="500" y="172" text-anchor="middle" fill="#93c5fd" font-family="Inter,sans-serif" font-size="13" font-weight="600">verificador</text>
-        <rect x="470" y="184" width="60" height="26" rx="6" fill="#0e1622" stroke="#38bdf8" stroke-width="2"/>
-        <text x="500" y="201" text-anchor="middle" fill="#7dd3fc" font-family="Inter,sans-serif" font-size="11" font-weight="600">aprovado</text>
-        <text x="500" y="215" text-anchor="middle" fill="#bfdbfe" font-family="Inter,sans-serif" font-size="12.5">o funil so entrega o que o gargalo deixa passar</text>
-      </svg>
-    </div>
-    <p class="text-sm text-neutral-400 mb-6">
-      <strong class="text-neutral-300">O que olhar:</strong> seis tentativas em cima, uma fatia estreita embaixo.
+<div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">🆕</span> Novo aqui? Duas palavras antes de seguir</h3>
+<ul class="space-y-2 text-neutral-300 text-sm">
+<li><strong class="text-neutral-100">Verificador:</strong> qualquer coisa que checa se um resultado esta bom — pode ser codigo (um teste), pode ser outro modelo de IA, pode ser uma pessoa.</li>
+<li><strong class="text-neutral-100">Teto de qualidade:</strong> o melhor resultado possivel que aquele sistema consegue produzir. Nenhum loop supera o criterio que o aprova.</li>
+</ul>
+</div>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-4 overflow-hidden">
+<svg aria-label="Funil de verificacao: varias tentativas entram largas em cima, afunilam por um gargalo estreito rotulado verificador, e so uma fatia estreita sai aprovada embaixo. Legenda: o funil so entrega o que o gargalo deixa passar." class="w-full h-auto" role="img" viewbox="0 0 1000 220">
+<defs>
+<lineargradient id="m22a-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#60a5fa"></stop><stop offset="1" stop-color="#3b82f6"></stop></lineargradient>
+<filter height="180%" id="m22a-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="m22a-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#3b82f6" opacity="0.12" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#m22a-grid)" height="220" width="1000" x="0" y="0"></rect>
+<g fill="#bfdbfe" font-family="Inter,sans-serif" font-size="12" font-weight="600">
+<circle cx="220" cy="40" fill="#0e1622" r="16" stroke="#60a5fa" stroke-width="2"></circle>
+<circle cx="320" cy="40" fill="#0e1622" r="16" stroke="#60a5fa" stroke-width="2"></circle>
+<circle cx="420" cy="40" fill="#0e1622" r="16" stroke="#60a5fa" stroke-width="2"></circle>
+<circle cx="520" cy="40" fill="#0e1622" r="16" stroke="#60a5fa" stroke-width="2"></circle>
+<circle cx="620" cy="40" fill="#0e1622" r="16" stroke="#60a5fa" stroke-width="2"></circle>
+<circle cx="720" cy="40" fill="#0e1622" r="16" stroke="#60a5fa" stroke-width="2"></circle>
+</g>
+<path d="M170,60 L830,60 L560,150 L440,150 Z" fill="url(#m22a-grad)" opacity="0.18" stroke="#60a5fa" stroke-width="1.8"></path>
+<g filter="url(#m22a-glow)"><rect fill="#0e1622" height="34" rx="8" stroke="#3b82f6" stroke-width="2" width="140" x="430" y="150"></rect></g>
+<text fill="#93c5fd" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="500" y="172">verificador</text>
+<rect fill="#0e1622" height="26" rx="6" stroke="#38bdf8" stroke-width="2" width="60" x="470" y="184"></rect>
+<text fill="#7dd3fc" font-family="Inter,sans-serif" font-size="11" font-weight="600" text-anchor="middle" x="500" y="201">aprovado</text>
+<text fill="#bfdbfe" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="500" y="215">o funil so entrega o que o gargalo deixa passar</text>
+</svg>
+</div>
+<p class="text-sm text-neutral-400 mb-6">
+<strong class="text-neutral-300">O que olhar:</strong> seis tentativas em cima, uma fatia estreita embaixo.
       Nao importa quantas voltas o loop de agindo — o que sai e definido pela largura do gargalo, nao pela quantidade
       de tentativas. Um verificador largo (aceita quase tudo) deixa passar lixo; um verificador estreito demais
       trava o loop pra sempre.
     </p>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-      <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
-        <h4 class="font-bold text-emerald-400 mb-4">✓ Combinacao que funciona</h4>
-        <ul class="space-y-3 text-neutral-300 text-sm">
-          <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Prompt medio + verificador otimo — o loop tateia, mas o gargalo barra o ruim</span></li>
-          <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Criterio escrito antes de rodar a primeira volta</span></li>
-          <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Verificador que sabe dizer “nao” com frequencia</span></li>
-        </ul>
-      </div>
-      <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
-        <h4 class="font-bold text-red-400 mb-4">✗ Combinacao que falha</h4>
-        <ul class="space-y-3 text-neutral-300 text-sm">
-          <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Prompt otimo + verificador fraco — converge pra algo que so <em>parece</em> bom</span></li>
-          <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Criterio “que fique bom”, decidido na hora</span></li>
-          <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Verificador que aprova quase tudo que chega</span></li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
-      <h3 class="text-lg font-semibold text-blue-400 mb-4">Conceitos-chave</h3>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Gargalo</div><p class="text-xs text-neutral-400">Define o que sai, nao o que entra</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Teto, nao piso</div><p class="text-xs text-neutral-400">Nada supera o verificador</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">A disciplina</div><p class="text-xs text-neutral-400">Escreva verificadores, nao prompts</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Falso positivo</div><p class="text-xs text-neutral-400">Parece bom ≠ e bom</p></div>
-      </div>
-    </div>
-
-    <div class="flex justify-start mt-6">
-      <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors">
-        <span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span>
-      </button>
-    </div>
-  </section>
-
-  <!-- ============ TOPICO 2 ============ -->
-  <section id="topico-2" class="mb-16" data-inema-topic="modulo-2-2#topico-2">
-    <div class="flex items-center space-x-4 mb-6">
-      <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">2</span>
-      <h2 class="text-2xl font-bold">🪜 Empilhe a escada de verificadores</h2>
-      <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar duvida neste topico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm">
-        <span aria-hidden="true">?</span><span>Tenho duvida</span>
-      </button>
-    </div>
-
-    <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-2-t2-p1">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+<h4 class="font-bold text-emerald-400 mb-4">✓ Combinacao que funciona</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Prompt medio + verificador otimo — o loop tateia, mas o gargalo barra o ruim</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Criterio escrito antes de rodar a primeira volta</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Verificador que sabe dizer “nao” com frequencia</span></li>
+</ul>
+</div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+<h4 class="font-bold text-red-400 mb-4">✗ Combinacao que falha</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Prompt otimo + verificador fraco — converge pra algo que so <em>parece</em> bom</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Criterio “que fique bom”, decidido na hora</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Verificador que aprova quase tudo que chega</span></li>
+</ul>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-4">Conceitos-chave</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Gargalo</div><p class="text-xs text-neutral-400">Define o que sai, nao o que entra</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Teto, nao piso</div><p class="text-xs text-neutral-400">Nada supera o verificador</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">A disciplina</div><p class="text-xs text-neutral-400">Escreva verificadores, nao prompts</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Falso positivo</div><p class="text-xs text-neutral-400">Parece bom ≠ e bom</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como lido</span>
+</button>
+</div>
+</section>
+<!-- ============ TOPICO 2 ============ -->
+<section class="mb-16" data-inema-topic="modulo-2-2#topico-2" id="topico-2">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">2</span>
+<h2 class="text-2xl font-bold">🪜 Empilhe a escada de verificadores</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Marcar duvida neste topico" type="button">
+<span aria-hidden="true">?</span><span>Tenho duvida</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-2-t2-p1">
       Nao existe um verificador so. Existe uma <strong class="text-blue-400">escada</strong>: compila → lint → teste
       automatizado → outro modelo julgando → humano. Cada degrau custa mais caro e pega um tipo diferente de erro —
       compilar pega erro de sintaxe, teste pega erro de logica, humano pega erro de julgamento que nenhuma maquina enxerga.
     </p>
-
-    <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
-      <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">🆕</span> Novo aqui? Tres palavras antes de seguir</h3>
-      <ul class="space-y-2 text-neutral-300 text-sm">
-        <li><strong class="text-neutral-100">Lint:</strong> ferramenta que confere estilo e erros comuns de codigo sem rodar o programa — mais rapida que um teste.</li>
-        <li><strong class="text-neutral-100">Determinístico:</strong> mesmo input, mesmo output, sempre. Um teste automatizado e deterministico.</li>
-        <li><strong class="text-neutral-100">LLM-as-judge (modelo julgando):</strong> usar um segundo modelo de IA pra avaliar o resultado do primeiro — probabilistico, pode variar entre rodadas.</li>
-      </ul>
-    </div>
-
-    <div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-4 overflow-hidden">
-      <svg viewBox="0 0 1000 260" class="w-full h-auto" role="img" aria-label="Cinco degraus subindo em diagonal: compila, lint, teste automatizado, modelo julgando, humano. Uma linha tracejada sobe junto com o custo crescente de dollar a dollar dollar dollar dollar. O ultimo degrau, humano, tem destaque com brilho.">
-        <defs>
-          <linearGradient id="m22b-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#60a5fa"/><stop offset="1" stop-color="#3b82f6"/></linearGradient>
-          <filter id="m22b-glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-          <pattern id="m22b-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#3b82f6" opacity="0.12"/></pattern>
-        </defs>
-        <rect x="0" y="0" width="1000" height="260" fill="url(#m22b-grid)"/>
-        <path d="M100,220 L900,40" stroke="#9ca3af" stroke-width="1.5" stroke-dasharray="9 9" opacity="0.4"/>
-        <g font-family="Inter,sans-serif" font-size="12.5" font-weight="600">
-          <rect x="60" y="196" width="120" height="42" rx="10" fill="#0e1622" stroke="#60a5fa" stroke-width="2"/><text x="120" y="222" text-anchor="middle" fill="#bfdbfe">compila</text>
-          <text x="120" y="252" text-anchor="middle" fill="#93c5fd" font-size="11">$</text>
-          <rect x="230" y="164" width="120" height="42" rx="10" fill="#0e1622" stroke="#60a5fa" stroke-width="2"/><text x="290" y="190" text-anchor="middle" fill="#bfdbfe">lint</text>
-          <text x="290" y="220" text-anchor="middle" fill="#93c5fd" font-size="11">$</text>
-          <rect x="400" y="132" width="140" height="42" rx="10" fill="#0e1622" stroke="#60a5fa" stroke-width="2"/><text x="470" y="158" text-anchor="middle" fill="#bfdbfe">teste automatico</text>
-          <text x="470" y="188" text-anchor="middle" fill="#93c5fd" font-size="11">$$</text>
-          <rect x="590" y="100" width="150" height="42" rx="10" fill="#0e1622" stroke="#38bdf8" stroke-width="2"/><text x="665" y="126" text-anchor="middle" fill="#bfe6ff">modelo julgando</text>
-          <text x="665" y="156" text-anchor="middle" fill="#7dd3fc" font-size="11">$$$</text>
-          <g filter="url(#m22b-glow)"><rect x="790" y="62" width="120" height="42" rx="10" fill="#0e1622" stroke="url(#m22b-grad)" stroke-width="2"/></g>
-          <text x="850" y="88" text-anchor="middle" fill="#60a5fa" font-weight="700">humano</text>
-          <text x="850" y="118" text-anchor="middle" fill="#93c5fd" font-size="11">$$$$$</text>
-        </g>
-        <text x="500" y="26" text-anchor="middle" fill="#bfdbfe" font-family="Inter,sans-serif" font-size="13">custo cresce, cada degrau pega um erro diferente</text>
-      </svg>
-    </div>
-    <p class="text-sm text-neutral-400 mb-6">
-      <strong class="text-neutral-300">O que olhar:</strong> a subida da esquerda pra direita. Compila e lint sao quase gratis
+<div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">🆕</span> Novo aqui? Tres palavras antes de seguir</h3>
+<ul class="space-y-2 text-neutral-300 text-sm">
+<li><strong class="text-neutral-100">Lint:</strong> ferramenta que confere estilo e erros comuns de codigo sem rodar o programa — mais rapida que um teste.</li>
+<li><strong class="text-neutral-100">Determinístico:</strong> mesmo input, mesmo output, sempre. Um teste automatizado e deterministico.</li>
+<li><strong class="text-neutral-100">LLM-as-judge (modelo julgando):</strong> usar um segundo modelo de IA pra avaliar o resultado do primeiro — probabilistico, pode variar entre rodadas.</li>
+</ul>
+</div>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-4 overflow-hidden">
+<svg aria-label="Cinco degraus subindo em diagonal: compila, lint, teste automatizado, modelo julgando, humano. Uma linha tracejada sobe junto com o custo crescente de dollar a dollar dollar dollar dollar. O ultimo degrau, humano, tem destaque com brilho." class="w-full h-auto" role="img" viewbox="0 0 1000 260">
+<defs>
+<lineargradient id="m22b-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#60a5fa"></stop><stop offset="1" stop-color="#3b82f6"></stop></lineargradient>
+<filter height="180%" id="m22b-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="m22b-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#3b82f6" opacity="0.12" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#m22b-grid)" height="260" width="1000" x="0" y="0"></rect>
+<path d="M100,220 L900,40" opacity="0.4" stroke="#9ca3af" stroke-dasharray="9 9" stroke-width="1.5"></path>
+<g font-family="Inter,sans-serif" font-size="12.5" font-weight="600">
+<rect fill="#0e1622" height="42" rx="10" stroke="#60a5fa" stroke-width="2" width="120" x="60" y="196"></rect><text fill="#bfdbfe" text-anchor="middle" x="120" y="222">compila</text>
+<text fill="#93c5fd" font-size="11" text-anchor="middle" x="120" y="252">$</text>
+<rect fill="#0e1622" height="42" rx="10" stroke="#60a5fa" stroke-width="2" width="120" x="230" y="164"></rect><text fill="#bfdbfe" text-anchor="middle" x="290" y="190">lint</text>
+<text fill="#93c5fd" font-size="11" text-anchor="middle" x="290" y="220">$</text>
+<rect fill="#0e1622" height="42" rx="10" stroke="#60a5fa" stroke-width="2" width="140" x="400" y="132"></rect><text fill="#bfdbfe" text-anchor="middle" x="470" y="158">teste automatico</text>
+<text fill="#93c5fd" font-size="11" text-anchor="middle" x="470" y="188">$$</text>
+<rect fill="#0e1622" height="42" rx="10" stroke="#38bdf8" stroke-width="2" width="150" x="590" y="100"></rect><text fill="#bfe6ff" text-anchor="middle" x="665" y="126">modelo julgando</text>
+<text fill="#7dd3fc" font-size="11" text-anchor="middle" x="665" y="156">$$$</text>
+<g filter="url(#m22b-glow)"><rect fill="#0e1622" height="42" rx="10" stroke="url(#m22b-grad)" stroke-width="2" width="120" x="790" y="62"></rect></g>
+<text fill="#60a5fa" font-weight="700" text-anchor="middle" x="850" y="88">humano</text>
+<text fill="#93c5fd" font-size="11" text-anchor="middle" x="850" y="118">$$$$$</text>
+</g>
+<text fill="#bfdbfe" font-family="Inter,sans-serif" font-size="13" text-anchor="middle" x="500" y="26">custo cresce, cada degrau pega um erro diferente</text>
+</svg>
+</div>
+<p class="text-sm text-neutral-400 mb-6">
+<strong class="text-neutral-300">O que olhar:</strong> a subida da esquerda pra direita. Compila e lint sao quase gratis
       e deterministicos — rode-os toda volta do loop. Modelo julgando e humano custam caro e sao mais lentos; reserve pros
       casos que ja passaram pelos degraus baratos. Determinístico &gt; probabilistico sempre que existir opcao — so suba a
       escada quando o degrau de baixo nao consegue detectar o erro que voce procura.
     </p>
-
-    <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
-      <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">📊</span> Onde cada degrau pega o erro</h3>
-      <ul class="space-y-2 text-neutral-300 text-sm">
-        <li><strong>Compila</strong> — sintaxe quebrada, import faltando</li>
-        <li><strong>Lint</strong> — padrao de codigo, variavel nao usada, cheiro de bug</li>
-        <li><strong>Teste automatizado</strong> — logica errada num caso conhecido</li>
-        <li><strong>Modelo julgando</strong> — tom, coerencia, aderencia a um estilo</li>
-        <li><strong>Humano</strong> — julgamento de negocio, contexto que nenhum dos anteriores tem</li>
-      </ul>
-    </div>
-
-    <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
-      <h3 class="text-lg font-semibold text-blue-400 mb-4">Conceitos-chave</h3>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Escada</div><p class="text-xs text-neutral-400">Nao um verificador, varios</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Barato primeiro</div><p class="text-xs text-neutral-400">Rode o barato toda volta</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Caro por ultimo</div><p class="text-xs text-neutral-400">So quando o barato passou</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Prefira determinismo</div><p class="text-xs text-neutral-400">Teste &gt; modelo, quando possivel</p></div>
-      </div>
-    </div>
-
-    <div class="flex justify-start mt-6">
-      <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors">
-        <span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span>
-      </button>
-    </div>
-  </section>
-
-  <!-- ============ TOPICO 3 ============ -->
-  <section id="topico-3" class="mb-16" data-inema-topic="modulo-2-2#topico-3">
-    <div class="flex items-center space-x-4 mb-6">
-      <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">3</span>
-      <h2 class="text-2xl font-bold">🚫 Nao deixe ele carimbar o proprio trabalho</h2>
-      <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar duvida neste topico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm">
-        <span aria-hidden="true">?</span><span>Tenho duvida</span>
-      </button>
-    </div>
-
-    <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-2-t3-p1">
+<div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">📊</span> Onde cada degrau pega o erro</h3>
+<ul class="space-y-2 text-neutral-300 text-sm">
+<li><strong>Compila</strong> — sintaxe quebrada, import faltando</li>
+<li><strong>Lint</strong> — padrao de codigo, variavel nao usada, cheiro de bug</li>
+<li><strong>Teste automatizado</strong> — logica errada num caso conhecido</li>
+<li><strong>Modelo julgando</strong> — tom, coerencia, aderencia a um estilo</li>
+<li><strong>Humano</strong> — julgamento de negocio, contexto que nenhum dos anteriores tem</li>
+</ul>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-4">Conceitos-chave</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Escada</div><p class="text-xs text-neutral-400">Nao um verificador, varios</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Barato primeiro</div><p class="text-xs text-neutral-400">Rode o barato toda volta</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Caro por ultimo</div><p class="text-xs text-neutral-400">So quando o barato passou</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Prefira determinismo</div><p class="text-xs text-neutral-400">Teste &gt; modelo, quando possivel</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como lido</span>
+</button>
+</div>
+</section>
+<!-- ============ TOPICO 3 ============ -->
+<section class="mb-16" data-inema-topic="modulo-2-2#topico-3" id="topico-3">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">3</span>
+<h2 class="text-2xl font-bold">🚫 Nao deixe ele carimbar o proprio trabalho</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Marcar duvida neste topico" type="button">
+<span aria-hidden="true">?</span><span>Tenho duvida</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-2-t3-p1">
       Mesmo agente, mesma conversa, escreve e depois “revisa” o proprio trabalho? Ele aprova quase sempre. Nao e
       preguica nem malicia — e que o raciocinio inteiro que produziu aquele resultado ainda esta ali do lado, na
       mesma janela de contexto, puxando o julgamento pro “esta bom”. Revisao de verdade exige
       <strong class="text-blue-400">contexto limpo</strong>.
     </p>
-
-    <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
-      <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">🆕</span> Novo aqui? Uma palavra antes de seguir</h3>
-      <ul class="space-y-2 text-neutral-300 text-sm">
-        <li><strong class="text-neutral-100">Contexto limpo:</strong> quem julga ve so o resultado final e o criterio de aprovacao — nao o rascunho, nao o raciocinio, nao as tentativas que vieram antes.</li>
-      </ul>
-    </div>
-
-    <div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-4 overflow-hidden">
-      <svg viewBox="0 0 1000 240" class="w-full h-auto" role="img" aria-label="Dois paineis lado a lado com divisoria tracejada vertical. A esquerda, contexto sujo: uma caixa com rascunho, raciocinio e resultado misturados, revisando a si mesma, com seta circular voltando pra ela mesma. A direita, contexto limpo: uma caixa de resultado mais criterio, separada, enviando so isso pra um revisor distinto, que aprova ou reprova.">
-        <defs>
-          <linearGradient id="m22c-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#60a5fa"/><stop offset="1" stop-color="#3b82f6"/></linearGradient>
-          <filter id="m22c-glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-          <pattern id="m22c-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#3b82f6" opacity="0.12"/></pattern>
-          <marker id="m22c-ah" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#38bdf8"/></marker>
-        </defs>
-        <rect x="0" y="0" width="1000" height="240" fill="url(#m22c-grid)"/>
-        <path d="M500,20 L500,220" stroke="#9ca3af" stroke-width="1.5" stroke-dasharray="9 9" opacity="0.4"/>
-
-        <text x="245" y="34" text-anchor="middle" fill="#bfdbfe" font-family="Inter,sans-serif" font-size="13" font-weight="600">CONTEXTO SUJO</text>
-        <rect x="120" y="70" width="250" height="90" rx="12" fill="#0e1622" stroke="#60a5fa" stroke-width="2"/>
-        <text x="245" y="98" text-anchor="middle" fill="#bfdbfe" font-family="Inter,sans-serif" font-size="12">rascunho + raciocinio</text>
-        <text x="245" y="118" text-anchor="middle" fill="#bfdbfe" font-family="Inter,sans-serif" font-size="12">+ resultado, tudo junto</text>
-        <text x="245" y="142" text-anchor="middle" fill="#93c5fd" font-family="Inter,sans-serif" font-size="12" font-weight="600">"revisa" a si mesmo</text>
-        <path d="M370,160 C420,190 320,205 260,168" fill="none" stroke="#60a5fa" stroke-width="1.8" opacity="0.6" marker-end="url(#m22c-ah)"/>
-        <text x="245" y="205" text-anchor="middle" fill="#93c5fd" font-family="Inter,sans-serif" font-size="12">aprova quase sempre</text>
-
-        <text x="750" y="34" text-anchor="middle" fill="#bfdbfe" font-family="Inter,sans-serif" font-size="13" font-weight="600">CONTEXTO LIMPO</text>
-        <rect x="640" y="70" width="180" height="60" rx="12" fill="#0e1622" stroke="#60a5fa" stroke-width="2"/>
-        <text x="730" y="94" text-anchor="middle" fill="#bfdbfe" font-family="Inter,sans-serif" font-size="12">resultado</text>
-        <text x="730" y="114" text-anchor="middle" fill="#bfdbfe" font-family="Inter,sans-serif" font-size="12">+ criterio</text>
-        <path d="M820,100 L870,100" stroke="#38bdf8" stroke-width="1.8" opacity="0.6" marker-end="url(#m22c-ah)"/>
-        <g filter="url(#m22c-glow)"><rect x="870" y="76" width="90" height="48" rx="10" fill="#0e1622" stroke="url(#m22c-grad)" stroke-width="2"/></g>
-        <text x="915" y="105" text-anchor="middle" fill="#60a5fa" font-family="Inter,sans-serif" font-size="12" font-weight="700">revisor</text>
-        <text x="750" y="180" text-anchor="middle" fill="#93c5fd" font-family="Inter,sans-serif" font-size="12">revisor separado, so ve isso</text>
-      </svg>
-    </div>
-    <p class="text-sm text-neutral-400 mb-6">
-      <strong class="text-neutral-300">O que olhar:</strong> a divisoria tracejada no meio. A esquerda, tudo mora na mesma caixa
+<div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">🆕</span> Novo aqui? Uma palavra antes de seguir</h3>
+<ul class="space-y-2 text-neutral-300 text-sm">
+<li><strong class="text-neutral-100">Contexto limpo:</strong> quem julga ve so o resultado final e o criterio de aprovacao — nao o rascunho, nao o raciocinio, nao as tentativas que vieram antes.</li>
+</ul>
+</div>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-4 overflow-hidden">
+<svg aria-label="Dois paineis lado a lado com divisoria tracejada vertical. A esquerda, contexto sujo: uma caixa com rascunho, raciocinio e resultado misturados, revisando a si mesma, com seta circular voltando pra ela mesma. A direita, contexto limpo: uma caixa de resultado mais criterio, separada, enviando so isso pra um revisor distinto, que aprova ou reprova." class="w-full h-auto" role="img" viewbox="0 0 1000 240">
+<defs>
+<lineargradient id="m22c-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#60a5fa"></stop><stop offset="1" stop-color="#3b82f6"></stop></lineargradient>
+<filter height="180%" id="m22c-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="m22c-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#3b82f6" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="m22c-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#38bdf8"></path></marker>
+</defs>
+<rect fill="url(#m22c-grid)" height="240" width="1000" x="0" y="0"></rect>
+<path d="M500,20 L500,220" opacity="0.4" stroke="#9ca3af" stroke-dasharray="9 9" stroke-width="1.5"></path>
+<text fill="#bfdbfe" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="245" y="34">CONTEXTO SUJO</text>
+<rect fill="#0e1622" height="90" rx="12" stroke="#60a5fa" stroke-width="2" width="250" x="120" y="70"></rect>
+<text fill="#bfdbfe" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="245" y="98">rascunho + raciocinio</text>
+<text fill="#bfdbfe" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="245" y="118">+ resultado, tudo junto</text>
+<text fill="#93c5fd" font-family="Inter,sans-serif" font-size="12" font-weight="600" text-anchor="middle" x="245" y="142">"revisa" a si mesmo</text>
+<path d="M370,160 C420,190 320,205 260,168" fill="none" marker-end="url(#m22c-ah)" opacity="0.6" stroke="#60a5fa" stroke-width="1.8"></path>
+<text fill="#93c5fd" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="245" y="205">aprova quase sempre</text>
+<text fill="#bfdbfe" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="750" y="34">CONTEXTO LIMPO</text>
+<rect fill="#0e1622" height="60" rx="12" stroke="#60a5fa" stroke-width="2" width="180" x="640" y="70"></rect>
+<text fill="#bfdbfe" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="730" y="94">resultado</text>
+<text fill="#bfdbfe" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="730" y="114">+ criterio</text>
+<path d="M820,100 L870,100" marker-end="url(#m22c-ah)" opacity="0.6" stroke="#38bdf8" stroke-width="1.8"></path>
+<g filter="url(#m22c-glow)"><rect fill="#0e1622" height="48" rx="10" stroke="url(#m22c-grad)" stroke-width="2" width="90" x="870" y="76"></rect></g>
+<text fill="#60a5fa" font-family="Inter,sans-serif" font-size="12" font-weight="700" text-anchor="middle" x="915" y="105">revisor</text>
+<text fill="#93c5fd" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="750" y="180">revisor separado, so ve isso</text>
+</svg>
+</div>
+<p class="text-sm text-neutral-400 mb-6">
+<strong class="text-neutral-300">O que olhar:</strong> a divisoria tracejada no meio. A esquerda, tudo mora na mesma caixa
       e a seta volta pra ela mesma — nao ha separacao real entre quem produziu e quem julga. A direita, so o resultado e o
       criterio atravessam a fronteira; o revisor nunca ve o rascunho nem o raciocinio. Essa separacao — contexto limpo,
       revisor distinto — e exatamente o que um <strong>grafo</strong> entrega de graca (cada no com seu proprio contexto)
       e o que um unico loop tem dificuldade de fazer sozinho. A Trilha 3 faz o comparativo completo; aqui fica so o motivo.
     </p>
-
-    <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
-      <h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center"><span class="mr-2">⚠️</span> Atencao: “deixa eu conferir meu proprio trabalho” nao existe de graca</h3>
-      <p class="text-neutral-300">
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center"><span class="mr-2">⚠️</span> Atencao: “deixa eu conferir meu proprio trabalho” nao existe de graca</h3>
+<p class="text-neutral-300">
         Isso vale pra gente tambem — voce ja releu um texto seu na mesma sentada e nao viu o erro que um colega achou
         em cinco segundos. Com modelo de IA o efeito e igual ou pior: ele tem acesso literal ao proprio raciocinio,
         entao a “revisao” vira so uma segunda passada pelo mesmo caminho de pensamento.
       </p>
-    </div>
-
-    <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
-      <h3 class="text-lg font-semibold text-blue-400 mb-4">Conceitos-chave</h3>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Auto-revisao</div><p class="text-xs text-neutral-400">Aprova quase sempre</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Contexto limpo</div><p class="text-xs text-neutral-400">So resultado + criterio</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Revisor separado</div><p class="text-xs text-neutral-400">Nao ve o processo</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Ponte pro grafo</div><p class="text-xs text-neutral-400">Motivo concreto de existir no separado</p></div>
-      </div>
-    </div>
-
-    <div class="flex justify-start mt-6">
-      <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors">
-        <span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span>
-      </button>
-    </div>
-  </section>
-
-  <!-- ============ TOPICO 4 ============ -->
-  <section id="topico-4" class="mb-16" data-inema-topic="modulo-2-2#topico-4">
-    <div class="flex items-center space-x-4 mb-6">
-      <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">4</span>
-      <h2 class="text-2xl font-bold">📐 Escolha a referencia</h2>
-      <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar duvida neste topico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm">
-        <span aria-hidden="true">?</span><span>Tenho duvida</span>
-      </button>
-    </div>
-
-    <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-2-t4-p1">
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-4">Conceitos-chave</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Auto-revisao</div><p class="text-xs text-neutral-400">Aprova quase sempre</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Contexto limpo</div><p class="text-xs text-neutral-400">So resultado + criterio</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Revisor separado</div><p class="text-xs text-neutral-400">Nao ve o processo</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Ponte pro grafo</div><p class="text-xs text-neutral-400">Motivo concreto de existir no separado</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como lido</span>
+</button>
+</div>
+</section>
+<!-- ============ TOPICO 4 ============ -->
+<section class="mb-16" data-inema-topic="modulo-2-2#topico-4" id="topico-4">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">4</span>
+<h2 class="text-2xl font-bold">📐 Escolha a referencia</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Marcar duvida neste topico" type="button">
+<span aria-hidden="true">?</span><span>Tenho duvida</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-2-t4-p1">
       Todo verificador compara o resultado com <em>algo</em>. Esse algo e a <strong class="text-blue-400">referencia</strong>:
       um teste que passa, um exemplo aprovado antes, uma regra escrita, um numero alvo. Sem referencia concreta,
       a verificacao vira opiniao — e opiniao muda de humor entre uma volta e outra do loop.
     </p>
-
-    <div class="space-y-6 mb-6">
-      <div class="flex items-start space-x-4">
-        <div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">1</span></div>
-        <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
-          <h4 class="font-semibold text-white mb-2">Referencia concreta: teste que passa</h4>
-          <p class="text-sm text-neutral-400 mb-3">"Essa funcao deve retornar 42 pra esse input." Sim ou nao, sem meio termo.</p>
-          <p class="text-neutral-300 text-sm">O loop sabe exatamente quando parar. Nenhuma ambiguidade sobra pro julgamento.</p>
-        </div>
-      </div>
-      <div class="flex items-start space-x-4">
-        <div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">2</span></div>
-        <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
-          <h4 class="font-semibold text-white mb-2">Referencia por exemplo: um caso aprovado antes</h4>
-          <p class="text-sm text-neutral-400 mb-3">"Deve soar como este e-mail que o time ja aprovou." Menos rigido, ainda ancorado em algo real.</p>
-          <p class="text-neutral-300 text-sm">Funciona bem quando "certo" e mais sobre estilo do que sobre um numero exato.</p>
-        </div>
-      </div>
-      <div class="flex items-start space-x-4">
-        <div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">3</span></div>
-        <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
-          <h4 class="font-semibold text-white mb-2">Sem referencia: “que fique bom”</h4>
-          <p class="text-sm text-neutral-400 mb-3">Nenhum numero, nenhum exemplo, nenhuma regra — so uma sensacao.</p>
-          <p class="text-neutral-300 text-sm">O verificador vira uma moeda: aprova hoje o que reprovaria amanha. O loop converge pra sorte, nao pra qualidade.</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
-      <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Dica pratica</h3>
-      <p class="text-neutral-300">
+<div class="space-y-6 mb-6">
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">1</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">Referencia concreta: teste que passa</h4>
+<p class="text-sm text-neutral-400 mb-3">"Essa funcao deve retornar 42 pra esse input." Sim ou nao, sem meio termo.</p>
+<p class="text-neutral-300 text-sm">O loop sabe exatamente quando parar. Nenhuma ambiguidade sobra pro julgamento.</p>
+</div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">2</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">Referencia por exemplo: um caso aprovado antes</h4>
+<p class="text-sm text-neutral-400 mb-3">"Deve soar como este e-mail que o time ja aprovou." Menos rigido, ainda ancorado em algo real.</p>
+<p class="text-neutral-300 text-sm">Funciona bem quando "certo" e mais sobre estilo do que sobre um numero exato.</p>
+</div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">3</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">Sem referencia: “que fique bom”</h4>
+<p class="text-sm text-neutral-400 mb-3">Nenhum numero, nenhum exemplo, nenhuma regra — so uma sensacao.</p>
+<p class="text-neutral-300 text-sm">O verificador vira uma moeda: aprova hoje o que reprovaria amanha. O loop converge pra sorte, nao pra qualidade.</p>
+</div>
+</div>
+</div>
+<div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Dica pratica</h3>
+<p class="text-neutral-300">
         Antes de escrever o verificador, escreva uma frase no formato “o resultado esta certo se ___”.
         Se voce nao consegue completar a frase com algo que da pra checar (numero, teste, exemplo, regra),
         voce ainda nao tem verificador — voce tem uma esperanca.
       </p>
-    </div>
-
-    <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
-      <h3 class="text-lg font-semibold text-blue-400 mb-4">Conceitos-chave</h3>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Referencia</div><p class="text-xs text-neutral-400">O “algo” com que se compara</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Teste</div><p class="text-xs text-neutral-400">A referencia mais rigida</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Exemplo aprovado</div><p class="text-xs text-neutral-400">Referencia por estilo</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Vago = sorte</div><p class="text-xs text-neutral-400">“Que fique bom” nao verifica nada</p></div>
-      </div>
-    </div>
-
-    <div class="flex justify-start mt-6">
-      <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors">
-        <span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span>
-      </button>
-    </div>
-  </section>
-
-  <!-- ============ TOPICO 5 ============ -->
-  <section id="topico-5" class="mb-16" data-inema-topic="modulo-2-2#topico-5">
-    <div class="flex items-center space-x-4 mb-6">
-      <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">5</span>
-      <h2 class="text-2xl font-bold">👁️ Vigie o vigia</h2>
-      <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar duvida neste topico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm">
-        <span aria-hidden="true">?</span><span>Tenho duvida</span>
-      </button>
-    </div>
-
-    <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-2-t5-p1">
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-4">Conceitos-chave</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Referencia</div><p class="text-xs text-neutral-400">O “algo” com que se compara</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Teste</div><p class="text-xs text-neutral-400">A referencia mais rigida</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Exemplo aprovado</div><p class="text-xs text-neutral-400">Referencia por estilo</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Vago = sorte</div><p class="text-xs text-neutral-400">“Que fique bom” nao verifica nada</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como lido</span>
+</button>
+</div>
+</section>
+<!-- ============ TOPICO 5 ============ -->
+<section class="mb-16" data-inema-topic="modulo-2-2#topico-5" id="topico-5">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">5</span>
+<h2 class="text-2xl font-bold">👁️ Vigie o vigia</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Marcar duvida neste topico" type="button">
+<span aria-hidden="true">?</span><span>Tenho duvida</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-2-t5-p1">
       O verificador apodrece com o tempo, mesmo sem ninguem mexer nele. Teste para de cobrir o que mudou no codigo.
       Dado de exemplo envelhece. A definicao de uma metrica muda por baixo, num outro sistema, e ninguem avisou o
       verificador. A verificacao escorrega de checar a <em>realidade</em> pra so conferir papel com papel — e o painel
       continua verde o tempo todo.
     </p>
-
-    <div class="bg-gradient-to-br from-blue-900/30 to-dark-800 rounded-xl border border-blue-500/30 p-6 mb-6">
-      <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">🎯</span> O sintoma classico</h3>
-      <p class="text-neutral-100 text-lg mb-3">Painel verde, resultado real ruim.</p>
-      <p class="text-neutral-300">
+<div class="bg-gradient-to-br from-blue-900/30 to-dark-800 rounded-xl border border-blue-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">🎯</span> O sintoma classico</h3>
+<p class="text-neutral-100 text-lg mb-3">Painel verde, resultado real ruim.</p>
+<p class="text-neutral-300">
         Se o verificador some da sua atencao depois de escrito — vira “codigo legado que ninguem toca” — ele vai
         continuar aprovando pelo criterio antigo enquanto o mundo muda ao redor. E o mesmo mecanismo do
         topico 5 do modulo anterior: metricas viram alvo e o alvo, sem manutencao, para de representar o que
         interessa de verdade.
       </p>
-    </div>
-
-    <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
-      <h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center"><span class="mr-2">⚠️</span> Atencao: verificador sem dono nao se auto-atualiza</h3>
-      <p class="text-neutral-300">
+</div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center"><span class="mr-2">⚠️</span> Atencao: verificador sem dono nao se auto-atualiza</h3>
+<p class="text-neutral-300">
         Alguem precisa revisitar o verificador quando o processo mudar — nova regra de negocio, novo formato de dado,
         novo caso de uso. Trate o verificador como codigo de producao: tem dono, tem changelog, tem revisao periodica.
         Um verificador esquecido e pior que nenhum verificador, porque ele te da falsa confianca.
       </p>
-    </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-      <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
-        <h4 class="font-bold text-emerald-400 mb-4">✓ Verificador vivo</h4>
-        <ul class="space-y-3 text-neutral-300 text-sm">
-          <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Revisado quando o processo real muda</span></li>
-          <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Reprova de vez em quando (sinal de que ainda esta ativo)</span></li>
-          <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Tem dono nomeado</span></li>
-        </ul>
-      </div>
-      <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
-        <h4 class="font-bold text-red-400 mb-4">✗ Verificador apodrecido</h4>
-        <ul class="space-y-3 text-neutral-300 text-sm">
-          <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Escrito uma vez, nunca revisto</span></li>
-          <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Sempre verde, nunca reprova nada</span></li>
-          <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Ninguem lembra por que a regra existe</span></li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
-      <h3 class="text-lg font-semibold text-blue-400 mb-4">Conceitos-chave</h3>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Apodrece</div><p class="text-xs text-neutral-400">Envelhece mesmo parado</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Papel com papel</div><p class="text-xs text-neutral-400">Deixa de checar a realidade</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Painel verde</div><p class="text-xs text-neutral-400">Falsa confianca visual</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Dono</div><p class="text-xs text-neutral-400">Alguem revisa periodicamente</p></div>
-      </div>
-    </div>
-
-    <div class="flex justify-start mt-6">
-      <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors">
-        <span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span>
-      </button>
-    </div>
-  </section>
-
-  <!-- ============ TOPICO 6 ============ -->
-  <section id="topico-6" class="mb-16" data-inema-topic="modulo-2-2#topico-6">
-    <div class="flex items-center space-x-4 mb-6">
-      <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">6</span>
-      <h2 class="text-2xl font-bold">✍️ Escreva o verificador antes do prompt</h2>
-      <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar duvida neste topico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm">
-        <span aria-hidden="true">?</span><span>Tenho duvida</span>
-      </button>
-    </div>
-
-    <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-2-t6-p1">
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+<h4 class="font-bold text-emerald-400 mb-4">✓ Verificador vivo</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Revisado quando o processo real muda</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Reprova de vez em quando (sinal de que ainda esta ativo)</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Tem dono nomeado</span></li>
+</ul>
+</div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+<h4 class="font-bold text-red-400 mb-4">✗ Verificador apodrecido</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Escrito uma vez, nunca revisto</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Sempre verde, nunca reprova nada</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Ninguem lembra por que a regra existe</span></li>
+</ul>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-4">Conceitos-chave</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Apodrece</div><p class="text-xs text-neutral-400">Envelhece mesmo parado</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Papel com papel</div><p class="text-xs text-neutral-400">Deixa de checar a realidade</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Painel verde</div><p class="text-xs text-neutral-400">Falsa confianca visual</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Dono</div><p class="text-xs text-neutral-400">Alguem revisa periodicamente</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como lido</span>
+</button>
+</div>
+</section>
+<!-- ============ TOPICO 6 ============ -->
+<section class="mb-16" data-inema-topic="modulo-2-2#topico-6" id="topico-6">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">6</span>
+<h2 class="text-2xl font-bold">✍️ Escreva o verificador antes do prompt</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Marcar duvida neste topico" type="button">
+<span aria-hidden="true">?</span><span>Tenho duvida</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-2-t6-p1">
       Mesma logica de escrever o teste antes do codigo. Escreva o verificador antes do prompt do agente, e teste-o
       contra um resultado ruim <strong class="text-blue-400">de proposito</strong>. Um verificador que nunca reprova
       nada nao esta verificando — esta so carimbando. Esse verificador, depois, vira um <strong class="text-blue-400">no</strong>
       do seu grafo — a Trilha 4 mostra como.
     </p>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-      <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
-        <h4 class="font-bold text-emerald-400 mb-4">✓ Ordem certa</h4>
-        <ul class="space-y-3 text-neutral-300 text-sm">
-          <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>1. Escreve o verificador</span></li>
-          <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>2. Testa contra um caso ruim conhecido — precisa reprovar</span></li>
-          <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>3. So entao escreve o prompt do agente</span></li>
-        </ul>
-      </div>
-      <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
-        <h4 class="font-bold text-red-400 mb-4">✗ Ordem que da errado</h4>
-        <ul class="space-y-3 text-neutral-300 text-sm">
-          <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Escreve o prompt primeiro, ve o que sai, verifica “no olho”</span></li>
-          <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Escreve o verificador so pra confirmar o que ja saiu bom</span></li>
-          <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Nunca testa o verificador contra um caso ruim</span></li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- EXEMPLO COPY-RUN -->
-    <div class="bg-dark-800 rounded-xl border border-blue-500/30 p-6 mb-6">
-      <h3 class="text-lg font-semibold text-blue-400 mb-2 flex items-center"><span class="mr-2">🧪</span> Exemplo pratico: prompt pronto pro Claude Code</h3>
-      <p class="text-sm text-neutral-400 mb-4"><strong class="text-neutral-300">Objetivo:</strong> pedir pro Claude Code escrever o verificador ANTES de escrever o prompt do agente que ele vai verificar — e forcar um caso-ruim de teste junto.</p>
-
-      <div class="code-box bg-dark-900 rounded-lg border border-dark-600 p-4 mb-4 overflow-x-auto">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+<h4 class="font-bold text-emerald-400 mb-4">✓ Ordem certa</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>1. Escreve o verificador</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>2. Testa contra um caso ruim conhecido — precisa reprovar</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>3. So entao escreve o prompt do agente</span></li>
+</ul>
+</div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+<h4 class="font-bold text-red-400 mb-4">✗ Ordem que da errado</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Escreve o prompt primeiro, ve o que sai, verifica “no olho”</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Escreve o verificador so pra confirmar o que ja saiu bom</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Nunca testa o verificador contra um caso ruim</span></li>
+</ul>
+</div>
+</div>
+<!-- EXEMPLO COPY-RUN -->
+<div class="bg-dark-800 rounded-xl border border-blue-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-2 flex items-center"><span class="mr-2">🧪</span> Exemplo pratico: prompt pronto pro Claude Code</h3>
+<p class="text-sm text-neutral-400 mb-4"><strong class="text-neutral-300">Objetivo:</strong> pedir pro Claude Code escrever o verificador ANTES de escrever o prompt do agente que ele vai verificar — e forcar um caso-ruim de teste junto.</p>
+<div class="code-box bg-dark-900 rounded-lg border border-dark-600 p-4 mb-4 overflow-x-auto">
 <pre class="text-sm text-neutral-300">Antes de escrever qualquer prompt de agente, escreva o VERIFICADOR para a tarefa
 &lt;descreva a tarefa, ex: "resumir um artigo em ate 5 bullets"&gt;.
 
@@ -621,85 +574,77 @@ a referencia (ex: 12 bullets, ou bullets repetidos). Rode o verificador
 contra esse caso ruim.
 
 So depois disso, escreva o prompt do agente que vai gerar o resultado de verdade.</pre>
-      </div>
-
-      <div class="bg-dark-700/50 rounded-lg p-4">
-        <p class="text-sm text-neutral-300"><strong class="text-blue-400">Como verificar:</strong> rode o verificador contra o caso ruim de proposito.
+</div>
+<div class="bg-dark-700/50 rounded-lg p-4">
+<p class="text-sm text-neutral-300"><strong class="text-blue-400">Como verificar:</strong> rode o verificador contra o caso ruim de proposito.
         Se ele <strong class="text-red-400">aprovar</strong> o caso ruim, o verificador esta quebrado — volte e reescreva a
         referencia antes de seguir. So avance pro prompt do agente depois que o verificador reprovar corretamente o caso ruim
         <em>e</em> aprovar um caso bom conhecido.</p>
-        <p class="text-sm text-neutral-400 mt-3"><strong class="text-neutral-300">Agora troque pelo seu:</strong> substitua
+<p class="text-sm text-neutral-400 mt-3"><strong class="text-neutral-300">Agora troque pelo seu:</strong> substitua
         <code class="text-blue-400">&lt;descreva a tarefa&gt;</code> pela sua tarefa real e a lista de criterios pelos
         seus criterios de aceitacao. Guarde o caso ruim — ele vira um teste de regressao do verificador pra sempre.</p>
-      </div>
-    </div>
-
-    <!-- CHECAGEM LEVE -->
-    <div data-inema-check="modulo-2-2#q1" class="inema-check mt-8 bg-dark-800 border border-dark-600 rounded-xl p-6 mb-6">
-      <p class="font-medium mb-4">Checagem rapida (nao bloqueia nada): voce testou seu verificador contra um caso ruim de proposito e ele aprovou o caso ruim. O que isso significa?</p>
-      <div class="inema-check-options space-y-2">
-        <button type="button" data-inema-check-option="0" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">O verificador esta ok, o caso ruim que foi mal escolhido</button>
-        <button type="button" data-inema-check-option="1" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">O verificador esta quebrado — ele nao esta verificando nada, so carimbando</button>
-        <button type="button" data-inema-check-option="2" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">Nao importa, o loop corrige isso sozinho depois</button>
-      </div>
-      <div data-inema-check-feedback class="mt-4 text-sm" role="status" aria-live="polite"></div>
-    </div>
-
-    <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
-      <h3 class="text-lg font-semibold text-blue-400 mb-4">Conceitos-chave</h3>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Verificador primeiro</div><p class="text-xs text-neutral-400">Antes do prompt do agente</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Caso ruim</div><p class="text-xs text-neutral-400">Precisa reprovar de verdade</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Nunca reprova = quebrado</div><p class="text-xs text-neutral-400">Nao esta verificando</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Vira no do grafo</div><p class="text-xs text-neutral-400">Ponte pra Trilha 4</p></div>
-      </div>
-    </div>
-
-    <div class="flex justify-start mt-6">
-      <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors">
-        <span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span>
-      </button>
-    </div>
-  </section>
-
-  <!-- ============ RESUMO ============ -->
-  <section class="mb-12">
-    <div class="bg-gradient-to-br from-blue-900/40 via-dark-800 to-dark-800 rounded-xl border border-blue-500/30 p-8">
-      <h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">📌</span> Resumo do Modulo</h2>
-      <div class="space-y-4 mb-8">
-        <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">O verificador e o teto</strong><span class="text-neutral-400"> — o loop persegue o que ele aprova, nunca supera esse criterio.</span></div></div>
-        <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Escada de verificadores</strong><span class="text-neutral-400"> — compila, lint, teste, modelo julgando, humano. Barato toda volta, caro so depois.</span></div></div>
-        <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Nunca revise a si mesmo</strong><span class="text-neutral-400"> — revisao real exige contexto limpo e um revisor separado.</span></div></div>
-        <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Referencia concreta</strong><span class="text-neutral-400"> — teste, exemplo ou regra escrita. “Que fique bom” nao verifica nada.</span></div></div>
-        <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Vigie o vigia</strong><span class="text-neutral-400"> — verificador apodrece sozinho; precisa de dono e revisao periodica.</span></div></div>
-        <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Verificador antes do prompt</strong><span class="text-neutral-400"> — teste-o contra um caso ruim de proposito antes de confiar nele.</span></div></div>
-      </div>
-      <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
-        <h3 class="font-semibold text-blue-400 mb-2">Proximo Modulo:</h3>
-        <p class="text-neutral-300">2.3 — Onde o loop quebra: as falhas estruturais que nenhum verificador bom sozinho resolve.</p>
-      </div>
-      <div class="flex flex-col sm:flex-row gap-4">
-        <a href="modulo-2-1.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">← Modulo anterior</a>
-        <a href="modulo-2-3.html" class="flex-1 text-center px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-500 transition-colors">Proximo Modulo →</a>
-      </div>
-    </div>
-  </section>
-
-  </main>
 </div>
 </div>
-
+<!-- CHECAGEM LEVE -->
+<div class="inema-check mt-8 bg-dark-800 border border-dark-600 rounded-xl p-6 mb-6" data-inema-check="modulo-2-2#q1">
+<p class="font-medium mb-4">Checagem rapida (nao bloqueia nada): voce testou seu verificador contra um caso ruim de proposito e ele aprovou o caso ruim. O que isso significa?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">O verificador esta ok, o caso ruim que foi mal escolhido</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">O verificador esta quebrado — ele nao esta verificando nada, so carimbando</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">Nao importa, o loop corrige isso sozinho depois</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-4">Conceitos-chave</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Verificador primeiro</div><p class="text-xs text-neutral-400">Antes do prompt do agente</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Caso ruim</div><p class="text-xs text-neutral-400">Precisa reprovar de verdade</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Nunca reprova = quebrado</div><p class="text-xs text-neutral-400">Nao esta verificando</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Vira no do grafo</div><p class="text-xs text-neutral-400">Ponte pra Trilha 4</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como lido</span>
+</button>
+</div>
+</section>
+<!-- ============ RESUMO ============ -->
+<section class="mb-12">
+<div class="bg-gradient-to-br from-blue-900/40 via-dark-800 to-dark-800 rounded-xl border border-blue-500/30 p-8">
+<h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">📌</span> Resumo do Modulo</h2>
+<div class="space-y-4 mb-8">
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">O verificador e o teto</strong><span class="text-neutral-400"> — o loop persegue o que ele aprova, nunca supera esse criterio.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Escada de verificadores</strong><span class="text-neutral-400"> — compila, lint, teste, modelo julgando, humano. Barato toda volta, caro so depois.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Nunca revise a si mesmo</strong><span class="text-neutral-400"> — revisao real exige contexto limpo e um revisor separado.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Referencia concreta</strong><span class="text-neutral-400"> — teste, exemplo ou regra escrita. “Que fique bom” nao verifica nada.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Vigie o vigia</strong><span class="text-neutral-400"> — verificador apodrece sozinho; precisa de dono e revisao periodica.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Verificador antes do prompt</strong><span class="text-neutral-400"> — teste-o contra um caso ruim de proposito antes de confiar nele.</span></div></div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+<h3 class="font-semibold text-blue-400 mb-2">Proximo Modulo:</h3>
+<p class="text-neutral-300">2.3 — Onde o loop quebra: as falhas estruturais que nenhum verificador bom sozinho resolve.</p>
+</div>
+<div class="flex flex-col sm:flex-row gap-4">
+<a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="modulo-2-1.html">← Modulo anterior</a>
+<a class="flex-1 text-center px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-500 transition-colors" href="modulo-2-3.html">Proximo Modulo →</a>
+</div>
+</div>
+</section>
+</main>
+</div>
+</div>
 <footer class="border-t border-dark-600 py-8 mt-16">
-  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
-    <p>Graph Engineering — de loops a grafos · INEMA 2026</p>
-    <p class="mt-2">
-      <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a>
-      <span class="text-neutral-600 mx-1">-</span>
-      <a href="https://inema.pro" target="_blank" class="text-amber-700 hover:text-amber-600 dark:text-slate-300 dark:hover:text-slate-200">PRO</a>
-    </p>
-  </div>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+<p>Graph Engineering — de loops a grafos · INEMA 2026</p>
+<p class="mt-2">
+<a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+<span class="text-neutral-600 mx-1">-</span>
+<a class="text-amber-700 hover:text-amber-600 dark:text-slate-300 dark:hover:text-slate-200" href="https://inema.pro" target="_blank">PRO</a>
+</p>
+</div>
 </footer>
-
 <script>
   function toggleTopic(button) {
     const topicItem = button.closest('.topic-item');

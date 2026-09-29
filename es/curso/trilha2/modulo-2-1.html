@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="loopgraph" name="inema-course"/>
+<title>Módulo 2.1 — Anatomía del bucle | Graph Engineering</title>
+<script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'emerald' };
+      function clone(o) { var r = {}; for (var x in o) r[x] = o[x]; return r; }
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed === 'object') { for (var k in DEF) if (parsed[k] != null) p[k] = parsed[k]; } }
+        else { var legacy = localStorage.getItem('theme'); if (legacy === 'light') p.theme = 'claro'; else if (legacy === 'dark') p.theme = 'inema-dark'; }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = { 'inema-dark': { dark: true, attr: null, cs: 'dark' }, 'claro': { dark: false, attr: null, cs: 'light' }, 'sepia': { dark: false, attr: 'sepia', cs: 'light' }, 'foco': { dark: null, attr: 'foco', cs: null }, 'contraste': { dark: true, attr: 'contraste', cs: 'dark' } };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark === true) html.classList.add('dark'); else if (t.dark === false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark') ? 'dark' : 'light'));
+      html.setAttribute('data-font', p.font || 'inter'); html.setAttribute('data-accent', p.accent || 'emerald');
+      var s = html.style, scale = (+p.fontScale || 100);
+      s.setProperty('--inema-font-scale', (scale / 100).toString()); s.setProperty('font-size', scale + '%');
+      s.setProperty('--measure', (+p.lineWidth || 68) + 'ch'); s.setProperty('--lh-body', (+p.leading || 1.7).toString());
+      var fam = p.font === 'system' ? 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif' : (p.font === 'leitura' ? '"Atkinson Hyperlegible", "Inter", system-ui, sans-serif' : '"Inter", system-ui, sans-serif');
+      s.setProperty('--font-body', fam);
+      var ACC = { emerald: [152,76,45], blue: [217,91,60], purple: [258,90,66], amber: [38,92,50], teal: [174,72,41], rose: [350,89,60] };
+      var a = ACC[p.accent] || ACC.emerald;
+      s.setProperty('--accent-h', a[0]+''); s.setProperty('--accent-s', a[1]+'%'); s.setProperty('--accent-l', a[2]+'%');
+      s.setProperty('--accent', 'hsl(' + a[0] + ' ' + a[1] + '% ' + a[2] + '%)');
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme = 'dark'; } catch (e) {} }
+  })();
+  </script>
+<script data-inema-manifest="" type="application/json">
+  {
+    "course": "loopgraph",
+    "tracks": [
+      { "n": "1", "title": "Fundamentos: o grafo", "modules": [
+        { "id": "1-1", "title": "O que e um grafo", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
+        { "id": "1-2", "title": "Grafos no mundo real", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+        { "id": "1-3", "title": "Como se anda num grafo", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" }
+      ]},
+      { "n": "2", "title": "Loop Engineering", "modules": [
+        { "id": "2-1", "title": "Anatomia do loop", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
+        { "id": "2-2", "title": "O verificador e o gargalo", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
+        { "id": "2-3", "title": "Onde o loop quebra", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" }
+      ]},
+      { "n": "3", "title": "Agentic x Loop x Graph", "modules": [
+        { "id": "3-1", "title": "As cinco camadas", "topics": 6, "href": "curso/trilha3/modulo-3-1.html" },
+        { "id": "3-2", "title": "O comparativo de verdade", "topics": 6, "href": "curso/trilha3/modulo-3-2.html" },
+        { "id": "3-3", "title": "Mito x fato", "topics": 6, "href": "curso/trilha3/modulo-3-3.html" }
+      ]},
+      { "n": "4", "title": "Graph Engineering na pratica", "modules": [
+        { "id": "4-1", "title": "Nos, arestas e estado", "topics": 6, "href": "curso/trilha4/modulo-4-1.html" },
+        { "id": "4-2", "title": "Org graph x work graph", "topics": 6, "href": "curso/trilha4/modulo-4-2.html" },
+        { "id": "4-3", "title": "Falhas, harness e observabilidade", "topics": 6, "href": "curso/trilha4/modulo-4-3.html" }
+      ]},
+      { "n": "5", "title": "Mao na massa", "modules": [
+        { "id": "5-1", "title": "Do loop ao grafo", "topics": 6, "href": "curso/trilha5/modulo-5-1.html" },
+        { "id": "5-2", "title": "Grafos de negocio e de tarefas", "topics": 6, "href": "curso/trilha5/modulo-5-2.html" },
+        { "id": "5-3", "title": "Biblioteca de prompts", "topics": 6, "href": "curso/trilha5/modulo-5-3.html" }
+      ]}
+    ]
+  }
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }</script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../../assets/learn.css" rel="stylesheet"/>
+<link href="../../../assets/curso.css" rel="stylesheet"/>
+<link href="https://inematds.github.io/loopgraph/curso/trilha2/modulo-2-1.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/loopgraph/en/curso/trilha2/modulo-2-1.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/loopgraph/es/curso/trilha2/modulo-2-1.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha2/modulo-2-1.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="../../../en/curso/trilha2/modulo-2-1.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="modulo-2-1.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">ES</a></div>
+<a class="sr-only focus:not-sr-only focus:absolute focus:z-[60] focus:m-2 focus:px-4 focus:py-2 focus:rounded-lg focus:bg-dark-700" href="#conteudo">Saltar al contenido</a>
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14 gap-2">
+<div class="flex items-center space-x-3 flex-shrink-0">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html">
+<span class="text-2xl">🕸️</span><span class="font-bold text-lg hidden lg:inline">Graph Engineering</span>
+</a>
+<span class="text-neutral-600 hidden sm:inline">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium hidden sm:inline" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+<span class="text-neutral-600 hidden sm:inline">-</span>
+<a class="text-amber-700 hover:text-amber-600 dark:text-slate-300 dark:hover:text-slate-200 text-sm font-medium hidden sm:inline" href="https://inema.pro" target="_blank">PRO</a>
+</div>
+<div class="flex items-center space-x-1">
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors" href="../trilha1/index.html"><span class="lg:hidden">T1</span><span class="hidden lg:inline">Fundamentos</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-blue-400 bg-blue-500/10" href="index.html"><span class="lg:hidden">T2</span><span class="hidden lg:inline">Bucles</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors" href="../trilha3/index.html"><span class="lg:hidden">T3</span><span class="hidden lg:inline">Comparativo</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors" href="../trilha4/index.html"><span class="lg:hidden">T4</span><span class="hidden lg:inline">Práctica</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors" href="../trilha5/index.html"><span class="lg:hidden">T5</span><span class="hidden lg:inline">Manos a la obra</span></a>
+<button class="hidden sm:inline-flex items-center gap-1 px-2 py-1.5 rounded-lg text-sm text-neutral-400 hover:text-neutral-100 transition-colors" data-inema-journey-open="" title="Mi recorrido" type="button">
+<span aria-hidden="true">◷</span><span class="hidden xl:inline">Recorrido</span><span aria-hidden="true" class="inema-journey-badge hidden"></span>
+</button>
+<button aria-label="Alternar entre tema claro y oscuro" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<nav aria-label="Ruta de navegación" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+<div class="flex items-center space-x-2 text-sm text-neutral-400">
+<a class="hover:text-blue-400" href="../../index.html">Inicio</a><span>/</span>
+<a class="hover:text-blue-400" href="index.html">Trilha 2</a><span>/</span>
+<span class="text-blue-400">Módulo 2.1</span>
+</div>
+</nav>
+<header class="bg-gradient-to-br from-blue-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600" data-inema-module="2-1" data-inema-track="2">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full mb-4">MÓDULO 2.1</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">🔁 Anatomía del loop</h1>
+<p class="text-lg text-neutral-400 max-w-3xl">
+      Ya sabes que un loop es un grafo con ciclo. Ahora abre el loop y mira las piezas que lo componen:
+      los cinco pasos, la condición de parada, lo que pasa en cada vuelta. Eso es lo que distingue
+      a un agente que funciona de uno que quema tu crédito ejecutándose para siempre.
+    </p>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">6</div><div class="text-xs text-neutral-400">Temas</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">40</div><div class="text-xs text-neutral-400">Minutos</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">Intermedio</div><div class="text-xs text-neutral-400">Nivel</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">Base</div><div class="text-xs text-neutral-400">Tipo</div></div>
+</div>
+<div class="mt-6 max-w-2xl bg-dark-800 rounded-xl border border-dark-600 p-4">
+<div class="flex items-center justify-between">
+<span class="text-sm text-neutral-300 font-semibold">Progreso de este módulo</span>
+<div aria-label="Progreso del módulo 2.1" aria-valuemax="100" aria-valuemin="0" class="inema-meter text-sm" data-inema-meter="modulo:2-1" role="progressbar">
+<span class="inema-meter-pct text-blue-400 font-bold">0%</span><span class="inema-meter-count text-neutral-400 ml-2">0 de 6</span>
+</div>
+</div>
+</div>
+</div>
+</header>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="lg:grid lg:grid-cols-[220px_minmax(0,1fr)] lg:gap-10">
+<nav aria-label="Índice de la página" class="hidden lg:block sticky top-24 self-start" data-inema-toc="">
+<p class="text-sm text-neutral-400 mb-3">Sección <span class="inema-toc-pos">1</span> de <span class="inema-toc-total">6</span></p>
+<ul class="space-y-1 text-sm">
+<li><a class="inema-toc-link text-neutral-400 hover:text-blue-400" href="#topico-1">1. Diseña el ciclo de cinco pasos</a></li>
+<li><a class="inema-toc-link text-neutral-400 hover:text-blue-400" href="#topico-2">2. Escribe la condición de parada</a></li>
+<li><a class="inema-toc-link text-neutral-400 hover:text-blue-400" href="#topico-3">3. Decide qué pasa de una vuelta a otra</a></li>
+<li><a class="inema-toc-link text-neutral-400 hover:text-blue-400" href="#topico-4">4. Reconoce el Ralph loop</a></li>
+<li><a class="inema-toc-link text-neutral-400 hover:text-blue-400" href="#topico-5">5. Cierra el loop (abierto x cerrado)</a></li>
+<li><a class="inema-toc-link text-neutral-400 hover:text-blue-400" href="#topico-6">6. Anida loops</a></li>
+</ul>
+</nav>
+<main class="inema-prose" id="conteudo">
+<!-- ============ TOPICO 1 ============ -->
+<section class="mb-16" data-inema-topic="modulo-2-1#topico-1" id="topico-1">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">1</span>
+<h2 class="text-2xl font-bold">🧭 Diseña el ciclo de cinco pasos</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Marcar duda en este tema" type="button">
+<span aria-hidden="true">?</span><span>Tengo una duda</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-1-t1-p1">
+      Todo loop de agentes decente sigue el mismo esqueleto de cinco pasos: <strong class="text-blue-400">descubrir</strong>
+      (juntar el contexto que falta), <strong class="text-blue-400">planificar</strong> (decidir el siguiente movimiento),
+      <strong class="text-blue-400">actuar</strong> (ejecutar — correr código, llamar a una herramienta, escribir),
+      <strong class="text-blue-400">verificar</strong> (comprobar si el resultado sirve) y <strong class="text-blue-400">detener</strong>
+      (salir del bucle, con éxito o desistiendo). Cada uno de estos cinco es un nodo. Todo el bucle es un grafo.
+    </p>
+<div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">🆕</span> ¿Nuevo aquí? Dos palabras antes de seguir</h3>
+<ul class="space-y-2 text-neutral-300 text-sm">
+<li><strong class="text-neutral-100">Bucle:</strong> un tramo del proceso que se repite hasta que cambia una condición. Aquí, el grafo cuyo camino vuelve a un nodo anterior — la Ruta 1 ya te mostró esto.</li>
+<li><strong class="text-neutral-100">Verificar (verify):</strong> el paso que decide si el trabajo realizado sirve o no. Se convierte en el tema central del Módulo 2.2.</li>
+</ul>
+</div>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-4 overflow-hidden">
+<svg aria-label="Cinco cajas en círculo: descubrir, planificar, actuar, verificar y detenerse. Las flechas conectan descubrir con planificar, planificar con actuar y actuar con verificar. De verificar salen dos flechas: una vuelve a descubrir y forma el ciclo, con la etiqueta «no pasó»; la otra va a detenerse, con la etiqueta «pasó»." class="w-full h-auto" role="img" viewbox="0 0 1000 320">
+<defs>
+<lineargradient id="m21a-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#60a5fa"></stop><stop offset="1" stop-color="#3b82f6"></stop></lineargradient>
+<filter height="180%" id="m21a-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="m21a-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#3b82f6" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="m21a-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#60a5fa"></path></marker>
+<marker id="m21a-ahc" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#38bdf8"></path></marker>
+</defs>
+<rect fill="url(#m21a-grid)" height="320" width="1000" x="0" y="0"></rect>
+<g fill="none" opacity="0.6" stroke="#60a5fa" stroke-width="1.8">
+<path d="M195,70 L305,70" marker-end="url(#m21a-ah)"></path>
+<path d="M470,70 L580,70" marker-end="url(#m21a-ah)"></path>
+<path d="M745,70 L855,70" marker-end="url(#m21a-ah)"></path>
+</g>
+<g font-family="Inter,sans-serif" font-size="14" font-weight="600">
+<rect fill="#0e1622" height="48" rx="12" stroke="#60a5fa" stroke-width="2" width="135" x="60" y="46"></rect><text fill="#bfdbfe" text-anchor="middle" x="127" y="76">descubrir</text>
+<rect fill="#0e1622" height="48" rx="12" stroke="#60a5fa" stroke-width="2" width="165" x="305" y="46"></rect><text fill="#bfdbfe" text-anchor="middle" x="387" y="76">planificar</text>
+<rect fill="#0e1622" height="48" rx="12" stroke="#60a5fa" stroke-width="2" width="165" x="580" y="46"></rect><text fill="#bfdbfe" text-anchor="middle" x="662" y="76">actuar</text>
+<g filter="url(#m21a-glow)"><rect fill="#0e1622" height="48" rx="12" stroke="url(#m21a-grad)" stroke-width="2" width="165" x="855" y="46"></rect></g>
+<text fill="#93c5fd" font-weight="700" text-anchor="middle" x="937" y="76">verificar</text>
+</g>
+<path d="M937,94 C937,180 640,240 460,240 L460,240" fill="none" marker-end="url(#m21a-ahc)" opacity="0.65" stroke="#38bdf8" stroke-width="1.8"></path>
+<text fill="#7dd3fc" font-family="Inter,sans-serif" font-size="13" text-anchor="middle" x="700" y="212">no pasó → vuelve para averiguar (esto es el ciclo)</text>
+<path d="M920,94 C920,150 720,150 620,150" fill="none" marker-end="url(#m21a-ah)" opacity="0.7" stroke="#34d399" stroke-width="1.8"></path>
+<g font-family="Inter,sans-serif" font-size="14" font-weight="600">
+<rect fill="#08150f" height="48" rx="12" stroke="#34d399" stroke-width="2" width="140" x="480" y="126"></rect><text fill="#a7f3d0" text-anchor="middle" x="550" y="156">detener</text>
+</g>
+<text fill="#a7f3d0" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="550" y="200">pasó → sale del loop</text>
+<path d="M127,94 C127,260 800,290 855,94" fill="none" opacity="0.4" stroke="#60a5fa" stroke-dasharray="7 7" stroke-width="1.4"></path>
+<text fill="#bfdbfe" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="500" y="300">los cinco pasos + el regreso = un grafo con un ciclo</text>
+</svg>
+</div>
+<p class="text-sm text-neutral-400 mb-6">
+<strong class="text-neutral-300">Qué observar:</strong> sigue la flecha de "verificar" que vuelve a "descubrir" —
+      esa es la arista que cierra el ciclo y convierte la cola de pasos en un loop de verdad. La otra salida, hacia "parar",
+      es lo que impide que el grafo se ejecute para siempre. Sin las dos flechas que salen de "verificar", no tienes un loop: tienes un DAG disfrazado.
+    </p>
+<div class="space-y-6 mb-6">
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">1</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">Descubrir + planificar es barato; actuar y verificar es caro</h4>
+<p class="text-neutral-300 text-sm">Reunir contexto y decidir cuestan tokens. Actuar (ejecutar código, editar archivos) y verificar (ejecutar una prueba, llamar a otro modelo) cuestan tiempo y dinero de verdad. Optimiza el ciclo reduciendo vueltas, no los dos pasos baratos.</p>
+</div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">2</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">No todos los loops necesitan que se escriban explícitamente los cinco pasos</h4>
+<p class="text-neutral-300 text-sm">Un loop sencillo de «volver a intentar» puede combinar descubrir + planificar en un solo prompt. Pero los cinco siguen existiendo por debajo; nombrarlos ayuda a depurar cuando el loop se atasca.</p>
+</div>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-4">Conceptos clave</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">5 pasos</div><p class="text-xs text-neutral-400">Descubrir, planificar, actuar, verificar, parar</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Cada paso es un nodo</div><p class="text-xs text-neutral-400">El loop y el grafo de estos cinco nodos</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Dos resultados de la verificación</div><p class="text-xs text-neutral-400">Volver (ciclo) o parar (salir)</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Actuar y verificar tienen un costo</div><p class="text-xs text-neutral-400">Optimiza reduciendo vueltas</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span>
+</button>
+</div>
+</section>
+<!-- ============ TOPICO 2 ============ -->
+<section class="mb-16" data-inema-topic="modulo-2-1#topico-2" id="topico-2">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">2</span>
+<h2 class="text-2xl font-bold">🛑 Escribe la condición de parada</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Marcar duda en este tema" type="button">
+<span aria-hidden="true">?</span><span>Tengo una duda</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-1-t2-p1">
+      Hay dos formas de que un loop se detenga: <strong class="text-blue-400">por éxito</strong> (el verificador aprobó) o
+      <strong class="text-blue-400">por desistimiento</strong> (se alcanzó un límite y el loop no va a avanzar aunque insistas).
+      Un loop que solo sabe detenerse cuando tiene éxito es un loop que puede ejecutarse para siempre: necesitas las dos salidas, no solo una.
+    </p>
+<div class="bg-gradient-to-br from-blue-900/30 to-dark-800 rounded-xl border border-blue-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">💡</span> Detención por capas</h3>
+<p class="text-neutral-300 mb-4">Una buena condición de detención nunca es una sola línea. Es una pila de tres:</p>
+<ul class="space-y-2 text-neutral-300">
+<li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">•</span><span><strong>Criterio normal</strong> — «las pruebas pasaron», «el revisor aprobó». El resultado esperado.</span></li>
+<li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">•</span><span><strong>Límite</strong> — un número concreto: máximo 10 vueltas o máximo $2 en tokens. Sin importar el criterio, eso corta el ciclo.</span></li>
+<li class="flex items-start space-x-2"><span class="text-blue-400 mt-1">•</span><span><strong>Humano</strong> — si alcanzaste el límite sin éxito, alguien debe recibir un aviso. El abandono silencioso es el peor desenlace posible.</span></li>
+</ul>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+<h4 class="font-bold text-emerald-400 mb-4">✓ Buena condición de parada</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Criterio verificable por código, no «parece bueno»</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Límite de vueltas explícito en el código del loop</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>La deserción activa una alerta para una persona</span></li>
+</ul>
+</div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+<h4 class="font-bold text-red-400 mb-4">✗ Mala condición de parada</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>"El modelo decide cuándo parar" sin ningún límite por debajo</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Hay un límite, pero al alcanzarlo, simplemente se detiene sin avisarle a nadie</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Criterio de éxito: «el LLM dijo que quedó bien», sin referencia externa</span></li>
+</ul>
+</div>
+</div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center"><span class="mr-2">⚠️</span> Atención: abandonar sin avisar parece un éxito</h3>
+<p class="text-neutral-300">
+        Un loop que llega al límite y simplemente se detiene, sin registrar nada ni avisarle a nadie, es el peor tipo de bug: parece que funcionó
+        porque no hubo ningún error visible. Trata el abandono como un evento de primera clase: debe aparecer en algún lugar
+        que una persona revise.
+      </p>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-4">Conceptos clave</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Éxito</div><p class="text-xs text-neutral-400">El verificador aprobó</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Deserción</div><p class="text-xs text-neutral-400">Llegó al límite sin excederlo</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">En capas</div><p class="text-xs text-neutral-400">Criterio + límite + humano</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Nunca silenciosa</div><p class="text-xs text-neutral-400">La deserción debe avisar</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span>
+</button>
+</div>
+</section>
+<!-- ============ TOPICO 3 ============ -->
+<section class="mb-16" data-inema-topic="modulo-2-1#topico-3" id="topico-3">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">3</span>
+<h2 class="text-2xl font-bold">🎒 Decide qué atraviesa las vueltas</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Marcar duda en este tema" type="button">
+<span aria-hidden="true">?</span><span>Tengo una duda</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-1-t3-p1">
+      Cada vuelta del loop tiene acceso a una <strong class="text-blue-400">ventana de contexto</strong>
+      — la cantidad de texto que el modelo puede «ver» de una vez, contando el prompt, el historial y el resultado de las herramientas.
+      La pregunta que debes responder antes de escribir el loop es: ¿qué pasa de una vuelta a otra y qué queda atrás?
+    </p>
+<div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">🆕</span> ¿Nuevo aquí? Ventana de contexto</h3>
+<p class="text-neutral-300 text-sm">Piensa en ella como una mesa de trabajo de tamaño fijo. Todo lo que el modelo necesita ver en esa vuelta —instrucciones, archivos, error anterior— tiene que caber encima. Pasar demasiado no cabe; pasar muy poco deja algo esencial afuera.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+<h4 class="font-bold text-red-400 mb-4">✗ Cargar demasiado contexto</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>La ventana se satura: el modelo ignora u olvida partes relevantes</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Cada vuelta se vuelve más lenta y más costosa</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>El ruido antiguo (intentos ya descartados) confunde la decisión actual</span></li>
+</ul>
+</div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+<h4 class="font-bold text-red-400 mb-4">✗ Cargar muy poco contexto</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>El loop repite el mismo error porque olvidó que ya lo había intentado</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Pierde una decisión tomada dos vueltas atrás y se contradice</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Reconstruye desde cero información que ya se había descubierto</span></li>
+</ul>
+</div>
+</div>
+<div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">📊</span> Lo que normalmente atraviesa</h3>
+<ul class="space-y-2 text-neutral-300 text-sm">
+<li><strong>Objetivo original</strong> — siempre. Sin él, el ciclo se desvía.</li>
+<li><strong>Último error/resultado</strong> — lo que hay que corregir ahora.</li>
+<li><strong>Decisiones ya tomadas</strong> — resumidas, no todo el historial en bruto.</li>
+<li><strong>Contador de vueltas</strong> — para saber la distancia hasta el límite de abandono.</li>
+</ul>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-1-t3-p2">
+      Esta decisión — qué se queda, qué sale, cómo resumir lo que sale — es el embrión de lo que la Trilha 4 llamará
+      <strong class="text-blue-400">esquema de estado</strong>: una definición explícita y con nombre de lo que viaja entre nosotros.
+      En un loop simple puedes decidirlo de manera informal. En un grafo con varios nodos, lo informal no alcanza.
+    </p>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-4">Conceptos clave</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Ventana de contexto</div><p class="text-xs text-neutral-400">Mesa de tamaño fijo</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Demasiado satura</div><p class="text-xs text-neutral-400">Ignora u olvida lo relevante</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">De menos repite errores</div><p class="text-xs text-neutral-400">Pierde lo que ya se intentó</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Embrión del esquema de estado</div><p class="text-xs text-neutral-400">Se formaliza en la Trilha 4</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span>
+</button>
+</div>
+</section>
+<!-- ============ TOPICO 4 ============ -->
+<section class="mb-16" data-inema-topic="modulo-2-1#topico-4" id="topico-4">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">4</span>
+<h2 class="text-2xl font-bold">🔂 Reconoce el Ralph loop</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Marcar duda en este tema" type="button">
+<span aria-hidden="true">?</span><span>Tengo una duda</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-1-t4-p1">
+      Hay una versión radicalmente simple de loop que se hizo popular: ejecutar el <strong class="text-blue-400">mismo prompt</strong>
+      repetidas veces hasta alcanzar el objetivo, sin cambiar nada entre vueltas salvo lo que el propio agente
+      escribió en archivos. Esta técnica se popularizó a partir del método <strong class="text-blue-400">Ralph</strong>,
+      de Geoffrey Huntley — de ahí el apodo «Ralph loop» que vas a escuchar por ahí.
+    </p>
+<div class="space-y-6 mb-6">
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">1</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">El prompt permanece fijo, el mundo cambia</h4>
+<p class="text-sm text-neutral-400 mb-3">No reescribes el prompt en cada vuelta.</p>
+<p class="text-neutral-300 text-sm">El agente lee el estado actual del repositorio (archivos, pruebas, TODOs) y el prompt genérico basta para decidir el siguiente paso, porque el propio entorno se convirtió en la memoria.</p>
+</div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">2</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">Funciona bien para tareas grandes y bien delimitadas</h4>
+<p class="text-sm text-neutral-400 mb-3">"Deja migrando este codebase toda la noche."</p>
+<p class="text-neutral-300 text-sm">Cada vuelta avanza un poco, marca lo que ya hizo (en un archivo de progreso, por ejemplo) y la siguiente vuelta lee esa marca. El límite de vueltas y el límite de costo siguen siendo obligatorios.</p>
+</div>
+</div>
+</div>
+<div class="bg-gradient-to-br from-blue-900/30 to-dark-800 rounded-xl border border-blue-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">💡</span> Simple no significa incorrecto, sino incompleto</h3>
+<p class="text-neutral-300">
+        El loop de Ralph no es una técnica «menor» ni ingenua: es el loop en su forma más cruda, y lo crudo funciona para muchas cosas.
+        Lo que no resuelve por sí solo es exactamente lo que cubrirán los próximos dos temas (abierto x cerrado, anidamiento) y el Módulo 2.2
+        (el verificador): sin un verificador de verdad y sin saber cuándo parar, «ejecutar el mismo prompt» se convierte en «ejecutar
+        el mismo prompt para siempre».
+      </p>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-4">Conceptos clave</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Prompt fijo</div><p class="text-xs text-neutral-400">Mismo prompt en cada vuelta</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Método Ralph</div><p class="text-xs text-neutral-400">Geoffrey Huntley</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Entorno = memoria</div><p class="text-xs text-neutral-400">Los archivos llevan el progreso</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Incompleto, no incorrecto</div><p class="text-xs text-neutral-400">Aún necesita un verificador y un límite</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span>
+</button>
+</div>
+</section>
+<!-- ============ TOPICO 5 ============ -->
+<section class="mb-16" data-inema-topic="modulo-2-1#topico-5" id="topico-5">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">5</span>
+<h2 class="text-2xl font-bold">🔄 Cierra el loop (abierto x cerrado)</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Marcar duda en este tema" type="button">
+<span aria-hidden="true">?</span><span>Tengo una duda</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-1-t5-p1">
+      Un loop <strong class="text-blue-400">cerrado</strong> mide el efecto de lo que acaba de hacer y usa esa medida para decidir
+      la siguiente vuelta; eso se llama <strong class="text-blue-400">retroalimentación</strong> (en inglés, <em>feedback</em>):
+      el resultado de una acción vuelve como entrada de la siguiente. Un bucle <strong class="text-blue-400">abierto</strong> solo ejecuta,
+      sin mirar atrás.
+    </p>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center"><span class="mr-2">⚠️</span> Sin medir el efecto, es un cron job costoso</h3>
+<p class="text-neutral-300">
+        Un script que se ejecuta cada hora y nunca comprueba si lo que hizo salió bien no es un loop de agente: es un programador de tareas.
+        La diferencia entre un loop de verdad y un cron job disfrazado de IA es exactamente esta: el loop <em>reacciona</em> al propio resultado.
+        Si quitas la retroalimentación, solo queda la repetición — y la repetición sin reacción es costosa y no aprende nada.
+      </p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+<h4 class="font-bold text-emerald-400 mb-4">✓ Bucle cerrado</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>"Ejecuté la prueba, falló en esta línea y corrijo esta línea"</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>El verificador del tema 1 alimenta el siguiente «planificar»</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>La calidad mejora (o al menos cambia) en cada vuelta</span></li>
+</ul>
+</div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+<h4 class="font-bold text-red-400 mb-4">✗ Bucle abierto</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>"Envía el correo todos los días a las 9 h", sin comprobar si alguien lo lee</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Repite la misma acción aunque siempre esté fallando</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>No hay un "planificar" de verdad — solo "actuar" de nuevo</span></li>
+</ul>
+</div>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-1-t5-p2">
+      Y aquí hay un límite que conviene recordar: la calidad de <em>medida</em> y es el límite de calidad de todo el loop.
+      Si tu verificador solo comprueba «el código se ejecutó sin errores», pero no «el código hace lo que debía», tu loop cerrado
+      converge (llega a una respuesta estable), pero converge hacia algo equivocado. Cerrar el loop no basta; el trabajo consiste en cerrarlo bien.
+    </p>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-4">Conceptos clave</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Retroalimentación</div><p class="text-xs text-neutral-400">El resultado se convierte en entrada</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Cerrado vs. abierto</div><p class="text-xs text-neutral-400">Reacciona vs. solo ejecuta</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Sin medición = cron</div><p class="text-xs text-neutral-400">Repetición costosa y ciega</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">La medida = límite</div><p class="text-xs text-neutral-400">El bucle no supera la calidad de la medición</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span>
+</button>
+</div>
+</section>
+<!-- ============ TOPICO 6 ============ -->
+<section class="mb-16" data-inema-topic="modulo-2-1#topico-6" id="topico-6">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">6</span>
+<h2 class="text-2xl font-bold">🪆 Anida loops (y escribe el primero)</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Marcar duda en este tema" type="button">
+<span aria-hidden="true">?</span><span>Tengo una duda</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-1-t6-p1">
+      Nada impide que un loop contenga otro loop dentro de sí. El <strong class="text-blue-400">loop externo</strong> decide
+      <em>qué</em> hacer (qué tarea tomar a continuación), el <strong class="text-blue-400">loop interno</strong> ejecuta
+      <em>cómo</em> hacer esa tarea específica hasta que su propio verificador la apruebe. Cada vuelta del bucle externo
+      se convierte, a su vez, en un nodo del grafo más grande.
+    </p>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-4 overflow-hidden">
+<svg aria-label="Una caja grande etiquetada loop externo: elegir la siguiente tarea contiene tres cajas más pequeñas, una al lado de otra, cada una con un loop interno completo y su propia flecha de retorno, etiquetadas tarea 1, tarea 2 y tarea 3. Una flecha grande conecta la salida del loop externo con su propia entrada, por fuera de las cajas pequeñas." class="w-full h-auto" role="img" viewbox="0 0 1000 300">
+<defs>
+<lineargradient id="m21f-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#60a5fa"></stop><stop offset="1" stop-color="#3b82f6"></stop></lineargradient>
+<filter height="180%" id="m21f-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="m21f-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#3b82f6" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="m21f-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#38bdf8"></path></marker>
+</defs>
+<rect fill="url(#m21f-grid)" height="300" width="1000" x="0" y="0"></rect>
+<g filter="url(#m21f-glow)"><rect fill="none" height="190" rx="16" stroke="url(#m21f-grad)" stroke-width="2.5" width="920" x="40" y="40"></rect></g>
+<text fill="#93c5fd" font-family="Inter,sans-serif" font-size="14" font-weight="700" x="70" y="30">loop externo — elegir la próxima tarea</text>
+<g font-family="Inter,sans-serif" font-size="13">
+<rect fill="#0e1b26" height="100" rx="12" stroke="#38bdf8" stroke-width="1.8" width="240" x="80" y="90"></rect>
+<text fill="#bfe6ff" font-weight="600" text-anchor="middle" x="200" y="115">tarea 1 (loop interno)</text>
+<path d="M250,150 C280,175 200,175 155,150" fill="none" marker-end="url(#m21f-ah)" opacity="0.6" stroke="#38bdf8" stroke-width="1.4"></path>
+<text fill="#9ad6ff" font-size="11" text-anchor="middle" x="200" y="175">actuar → verificar → volver</text>
+<rect fill="#0e1b26" height="100" rx="12" stroke="#38bdf8" stroke-width="1.8" width="240" x="380" y="90"></rect>
+<text fill="#bfe6ff" font-weight="600" text-anchor="middle" x="500" y="115">tarea 2 (loop interno)</text>
+<path d="M550,150 C580,175 500,175 455,150" fill="none" marker-end="url(#m21f-ah)" opacity="0.6" stroke="#38bdf8" stroke-width="1.4"></path>
+<text fill="#9ad6ff" font-size="11" text-anchor="middle" x="500" y="175">actuar → verificar → volver</text>
+<rect fill="#0e1b26" height="100" rx="12" stroke="#38bdf8" stroke-width="1.8" width="240" x="680" y="90"></rect>
+<text fill="#bfe6ff" font-weight="600" text-anchor="middle" x="800" y="115">tarea 3 (loop interno)</text>
+<path d="M850,150 C880,175 800,175 755,150" fill="none" marker-end="url(#m21f-ah)" opacity="0.6" stroke="#38bdf8" stroke-width="1.4"></path>
+<text fill="#9ad6ff" font-size="11" text-anchor="middle" x="800" y="175">actuar → verificar → volver</text>
+</g>
+<path d="M960,150 C1000,260 40,260 40,150" fill="none" marker-end="url(#m21f-ah)" opacity="0.7" stroke="#60a5fa" stroke-width="1.8"></path>
+<text fill="#bfdbfe" font-family="Inter,sans-serif" font-size="13" text-anchor="middle" x="500" y="270">el bucle externo vuelve para elegir la siguiente tarea; cada tarea es un nodo que oculta su propio bucle</text>
+</svg>
+</div>
+<p class="text-sm text-neutral-400 mb-6">
+<strong class="text-neutral-300">Qué observar:</strong> el cuadro grande tiene su propia flecha de vuelta: es un loop.
+      Cada cuadro pequeño dentro de él también tiene una flecha de vuelta: otro loop, oculto dentro del primero.
+      Esto es anidamiento: un loop cuyos nodos, al abrirlos, son ellos mismos loops completos.
+    </p>
+<div class="space-y-6 mb-6">
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">1</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">Anidar funciona bien mientras los loops no se comuniquen</h4>
+<p class="text-neutral-300 text-sm">Cada loop interno resuelve su tarea de forma aislada, sin necesidad de saber qué está haciendo el loop de la tarea vecina. Es un patrón legítimo y barato de escalar.</p>
+</div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">2</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">Cuando los internos necesitan hablar entre sí, el externo no basta por sí solo</h4>
+<p class="text-neutral-300 text-sm">Si la tarea 2 depende de algo que descubrió la tarea 1, «elegir la siguiente tarea» deja de ser suficiente: necesitas aristas explícitas <em>entre</em> los loops internos. Ese es el puente hacia el grafo, y la Ruta 3 explicará cuándo vale la pena.</p>
+</div>
+</div>
+</div>
+<!-- EXEMPLO COPY-RUN -->
+<div class="bg-dark-800 rounded-xl border border-blue-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-2 flex items-center"><span class="mr-2">🧪</span> Ejemplo práctico: un loop mínimo con parada por capas</h3>
+<p class="text-sm text-neutral-400 mb-4"><strong class="text-neutral-300">Objetivo:</strong> ver los cinco pasos y la condición de parada por capas en funcionamiento, en un pseudocódigo breve que ejecutas en la consola del navegador (F12) o en Node.</p>
+<div class="code-box bg-dark-900 rounded-lg border border-dark-600 p-4 mb-4 overflow-x-auto">
+<pre class="text-sm text-neutral-300">// condicao de parada em camadas: criterio + teto
+function loop(tarefa, verificar, agir, MAX_VOLTAS = 5) {
+  let contexto = { tarefa, tentativas: [] };
+  for (let volta = 1; volta &lt;= MAX_VOLTAS; volta++) {
+    // descobrir + planejar (aqui simplificados: so olham o contexto)
+    const plano = "tentativa " + volta + " para: " + contexto.tarefa;
+
+    // agir
+    const resultado = agir(plano, contexto);
+    contexto.tentativas.push(resultado);
+
+    // verificar
+    if (verificar(resultado)) {
+      return { status: "sucesso", volta, resultado };  // parar por sucesso
+    }
+  }
+  return { status: "desistencia", volta: MAX_VOLTAS };  // parar por teto
+}
+
+// exemplo concreto: "adivinhar" um numero
+const alvo = 7;
+const r = loop(
+  "achar o numero " + alvo,
+  (res) =&gt; res === alvo,
+  (plano, ctx) =&gt; ctx.tentativas.length + 3   // tenta 3, 4, 5, 6, 7...
+);
+console.log(r);</pre>
+</div>
+<div class="bg-dark-700/50 rounded-lg p-4">
+<p class="text-sm text-neutral-300"><strong class="text-blue-400">Cómo verificar:</strong> debes ver
+        <code class="text-blue-400">{ status: "sucesso", volta: 5, resultado: 7 }</code> en la consola — el bucle encontró el objetivo en la 5.ª vuelta y se detuvo.
+        Cambia <code class="text-blue-400">MAX_VOLTAS</code> para <code class="text-blue-400">3</code> y ejecútalo de nuevo: ahora debería aparecer
+        <code class="text-blue-400">{ status: "desistencia", volta: 3 }</code> — el límite se alcanzó antes del éxito.</p>
+<p class="text-sm text-neutral-400 mt-3"><strong class="text-neutral-300">Ahora cámbialo por el tuyo:</strong> reemplaza
+        <code class="text-blue-400">&lt;agir&gt;</code> por tu acción real (llamar a un modelo, ejecutar un comando) y
+        <code class="text-blue-400">&lt;verificar&gt;</code> por una prueba real. Si el "desistimiento" nunca aparece en tu registro real, probablemente tu límite es demasiado alto para que lo notes.</p>
+</div>
+</div>
+<!-- CHECAGEM LEVE -->
+<div class="inema-check mt-8 bg-dark-800 border border-dark-600 rounded-xl p-6 mb-6" data-inema-check="modulo-2-1#q1">
+<p class="font-medium mb-4">Verificación rápida (no bloquea nada): un loop da 40 vueltas sin medir nunca si el resultado mejoró, solo repitiendo la misma acción. Esto es:</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">Un loop cerrado bien optimizado, porque da muchas vueltas</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">Un loop abierto — sin retroalimentación, solo es repetición costosa, como un cron job</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">Un Ralph loop, porque ejecuta el mismo prompt varias veces</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-4">Conceptos clave</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Decide algo externo</div><p class="text-xs text-neutral-400">Qué tarea tomar</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">El interno ejecuta</div><p class="text-xs text-neutral-400">Cómo hacer esa tarea</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Volver = nodo</div><p class="text-xs text-neutral-400">Cada vuelta externa es un nodo más grande</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Puente hacia el grafo</div><p class="text-xs text-neutral-400">Cuando los internos necesitan comunicarse</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span>
+</button>
+</div>
+</section>
+<!-- ============ RESUMO ============ -->
+<section class="mb-12">
+<div class="bg-gradient-to-br from-blue-900/40 via-dark-800 to-dark-800 rounded-xl border border-blue-500/30 p-8">
+<h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">📌</span> Resumen del módulo</h2>
+<div class="space-y-4 mb-8">
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Cinco pasos</strong><span class="text-neutral-400"> — descubrir, planificar, actuar, verificar, detenerse. Cada uno es un nodo del grafo-loop.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Detención por capas</strong><span class="text-neutral-400"> — criterio de éxito + límite + aviso a una persona. Nunca solo uno.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Lo que atraviesa</strong><span class="text-neutral-400"> — objetivo, error reciente, decisiones ya tomadas. Es el embrión del state schema.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Ralph loop</strong><span class="text-neutral-400"> — el mismo prompt en cada vuelta; el entorno lleva el progreso. Simple, no incorrecto.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Cerrado vs. abierto</strong><span class="text-neutral-400"> — sin retroalimentación se convierte en un cron job costoso. La medida es el límite del ciclo.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Anidamiento</strong><span class="text-neutral-400"> — lo externo decide, lo interno ejecuta. Cuando los componentes internos necesitan comunicarse, entra el grafo.</span></div></div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+<h3 class="font-semibold text-blue-400 mb-2">Próximo módulo:</h3>
+<p class="text-neutral-300">2.2 — El verificador es el cuello de botella: por qué la calidad de tu ciclo nunca supera la calidad de quien comprueba el resultado.</p>
+</div>
+<div class="flex flex-col sm:flex-row gap-4">
+<a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="../trilha1/modulo-1-3.html">← Ruta 1: Módulo 1.3</a>
+<a class="flex-1 text-center px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-500 transition-colors" href="modulo-2-2.html">Próximo módulo →</a>
+</div>
+</div>
+</section>
+</main>
+</div>
+</div>
+<footer class="border-t border-dark-600 py-8 mt-16">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+<p>Graph Engineering — de loops a grafos · INEMA 2026</p>
+<p class="mt-2">
+<a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+<span class="text-neutral-600 mx-1">-</span>
+<a class="text-amber-700 hover:text-amber-600 dark:text-slate-300 dark:hover:text-slate-200" href="https://inema.pro" target="_blank">PRO</a>
+</p>
+</div>
+</footer>
+<script>
+  function toggleTopic(button) {
+    const topicItem = button.closest('.topic-item');
+    const explanation = topicItem.querySelector('.topic-explanation');
+    const moduleCard = button.closest('.bg-dark-800') || document;
+    moduleCard.querySelectorAll('.topic-explanation.active').forEach(exp => { if (exp !== explanation) { exp.classList.remove('active'); const b = exp.closest('.topic-item').querySelector('button'); if (b) b.setAttribute('aria-expanded','false'); } });
+    explanation.classList.toggle('active');
+    button.setAttribute('aria-expanded', explanation.classList.contains('active') ? 'true' : 'false');
+  }
+  function openModal(modalId) { const m = document.getElementById(modalId); if (m) { m.classList.remove('hidden'); document.body.style.overflow = 'hidden'; } }
+  function closeModal() { document.querySelectorAll('.modal').forEach(m => m.classList.add('hidden')); document.body.style.overflow = 'auto'; }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+  const themeToggle = document.getElementById('theme-toggle');
+  const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+  const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+  const htmlEl = document.documentElement;
+  if (htmlEl.classList.contains('dark')) themeToggleLightIcon.classList.remove('hidden'); else themeToggleDarkIcon.classList.remove('hidden');
+  themeToggle.addEventListener('click', () => {
+    themeToggleDarkIcon.classList.toggle('hidden'); themeToggleLightIcon.classList.toggle('hidden');
+    htmlEl.classList.toggle('dark');
+    const dark = htmlEl.classList.contains('dark');
+    localStorage.setItem('theme', dark ? 'dark' : 'light');
+    try { const p = JSON.parse(localStorage.getItem('inema.prefs') || '{}'); p.theme = dark ? 'inema-dark' : 'claro'; localStorage.setItem('inema.prefs', JSON.stringify(p)); } catch (e) {}
+  });
+</script>
+<script src="../../../assets/learn.js"></script>
+<script>
+  if (window.INEMA && typeof window.INEMA.init === 'function') { window.INEMA.init(); }
+  window.addEventListener('DOMContentLoaded', function () {
+    if (window.INEMA && INEMA.registerCheck) {
+      INEMA.registerCheck('modulo-2-1#q1', {
+        answer: 1,
+        explain: {
+          0: 'Nao. "Otimizado" nao se aplica aqui — 40 voltas sem medir efeito nao e otimizacao, e desperdicio. Um loop fechado precisa medir e reagir; esse nao mede nada.',
+          1: 'Isso. Sem realimentação (medir o efeito da acao e usar isso na proxima volta), o loop e so repeticao — funcionalmente um cron job caro rodando via IA.',
+          2: 'Nao necessariamente. Um Ralph loop pode ser fechado (le o progresso salvo e reage a ele). O que define este caso e a ausencia de medida, nao o prompt fixo.'
+        }
+      });
+    }
+  });
+</script>
+</body>
+</html>

@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="pt-BR" class="dark">
+
+<html class="dark" lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="inema-course" content="loopgraph">
-  <title>Modulo 1.1 — O que e um grafo | Graph Engineering</title>
-  <script>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="loopgraph" name="inema-course"/>
+<title>Modulo 1.1 — O que e um grafo | Graph Engineering</title>
+<script>
   (function () {
     try {
       var html = document.documentElement;
@@ -35,7 +36,7 @@
     } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme = 'dark'; } catch (e) {} }
   })();
   </script>
-  <script type="application/json" data-inema-manifest>
+<script data-inema-manifest="" type="application/json">
   {
     "course": "loopgraph",
     "tracks": [
@@ -67,566 +68,516 @@
     ]
   }
   </script>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }</script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../../assets/learn.css">
-  <link rel="stylesheet" href="../../assets/curso.css">
-</head>
-<body class="bg-dark-900 text-neutral-100 min-h-screen">
-
-<a href="#conteudo" class="sr-only focus:not-sr-only focus:absolute focus:z-[60] focus:m-2 focus:px-4 focus:py-2 focus:rounded-lg focus:bg-dark-700">Pular para o conteudo</a>
-
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }</script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../assets/learn.css" rel="stylesheet"/>
+<link href="../../assets/curso.css" rel="stylesheet"/>
+<link href="https://inematds.github.io/loopgraph/curso/trilha1/modulo-1-1.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/loopgraph/en/curso/trilha1/modulo-1-1.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/loopgraph/es/curso/trilha1/modulo-1-1.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="modulo-1-1.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">PT</a><a href="../../en/curso/trilha1/modulo-1-1.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="../../es/curso/trilha1/modulo-1-1.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<a class="sr-only focus:not-sr-only focus:absolute focus:z-[60] focus:m-2 focus:px-4 focus:py-2 focus:rounded-lg focus:bg-dark-700" href="#conteudo">Pular para o conteudo</a>
 <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
-  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex justify-between items-center h-14 gap-2">
-      <div class="flex items-center space-x-3 flex-shrink-0">
-        <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
-          <span class="text-2xl">🕸️</span><span class="font-bold text-lg hidden lg:inline">Graph Engineering</span>
-        </a>
-        <span class="text-neutral-600 hidden sm:inline">|</span>
-        <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium hidden sm:inline">INEMA.CLUB</a>
-        <span class="text-neutral-600 hidden sm:inline">-</span>
-        <a href="https://inema.pro" target="_blank" class="text-amber-700 hover:text-amber-600 dark:text-slate-300 dark:hover:text-slate-200 text-sm font-medium hidden sm:inline">PRO</a>
-      </div>
-      <div class="flex items-center space-x-1">
-        <a href="index.html" class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-emerald-400 bg-emerald-500/10"><span class="lg:hidden">T1</span><span class="hidden lg:inline">Fundamentos</span></a>
-        <a href="../trilha2/index.html" class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors"><span class="lg:hidden">T2</span><span class="hidden lg:inline">Loops</span></a>
-        <a href="../trilha3/index.html" class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors"><span class="lg:hidden">T3</span><span class="hidden lg:inline">Comparativo</span></a>
-        <a href="../trilha4/index.html" class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors"><span class="lg:hidden">T4</span><span class="hidden lg:inline">Pratica</span></a>
-        <a href="../trilha5/index.html" class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors"><span class="lg:hidden">T5</span><span class="hidden lg:inline">Mao na massa</span></a>
-        <button type="button" data-inema-journey-open class="hidden sm:inline-flex items-center gap-1 px-2 py-1.5 rounded-lg text-sm text-neutral-400 hover:text-neutral-100 transition-colors" title="Minha jornada">
-          <span aria-hidden="true">◷</span><span class="hidden xl:inline">Jornada</span><span class="inema-journey-badge hidden" aria-hidden="true"></span>
-        </button>
-        <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" aria-label="Alternar tema claro/escuro">
-          <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
-          <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
-        </button>
-      </div>
-    </div>
-  </div>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14 gap-2">
+<div class="flex items-center space-x-3 flex-shrink-0">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html">
+<span class="text-2xl">🕸️</span><span class="font-bold text-lg hidden lg:inline">Graph Engineering</span>
+</a>
+<span class="text-neutral-600 hidden sm:inline">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium hidden sm:inline" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+<span class="text-neutral-600 hidden sm:inline">-</span>
+<a class="text-amber-700 hover:text-amber-600 dark:text-slate-300 dark:hover:text-slate-200 text-sm font-medium hidden sm:inline" href="https://inema.pro" target="_blank">PRO</a>
+</div>
+<div class="flex items-center space-x-1">
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-emerald-400 bg-emerald-500/10" href="index.html"><span class="lg:hidden">T1</span><span class="hidden lg:inline">Fundamentos</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors" href="../trilha2/index.html"><span class="lg:hidden">T2</span><span class="hidden lg:inline">Loops</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors" href="../trilha3/index.html"><span class="lg:hidden">T3</span><span class="hidden lg:inline">Comparativo</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors" href="../trilha4/index.html"><span class="lg:hidden">T4</span><span class="hidden lg:inline">Pratica</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors" href="../trilha5/index.html"><span class="lg:hidden">T5</span><span class="hidden lg:inline">Mao na massa</span></a>
+<button class="hidden sm:inline-flex items-center gap-1 px-2 py-1.5 rounded-lg text-sm text-neutral-400 hover:text-neutral-100 transition-colors" data-inema-journey-open="" title="Minha jornada" type="button">
+<span aria-hidden="true">◷</span><span class="hidden xl:inline">Jornada</span><span aria-hidden="true" class="inema-journey-badge hidden"></span>
+</button>
+<button aria-label="Alternar tema claro/escuro" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
 </nav>
-
-<nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4" aria-label="Trilha de navegacao">
-  <div class="flex items-center space-x-2 text-sm text-neutral-400">
-    <a href="../../index.html" class="hover:text-emerald-400">Inicio</a><span>/</span>
-    <a href="index.html" class="hover:text-emerald-400">Trilha 1</a><span>/</span>
-    <span class="text-emerald-400">Modulo 1.1</span>
-  </div>
+<nav aria-label="Trilha de navegacao" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+<div class="flex items-center space-x-2 text-sm text-neutral-400">
+<a class="hover:text-emerald-400" href="../../index.html">Inicio</a><span>/</span>
+<a class="hover:text-emerald-400" href="index.html">Trilha 1</a><span>/</span>
+<span class="text-emerald-400">Modulo 1.1</span>
+</div>
 </nav>
-
 <header class="bg-gradient-to-br from-emerald-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600" data-inema-module="1-1" data-inema-track="1">
-  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-    <span class="inline-block px-3 py-1 bg-emerald-500/20 text-emerald-400 text-xs font-semibold rounded-full mb-4">MODULO 1.1</span>
-    <h1 class="text-3xl sm:text-4xl font-bold mb-4">🔵 O que e um grafo</h1>
-    <p class="text-lg text-neutral-400 max-w-3xl">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-emerald-500/20 text-emerald-400 text-xs font-semibold rounded-full mb-4">MODULO 1.1</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">🔵 O que e um grafo</h1>
+<p class="text-lg text-neutral-400 max-w-3xl">
       Duas coisas: <strong class="text-emerald-400">nos</strong> e <strong class="text-emerald-400">arestas</strong>. Acabou.
       O resto deste modulo e o que voce ganha quando pendura informacao nessas duas coisas — direcao, peso, ciclo —
       e por que isso e o alicerce de tudo que vem depois no curso.
     </p>
-    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8 max-w-2xl">
-      <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">6</div><div class="text-xs text-neutral-400">Topicos</div></div>
-      <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">40</div><div class="text-xs text-neutral-400">Minutos</div></div>
-      <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">Basico</div><div class="text-xs text-neutral-400">Nivel</div></div>
-      <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">Base</div><div class="text-xs text-neutral-400">Tipo</div></div>
-    </div>
-    <div class="mt-6 max-w-2xl bg-dark-800 rounded-xl border border-dark-600 p-4">
-      <div class="flex items-center justify-between">
-        <span class="text-sm text-neutral-300 font-semibold">Progresso deste modulo</span>
-        <div data-inema-meter="modulo:1-1" class="inema-meter text-sm" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="Progresso do modulo 1.1">
-          <span class="inema-meter-pct text-emerald-400 font-bold">0%</span><span class="inema-meter-count text-neutral-400 ml-2">0 de 6</span>
-        </div>
-      </div>
-    </div>
-  </div>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">6</div><div class="text-xs text-neutral-400">Topicos</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">40</div><div class="text-xs text-neutral-400">Minutos</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">Basico</div><div class="text-xs text-neutral-400">Nivel</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">Base</div><div class="text-xs text-neutral-400">Tipo</div></div>
+</div>
+<div class="mt-6 max-w-2xl bg-dark-800 rounded-xl border border-dark-600 p-4">
+<div class="flex items-center justify-between">
+<span class="text-sm text-neutral-300 font-semibold">Progresso deste modulo</span>
+<div aria-label="Progresso do modulo 1.1" aria-valuemax="100" aria-valuemin="0" class="inema-meter text-sm" data-inema-meter="modulo:1-1" role="progressbar">
+<span class="inema-meter-pct text-emerald-400 font-bold">0%</span><span class="inema-meter-count text-neutral-400 ml-2">0 de 6</span>
+</div>
+</div>
+</div>
+</div>
 </header>
-
 <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 <div class="lg:grid lg:grid-cols-[220px_minmax(0,1fr)] lg:gap-10">
-
-  <nav data-inema-toc aria-label="Indice da pagina" class="hidden lg:block sticky top-24 self-start">
-    <p class="text-sm text-neutral-400 mb-3">Secao <span class="inema-toc-pos">1</span> de <span class="inema-toc-total">6</span></p>
-    <ul class="space-y-1 text-sm">
-      <li><a href="#topico-1" class="inema-toc-link text-neutral-400 hover:text-emerald-400">1. Enxergue o no</a></li>
-      <li><a href="#topico-2" class="inema-toc-link text-neutral-400 hover:text-emerald-400">2. Ligue com arestas</a></li>
-      <li><a href="#topico-3" class="inema-toc-link text-neutral-400 hover:text-emerald-400">3. Ponha direcao</a></li>
-      <li><a href="#topico-4" class="inema-toc-link text-neutral-400 hover:text-emerald-400">4. Ponha peso</a></li>
-      <li><a href="#topico-5" class="inema-toc-link text-neutral-400 hover:text-emerald-400">5. Reconheca o ciclo</a></li>
-      <li><a href="#topico-6" class="inema-toc-link text-neutral-400 hover:text-emerald-400">6. Separe da arvore</a></li>
-    </ul>
-  </nav>
-
-  <main id="conteudo" class="inema-prose">
-
-  <!-- ============ TOPICO 1 ============ -->
-  <section id="topico-1" class="mb-16" data-inema-topic="modulo-1-1#topico-1">
-    <div class="flex items-center space-x-4 mb-6">
-      <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">1</span>
-      <h2 class="text-2xl font-bold">⚪ Enxergue o no: a coisa</h2>
-      <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar duvida neste topico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm">
-        <span aria-hidden="true">?</span><span>Tenho duvida</span>
-      </button>
-    </div>
-
-    <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-1-t1-p1">
+<nav aria-label="Indice da pagina" class="hidden lg:block sticky top-24 self-start" data-inema-toc="">
+<p class="text-sm text-neutral-400 mb-3">Secao <span class="inema-toc-pos">1</span> de <span class="inema-toc-total">6</span></p>
+<ul class="space-y-1 text-sm">
+<li><a class="inema-toc-link text-neutral-400 hover:text-emerald-400" href="#topico-1">1. Enxergue o no</a></li>
+<li><a class="inema-toc-link text-neutral-400 hover:text-emerald-400" href="#topico-2">2. Ligue com arestas</a></li>
+<li><a class="inema-toc-link text-neutral-400 hover:text-emerald-400" href="#topico-3">3. Ponha direcao</a></li>
+<li><a class="inema-toc-link text-neutral-400 hover:text-emerald-400" href="#topico-4">4. Ponha peso</a></li>
+<li><a class="inema-toc-link text-neutral-400 hover:text-emerald-400" href="#topico-5">5. Reconheca o ciclo</a></li>
+<li><a class="inema-toc-link text-neutral-400 hover:text-emerald-400" href="#topico-6">6. Separe da arvore</a></li>
+</ul>
+</nav>
+<main class="inema-prose" id="conteudo">
+<!-- ============ TOPICO 1 ============ -->
+<section class="mb-16" data-inema-topic="modulo-1-1#topico-1" id="topico-1">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">1</span>
+<h2 class="text-2xl font-bold">⚪ Enxergue o no: a coisa</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Marcar duvida neste topico" type="button">
+<span aria-hidden="true">?</span><span>Tenho duvida</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-1-t1-p1">
       Um <strong class="text-emerald-400">grafo</strong> e uma estrutura de dados — um jeito organizado de guardar informacao —
       e ele e feito de duas coisas so. A primeira e o <strong class="text-emerald-400">no</strong>.
       No e uma <em>coisa</em>: uma pessoa, um passo do seu processo, um ticket, um documento, um agente de IA.
       Se voce consegue apontar pra algo e dizer “isso aqui”, isso pode ser um no.
     </p>
-
-    <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
-      <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">🆕</span> Novo aqui? Tres palavras antes de seguir</h3>
-      <ul class="space-y-2 text-neutral-300 text-sm">
-        <li><strong class="text-neutral-100">Estrutura de dados:</strong> so um formato pra guardar informacao de um jeito que da pra buscar e calcular em cima. Uma lista de compras e uma estrutura de dados.</li>
-        <li><strong class="text-neutral-100">Agente de IA:</strong> um modelo de IA (o tipo que roda atras do ChatGPT ou do Claude) que, alem de escrever texto, faz coisas sozinho: busca na web, roda codigo, edita um arquivo.</li>
-        <li><strong class="text-neutral-100">No (node):</strong> uma coisa do seu mundo, representada como um ponto no desenho. Em codigo voce vai ver escrito <code class="text-emerald-400">n</code> ou <code class="text-emerald-400">node</code>.</li>
-      </ul>
-    </div>
-
-    <div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-4 overflow-hidden">
-      <svg viewBox="0 0 1000 200" class="w-full h-auto" role="img" aria-label="Quatro circulos separados, sem nenhuma linha entre eles, rotulados pessoa, tarefa, documento e agente. Abaixo, a legenda: sem arestas, isto ainda e so uma lista.">
-        <defs>
-          <linearGradient id="m11a-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#34d399"/><stop offset="1" stop-color="#10b981"/></linearGradient>
-          <filter id="m11a-glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-          <pattern id="m11a-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#10b981" opacity="0.12"/></pattern>
-        </defs>
-        <rect x="0" y="0" width="1000" height="200" fill="url(#m11a-grid)"/>
-        <g font-family="Inter,sans-serif" font-size="14" font-weight="600">
-          <g filter="url(#m11a-glow)"><circle cx="160" cy="90" r="46" fill="#0e2018" stroke="url(#m11a-grad)" stroke-width="2"/></g>
-          <text x="160" y="96" text-anchor="middle" fill="#34d399">pessoa</text>
-          <circle cx="400" cy="90" r="46" fill="#0e2018" stroke="#34d399" stroke-width="2"/><text x="400" y="96" text-anchor="middle" fill="#a7f3d0">tarefa</text>
-          <circle cx="640" cy="90" r="46" fill="#0e2018" stroke="#34d399" stroke-width="2"/><text x="640" y="96" text-anchor="middle" fill="#a7f3d0">documento</text>
-          <circle cx="870" cy="90" r="46" fill="#0e1b26" stroke="#38bdf8" stroke-width="2"/><text x="870" y="96" text-anchor="middle" fill="#bfe6ff">agente</text>
-        </g>
-        <text x="500" y="180" text-anchor="middle" fill="#a7f3d0" font-family="Inter,sans-serif" font-size="13">so nos, nenhuma aresta — isto ainda e uma lista, nao um grafo</text>
-      </svg>
-    </div>
-    <p class="text-sm text-neutral-400 mb-6">
-      <strong class="text-neutral-300">O que olhar:</strong> quatro nos e <em>zero</em> linhas. Repare que nada aqui te diz nada de interessante —
+<div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">🆕</span> Novo aqui? Tres palavras antes de seguir</h3>
+<ul class="space-y-2 text-neutral-300 text-sm">
+<li><strong class="text-neutral-100">Estrutura de dados:</strong> so um formato pra guardar informacao de um jeito que da pra buscar e calcular em cima. Uma lista de compras e uma estrutura de dados.</li>
+<li><strong class="text-neutral-100">Agente de IA:</strong> um modelo de IA (o tipo que roda atras do ChatGPT ou do Claude) que, alem de escrever texto, faz coisas sozinho: busca na web, roda codigo, edita um arquivo.</li>
+<li><strong class="text-neutral-100">No (node):</strong> uma coisa do seu mundo, representada como um ponto no desenho. Em codigo voce vai ver escrito <code class="text-emerald-400">n</code> ou <code class="text-emerald-400">node</code>.</li>
+</ul>
+</div>
+<div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-4 overflow-hidden">
+<svg aria-label="Quatro circulos separados, sem nenhuma linha entre eles, rotulados pessoa, tarefa, documento e agente. Abaixo, a legenda: sem arestas, isto ainda e so uma lista." class="w-full h-auto" role="img" viewbox="0 0 1000 200">
+<defs>
+<lineargradient id="m11a-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#34d399"></stop><stop offset="1" stop-color="#10b981"></stop></lineargradient>
+<filter height="180%" id="m11a-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="m11a-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#10b981" opacity="0.12" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#m11a-grid)" height="200" width="1000" x="0" y="0"></rect>
+<g font-family="Inter,sans-serif" font-size="14" font-weight="600">
+<g filter="url(#m11a-glow)"><circle cx="160" cy="90" fill="#0e2018" r="46" stroke="url(#m11a-grad)" stroke-width="2"></circle></g>
+<text fill="#34d399" text-anchor="middle" x="160" y="96">pessoa</text>
+<circle cx="400" cy="90" fill="#0e2018" r="46" stroke="#34d399" stroke-width="2"></circle><text fill="#a7f3d0" text-anchor="middle" x="400" y="96">tarefa</text>
+<circle cx="640" cy="90" fill="#0e2018" r="46" stroke="#34d399" stroke-width="2"></circle><text fill="#a7f3d0" text-anchor="middle" x="640" y="96">documento</text>
+<circle cx="870" cy="90" fill="#0e1b26" r="46" stroke="#38bdf8" stroke-width="2"></circle><text fill="#bfe6ff" text-anchor="middle" x="870" y="96">agente</text>
+</g>
+<text fill="#a7f3d0" font-family="Inter,sans-serif" font-size="13" text-anchor="middle" x="500" y="180">so nos, nenhuma aresta — isto ainda e uma lista, nao um grafo</text>
+</svg>
+</div>
+<p class="text-sm text-neutral-400 mb-6">
+<strong class="text-neutral-300">O que olhar:</strong> quatro nos e <em>zero</em> linhas. Repare que nada aqui te diz nada de interessante —
       e so um monte de coisa. Um grafo so comeca a valer quando voce liga as coisas. E o que fazemos no proximo topico.
     </p>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-      <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
-        <h4 class="font-bold text-emerald-400 mb-4">✓ Bons nos</h4>
-        <ul class="space-y-3 text-neutral-300 text-sm">
-          <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>“Revisar o texto” — uma unidade de trabalho com comeco e fim</span></li>
-          <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>“Cliente ativado” — um estado que da pra verificar</span></li>
-          <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>“Agente de pesquisa” — um papel com responsabilidade clara</span></li>
-        </ul>
-      </div>
-      <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
-        <h4 class="font-bold text-red-400 mb-4">✗ Nos ruins</h4>
-        <ul class="space-y-3 text-neutral-300 text-sm">
-          <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>“Fazer o produto” — grande demais, o grafo nao te ajuda em nada</span></li>
-          <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>“Apertar Enter” — pequeno demais, voce afoga em detalhe</span></li>
-          <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>“Coisas de marketing” — vago, ninguem sabe se terminou</span></li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
-      <h3 class="text-lg font-semibold text-emerald-400 mb-4">Conceitos-chave</h3>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Substantivo</div><p class="text-xs text-neutral-400">No e coisa, nao acao</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Identidade</div><p class="text-xs text-neutral-400">Da pra apontar e nomear</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Carrega dado</div><p class="text-xs text-neutral-400">Rotulo, dono, custo, estado</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Granularidade</div><p class="text-xs text-neutral-400">Nem gigante nem microscopico</p></div>
-      </div>
-    </div>
-
-    <div class="flex justify-start mt-6">
-      <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors">
-        <span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span>
-      </button>
-    </div>
-  </section>
-
-  <!-- ============ TOPICO 2 ============ -->
-  <section id="topico-2" class="mb-16" data-inema-topic="modulo-1-1#topico-2">
-    <div class="flex items-center space-x-4 mb-6">
-      <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">2</span>
-      <h2 class="text-2xl font-bold">➖ Ligue com arestas: a relacao</h2>
-      <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar duvida neste topico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm">
-        <span aria-hidden="true">?</span><span>Tenho duvida</span>
-      </button>
-    </div>
-
-    <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-1-t2-p1">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+<h4 class="font-bold text-emerald-400 mb-4">✓ Bons nos</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>“Revisar o texto” — uma unidade de trabalho com comeco e fim</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>“Cliente ativado” — um estado que da pra verificar</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>“Agente de pesquisa” — um papel com responsabilidade clara</span></li>
+</ul>
+</div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+<h4 class="font-bold text-red-400 mb-4">✗ Nos ruins</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>“Fazer o produto” — grande demais, o grafo nao te ajuda em nada</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>“Apertar Enter” — pequeno demais, voce afoga em detalhe</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>“Coisas de marketing” — vago, ninguem sabe se terminou</span></li>
+</ul>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-emerald-400 mb-4">Conceitos-chave</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Substantivo</div><p class="text-xs text-neutral-400">No e coisa, nao acao</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Identidade</div><p class="text-xs text-neutral-400">Da pra apontar e nomear</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Carrega dado</div><p class="text-xs text-neutral-400">Rotulo, dono, custo, estado</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Granularidade</div><p class="text-xs text-neutral-400">Nem gigante nem microscopico</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como lido</span>
+</button>
+</div>
+</section>
+<!-- ============ TOPICO 2 ============ -->
+<section class="mb-16" data-inema-topic="modulo-1-1#topico-2" id="topico-2">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">2</span>
+<h2 class="text-2xl font-bold">➖ Ligue com arestas: a relacao</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Marcar duvida neste topico" type="button">
+<span aria-hidden="true">?</span><span>Tenho duvida</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-1-t2-p1">
       A segunda (e ultima) peca e a <strong class="text-emerald-400">aresta</strong> — em ingles <em>edge</em>, escrita como
       <code class="text-emerald-400">e</code> nos algoritmos. Aresta e a <em>relacao</em> entre dois nos. Se o no e substantivo,
       a aresta e verbo: “depende de”, “vira”, “conhece”, “entrega o resultado pra”.
     </p>
-
-    <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
-      <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center"><span class="mr-2">💡</span> O valor mora nas arestas</h3>
-      <p class="text-neutral-300 mb-4">
+<div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center"><span class="mr-2">💡</span> O valor mora nas arestas</h3>
+<p class="text-neutral-300 mb-4">
         Um erro classico de quem esta comecando e caprichar nos nos e tratar as arestas como enfeite.
         Na pratica e o contrario: os nos costumam ser obvios (todo mundo sabe listar as etapas),
         e a dificuldade — e o valor — esta em dizer <em>como</em> uma coisa leva a outra.
       </p>
-      <ul class="space-y-2 text-neutral-300">
-        <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span>Um produto digital sozinho nao chega em ninguem. A aresta ate o consumidor (anuncio, indicacao, afiliado) e o que existe de dificil ali.</span></li>
-        <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span>Num grafo de agentes, a aresta e onde mora a decisao: “se aprovou, segue; se reprovou, volta”.</span></li>
-        <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span>Aresta tambem pode ter <strong>tipo</strong> — “detalha”, “contradiz”, “bloqueia” — e ai voce tem um grafo com arestas tipadas.</span></li>
-      </ul>
-    </div>
-
-    <div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-4 overflow-hidden">
-      <svg viewBox="0 0 1000 220" class="w-full h-auto" role="img" aria-label="Os mesmos quatro circulos, agora ligados por linhas rotuladas: pessoa cria tarefa, tarefa gera documento, agente le documento. As ligacoes tem rotulos de verbo.">
-        <defs>
-          <linearGradient id="m11b-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#34d399"/><stop offset="1" stop-color="#10b981"/></linearGradient>
-          <filter id="m11b-glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-          <pattern id="m11b-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#10b981" opacity="0.12"/></pattern>
-        </defs>
-        <rect x="0" y="0" width="1000" height="220" fill="url(#m11b-grid)"/>
-        <g stroke="#34d399" stroke-width="1.8" opacity="0.55" fill="none">
-          <path d="M206,100 L354,100"/><path d="M446,100 L594,100"/>
-        </g>
-        <g stroke="#38bdf8" stroke-width="1.8" opacity="0.5" fill="none"><path d="M824,100 L686,100"/></g>
-        <g font-family="Inter,sans-serif" font-size="12.5" fill="#a7f3d0">
-          <text x="280" y="88" text-anchor="middle">cria</text>
-          <text x="520" y="88" text-anchor="middle">gera</text>
-          <text x="755" y="88" text-anchor="middle" fill="#9ad6ff">le</text>
-        </g>
-        <g font-family="Inter,sans-serif" font-size="14" font-weight="600">
-          <circle cx="160" cy="100" r="46" fill="#0e2018" stroke="#34d399" stroke-width="2"/><text x="160" y="106" text-anchor="middle" fill="#a7f3d0">pessoa</text>
-          <circle cx="400" cy="100" r="46" fill="#0e2018" stroke="#34d399" stroke-width="2"/><text x="400" y="106" text-anchor="middle" fill="#a7f3d0">tarefa</text>
-          <g filter="url(#m11b-glow)"><circle cx="640" cy="100" r="46" fill="#0e2018" stroke="url(#m11b-grad)" stroke-width="2"/></g>
-          <text x="640" y="106" text-anchor="middle" fill="#34d399">documento</text>
-          <circle cx="870" cy="100" r="46" fill="#0e1b26" stroke="#38bdf8" stroke-width="2"/><text x="870" y="106" text-anchor="middle" fill="#bfe6ff">agente</text>
-        </g>
-        <text x="500" y="200" text-anchor="middle" fill="#a7f3d0" font-family="Inter,sans-serif" font-size="13">agora sim: nos + arestas rotuladas = grafo</text>
-      </svg>
-    </div>
-    <p class="text-sm text-neutral-400 mb-6">
-      <strong class="text-neutral-300">O que olhar:</strong> compare com o desenho anterior — sao os mesmos quatro nos.
+<ul class="space-y-2 text-neutral-300">
+<li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span>Um produto digital sozinho nao chega em ninguem. A aresta ate o consumidor (anuncio, indicacao, afiliado) e o que existe de dificil ali.</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span>Num grafo de agentes, a aresta e onde mora a decisao: “se aprovou, segue; se reprovou, volta”.</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span>Aresta tambem pode ter <strong>tipo</strong> — “detalha”, “contradiz”, “bloqueia” — e ai voce tem um grafo com arestas tipadas.</span></li>
+</ul>
+</div>
+<div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-4 overflow-hidden">
+<svg aria-label="Os mesmos quatro circulos, agora ligados por linhas rotuladas: pessoa cria tarefa, tarefa gera documento, agente le documento. As ligacoes tem rotulos de verbo." class="w-full h-auto" role="img" viewbox="0 0 1000 220">
+<defs>
+<lineargradient id="m11b-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#34d399"></stop><stop offset="1" stop-color="#10b981"></stop></lineargradient>
+<filter height="180%" id="m11b-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="m11b-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#10b981" opacity="0.12" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#m11b-grid)" height="220" width="1000" x="0" y="0"></rect>
+<g fill="none" opacity="0.55" stroke="#34d399" stroke-width="1.8">
+<path d="M206,100 L354,100"></path><path d="M446,100 L594,100"></path>
+</g>
+<g fill="none" opacity="0.5" stroke="#38bdf8" stroke-width="1.8"><path d="M824,100 L686,100"></path></g>
+<g fill="#a7f3d0" font-family="Inter,sans-serif" font-size="12.5">
+<text text-anchor="middle" x="280" y="88">cria</text>
+<text text-anchor="middle" x="520" y="88">gera</text>
+<text fill="#9ad6ff" text-anchor="middle" x="755" y="88">le</text>
+</g>
+<g font-family="Inter,sans-serif" font-size="14" font-weight="600">
+<circle cx="160" cy="100" fill="#0e2018" r="46" stroke="#34d399" stroke-width="2"></circle><text fill="#a7f3d0" text-anchor="middle" x="160" y="106">pessoa</text>
+<circle cx="400" cy="100" fill="#0e2018" r="46" stroke="#34d399" stroke-width="2"></circle><text fill="#a7f3d0" text-anchor="middle" x="400" y="106">tarefa</text>
+<g filter="url(#m11b-glow)"><circle cx="640" cy="100" fill="#0e2018" r="46" stroke="url(#m11b-grad)" stroke-width="2"></circle></g>
+<text fill="#34d399" text-anchor="middle" x="640" y="106">documento</text>
+<circle cx="870" cy="100" fill="#0e1b26" r="46" stroke="#38bdf8" stroke-width="2"></circle><text fill="#bfe6ff" text-anchor="middle" x="870" y="106">agente</text>
+</g>
+<text fill="#a7f3d0" font-family="Inter,sans-serif" font-size="13" text-anchor="middle" x="500" y="200">agora sim: nos + arestas rotuladas = grafo</text>
+</svg>
+</div>
+<p class="text-sm text-neutral-400 mb-6">
+<strong class="text-neutral-300">O que olhar:</strong> compare com o desenho anterior — sao os mesmos quatro nos.
       A unica coisa que mudou foram as tres linhas com rotulo. E so isso ja te permite responder perguntas que a lista nao respondia:
       “quem produziu esse documento?”, “o agente depende de que pra trabalhar?”.
     </p>
-
-    <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
-      <h3 class="text-lg font-semibold text-emerald-400 mb-4">Conceitos-chave</h3>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Verbo</div><p class="text-xs text-neutral-400">Aresta e relacao, nao coisa</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Tipada</div><p class="text-xs text-neutral-400">A relacao pode ter nome</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Onde mora a decisao</div><p class="text-xs text-neutral-400">“Se X, va pra Y”</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Sem aresta</div><p class="text-xs text-neutral-400">Sem aresta e so uma lista</p></div>
-      </div>
-    </div>
-
-    <div class="flex justify-start mt-6">
-      <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors">
-        <span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span>
-      </button>
-    </div>
-  </section>
-
-  <!-- ============ TOPICO 3 ============ -->
-  <section id="topico-3" class="mb-16" data-inema-topic="modulo-1-1#topico-3">
-    <div class="flex items-center space-x-4 mb-6">
-      <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">3</span>
-      <h2 class="text-2xl font-bold">➡️ Ponha direcao: rua de mao unica</h2>
-      <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar duvida neste topico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm">
-        <span aria-hidden="true">?</span><span>Tenho duvida</span>
-      </button>
-    </div>
-
-    <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-1-t3-p1">
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-emerald-400 mb-4">Conceitos-chave</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Verbo</div><p class="text-xs text-neutral-400">Aresta e relacao, nao coisa</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Tipada</div><p class="text-xs text-neutral-400">A relacao pode ter nome</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Onde mora a decisao</div><p class="text-xs text-neutral-400">“Se X, va pra Y”</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Sem aresta</div><p class="text-xs text-neutral-400">Sem aresta e so uma lista</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como lido</span>
+</button>
+</div>
+</section>
+<!-- ============ TOPICO 3 ============ -->
+<section class="mb-16" data-inema-topic="modulo-1-1#topico-3" id="topico-3">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">3</span>
+<h2 class="text-2xl font-bold">➡️ Ponha direcao: rua de mao unica</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Marcar duvida neste topico" type="button">
+<span aria-hidden="true">?</span><span>Tenho duvida</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-1-t3-p1">
       Uma aresta pode valer nos dois sentidos ou so num. Quando ela tem seta, o grafo e
       <strong class="text-emerald-400">dirigido</strong> (<em>directed</em>): saiu de A pra B, nao volta por aquela aresta.
       Amizade e nao-dirigida (se eu sou seu amigo, voce e meu). Ja “o pesquisador entrega pro escritor” e dirigido —
       o contrario nao faz sentido.
     </p>
-
-    <div class="space-y-6 mb-6">
-      <div class="flex items-start space-x-4">
-        <div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center"><span class="text-emerald-400 font-bold">1</span></div>
-        <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
-          <h4 class="font-semibold text-white mb-2">Nao-dirigido: a relacao e simetrica</h4>
-          <p class="text-sm text-neutral-400 mb-3">Rede social, colegas de time, “roda no mesmo servidor”.</p>
-          <p class="text-neutral-300 text-sm">Se A se relaciona com B, B se relaciona com A. Voce desenha uma linha sem seta e pronto.</p>
-        </div>
-      </div>
-      <div class="flex items-start space-x-4">
-        <div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center"><span class="text-emerald-400 font-bold">2</span></div>
-        <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
-          <h4 class="font-semibold text-white mb-2">Dirigido: a relacao tem sentido</h4>
-          <p class="text-sm text-neutral-400 mb-3">Fluxo de trabalho, dependencia, import de modulo, entrega de resultado.</p>
-          <p class="text-neutral-300 text-sm">A seta e o que da <strong class="text-emerald-400">ordem</strong> ao sistema. Todo fluxo de agentes e dirigido.</p>
-        </div>
-      </div>
-      <div class="flex items-start space-x-4">
-        <div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center"><span class="text-emerald-400 font-bold">3</span></div>
-        <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
-          <h4 class="font-semibold text-white mb-2">Quer voltar? Isso e outra aresta</h4>
-          <p class="text-sm text-neutral-400 mb-3">O caso “o revisor reprovou, volta pro escritor”.</p>
-          <p class="text-neutral-300 text-sm">Voltar nao e “desfazer a seta” — e desenhar uma <em>nova</em> aresta, com regra propria. Ela vai virar o ciclo do topico 5.</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
-      <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Dica pratica</h3>
-      <p class="text-neutral-300">
+<div class="space-y-6 mb-6">
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center"><span class="text-emerald-400 font-bold">1</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">Nao-dirigido: a relacao e simetrica</h4>
+<p class="text-sm text-neutral-400 mb-3">Rede social, colegas de time, “roda no mesmo servidor”.</p>
+<p class="text-neutral-300 text-sm">Se A se relaciona com B, B se relaciona com A. Voce desenha uma linha sem seta e pronto.</p>
+</div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center"><span class="text-emerald-400 font-bold">2</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">Dirigido: a relacao tem sentido</h4>
+<p class="text-sm text-neutral-400 mb-3">Fluxo de trabalho, dependencia, import de modulo, entrega de resultado.</p>
+<p class="text-neutral-300 text-sm">A seta e o que da <strong class="text-emerald-400">ordem</strong> ao sistema. Todo fluxo de agentes e dirigido.</p>
+</div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center"><span class="text-emerald-400 font-bold">3</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">Quer voltar? Isso e outra aresta</h4>
+<p class="text-sm text-neutral-400 mb-3">O caso “o revisor reprovou, volta pro escritor”.</p>
+<p class="text-neutral-300 text-sm">Voltar nao e “desfazer a seta” — e desenhar uma <em>nova</em> aresta, com regra propria. Ela vai virar o ciclo do topico 5.</p>
+</div>
+</div>
+</div>
+<div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Dica pratica</h3>
+<p class="text-neutral-300">
         Quando estiver em duvida se a aresta e dirigida, faca o teste da frase: escreva a relacao como uma sentenca
         (“A <em>entrega o rascunho</em> pra B”) e tente inverter (“B entrega o rascunho pra A”). Se a frase invertida
         ficar falsa ou absurda, a aresta e dirigida.
       </p>
-    </div>
-
-    <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
-      <h3 class="text-lg font-semibold text-emerald-400 mb-4">Conceitos-chave</h3>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Seta = ordem</div><p class="text-xs text-neutral-400">Direcao gera sequencia</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Simetria</div><p class="text-xs text-neutral-400">Teste da frase invertida</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Volta = nova aresta</div><p class="text-xs text-neutral-400">Com regra propria</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Agentes</div><p class="text-xs text-neutral-400">Fluxo de agente e sempre dirigido</p></div>
-      </div>
-    </div>
-
-    <div class="flex justify-start mt-6">
-      <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors">
-        <span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span>
-      </button>
-    </div>
-  </section>
-
-  <!-- ============ TOPICO 4 ============ -->
-  <section id="topico-4" class="mb-16" data-inema-topic="modulo-1-1#topico-4">
-    <div class="flex items-center space-x-4 mb-6">
-      <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">4</span>
-      <h2 class="text-2xl font-bold">⚖️ Ponha peso: quanto custa passar</h2>
-      <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar duvida neste topico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm">
-        <span aria-hidden="true">?</span><span>Tenho duvida</span>
-      </button>
-    </div>
-
-    <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-1-t4-p1">
-      <strong class="text-emerald-400">Peso</strong> (<em>edge weight</em>, as vezes escrito <code class="text-emerald-400">ew</code>)
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-emerald-400 mb-4">Conceitos-chave</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Seta = ordem</div><p class="text-xs text-neutral-400">Direcao gera sequencia</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Simetria</div><p class="text-xs text-neutral-400">Teste da frase invertida</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Volta = nova aresta</div><p class="text-xs text-neutral-400">Com regra propria</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Agentes</div><p class="text-xs text-neutral-400">Fluxo de agente e sempre dirigido</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como lido</span>
+</button>
+</div>
+</section>
+<!-- ============ TOPICO 4 ============ -->
+<section class="mb-16" data-inema-topic="modulo-1-1#topico-4" id="topico-4">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">4</span>
+<h2 class="text-2xl font-bold">⚖️ Ponha peso: quanto custa passar</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Marcar duvida neste topico" type="button">
+<span aria-hidden="true">?</span><span>Tenho duvida</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-1-t4-p1">
+<strong class="text-emerald-400">Peso</strong> (<em>edge weight</em>, as vezes escrito <code class="text-emerald-400">ew</code>)
       e um numero pendurado na aresta. Minutos, reais, tokens, probabilidade, confianca. E o ingrediente que transforma
       um desenho bonito numa estrutura sobre a qual da pra <em>calcular</em>: qual caminho e mais rapido, mais barato, mais confiavel.
     </p>
-
-    <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-1-t4-p2">
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-1-t4-p2">
       O exemplo mais barato de entender e a sua manha. Voce dormindo e um no. Voce acordado e outro.
       Entre acordar e levantar passam 2 minutos — esse 2 e o peso. De levantar ate escovar os dentes, 5. Dos dentes ate o cafe na xicara, 3.
       Um grafo com peso ja responde “quanto tempo da cama ate o cafe?” — e ja permite comparar caminhos alternativos.
     </p>
-
-    <div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-4 overflow-hidden">
-      <svg viewBox="0 0 1000 260" class="w-full h-auto" role="img" aria-label="Grafo da manha: dormindo leva 0 minuto ate acordar, acordar leva 2 minutos ate levantar, levantar leva 5 ate escovar os dentes, escovar leva 3 ate o cafe, somando 10 minutos. Abaixo, um caminho alternativo tracejado em ciano vai direto de acordar ate cafe com peso 4, o robo trouxe na cama.">
-        <defs>
-          <linearGradient id="m11c-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#34d399"/><stop offset="1" stop-color="#10b981"/></linearGradient>
-          <filter id="m11c-glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-          <pattern id="m11c-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#10b981" opacity="0.12"/></pattern>
-          <marker id="m11c-ah" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#34d399"/></marker>
-          <marker id="m11c-ahc" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#38bdf8"/></marker>
-        </defs>
-        <rect x="0" y="0" width="1000" height="260" fill="url(#m11c-grid)"/>
-        <g stroke="#34d399" stroke-width="1.8" opacity="0.6" fill="none">
-          <path d="M158,80 L232,80" marker-end="url(#m11c-ah)"/>
-          <path d="M368,80 L442,80" marker-end="url(#m11c-ah)"/>
-          <path d="M578,80 L652,80" marker-end="url(#m11c-ah)"/>
-          <path d="M788,80 L842,80" marker-end="url(#m11c-ah)"/>
-        </g>
-        <g font-family="Inter,sans-serif" font-size="13" font-weight="600" fill="#a7f3d0">
-          <text x="195" y="68" text-anchor="middle">0</text>
-          <text x="405" y="68" text-anchor="middle">2</text>
-          <text x="615" y="68" text-anchor="middle">5</text>
-          <text x="815" y="68" text-anchor="middle">3</text>
-        </g>
-        <g font-family="Inter,sans-serif" font-size="13">
-          <rect x="24" y="56" width="134" height="48" rx="12" fill="#0e2018" stroke="#34d399" stroke-width="2"/><text x="91" y="86" text-anchor="middle" fill="#a7f3d0">dormindo</text>
-          <rect x="232" y="56" width="136" height="48" rx="12" fill="#0e2018" stroke="#34d399" stroke-width="2"/><text x="300" y="86" text-anchor="middle" fill="#a7f3d0">acordar</text>
-          <rect x="442" y="56" width="136" height="48" rx="12" fill="#0e2018" stroke="#34d399" stroke-width="2"/><text x="510" y="86" text-anchor="middle" fill="#a7f3d0">levantar</text>
-          <rect x="652" y="56" width="136" height="48" rx="12" fill="#0e2018" stroke="#34d399" stroke-width="2"/><text x="720" y="86" text-anchor="middle" fill="#a7f3d0">dentes</text>
-          <g filter="url(#m11c-glow)"><rect x="842" y="56" width="134" height="48" rx="12" fill="#0e2018" stroke="url(#m11c-grad)" stroke-width="2"/></g>
-          <text x="909" y="86" text-anchor="middle" fill="#34d399" font-weight="600">cafe ☕</text>
-        </g>
-        <path d="M300,104 C300,190 700,200 880,110" fill="none" stroke="#38bdf8" stroke-width="1.8" stroke-dasharray="8 8" opacity="0.6" marker-end="url(#m11c-ahc)"/>
-        <text x="590" y="215" text-anchor="middle" fill="#9ad6ff" font-family="Inter,sans-serif" font-size="13">caminho alternativo: peso 4 (o cafe veio na cama)</text>
-        <text x="500" y="245" text-anchor="middle" fill="#a7f3d0" font-family="Inter,sans-serif" font-size="13">caminho de cima = 0+2+5+3 = 10 min · caminho de baixo = 4 min</text>
-      </svg>
-    </div>
-    <p class="text-sm text-neutral-400 mb-6">
-      <strong class="text-neutral-300">O que olhar:</strong> os numerinhos em cima das setas. Some-os ao longo de um caminho e voce tem o custo daquele caminho.
+<div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-4 overflow-hidden">
+<svg aria-label="Grafo da manha: dormindo leva 0 minuto ate acordar, acordar leva 2 minutos ate levantar, levantar leva 5 ate escovar os dentes, escovar leva 3 ate o cafe, somando 10 minutos. Abaixo, um caminho alternativo tracejado em ciano vai direto de acordar ate cafe com peso 4, o robo trouxe na cama." class="w-full h-auto" role="img" viewbox="0 0 1000 260">
+<defs>
+<lineargradient id="m11c-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#34d399"></stop><stop offset="1" stop-color="#10b981"></stop></lineargradient>
+<filter height="180%" id="m11c-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="m11c-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#10b981" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="m11c-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#34d399"></path></marker>
+<marker id="m11c-ahc" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#38bdf8"></path></marker>
+</defs>
+<rect fill="url(#m11c-grid)" height="260" width="1000" x="0" y="0"></rect>
+<g fill="none" opacity="0.6" stroke="#34d399" stroke-width="1.8">
+<path d="M158,80 L232,80" marker-end="url(#m11c-ah)"></path>
+<path d="M368,80 L442,80" marker-end="url(#m11c-ah)"></path>
+<path d="M578,80 L652,80" marker-end="url(#m11c-ah)"></path>
+<path d="M788,80 L842,80" marker-end="url(#m11c-ah)"></path>
+</g>
+<g fill="#a7f3d0" font-family="Inter,sans-serif" font-size="13" font-weight="600">
+<text text-anchor="middle" x="195" y="68">0</text>
+<text text-anchor="middle" x="405" y="68">2</text>
+<text text-anchor="middle" x="615" y="68">5</text>
+<text text-anchor="middle" x="815" y="68">3</text>
+</g>
+<g font-family="Inter,sans-serif" font-size="13">
+<rect fill="#0e2018" height="48" rx="12" stroke="#34d399" stroke-width="2" width="134" x="24" y="56"></rect><text fill="#a7f3d0" text-anchor="middle" x="91" y="86">dormindo</text>
+<rect fill="#0e2018" height="48" rx="12" stroke="#34d399" stroke-width="2" width="136" x="232" y="56"></rect><text fill="#a7f3d0" text-anchor="middle" x="300" y="86">acordar</text>
+<rect fill="#0e2018" height="48" rx="12" stroke="#34d399" stroke-width="2" width="136" x="442" y="56"></rect><text fill="#a7f3d0" text-anchor="middle" x="510" y="86">levantar</text>
+<rect fill="#0e2018" height="48" rx="12" stroke="#34d399" stroke-width="2" width="136" x="652" y="56"></rect><text fill="#a7f3d0" text-anchor="middle" x="720" y="86">dentes</text>
+<g filter="url(#m11c-glow)"><rect fill="#0e2018" height="48" rx="12" stroke="url(#m11c-grad)" stroke-width="2" width="134" x="842" y="56"></rect></g>
+<text fill="#34d399" font-weight="600" text-anchor="middle" x="909" y="86">cafe ☕</text>
+</g>
+<path d="M300,104 C300,190 700,200 880,110" fill="none" marker-end="url(#m11c-ahc)" opacity="0.6" stroke="#38bdf8" stroke-dasharray="8 8" stroke-width="1.8"></path>
+<text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="13" text-anchor="middle" x="590" y="215">caminho alternativo: peso 4 (o cafe veio na cama)</text>
+<text fill="#a7f3d0" font-family="Inter,sans-serif" font-size="13" text-anchor="middle" x="500" y="245">caminho de cima = 0+2+5+3 = 10 min · caminho de baixo = 4 min</text>
+</svg>
+</div>
+<p class="text-sm text-neutral-400 mb-6">
+<strong class="text-neutral-300">O que olhar:</strong> os numerinhos em cima das setas. Some-os ao longo de um caminho e voce tem o custo daquele caminho.
       A linha tracejada em ciano e um <em>atalho</em>: pula dois nos e custa 4 em vez de 10. Achar esse tipo de atalho e, literalmente,
       o que algoritmos de caminho minimo fazem — e o que voce vai querer do seu grafo de agentes quando o peso for “custo em tokens”.
     </p>
-
-    <figure class="mb-6">
-      <img src="../../assets/img/ex1-rotina-manha.png"
-           alt="Diagrama em estilo lousa: acordar leva 2 minutos ate levantar, levantar leva 5 minutos ate escovar os dentes, escovar leva 3 minutos ate preparar cafe, preparar leva 4 minutos ate tomar cafe e tomar leva 8 minutos ate sair de casa. Uma seta amarela sai direto de acordar para preparar cafe com peso de 5 minutos, rotulada cafe pronto ou automatizado. Uma legenda define circulos como etapas, setas como relacoes e o numero como peso em tempo."
-           class="w-full h-auto rounded-xl border border-dark-600">
-      <figcaption class="text-sm text-neutral-400 mt-3">
-        <strong class="text-neutral-300">O que olhar:</strong> a seta amarela. Ela pula dois nos e custa 5 minutos, contra 2+5+3 = 10 do caminho de cima.
+<figure class="mb-6">
+<img alt="Diagrama em estilo lousa: acordar leva 2 minutos ate levantar, levantar leva 5 minutos ate escovar os dentes, escovar leva 3 minutos ate preparar cafe, preparar leva 4 minutos ate tomar cafe e tomar leva 8 minutos ate sair de casa. Uma seta amarela sai direto de acordar para preparar cafe com peso de 5 minutos, rotulada cafe pronto ou automatizado. Uma legenda define circulos como etapas, setas como relacoes e o numero como peso em tempo." class="w-full h-auto rounded-xl border border-dark-600" src="../../assets/img/ex1-rotina-manha.png"/>
+<figcaption class="text-sm text-neutral-400 mt-3">
+<strong class="text-neutral-300">O que olhar:</strong> a seta amarela. Ela pula dois nos e custa 5 minutos, contra 2+5+3 = 10 do caminho de cima.
         Duas rotas, mesmo destino, custos diferentes — <em>isso</em> e o que o peso te permite enxergar. Sem os numeros, as duas setas pareceriam equivalentes.
       </figcaption>
-    </figure>
-
-    <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
-      <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">📊</span> O que costuma virar peso num sistema de agentes</h3>
-      <ul class="space-y-2 text-neutral-300 text-sm">
-        <li><strong>Tokens / custo em dolar</strong> — o mais concreto: quanto aquele passo queima</li>
-        <li><strong>Latencia</strong> — quanto o passo demora (importa se o usuario espera)</li>
-        <li><strong>Confianca</strong> — 0 a 1: o quanto voce acredita naquela transicao</li>
-        <li><strong>Risco</strong> — quanto estrago aquele passo faz se der errado (deletar arquivo &gt; ler arquivo)</li>
-      </ul>
-    </div>
-
-    <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
-      <h3 class="text-lg font-semibold text-emerald-400 mb-4">Conceitos-chave</h3>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Numero na aresta</div><p class="text-xs text-neutral-400">Custo, tempo, confianca</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Somavel</div><p class="text-xs text-neutral-400">Custo do caminho = soma</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Habilita otimizacao</div><p class="text-xs text-neutral-400">Sem peso nao ha “melhor”</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Pode mudar</div><p class="text-xs text-neutral-400">Peso dinamico muda a rota</p></div>
-      </div>
-    </div>
-
-    <div class="flex justify-start mt-6">
-      <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors">
-        <span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span>
-      </button>
-    </div>
-  </section>
-
-  <!-- ============ TOPICO 5 ============ -->
-  <section id="topico-5" class="mb-16" data-inema-topic="modulo-1-1#topico-5">
-    <div class="flex items-center space-x-4 mb-6">
-      <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">5</span>
-      <h2 class="text-2xl font-bold">🔁 Reconheca o ciclo: o loop e um grafo</h2>
-      <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar duvida neste topico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm">
-        <span aria-hidden="true">?</span><span>Tenho duvida</span>
-      </button>
-    </div>
-
-    <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-1-t5-p1">
-      <strong class="text-emerald-400">Ciclo</strong> e um caminho que sai de um no e volta pra ele. Quando um grafo dirigido
+</figure>
+<div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">📊</span> O que costuma virar peso num sistema de agentes</h3>
+<ul class="space-y-2 text-neutral-300 text-sm">
+<li><strong>Tokens / custo em dolar</strong> — o mais concreto: quanto aquele passo queima</li>
+<li><strong>Latencia</strong> — quanto o passo demora (importa se o usuario espera)</li>
+<li><strong>Confianca</strong> — 0 a 1: o quanto voce acredita naquela transicao</li>
+<li><strong>Risco</strong> — quanto estrago aquele passo faz se der errado (deletar arquivo &gt; ler arquivo)</li>
+</ul>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-emerald-400 mb-4">Conceitos-chave</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Numero na aresta</div><p class="text-xs text-neutral-400">Custo, tempo, confianca</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Somavel</div><p class="text-xs text-neutral-400">Custo do caminho = soma</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Habilita otimizacao</div><p class="text-xs text-neutral-400">Sem peso nao ha “melhor”</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Pode mudar</div><p class="text-xs text-neutral-400">Peso dinamico muda a rota</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como lido</span>
+</button>
+</div>
+</section>
+<!-- ============ TOPICO 5 ============ -->
+<section class="mb-16" data-inema-topic="modulo-1-1#topico-5" id="topico-5">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">5</span>
+<h2 class="text-2xl font-bold">🔁 Reconheca o ciclo: o loop e um grafo</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Marcar duvida neste topico" type="button">
+<span aria-hidden="true">?</span><span>Tenho duvida</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-1-t5-p1">
+<strong class="text-emerald-400">Ciclo</strong> e um caminho que sai de um no e volta pra ele. Quando um grafo dirigido
       <em>nao</em> tem nenhum ciclo, ele ganha um nome que voce vai ouvir muito: <strong class="text-emerald-400">DAG</strong>,
       de <em>Directed Acyclic Graph</em> — grafo dirigido aciclico. E o formato padrao de workflow ha decadas
       (todo pipeline de dados, todo build, todo CI e um DAG).
     </p>
-
-    <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
-      <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center"><span class="mr-2">🎯</span> A frase que sustenta o curso inteiro</h3>
-      <p class="text-neutral-100 text-lg mb-3">Um <strong class="text-blue-400">loop</strong> ja e um grafo — um grafo cujo caminho volta a um no anterior.</p>
-      <p class="text-neutral-300">
+<div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center"><span class="mr-2">🎯</span> A frase que sustenta o curso inteiro</h3>
+<p class="text-neutral-100 text-lg mb-3">Um <strong class="text-blue-400">loop</strong> ja e um grafo — um grafo cujo caminho volta a um no anterior.</p>
+<p class="text-neutral-300">
         Guarde isso. Quando alguem anunciar que “loop morreu, agora e grafo”, voce vai saber que a frase nao faz sentido tecnico:
         loop e o grafo minimo com ciclo. O que muda de verdade e <em>quantos</em> nos voce tem e <em>como</em> voce os liga —
         e e isso que as Trilhas 3 e 4 vao destrinchar.
       </p>
-    </div>
-
-    <div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-4 overflow-hidden">
-      <svg viewBox="0 0 1000 240" class="w-full h-auto" role="img" aria-label="Comparacao lado a lado. A esquerda, um DAG: tres caixas em fila com setas so pra frente, rotulado termina sozinho. A direita, um ciclo: duas caixas com setas nos dois sentidos formando uma volta, rotulado precisa de condicao de parada.">
-        <defs>
-          <linearGradient id="m11d-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#34d399"/><stop offset="1" stop-color="#10b981"/></linearGradient>
-          <filter id="m11d-glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-          <pattern id="m11d-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#10b981" opacity="0.12"/></pattern>
-          <marker id="m11d-ah" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#34d399"/></marker>
-          <marker id="m11d-ahc" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#38bdf8"/></marker>
-        </defs>
-        <rect x="0" y="0" width="1000" height="240" fill="url(#m11d-grid)"/>
-        <path d="M500,20 L500,220" stroke="#9ca3af" stroke-width="1.5" stroke-dasharray="9 9" opacity="0.4"/>
-
-        <text x="245" y="36" text-anchor="middle" fill="#a7f3d0" font-family="Inter,sans-serif" font-size="13" font-weight="600">DAG — sem volta</text>
-        <g stroke="#34d399" stroke-width="1.8" opacity="0.6" fill="none">
-          <path d="M148,110 L192,110" marker-end="url(#m11d-ah)"/><path d="M298,110 L342,110" marker-end="url(#m11d-ah)"/>
-        </g>
-        <g font-family="Inter,sans-serif" font-size="13">
-          <rect x="30" y="86" width="118" height="48" rx="12" fill="#0e2018" stroke="#34d399" stroke-width="2"/><text x="89" y="116" text-anchor="middle" fill="#a7f3d0">passo A</text>
-          <rect x="192" y="86" width="106" height="48" rx="12" fill="#0e2018" stroke="#34d399" stroke-width="2"/><text x="245" y="116" text-anchor="middle" fill="#a7f3d0">passo B</text>
-          <g filter="url(#m11d-glow)"><rect x="342" y="86" width="118" height="48" rx="12" fill="#0e2018" stroke="url(#m11d-grad)" stroke-width="2"/></g>
-          <text x="401" y="116" text-anchor="middle" fill="#34d399" font-weight="600">fim</text>
-        </g>
-        <text x="245" y="185" text-anchor="middle" fill="#a7f3d0" font-family="Inter,sans-serif" font-size="12.5">termina sozinho · da pra ordenar</text>
-
-        <text x="750" y="36" text-anchor="middle" fill="#9ad6ff" font-family="Inter,sans-serif" font-size="13" font-weight="600">CICLO — o loop</text>
-        <path d="M660,110 L790,110" stroke="#38bdf8" stroke-width="1.8" opacity="0.6" fill="none" marker-end="url(#m11d-ahc)"/>
-        <path d="M840,134 C840,190 660,190 660,138" stroke="#38bdf8" stroke-width="1.8" opacity="0.6" fill="none" marker-end="url(#m11d-ahc)"/>
-        <g font-family="Inter,sans-serif" font-size="13">
-          <rect x="560" y="86" width="100" height="48" rx="12" fill="#0e1b26" stroke="#38bdf8" stroke-width="2"/><text x="610" y="116" text-anchor="middle" fill="#bfe6ff">agir</text>
-          <rect x="790" y="86" width="100" height="48" rx="12" fill="#0e1b26" stroke="#38bdf8" stroke-width="2"/><text x="840" y="116" text-anchor="middle" fill="#bfe6ff">checar</text>
-        </g>
-        <text x="750" y="215" text-anchor="middle" fill="#9ad6ff" font-family="Inter,sans-serif" font-size="12.5">precisa de condicao de parada, senao roda pra sempre</text>
-      </svg>
-    </div>
-    <p class="text-sm text-neutral-400 mb-6">
-      <strong class="text-neutral-300">O que olhar:</strong> os dois lados sao grafos. A unica diferenca e a linha de baixo, a direita,
+</div>
+<div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-4 overflow-hidden">
+<svg aria-label="Comparacao lado a lado. A esquerda, um DAG: tres caixas em fila com setas so pra frente, rotulado termina sozinho. A direita, um ciclo: duas caixas com setas nos dois sentidos formando uma volta, rotulado precisa de condicao de parada." class="w-full h-auto" role="img" viewbox="0 0 1000 240">
+<defs>
+<lineargradient id="m11d-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#34d399"></stop><stop offset="1" stop-color="#10b981"></stop></lineargradient>
+<filter height="180%" id="m11d-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="m11d-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#10b981" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="m11d-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#34d399"></path></marker>
+<marker id="m11d-ahc" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#38bdf8"></path></marker>
+</defs>
+<rect fill="url(#m11d-grid)" height="240" width="1000" x="0" y="0"></rect>
+<path d="M500,20 L500,220" opacity="0.4" stroke="#9ca3af" stroke-dasharray="9 9" stroke-width="1.5"></path>
+<text fill="#a7f3d0" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="245" y="36">DAG — sem volta</text>
+<g fill="none" opacity="0.6" stroke="#34d399" stroke-width="1.8">
+<path d="M148,110 L192,110" marker-end="url(#m11d-ah)"></path><path d="M298,110 L342,110" marker-end="url(#m11d-ah)"></path>
+</g>
+<g font-family="Inter,sans-serif" font-size="13">
+<rect fill="#0e2018" height="48" rx="12" stroke="#34d399" stroke-width="2" width="118" x="30" y="86"></rect><text fill="#a7f3d0" text-anchor="middle" x="89" y="116">passo A</text>
+<rect fill="#0e2018" height="48" rx="12" stroke="#34d399" stroke-width="2" width="106" x="192" y="86"></rect><text fill="#a7f3d0" text-anchor="middle" x="245" y="116">passo B</text>
+<g filter="url(#m11d-glow)"><rect fill="#0e2018" height="48" rx="12" stroke="url(#m11d-grad)" stroke-width="2" width="118" x="342" y="86"></rect></g>
+<text fill="#34d399" font-weight="600" text-anchor="middle" x="401" y="116">fim</text>
+</g>
+<text fill="#a7f3d0" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="245" y="185">termina sozinho · da pra ordenar</text>
+<text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="750" y="36">CICLO — o loop</text>
+<path d="M660,110 L790,110" fill="none" marker-end="url(#m11d-ahc)" opacity="0.6" stroke="#38bdf8" stroke-width="1.8"></path>
+<path d="M840,134 C840,190 660,190 660,138" fill="none" marker-end="url(#m11d-ahc)" opacity="0.6" stroke="#38bdf8" stroke-width="1.8"></path>
+<g font-family="Inter,sans-serif" font-size="13">
+<rect fill="#0e1b26" height="48" rx="12" stroke="#38bdf8" stroke-width="2" width="100" x="560" y="86"></rect><text fill="#bfe6ff" text-anchor="middle" x="610" y="116">agir</text>
+<rect fill="#0e1b26" height="48" rx="12" stroke="#38bdf8" stroke-width="2" width="100" x="790" y="86"></rect><text fill="#bfe6ff" text-anchor="middle" x="840" y="116">checar</text>
+</g>
+<text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="750" y="215">precisa de condicao de parada, senao roda pra sempre</text>
+</svg>
+</div>
+<p class="text-sm text-neutral-400 mb-6">
+<strong class="text-neutral-300">O que olhar:</strong> os dois lados sao grafos. A unica diferenca e a linha de baixo, a direita,
       que fecha a volta. Essa linha traz dois efeitos: (1) o grafo passa a poder repetir trabalho — que e exatamente o que voce quer de um agente —
       e (2) ele perde a garantia de terminar. Por isso todo ciclo precisa de uma <em>condicao de parada</em>.
     </p>
-
-    <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
-      <h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center"><span class="mr-2">⚠️</span> Atencao: ciclo sem saida = fatura infinita</h3>
-      <p class="text-neutral-300">
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center"><span class="mr-2">⚠️</span> Atencao: ciclo sem saida = fatura infinita</h3>
+<p class="text-neutral-300">
         Um DAG termina sozinho porque nao ha por onde voltar. Um ciclo, nao. Se voce ligar um agente num ciclo sem
         limite de repeticoes e sem criterio de progresso, ele roda ate acabar o seu credito. Toda vez que voce desenhar
         uma aresta de volta, escreva ao lado dela <em>quando</em> ela para de ser seguida.
       </p>
-    </div>
-
-    <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
-      <h3 class="text-lg font-semibold text-emerald-400 mb-4">Conceitos-chave</h3>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Ciclo</div><p class="text-xs text-neutral-400">Caminho que volta ao inicio</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">DAG</div><p class="text-xs text-neutral-400">Dirigido e sem ciclo</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Loop = ciclo</div><p class="text-xs text-neutral-400">O grafo minimo com volta</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Parada obrigatoria</div><p class="text-xs text-neutral-400">Toda volta precisa de saida</p></div>
-      </div>
-    </div>
-
-    <div class="flex justify-start mt-6">
-      <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors">
-        <span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span>
-      </button>
-    </div>
-  </section>
-
-  <!-- ============ TOPICO 6 ============ -->
-  <section id="topico-6" class="mb-16" data-inema-topic="modulo-1-1#topico-6">
-    <div class="flex items-center space-x-4 mb-6">
-      <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">6</span>
-      <h2 class="text-2xl font-bold">🌳 Separe da arvore (e escreva seu primeiro grafo)</h2>
-      <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar duvida neste topico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm">
-        <span aria-hidden="true">?</span><span>Tenho duvida</span>
-      </button>
-    </div>
-
-    <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-1-t6-p1">
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-emerald-400 mb-4">Conceitos-chave</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Ciclo</div><p class="text-xs text-neutral-400">Caminho que volta ao inicio</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">DAG</div><p class="text-xs text-neutral-400">Dirigido e sem ciclo</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Loop = ciclo</div><p class="text-xs text-neutral-400">O grafo minimo com volta</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Parada obrigatoria</div><p class="text-xs text-neutral-400">Toda volta precisa de saida</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como lido</span>
+</button>
+</div>
+</section>
+<!-- ============ TOPICO 6 ============ -->
+<section class="mb-16" data-inema-topic="modulo-1-1#topico-6" id="topico-6">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">6</span>
+<h2 class="text-2xl font-bold">🌳 Separe da arvore (e escreva seu primeiro grafo)</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Marcar duvida neste topico" type="button">
+<span aria-hidden="true">?</span><span>Tenho duvida</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-1-t6-p1">
       Lista, arvore e grafo sao a mesma familia com regras diferentes de quantas ligacoes cada no pode ter.
       <strong>Lista:</strong> cada item aponta pro proximo, uma fila. <strong>Arvore:</strong> cada no tem exatamente um “pai”,
       nada volta. <strong>Grafo:</strong> qualquer coisa liga em qualquer coisa. Lista e arvore sao casos particulares de grafo.
     </p>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-      <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
-        <h4 class="font-bold text-emerald-400 mb-4">✓ Use arvore quando</h4>
-        <ul class="space-y-3 text-neutral-300 text-sm">
-          <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>A hierarquia e genuina e ninguem depende de um ramo vizinho</span></li>
-          <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Voce so precisa de “contem / esta dentro de”</span></li>
-          <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Pastas, capitulos de um livro, menu de navegacao</span></li>
-        </ul>
-      </div>
-      <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
-        <h4 class="font-bold text-red-400 mb-4">✗ Nao force arvore quando</h4>
-        <ul class="space-y-3 text-neutral-300 text-sm">
-          <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Uma story depende de outra story de outra epic</span></li>
-          <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Dois modulos importam o mesmo terceiro modulo</span></li>
-          <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>O revisor devolve o trabalho pro escritor (isso e ciclo)</span></li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- EXEMPLO COPY-RUN -->
-    <div class="bg-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
-      <h3 class="text-lg font-semibold text-emerald-400 mb-2 flex items-center"><span class="mr-2">🧪</span> Exemplo pratico: escreva seu primeiro grafo</h3>
-      <p class="text-sm text-neutral-400 mb-4"><strong class="text-neutral-300">Objetivo:</strong> transformar um processo seu num grafo em JSON e ver o computador responder perguntas sobre ele. Nao precisa instalar nada — roda no console do proprio navegador (F12 → Console) ou no Node.</p>
-
-      <div class="code-box bg-dark-900 rounded-lg border border-dark-600 p-4 mb-4 overflow-x-auto">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+<h4 class="font-bold text-emerald-400 mb-4">✓ Use arvore quando</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>A hierarquia e genuina e ninguem depende de um ramo vizinho</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Voce so precisa de “contem / esta dentro de”</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Pastas, capitulos de um livro, menu de navegacao</span></li>
+</ul>
+</div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+<h4 class="font-bold text-red-400 mb-4">✗ Nao force arvore quando</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Uma story depende de outra story de outra epic</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Dois modulos importam o mesmo terceiro modulo</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>O revisor devolve o trabalho pro escritor (isso e ciclo)</span></li>
+</ul>
+</div>
+</div>
+<!-- EXEMPLO COPY-RUN -->
+<div class="bg-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-emerald-400 mb-2 flex items-center"><span class="mr-2">🧪</span> Exemplo pratico: escreva seu primeiro grafo</h3>
+<p class="text-sm text-neutral-400 mb-4"><strong class="text-neutral-300">Objetivo:</strong> transformar um processo seu num grafo em JSON e ver o computador responder perguntas sobre ele. Nao precisa instalar nada — roda no console do proprio navegador (F12 → Console) ou no Node.</p>
+<div class="code-box bg-dark-900 rounded-lg border border-dark-600 p-4 mb-4 overflow-x-auto">
 <pre class="text-sm text-neutral-300">// 1) O grafo: lista de adjacencia + pesos (minutos)
 const grafo = {
   "dormindo": { "acordar": 0 },
@@ -640,7 +591,7 @@ const grafo = {
 function caminhos(g, de, ate, visitados = [], custo = 0) {
   if (de === ate) return [{ rota: [...visitados, de], custo }];
   if (visitados.includes(de)) return [];          // corta ciclo
-  return Object.entries(g[de] || {}).flatMap(([viz, peso]) =>
+  return Object.entries(g[de] || {}).flatMap(([viz, peso]) =&gt;
     caminhos(g, viz, ate, [...visitados, de], custo + peso)
   );
 }
@@ -648,86 +599,78 @@ function caminhos(g, de, ate, visitados = [], custo = 0) {
 const r = caminhos(grafo, "dormindo", "cafe");
 r.sort((a, b) =&gt; a.custo - b.custo);
 r.forEach(c =&gt; console.log(c.custo + " min:", c.rota.join(" → ")));</pre>
-      </div>
-
-      <div class="bg-dark-700/50 rounded-lg p-4">
-        <p class="text-sm text-neutral-300"><strong class="text-emerald-400">Como verificar:</strong> voce deve ver duas linhas —
+</div>
+<div class="bg-dark-700/50 rounded-lg p-4">
+<p class="text-sm text-neutral-300"><strong class="text-emerald-400">Como verificar:</strong> voce deve ver duas linhas —
         <code class="text-emerald-400">4 min: dormindo → acordar → cafe</code> e
         <code class="text-emerald-400">10 min: dormindo → acordar → levantar → dentes → cafe</code>.
         Se aparecerem as duas, seu grafo esta correto e voce acabou de rodar uma busca de caminhos.</p>
-        <p class="text-sm text-neutral-400 mt-3"><strong class="text-neutral-300">Agora troque pelo seu:</strong> substitua os nos por
+<p class="text-sm text-neutral-400 mt-3"><strong class="text-neutral-300">Agora troque pelo seu:</strong> substitua os nos por
         <code class="text-emerald-400">&lt;etapas do seu processo&gt;</code> e os pesos por
         <code class="text-emerald-400">&lt;minutos, reais ou tokens&gt;</code>. Se aparecer mais de um caminho, voce achou uma decisao que
         seu processo estava tomando no automatico.</p>
-      </div>
-    </div>
-
-    <!-- CHECAGEM LEVE -->
-    <div data-inema-check="modulo-1-1#q1" class="inema-check mt-8 bg-dark-800 border border-dark-600 rounded-xl p-6 mb-6">
-      <p class="font-medium mb-4">Checagem rapida (nao bloqueia nada): um agente que tenta, testa, e tenta de novo ate passar — que estrutura e essa?</p>
-      <div class="inema-check-options space-y-2">
-        <button type="button" data-inema-check-option="0" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">Uma arvore, porque tem varias tentativas saindo do mesmo ponto</button>
-        <button type="button" data-inema-check-option="1" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">Um grafo dirigido com ciclo — ou seja, um loop</button>
-        <button type="button" data-inema-check-option="2" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">Um DAG, porque toda execucao tem inicio e fim</button>
-      </div>
-      <div data-inema-check-feedback class="mt-4 text-sm" role="status" aria-live="polite"></div>
-    </div>
-
-    <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
-      <h3 class="text-lg font-semibold text-emerald-400 mb-4">Conceitos-chave</h3>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Familia</div><p class="text-xs text-neutral-400">Lista ⊂ arvore ⊂ grafo</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Sinal de grafo</div><p class="text-xs text-neutral-400">Dependencia cruzada</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Adjacencia</div><p class="text-xs text-neutral-400">Dicionario no → vizinhos</p></div>
-        <div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">JSON basta</div><p class="text-xs text-neutral-400">Nao precisa de framework</p></div>
-      </div>
-    </div>
-
-    <div class="flex justify-start mt-6">
-      <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors">
-        <span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span>
-      </button>
-    </div>
-  </section>
-
-  <!-- ============ RESUMO ============ -->
-  <section class="mb-12">
-    <div class="bg-gradient-to-br from-emerald-900/40 via-dark-800 to-dark-800 rounded-xl border border-emerald-500/30 p-8">
-      <h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">📌</span> Resumo do Modulo</h2>
-      <div class="space-y-4 mb-8">
-        <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">No = coisa</strong><span class="text-neutral-400"> — substantivo, com identidade e dados. Nem gigante, nem microscopico.</span></div></div>
-        <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Aresta = relacao</strong><span class="text-neutral-400"> — verbo. E onde mora a decisao e o valor.</span></div></div>
-        <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Direcao = ordem</strong><span class="text-neutral-400"> — todo fluxo de agentes e dirigido; voltar e outra aresta.</span></div></div>
-        <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Peso = custo</strong><span class="text-neutral-400"> — sem peso nao existe “melhor caminho”. Em agentes: token, latencia, confianca, risco.</span></div></div>
-        <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Ciclo = loop</strong><span class="text-neutral-400"> — um loop e o grafo minimo com volta. Sem ciclo, e um DAG e termina sozinho.</span></div></div>
-        <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Arvore vira grafo</strong><span class="text-neutral-400"> — no instante em que aparece a primeira dependencia cruzada.</span></div></div>
-      </div>
-      <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
-        <h3 class="font-semibold text-emerald-400 mb-2">Proximo Modulo:</h3>
-        <p class="text-neutral-300">1.2 — Grafos no mundo real: a sua manha, o LinkedIn, o funil do seu SaaS e o backlog do time.</p>
-      </div>
-      <div class="flex flex-col sm:flex-row gap-4">
-        <a href="index.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">← Voltar para a Trilha</a>
-        <a href="modulo-1-2.html" class="flex-1 text-center px-6 py-3 bg-emerald-600 text-white rounded-lg font-semibold hover:bg-emerald-500 transition-colors">Proximo Modulo →</a>
-      </div>
-    </div>
-  </section>
-
-  </main>
 </div>
 </div>
-
+<!-- CHECAGEM LEVE -->
+<div class="inema-check mt-8 bg-dark-800 border border-dark-600 rounded-xl p-6 mb-6" data-inema-check="modulo-1-1#q1">
+<p class="font-medium mb-4">Checagem rapida (nao bloqueia nada): um agente que tenta, testa, e tenta de novo ate passar — que estrutura e essa?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">Uma arvore, porque tem varias tentativas saindo do mesmo ponto</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">Um grafo dirigido com ciclo — ou seja, um loop</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">Um DAG, porque toda execucao tem inicio e fim</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-emerald-400 mb-4">Conceitos-chave</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Familia</div><p class="text-xs text-neutral-400">Lista ⊂ arvore ⊂ grafo</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Sinal de grafo</div><p class="text-xs text-neutral-400">Dependencia cruzada</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Adjacencia</div><p class="text-xs text-neutral-400">Dicionario no → vizinhos</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">JSON basta</div><p class="text-xs text-neutral-400">Nao precisa de framework</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como lido</span>
+</button>
+</div>
+</section>
+<!-- ============ RESUMO ============ -->
+<section class="mb-12">
+<div class="bg-gradient-to-br from-emerald-900/40 via-dark-800 to-dark-800 rounded-xl border border-emerald-500/30 p-8">
+<h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">📌</span> Resumo do Modulo</h2>
+<div class="space-y-4 mb-8">
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">No = coisa</strong><span class="text-neutral-400"> — substantivo, com identidade e dados. Nem gigante, nem microscopico.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Aresta = relacao</strong><span class="text-neutral-400"> — verbo. E onde mora a decisao e o valor.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Direcao = ordem</strong><span class="text-neutral-400"> — todo fluxo de agentes e dirigido; voltar e outra aresta.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Peso = custo</strong><span class="text-neutral-400"> — sem peso nao existe “melhor caminho”. Em agentes: token, latencia, confianca, risco.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Ciclo = loop</strong><span class="text-neutral-400"> — um loop e o grafo minimo com volta. Sem ciclo, e um DAG e termina sozinho.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Arvore vira grafo</strong><span class="text-neutral-400"> — no instante em que aparece a primeira dependencia cruzada.</span></div></div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+<h3 class="font-semibold text-emerald-400 mb-2">Proximo Modulo:</h3>
+<p class="text-neutral-300">1.2 — Grafos no mundo real: a sua manha, o LinkedIn, o funil do seu SaaS e o backlog do time.</p>
+</div>
+<div class="flex flex-col sm:flex-row gap-4">
+<a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="index.html">← Voltar para a Trilha</a>
+<a class="flex-1 text-center px-6 py-3 bg-emerald-600 text-white rounded-lg font-semibold hover:bg-emerald-500 transition-colors" href="modulo-1-2.html">Proximo Modulo →</a>
+</div>
+</div>
+</section>
+</main>
+</div>
+</div>
 <footer class="border-t border-dark-600 py-8 mt-16">
-  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
-    <p>Graph Engineering — de loops a grafos · INEMA 2026</p>
-    <p class="mt-2">
-      <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a>
-      <span class="text-neutral-600 mx-1">-</span>
-      <a href="https://inema.pro" target="_blank" class="text-amber-700 hover:text-amber-600 dark:text-slate-300 dark:hover:text-slate-200">PRO</a>
-    </p>
-  </div>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+<p>Graph Engineering — de loops a grafos · INEMA 2026</p>
+<p class="mt-2">
+<a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+<span class="text-neutral-600 mx-1">-</span>
+<a class="text-amber-700 hover:text-amber-600 dark:text-slate-300 dark:hover:text-slate-200" href="https://inema.pro" target="_blank">PRO</a>
+</p>
+</div>
 </footer>
-
 <script>
   function toggleTopic(button) {
     const topicItem = button.closest('.topic-item');

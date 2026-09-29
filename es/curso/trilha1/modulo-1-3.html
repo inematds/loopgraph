@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="loopgraph" name="inema-course"/>
+<title>Módulo 1.3 — Cómo se recorre un grafo | Graph Engineering</title>
+<script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'emerald' };
+      function clone(o) { var r = {}; for (var x in o) r[x] = o[x]; return r; }
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed === 'object') { for (var k in DEF) if (parsed[k] != null) p[k] = parsed[k]; } }
+        else { var legacy = localStorage.getItem('theme'); if (legacy === 'light') p.theme = 'claro'; else if (legacy === 'dark') p.theme = 'inema-dark'; }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = { 'inema-dark': { dark: true, attr: null, cs: 'dark' }, 'claro': { dark: false, attr: null, cs: 'light' }, 'sepia': { dark: false, attr: 'sepia', cs: 'light' }, 'foco': { dark: null, attr: 'foco', cs: null }, 'contraste': { dark: true, attr: 'contraste', cs: 'dark' } };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark === true) html.classList.add('dark'); else if (t.dark === false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark') ? 'dark' : 'light'));
+      html.setAttribute('data-font', p.font || 'inter'); html.setAttribute('data-accent', p.accent || 'emerald');
+      var s = html.style, scale = (+p.fontScale || 100);
+      s.setProperty('--inema-font-scale', (scale / 100).toString()); s.setProperty('font-size', scale + '%');
+      s.setProperty('--measure', (+p.lineWidth || 68) + 'ch'); s.setProperty('--lh-body', (+p.leading || 1.7).toString());
+      var fam = p.font === 'system' ? 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif' : (p.font === 'leitura' ? '"Atkinson Hyperlegible", "Inter", system-ui, sans-serif' : '"Inter", system-ui, sans-serif');
+      s.setProperty('--font-body', fam);
+      var ACC = { emerald: [152,76,45], blue: [217,91,60], purple: [258,90,66], amber: [38,92,50], teal: [174,72,41], rose: [350,89,60] };
+      var a = ACC[p.accent] || ACC.emerald;
+      s.setProperty('--accent-h', a[0]+''); s.setProperty('--accent-s', a[1]+'%'); s.setProperty('--accent-l', a[2]+'%');
+      s.setProperty('--accent', 'hsl(' + a[0] + ' ' + a[1] + '% ' + a[2] + '%)');
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme = 'dark'; } catch (e) {} }
+  })();
+  </script>
+<script data-inema-manifest="" type="application/json">
+  {
+    "course": "loopgraph",
+    "tracks": [
+      { "n": "1", "title": "Fundamentos: o grafo", "modules": [
+        { "id": "1-1", "title": "O que e um grafo", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
+        { "id": "1-2", "title": "Grafos no mundo real", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+        { "id": "1-3", "title": "Como se anda num grafo", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" }
+      ]},
+      { "n": "2", "title": "Loop Engineering", "modules": [
+        { "id": "2-1", "title": "Anatomia do loop", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
+        { "id": "2-2", "title": "O verificador e o gargalo", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
+        { "id": "2-3", "title": "Onde o loop quebra", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" }
+      ]},
+      { "n": "3", "title": "Agentic x Loop x Graph", "modules": [
+        { "id": "3-1", "title": "As cinco camadas", "topics": 6, "href": "curso/trilha3/modulo-3-1.html" },
+        { "id": "3-2", "title": "O comparativo de verdade", "topics": 6, "href": "curso/trilha3/modulo-3-2.html" },
+        { "id": "3-3", "title": "Mito x fato", "topics": 6, "href": "curso/trilha3/modulo-3-3.html" }
+      ]},
+      { "n": "4", "title": "Graph Engineering na pratica", "modules": [
+        { "id": "4-1", "title": "Nos, arestas e estado", "topics": 6, "href": "curso/trilha4/modulo-4-1.html" },
+        { "id": "4-2", "title": "Org graph x work graph", "topics": 6, "href": "curso/trilha4/modulo-4-2.html" },
+        { "id": "4-3", "title": "Falhas, harness e observabilidade", "topics": 6, "href": "curso/trilha4/modulo-4-3.html" }
+      ]},
+      { "n": "5", "title": "Mao na massa", "modules": [
+        { "id": "5-1", "title": "Do loop ao grafo", "topics": 6, "href": "curso/trilha5/modulo-5-1.html" },
+        { "id": "5-2", "title": "Grafos de negocio e de tarefas", "topics": 6, "href": "curso/trilha5/modulo-5-2.html" },
+        { "id": "5-3", "title": "Biblioteca de prompts", "topics": 6, "href": "curso/trilha5/modulo-5-3.html" }
+      ]}
+    ]
+  }
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }</script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../../assets/learn.css" rel="stylesheet"/>
+<link href="../../../assets/curso.css" rel="stylesheet"/>
+<link href="https://inematds.github.io/loopgraph/curso/trilha1/modulo-1-3.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/loopgraph/en/curso/trilha1/modulo-1-3.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/loopgraph/es/curso/trilha1/modulo-1-3.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha1/modulo-1-3.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="../../../en/curso/trilha1/modulo-1-3.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="modulo-1-3.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">ES</a></div>
+<a class="sr-only focus:not-sr-only focus:absolute focus:z-[60] focus:m-2 focus:px-4 focus:py-2 focus:rounded-lg focus:bg-dark-700" href="#conteudo">Saltar al contenido</a>
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14 gap-2">
+<div class="flex items-center space-x-3 flex-shrink-0">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html">
+<span class="text-2xl">🕸️</span><span class="font-bold text-lg hidden lg:inline">Graph Engineering</span>
+</a>
+<span class="text-neutral-600 hidden sm:inline">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium hidden sm:inline" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+<span class="text-neutral-600 hidden sm:inline">-</span>
+<a class="text-amber-700 hover:text-amber-600 dark:text-slate-300 dark:hover:text-slate-200 text-sm font-medium hidden sm:inline" href="https://inema.pro" target="_blank">PRO</a>
+</div>
+<div class="flex items-center space-x-1">
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-emerald-400 bg-emerald-500/10" href="index.html"><span class="lg:hidden">T1</span><span class="hidden lg:inline">Fundamentos</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors" href="../trilha2/index.html"><span class="lg:hidden">T2</span><span class="hidden lg:inline">Bucles</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors" href="../trilha3/index.html"><span class="lg:hidden">T3</span><span class="hidden lg:inline">Comparativo</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors" href="../trilha4/index.html"><span class="lg:hidden">T4</span><span class="hidden lg:inline">Práctica</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors" href="../trilha5/index.html"><span class="lg:hidden">T5</span><span class="hidden lg:inline">Manos a la obra</span></a>
+<button class="hidden sm:inline-flex items-center gap-1 px-2 py-1.5 rounded-lg text-sm text-neutral-400 hover:text-neutral-100 transition-colors" data-inema-journey-open="" title="Mi recorrido" type="button">
+<span aria-hidden="true">◷</span><span class="hidden xl:inline">Recorrido</span><span aria-hidden="true" class="inema-journey-badge hidden"></span>
+</button>
+<button aria-label="Alternar entre tema claro y oscuro" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<nav aria-label="Ruta de navegación" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+<div class="flex items-center space-x-2 text-sm text-neutral-400">
+<a class="hover:text-emerald-400" href="../../index.html">Inicio</a><span>/</span>
+<a class="hover:text-emerald-400" href="index.html">Trilha 1</a><span>/</span>
+<span class="text-emerald-400">Módulo 1.3</span>
+</div>
+</nav>
+<header class="bg-gradient-to-br from-emerald-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600" data-inema-module="1-3" data-inema-track="1">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-emerald-500/20 text-emerald-400 text-xs font-semibold rounded-full mb-4">MÓDULO 1.3</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">🧭 Cómo se recorre un grafo</h1>
+<p class="text-lg text-neutral-400 max-w-3xl">
+      Un grafo detenido no sirve para nada. Este módulo es la caja de herramientas: cómo recorrerlo, cómo encontrar el camino más barato,
+      cómo saber quién se ejecuta antes que quién, cuántos pueden ejecutarse en paralelo y cómo no quedarse atrapado en un ciclo.
+      Todo esto vuelve a aparecer <em>idéntico</em> en la Trilha 4, con agentes en lugar de nodos.
+    </p>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">6</div><div class="text-xs text-neutral-400">Temas</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">40</div><div class="text-xs text-neutral-400">Minutos</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">Básico</div><div class="text-xs text-neutral-400">Nivel</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">Práctico</div><div class="text-xs text-neutral-400">Tipo</div></div>
+</div>
+<div class="mt-6 max-w-2xl bg-dark-800 rounded-xl border border-dark-600 p-4">
+<div class="flex items-center justify-between">
+<span class="text-sm text-neutral-300 font-semibold">Progreso de este módulo</span>
+<div aria-label="Progreso del módulo 1.3" aria-valuemax="100" aria-valuemin="0" class="inema-meter text-sm" data-inema-meter="modulo:1-3" role="progressbar">
+<span class="inema-meter-pct text-emerald-400 font-bold">0%</span><span class="inema-meter-count text-neutral-400 ml-2">0 de 6</span>
+</div>
+</div>
+</div>
+</div>
+</header>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="lg:grid lg:grid-cols-[220px_minmax(0,1fr)] lg:gap-10">
+<nav aria-label="Índice de la página" class="hidden lg:block sticky top-24 self-start" data-inema-toc="">
+<p class="text-sm text-neutral-400 mb-3">Sección <span class="inema-toc-pos">1</span> de <span class="inema-toc-total">6</span></p>
+<ul class="space-y-1 text-sm">
+<li><a class="inema-toc-link text-neutral-400 hover:text-emerald-400" href="#topico-1">1. Elige amplitud o profundidad</a></li>
+<li><a class="inema-toc-link text-neutral-400 hover:text-emerald-400" href="#topico-2">2. Encuentra el camino más barato</a></li>
+<li><a class="inema-toc-link text-neutral-400 hover:text-emerald-400" href="#topico-3">3. Descubre el orden</a></li>
+<li><a class="inema-toc-link text-neutral-400 hover:text-emerald-400" href="#topico-4">4. Cuenta el paralelismo</a></li>
+<li><a class="inema-toc-link text-neutral-400 hover:text-emerald-400" href="#topico-5">5. Sal del ciclo</a></li>
+<li><a class="inema-toc-link text-neutral-400 hover:text-emerald-400" href="#topico-6">6. Escribe en JSON</a></li>
+</ul>
+</nav>
+<main class="inema-prose" id="conteudo">
+<!-- TOPICO 1 -->
+<section class="mb-16" data-inema-topic="modulo-1-3#topico-1" id="topico-1">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">1</span>
+<h2 class="text-2xl font-bold">🚶 Elige: recorrer en anchura o profundizar</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Marcar duda en este tema" type="button"><span aria-hidden="true">?</span><span>Tengo una duda</span></button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-3-t1-p1">
+<strong class="text-emerald-400">Recorrer</strong> (o «hacer el recorrido») y visitar los nodos de un grafo siguiendo las aristas.
+      Hay dos maneras básicas, y la elección entre ellas no es un detalle técnico: es una decisión estratégica
+      que vas a repetir con agentes.
+    </p>
+<div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">🆕</span> ¿Nuevo aquí? BFS y DFS</h3>
+<ul class="space-y-2 text-neutral-300 text-sm">
+<li><strong class="text-neutral-100">BFS</strong> (<em>breadth-first search</em>, búsqueda en anchura): visita a todos los vecinos de un nodo antes de profundizar. Imagina explorar un edificio piso por piso.</li>
+<li><strong class="text-neutral-100">DFS</strong> (<em>depth-first search</em>, búsqueda en profundidad): elige un camino y lo sigue hasta el final antes de volver e intentar otro. Imagina entrar en un pasillo hasta la última puerta antes de regresar.</li>
+</ul>
+</div>
+<div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-4 overflow-hidden">
+<svg aria-label="Comparación lado a lado del mismo árbol de nodos. A la izquierda, por anchura: los nodos se numeran por nivel, primero el superior, luego toda la fila del medio y después toda la fila inferior. A la derecha, por profundidad: la numeración baja por una rama entera hasta el final antes de volver y visitar la otra rama." class="w-full h-auto" role="img" viewbox="0 0 1000 260">
+<defs>
+<lineargradient id="m13a-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#34d399"></stop><stop offset="1" stop-color="#10b981"></stop></lineargradient>
+<filter height="180%" id="m13a-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="m13a-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#10b981" opacity="0.12" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#m13a-grid)" height="260" width="1000" x="0" y="0"></rect>
+<path d="M500,16 L500,244" opacity="0.4" stroke="#9ca3af" stroke-dasharray="9 9" stroke-width="1.5"></path>
+<text fill="#a7f3d0" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="245" y="34">ANCHURA (BFS) — paso a paso</text>
+<g fill="none" opacity="0.5" stroke="#34d399" stroke-width="1.8">
+<path d="M245,86 L150,140"></path><path d="M245,86 L340,140"></path>
+<path d="M150,164 L100,208"></path><path d="M150,164 L200,208"></path>
+<path d="M340,164 L390,208"></path>
+</g>
+<g font-family="Inter,sans-serif" font-size="14" font-weight="600">
+<g filter="url(#m13a-glow)"><circle cx="245" cy="64" fill="#0e2018" r="22" stroke="url(#m13a-grad)" stroke-width="2"></circle></g><text fill="#34d399" text-anchor="middle" x="245" y="70">1</text>
+<circle cx="150" cy="142" fill="#0e2018" r="22" stroke="#34d399" stroke-width="2"></circle><text fill="#a7f3d0" text-anchor="middle" x="150" y="148">2</text>
+<circle cx="340" cy="142" fill="#0e2018" r="22" stroke="#34d399" stroke-width="2"></circle><text fill="#a7f3d0" text-anchor="middle" x="340" y="148">3</text>
+<circle cx="100" cy="210" fill="#0e2018" r="22" stroke="#34d399" stroke-width="2"></circle><text fill="#a7f3d0" text-anchor="middle" x="100" y="216">4</text>
+<circle cx="200" cy="210" fill="#0e2018" r="22" stroke="#34d399" stroke-width="2"></circle><text fill="#a7f3d0" text-anchor="middle" x="200" y="216">5</text>
+<circle cx="390" cy="210" fill="#0e2018" r="22" stroke="#34d399" stroke-width="2"></circle><text fill="#a7f3d0" text-anchor="middle" x="390" y="216">6</text>
+</g>
+<text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="750" y="34">PROFUNDIDAD (DFS) — pasillo hasta el final</text>
+<g fill="none" opacity="0.5" stroke="#38bdf8" stroke-width="1.8">
+<path d="M750,86 L655,140"></path><path d="M750,86 L845,140"></path>
+<path d="M655,164 L605,208"></path><path d="M655,164 L705,208"></path>
+<path d="M845,164 L895,208"></path>
+</g>
+<g font-family="Inter,sans-serif" font-size="14" font-weight="600">
+<g filter="url(#m13a-glow)"><circle cx="750" cy="64" fill="#0e1b26" r="22" stroke="#38bdf8" stroke-width="2"></circle></g><text fill="#bfe6ff" text-anchor="middle" x="750" y="70">1</text>
+<circle cx="655" cy="142" fill="#0e1b26" r="22" stroke="#38bdf8" stroke-width="2"></circle><text fill="#bfe6ff" text-anchor="middle" x="655" y="148">2</text>
+<circle cx="845" cy="142" fill="#0e1b26" r="22" stroke="#38bdf8" stroke-width="2"></circle><text fill="#bfe6ff" text-anchor="middle" x="845" y="148">5</text>
+<circle cx="605" cy="210" fill="#0e1b26" r="22" stroke="#38bdf8" stroke-width="2"></circle><text fill="#bfe6ff" text-anchor="middle" x="605" y="216">3</text>
+<circle cx="705" cy="210" fill="#0e1b26" r="22" stroke="#38bdf8" stroke-width="2"></circle><text fill="#bfe6ff" text-anchor="middle" x="705" y="216">4</text>
+<circle cx="895" cy="210" fill="#0e1b26" r="22" stroke="#38bdf8" stroke-width="2"></circle><text fill="#bfe6ff" text-anchor="middle" x="895" y="216">6</text>
+</g>
+</svg>
+</div>
+<p class="text-sm text-neutral-400 mb-6">
+<strong class="text-neutral-300">Qué observar:</strong> e o <em>mismo</em> grafo de ambos lados — solo cambia el orden de los números.
+      En anchura, el 4 y el 5 solo aparecen después de todo el segundo nivel. En profundidad, el 3 y el 4 aparecen antes de que siquiera se toque la rama de la derecha.
+      Ninguno de los dos es “mejor”: la anchura encuentra primero lo más cercano, la profundidad encuentra <em>una</em> responde rápido.
+    </p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+<h4 class="font-bold text-emerald-400 mb-4">✓ La amplitud sirve cuando</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Quieres el más cercano / el más corto (grados de separación)</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Vale más revisar muchas opciones superficialmente que profundizar en una</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Con agentes: «dame 8 enfoques diferentes, sin profundizar»</span></li>
+</ul>
+</div>
+<div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6">
+<h4 class="font-bold text-blue-400 mb-4">✓ La profundidad sirve cuando</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-blue-400">✓</span><span>Cualquier solución válida ya resuelve el problema y quieres llegar rápido</span></li>
+<li class="flex items-start space-x-2"><span class="text-blue-400">✓</span><span>El camino solo tiene sentido completo (no se puede evaluar a medias)</span></li>
+<li class="flex items-start space-x-2"><span class="text-blue-400">✓</span><span>Con agentes: «sigue esta hipótesis hasta el final antes de cambiar»</span></li>
+</ul>
+</div>
+</div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center"><span class="mr-2">⚠️</span> La regla que evita que se bloquee</h3>
+<p class="text-neutral-300">Marca quién ya fue visitado. Sin eso, cualquier ciclo convierte tu recorrido en un bucle infinito: el algoritmo va y viene entre los mismos dos nodos para siempre. Es el error número 1 de quien escribe recorridos a mano.</p>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-emerald-400 mb-4">Conceptos clave</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">BFS</div><p class="text-xs text-neutral-400">Paso a paso</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">DFS</div><p class="text-xs text-neutral-400">Corredor hasta el final</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Visitados</div><p class="text-xs text-neutral-400">Sin marcar, el ciclo se atasca</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Se convierte en estrategia</div><p class="text-xs text-neutral-400">Anchura o profundidad, con agentes</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TOPICO 2 -->
+<section class="mb-16" data-inema-topic="modulo-1-3#topico-2" id="topico-2">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">2</span>
+<h2 class="text-2xl font-bold">🛣️ Encuentra el camino económico (no el más corto)</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Marcar duda en este tema" type="button"><span aria-hidden="true">?</span><span>Tengo una duda</span></button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-3-t2-p1">
+      «Camino mínimo» casi siempre significa <strong>menor suma de pesos</strong>, no menos saltos.
+      Son cosas diferentes y confundirlas cuesta dinero. Un camino de 2 aristas caras puede ser peor que uno de 5 aristas baratas.
+    </p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-3-t2-p2">
+      En la rutina matutina del módulo anterior quedó claro: el atajo tenía <em>menos</em> nodos y también costaba menos.
+      Pero cambia el peso por «riesgo» y el diseño se invierte: el atajo puede ser el camino más corto y el más peligroso al mismo tiempo.
+      <strong class="text-emerald-400">El peso que eliges define qué es “mejor”.</strong>
+</p>
+<div class="space-y-6 mb-6">
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center"><span class="text-emerald-400 font-bold">1</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">Elige el peso antes de optimizar</h4>
+<p class="text-neutral-300 text-sm">¿Tokens? ¿Latencia? ¿Riesgo? ¿Confianza? Cada elección produce una ruta óptima diferente. Optimizar sin declarar el peso es optimizar a ciegas.</p>
+</div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center"><span class="text-emerald-400 font-bold">2</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">El peso puede cambiar durante la ejecución</h4>
+<p class="text-neutral-300 text-sm">La latencia de una API aumenta, un modelo se congestiona, el precio cambia. Una ruta óptima calculada una vez se convierte en una apuesta al cabo de un tiempo.</p>
+</div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center"><span class="text-emerald-400 font-bold">3</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">Más de un peso al mismo tiempo</h4>
+<p class="text-neutral-300 text-sm">Cuando quieres algo barato <em>e</em> confiable, no existe «el» óptimo: hay concesiones. Y ahí ya estás en el problema que la Trilha 2 llama «una métrica nunca basta».</p>
+</div>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-emerald-400 mb-4">Conceptos clave</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Corto ≠ barato</div><p class="text-xs text-neutral-400">Cuenta el peso, no los saltos</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">El peso define lo óptimo</div><p class="text-xs text-neutral-400">Declara antes</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Peso dinámico</div><p class="text-xs text-neutral-400">La ruta envejece</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Multipeso</div><p class="text-xs text-neutral-400">Se convierte en trade-off, no en óptimo</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TOPICO 3 -->
+<section class="mb-16" data-inema-topic="modulo-1-3#topico-3" id="topico-3">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">3</span>
+<h2 class="text-2xl font-bold">📋 Descubre el orden: topológico</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Marcar duda en este tema" type="button"><span aria-hidden="true">?</span><span>Tengo una duda</span></button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-3-t3-p1">
+<strong class="text-emerald-400">Orden topológico</strong> y es una fila de ejecución válida en un DAG: nadie aparece antes
+      que alguien de quien depende. Es lo que el <code class="text-emerald-400">make</code> calcula, es lo que calcula tu CI —
+      y es lo que calculará el orquestador de tu grafo de agentes.
+    </p>
+<div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center"><span class="mr-2">🎯</span> Dos consecuencias prácticas</h3>
+<ul class="space-y-2 text-neutral-300">
+<li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span><strong>No existe un único orden.</strong> Varias colas pueden ser válidas. Eso es bueno: significa que hay libertad, y esa libertad es exactamente el espacio para el paralelismo.</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span><strong>Si no se puede ordenar, hay un ciclo.</strong> El algoritmo se bloquea y eso es un <em>diagnóstico</em>, no es un bug: acaba de mostrarte una dependencia circular que no habías visto.</span></li>
+</ul>
+</div>
+<div class="bg-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-emerald-400 mb-2 flex items-center"><span class="mr-2">🧪</span> Ejemplo práctico: ordena tu grafo y detecta ciclos</h3>
+<p class="text-sm text-neutral-400 mb-4"><strong class="text-neutral-300">Objetivo:</strong> dado un grafo de dependencias, obtener el orden de ejecución y recibir un error claro si hay un ciclo. Pégalo en la consola del navegador (F12) o ejecútalo en Node.</p>
+<div class="code-box bg-dark-900 rounded-lg border border-dark-600 p-4 mb-4 overflow-x-auto">
+<pre class="text-sm text-neutral-300">// grafo: no -&gt; lista de quem DEPENDE dele (roda depois)
+const dep = {
+  "pesquisar": ["escrever"],
+  "escrever":  ["revisar"],
+  "coletar_dados": ["escrever"],
+  "revisar":   []
+};
+
+function ordenar(g) {
+  const grau = {}, saida = [];
+  Object.keys(g).forEach(n =&gt; grau[n] = 0);
+  Object.values(g).flat().forEach(n =&gt; grau[n] = (grau[n] || 0) + 1);
+  let prontos = Object.keys(grau).filter(n =&gt; grau[n] === 0);
+
+  while (prontos.length) {
+    console.log("rodam em PARALELO agora:", prontos.join(", "));
+    const proximos = [];
+    for (const n of prontos) {
+      saida.push(n);
+      for (const viz of (g[n] || [])) if (--grau[viz] === 0) proximos.push(viz);
+    }
+    prontos = proximos;
+  }
+  if (saida.length !== Object.keys(grau).length)
+    throw new Error("CICLO detectado — nao existe ordem valida");
+  return saida;
+}
+
+console.log("ordem final:", ordenar(dep).join(" → "));</pre>
+</div>
+<div class="bg-dark-700/50 rounded-lg p-4">
+<p class="text-sm text-neutral-300"><strong class="text-emerald-400">Cómo verificar:</strong> la primera línea debe decir
+        <code class="text-emerald-400">rodam em PARALELO agora: pesquisar, coletar_dados</code> — las dos sin dependencias.
+        Después <code class="text-emerald-400">escrever</code>, después <code class="text-emerald-400">revisar</code>.
+        Ahora <strong>fuerza un ciclo</strong>: agrega <code class="text-emerald-400">"revisar": ["pesquisar"]</code> y ejecútalo de nuevo: tiene que lanzar el error de CICLO.
+        Si lo lanza, acabas de implementar la detección de dependencia circular.</p>
+<p class="text-sm text-neutral-400 mt-3"><strong class="text-neutral-300">Cambia:</strong> los nombres por <code class="text-emerald-400">&lt;as etapas do seu processo&gt;</code>. Las líneas «se ejecutan EN PARALELO» son tu plan de asignación.</p>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-emerald-400 mb-4">Conceptos clave</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Cola válida</div><p class="text-xs text-neutral-400">Nadie antes de tu dependencia</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">No es la única</div><p class="text-xs text-neutral-400">Varias órdenes sirven</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Grado de entrada</div><p class="text-xs text-neutral-400">Cero = listo para ejecutarse</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Si falla = ciclo</div><p class="text-xs text-neutral-400">Diagnóstico, no bug</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TOPICO 4 -->
+<section class="mb-16" data-inema-topic="modulo-1-3#topico-4" id="topico-4">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">4</span>
+<h2 class="text-2xl font-bold">⚡ Cuenta el paralelismo real</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Marcar duda en este tema" type="button"><span aria-hidden="true">?</span><span>Tengo una duda</span></button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-3-t4-p1">
+      El script anterior ya imprimió la respuesta: cada línea “se ejecuta EN PARALELO ahora” es un <strong class="text-emerald-400">nivel</strong> del grafo,
+      y el tamaño de esa línea es cuántos trabajadores caben en ese momento. Esto vale igual para personas y agentes.
+      Lanzar 20 agentes en un grafo que solo libera 3 nodos a la vez no acelera nada: solo gasta.
+    </p>
+<div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-4 overflow-hidden">
+<svg aria-label="Tres franjas horizontales que representan niveles de ejecución. El nivel 1 tiene dos nodos uno al lado del otro, con la etiqueta «caben 2». El nivel 2 tiene tres nodos, con la etiqueta «caben 3». El nivel 3 tiene un solo nodo, con la etiqueta «cabe 1, cuello de botella». Flechas descienden de un nivel al siguiente." class="w-full h-auto" role="img" viewbox="0 0 1000 280">
+<defs>
+<lineargradient id="m13b-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#34d399"></stop><stop offset="1" stop-color="#10b981"></stop></lineargradient>
+<filter height="180%" id="m13b-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="m13b-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#10b981" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="m13b-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#34d399"></path></marker>
+</defs>
+<rect fill="url(#m13b-grid)" height="280" width="1000" x="0" y="0"></rect>
+<text fill="#a7f3d0" font-family="Inter,sans-serif" font-size="13" font-weight="600" x="90" y="52">nivel 1 — caben 2</text>
+<text fill="#a7f3d0" font-family="Inter,sans-serif" font-size="13" font-weight="600" x="90" y="152">nivel 2 — caben 3</text>
+<text fill="#fca5a5" font-family="Inter,sans-serif" font-size="13" font-weight="600" x="90" y="252">nivel 3 — cabe 1 (cuello de botella)</text>
+<g fill="none" opacity="0.45" stroke="#34d399" stroke-width="1.8">
+<path d="M420,62 L470,104" marker-end="url(#m13b-ah)"></path><path d="M560,62 L620,104" marker-end="url(#m13b-ah)"></path>
+<path d="M470,162 L640,204" marker-end="url(#m13b-ah)"></path><path d="M620,162 L660,204" marker-end="url(#m13b-ah)"></path><path d="M770,162 L700,204" marker-end="url(#m13b-ah)"></path>
+</g>
+<g font-family="Inter,sans-serif" font-size="12.5" font-weight="600">
+<rect fill="#0e1b26" height="38" rx="11" stroke="#38bdf8" stroke-width="2" width="120" x="360" y="24"></rect><text fill="#bfe6ff" text-anchor="middle" x="420" y="49">A</text>
+<rect fill="#0e1b26" height="38" rx="11" stroke="#38bdf8" stroke-width="2" width="120" x="500" y="24"></rect><text fill="#bfe6ff" text-anchor="middle" x="560" y="49">B</text>
+<rect fill="#0e1b26" height="38" rx="11" stroke="#38bdf8" stroke-width="2" width="120" x="410" y="124"></rect><text fill="#bfe6ff" text-anchor="middle" x="470" y="149">C</text>
+<rect fill="#0e1b26" height="38" rx="11" stroke="#38bdf8" stroke-width="2" width="120" x="560" y="124"></rect><text fill="#bfe6ff" text-anchor="middle" x="620" y="149">D</text>
+<rect fill="#0e1b26" height="38" rx="11" stroke="#38bdf8" stroke-width="2" width="120" x="710" y="124"></rect><text fill="#bfe6ff" text-anchor="middle" x="770" y="149">E</text>
+<g filter="url(#m13b-glow)"><rect fill="#0e2018" height="38" rx="11" stroke="url(#m13b-grad)" stroke-width="2" width="120" x="610" y="204"></rect></g>
+<text fill="#34d399" text-anchor="middle" x="670" y="229">unir</text>
+</g>
+<text fill="#a7f3d0" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="500" y="272">el ancho de cada nivel = cuántos agentes tienen sentido en ese momento</text>
+</svg>
+</div>
+<p class="text-sm text-neutral-400 mb-6">
+<strong class="text-neutral-300">Qué observar:</strong> las tres franjas tienen anchos diferentes — 2, 3 y 1.
+      El último nivel (“unir”) es un <strong>cuello de botella</strong>: por muchos agentes que tengas, por ahí pasa uno a la vez.
+      Este patrón — abrir en varios y luego converger en uno solo — es el <em>fan-out / fan-in</em> que la Trilha 4 nombrará.
+    </p>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-emerald-400 mb-4">Conceptos clave</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Nivel</div><p class="text-xs text-neutral-400">Quién está listo al mismo tiempo</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Anchura</div><p class="text-xs text-neutral-400">Límite de trabajadores</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Cuello de botella</div><p class="text-xs text-neutral-400">Nivel de ancho 1</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Fan-out / fan-in</div><p class="text-xs text-neutral-400">Se abre y después se une</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TOPICO 5 -->
+<section class="mb-16" data-inema-topic="modulo-1-3#topico-5" id="topico-5">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">5</span>
+<h2 class="text-2xl font-bold">🌀 Escapa del ciclo: límite, progreso, intervención humana</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Marcar duda en este tema" type="button"><span aria-hidden="true">?</span><span>Tengo una duda</span></button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-3-t5-p1">
+      El ciclo no es un defecto: es lo que permite repetir el trabajo hasta que quede bien. El defecto es un ciclo <em>sin salida</em>.
+      Hay exactamente tres tipos de salida, y todo ciclo que dibujes necesita tener al lado escrito al menos uno de ellos.
+    </p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+<h4 class="font-bold text-emerald-400 mb-4">✓ Salidas legítimas</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span><strong>Límite:</strong> «como máximo 5 vueltas» — rudimentario, pero siempre se detiene</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span><strong>Criterio de progreso:</strong> «si dos vueltas seguidas no mejoraron, abandona»</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span><strong>Humano:</strong> «después de N vueltas, pregúntale a alguien»</span></li>
+</ul>
+</div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+<h4 class="font-bold text-red-400 mb-4">✗ Salidas falsas</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>«Se detiene cuando esté bien» — ¿quién decide qué está bien?</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>«El modelo sabe cuándo detenerse» — no lo sabe, y la cuenta llega</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Deadlock mutuo: A espera a B, B espera a A, nadie avanza</span></li>
+</ul>
+</div>
+</div>
+<div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Consejo práctico</h3>
+<p class="text-neutral-300">Usa los tres juntos, por capas: el criterio de progreso como salida <em>normal</em>, un límite como red de seguridad y una persona como última instancia. El límite por sí solo es un desperdicio (se ejecuta 5 veces aunque 2 bastaran); el criterio por sí solo es arriesgado (si la medición falla, nunca se activa).</p>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-emerald-400 mb-4">Conceptos clave</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">El ciclo es útil</div><p class="text-xs text-neutral-400">Repetir hasta que salga bien</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Límite</div><p class="text-xs text-neutral-400">Red de seguridad</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Progreso</div><p class="text-xs text-neutral-400">Salida normal</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Deadlock</div><p class="text-xs text-neutral-400">La espera mutua lo bloquea todo</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TOPICO 6 -->
+<section class="mb-16" data-inema-topic="modulo-1-3#topico-6" id="topico-6">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">6</span>
+<h2 class="text-2xl font-bold">🔍 Escribe en JSON: el formato que lee el orquestador</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Marcar duda en este tema" type="button"><span aria-hidden="true">?</span><span>Tengo una duda</span></button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-3-t6-p1">
+      En la práctica, un grafo es un diccionario: para cada nodo, la lista de vecinos. Eso se llama
+      <strong class="text-emerald-400">lista de adyacencia</strong> y resuelve el 95% de los casos.
+      El truco para los agentes es sencillo: además de los vecinos, guarda <em>los datos del nodo</em> — modelo, herramientas, prompt, límite de costo.
+      Eso es lo que transforma un grafo común en un grafo <strong>agéntico</strong>.
+    </p>
+<div class="bg-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-emerald-400 mb-2 flex items-center"><span class="mr-2">🧪</span> Ejemplo práctico: el esqueleto que vas a reutilizar hasta el final del curso</h3>
+<p class="text-sm text-neutral-400 mb-4"><strong class="text-neutral-300">Objetivo:</strong> tener un archivo <code class="text-emerald-400">grafo.json</code> que describe nodos (con configuración de agente) y aristas (con condición). Guárdalo como <code class="text-emerald-400">grafo.json</code> en la carpeta de tu proyecto.</p>
+<div class="code-box bg-dark-900 rounded-lg border border-dark-600 p-4 mb-4 overflow-x-auto">
+<pre class="text-sm text-neutral-300">{
+  "nos": {
+    "pesquisar": {
+      "papel": "Levanta fontes sobre &lt;o tema&gt; e resume em notas curtas",
+      "modelo": "&lt;modelo rapido e barato&gt;",
+      "ferramentas": ["busca_web", "ler_url"],
+      "teto_custo_usd": 0.50
+    },
+    "escrever": {
+      "papel": "Escreve o texto usando SO as notas recebidas",
+      "modelo": "&lt;modelo bom de escrita&gt;",
+      "ferramentas": [],
+      "teto_custo_usd": 1.00
+    },
+    "revisar": {
+      "papel": "Confere fatos e clareza. Responde aprovado: true|false",
+      "modelo": "&lt;modelo forte de raciocinio&gt;",
+      "ferramentas": ["busca_web"],
+      "contexto_limpo": true,
+      "teto_custo_usd": 1.00
+    }
+  },
+  "arestas": [
+    { "de": "pesquisar", "para": "escrever", "quando": "sempre",  "passa": "notas" },
+    { "de": "escrever",  "para": "revisar",  "quando": "sempre",  "passa": "rascunho" },
+    { "de": "revisar",   "para": "escrever", "quando": "aprovado == false", "passa": "criticas",
+      "max_voltas": 2 },
+    { "de": "revisar",   "para": "FIM",      "quando": "aprovado == true" }
+  ]
+}</pre>
+</div>
+<div class="bg-dark-700/50 rounded-lg p-4">
+<p class="text-sm text-neutral-300"><strong class="text-emerald-400">Cómo verificar:</strong> cuatro comprobaciones, todas visuales —
+        (1) el JSON es válido (pégalo en cualquier validador o ejecuta <code class="text-emerald-400">JSON.parse</code>);
+        (2) existe al menos <strong>una</strong> arista con <code class="text-emerald-400">quando</code> diferente de <code class="text-emerald-400">"sempre"</code> — si no, escribiste una cola, no un grafo;
+        (3) toda arista de regreso tiene <code class="text-emerald-400">max_voltas</code> — y es la condición de parada del tema 5;
+        (4) existe un camino hasta <code class="text-emerald-400">"FIM"</code>. Si falta cualquiera de los cuatro, el grafo tiene un defecto real.</p>
+<p class="text-sm text-neutral-400 mt-3"><strong class="text-neutral-300">Cambia:</strong> todo entre <code class="text-emerald-400">&lt; &gt;</code>. Guarda este archivo — la Ruta 5 volverá a él para convertirlo en código ejecutable.</p>
+</div>
+</div>
+<div class="inema-check mt-8 bg-dark-800 border border-dark-600 rounded-xl p-6 mb-6" data-inema-check="modulo-1-3#q1">
+<p class="font-medium mb-4">Verificación rápida: tu algoritmo de ordenamiento topológico se bloquea y no puede producir la fila. ¿Qué significa eso?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">El grafo es demasiado grande y falta memoria</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">Hay una dependencia circular: un ciclo en el grafo</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">Faltó definir los pesos de las aristas</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-emerald-400 mb-4">Conceptos clave</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Lista de adyacencia</div><p class="text-xs text-neutral-400">Nodo → vecinos</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Datos en el nodo</div><p class="text-xs text-neutral-400">Modelo, herramientas, límite</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Condición en la arista</div><p class="text-xs text-neutral-400">Sin ella, solo es una fila</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-emerald-400 font-semibold text-sm mb-1">Sin framework</div><p class="text-xs text-neutral-400">JSON ya basta para empezar</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<section class="mb-12">
+<div class="bg-gradient-to-br from-emerald-900/40 via-dark-800 to-dark-800 rounded-xl border border-emerald-500/30 p-8">
+<h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">📌</span> Resumen del módulo</h2>
+<div class="space-y-4 mb-8">
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Anchura x profundidad</strong><span class="text-neutral-400"> — recorrer por encima o explorar a fondo; siempre marca los visitados.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Corto ≠ barato</strong><span class="text-neutral-400"> — el peso que eliges es lo que define qué es «mejor».</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Orden topológico</strong><span class="text-neutral-400"> — la cola de ejecución; si falla, encontraste un ciclo.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Anchura del nivel = paralelismo real</strong><span class="text-neutral-400"> — y el cuello de botella es el nivel de ancho 1.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Todo ciclo necesita una salida</strong><span class="text-neutral-400"> — límite, criterio de progreso y una persona, en capas.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">JSON basta</strong><span class="text-neutral-400"> — nodo con configuración de agente + arista con condición = grafo agéntico.</span></div></div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+<h3 class="font-semibold text-emerald-400 mb-2">Próxima ruta:</h3>
+<p class="text-neutral-300">Trilha 2 — Loop Engineering: la anatomía del ciclo, por qué el verificador es el cuello de botella y las cuatro formas estructurales en que un loop te traiciona.</p>
+</div>
+<div class="flex flex-col sm:flex-row gap-4">
+<a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="modulo-1-2.html">← Módulo anterior</a>
+<a class="flex-1 text-center px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-500 transition-colors" href="../trilha2/index.html">Trilha 2: Loop Engineering →</a>
+</div>
+</div>
+</section>
+</main>
+</div>
+</div>
+<footer class="border-t border-dark-600 py-8 mt-16">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+<p>Graph Engineering — de loops a grafos · INEMA 2026</p>
+<p class="mt-2">
+<a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+<span class="text-neutral-600 mx-1">-</span>
+<a class="text-amber-700 hover:text-amber-600 dark:text-slate-300 dark:hover:text-slate-200" href="https://inema.pro" target="_blank">PRO</a>
+</p>
+</div>
+</footer>
+<script>
+  function toggleTopic(button) {
+    const topicItem = button.closest('.topic-item');
+    const explanation = topicItem.querySelector('.topic-explanation');
+    const moduleCard = button.closest('.bg-dark-800') || document;
+    moduleCard.querySelectorAll('.topic-explanation.active').forEach(exp => { if (exp !== explanation) { exp.classList.remove('active'); const b = exp.closest('.topic-item').querySelector('button'); if (b) b.setAttribute('aria-expanded','false'); } });
+    explanation.classList.toggle('active');
+    button.setAttribute('aria-expanded', explanation.classList.contains('active') ? 'true' : 'false');
+  }
+  function openModal(modalId) { const m = document.getElementById(modalId); if (m) { m.classList.remove('hidden'); document.body.style.overflow = 'hidden'; } }
+  function closeModal() { document.querySelectorAll('.modal').forEach(m => m.classList.add('hidden')); document.body.style.overflow = 'auto'; }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+  const themeToggle = document.getElementById('theme-toggle');
+  const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+  const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+  const htmlEl = document.documentElement;
+  if (htmlEl.classList.contains('dark')) themeToggleLightIcon.classList.remove('hidden'); else themeToggleDarkIcon.classList.remove('hidden');
+  themeToggle.addEventListener('click', () => {
+    themeToggleDarkIcon.classList.toggle('hidden'); themeToggleLightIcon.classList.toggle('hidden');
+    htmlEl.classList.toggle('dark');
+    const dark = htmlEl.classList.contains('dark');
+    localStorage.setItem('theme', dark ? 'dark' : 'light');
+    try { const p = JSON.parse(localStorage.getItem('inema.prefs') || '{}'); p.theme = dark ? 'inema-dark' : 'claro'; localStorage.setItem('inema.prefs', JSON.stringify(p)); } catch (e) {}
+  });
+</script>
+<script src="../../../assets/learn.js"></script>
+<script>
+  if (window.INEMA && typeof window.INEMA.init === 'function') { window.INEMA.init(); }
+  window.addEventListener('DOMContentLoaded', function () {
+    if (window.INEMA && INEMA.registerCheck) {
+      INEMA.registerCheck('modulo-1-3#q1', {
+        answer: 1,
+        explain: {
+          0: 'Nao. Ordem topologica e barata — ela percorre cada no e cada aresta uma vez. Travar por tamanho seria muito incomum; travar por ciclo e o caso normal.',
+          1: 'Isso. Ordem topologica so existe em grafo SEM ciclo. Se sobrou no com dependencia pendente e nada mais esta pronto, existe um caminho circular. E um diagnostico util, nao um bug do algoritmo.',
+          2: 'Nao. Ordem topologica nao usa peso nenhum — ela so olha a direcao das arestas. Peso importa pra caminho minimo, nao pra ordenacao.'
+        }
+      });
+    }
+  });
+</script>
+</body>
+</html>

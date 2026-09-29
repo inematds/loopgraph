@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="loopgraph" name="inema-course"/>
+<title>Module 4.3 — Failures, harness, and observability | Graph Engineering</title>
+<script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'emerald' };
+      function clone(o) { var r = {}; for (var x in o) r[x] = o[x]; return r; }
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed === 'object') { for (var k in DEF) if (parsed[k] != null) p[k] = parsed[k]; } }
+        else { var legacy = localStorage.getItem('theme'); if (legacy === 'light') p.theme = 'claro'; else if (legacy === 'dark') p.theme = 'inema-dark'; }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = { 'inema-dark': { dark: true, attr: null, cs: 'dark' }, 'claro': { dark: false, attr: null, cs: 'light' }, 'sepia': { dark: false, attr: 'sepia', cs: 'light' }, 'foco': { dark: null, attr: 'foco', cs: null }, 'contraste': { dark: true, attr: 'contraste', cs: 'dark' } };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark === true) html.classList.add('dark'); else if (t.dark === false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark') ? 'dark' : 'light'));
+      html.setAttribute('data-font', p.font || 'inter'); html.setAttribute('data-accent', p.accent || 'emerald');
+      var s = html.style, scale = (+p.fontScale || 100);
+      s.setProperty('--inema-font-scale', (scale / 100).toString()); s.setProperty('font-size', scale + '%');
+      s.setProperty('--measure', (+p.lineWidth || 68) + 'ch'); s.setProperty('--lh-body', (+p.leading || 1.7).toString());
+      var fam = p.font === 'system' ? 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif' : (p.font === 'leitura' ? '"Atkinson Hyperlegible", "Inter", system-ui, sans-serif' : '"Inter", system-ui, sans-serif');
+      s.setProperty('--font-body', fam);
+      var ACC = { emerald: [152,76,45], blue: [217,91,60], purple: [258,90,66], amber: [38,92,50], teal: [174,72,41], rose: [350,89,60] };
+      var a = ACC[p.accent] || ACC.emerald;
+      s.setProperty('--accent-h', a[0]+''); s.setProperty('--accent-s', a[1]+'%'); s.setProperty('--accent-l', a[2]+'%');
+      s.setProperty('--accent', 'hsl(' + a[0] + ' ' + a[1] + '% ' + a[2] + '%)');
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme = 'dark'; } catch (e) {} }
+  })();
+  </script>
+<script data-inema-manifest="" type="application/json">
+  {
+    "course": "loopgraph",
+    "tracks": [
+      { "n": "1", "title": "Fundamentos: o grafo", "modules": [
+        { "id": "1-1", "title": "O que e um grafo", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
+        { "id": "1-2", "title": "Grafos no mundo real", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+        { "id": "1-3", "title": "Como se anda num grafo", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" }
+      ]},
+      { "n": "2", "title": "Loop Engineering", "modules": [
+        { "id": "2-1", "title": "Anatomia do loop", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
+        { "id": "2-2", "title": "O verificador e o gargalo", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
+        { "id": "2-3", "title": "Onde o loop quebra", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" }
+      ]},
+      { "n": "3", "title": "Agentic x Loop x Graph", "modules": [
+        { "id": "3-1", "title": "As cinco camadas", "topics": 6, "href": "curso/trilha3/modulo-3-1.html" },
+        { "id": "3-2", "title": "O comparativo de verdade", "topics": 6, "href": "curso/trilha3/modulo-3-2.html" },
+        { "id": "3-3", "title": "Mito x fato", "topics": 6, "href": "curso/trilha3/modulo-3-3.html" }
+      ]},
+      { "n": "4", "title": "Graph Engineering na pratica", "modules": [
+        { "id": "4-1", "title": "Nos, arestas e estado", "topics": 6, "href": "curso/trilha4/modulo-4-1.html" },
+        { "id": "4-2", "title": "Org graph x work graph", "topics": 6, "href": "curso/trilha4/modulo-4-2.html" },
+        { "id": "4-3", "title": "Falhas, harness e observabilidade", "topics": 6, "href": "curso/trilha4/modulo-4-3.html" }
+      ]},
+      { "n": "5", "title": "Mao na massa", "modules": [
+        { "id": "5-1", "title": "Do loop ao grafo", "topics": 6, "href": "curso/trilha5/modulo-5-1.html" },
+        { "id": "5-2", "title": "Grafos de negocio e de tarefas", "topics": 6, "href": "curso/trilha5/modulo-5-2.html" },
+        { "id": "5-3", "title": "Biblioteca de prompts", "topics": 6, "href": "curso/trilha5/modulo-5-3.html" }
+      ]}
+    ]
+  }
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }</script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../../assets/learn.css" rel="stylesheet"/>
+<link href="../../../assets/curso.css" rel="stylesheet"/>
+<link href="https://inematds.github.io/loopgraph/curso/trilha4/modulo-4-3.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/loopgraph/en/curso/trilha4/modulo-4-3.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/loopgraph/es/curso/trilha4/modulo-4-3.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha4/modulo-4-3.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="modulo-4-3.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">EN</a><a href="../../../es/curso/trilha4/modulo-4-3.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<a class="sr-only focus:not-sr-only focus:absolute focus:z-[60] focus:m-2 focus:px-4 focus:py-2 focus:rounded-lg focus:bg-dark-700" href="#conteudo">Skip to content</a>
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14 gap-2">
+<div class="flex items-center space-x-3 flex-shrink-0">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html">
+<span class="text-2xl">🕸️</span><span class="font-bold text-lg hidden lg:inline">Graph Engineering</span>
+</a>
+<span class="text-neutral-600 hidden sm:inline">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium hidden sm:inline" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+<span class="text-neutral-600 hidden sm:inline">-</span>
+<a class="text-amber-700 hover:text-amber-600 dark:text-slate-300 dark:hover:text-slate-200 text-sm font-medium hidden sm:inline" href="https://inema.pro" target="_blank">PRO</a>
+</div>
+<div class="flex items-center space-x-1">
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors" href="../trilha1/index.html"><span class="lg:hidden">T1</span><span class="hidden lg:inline">Fundamentals</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors" href="../trilha2/index.html"><span class="lg:hidden">T2</span><span class="hidden lg:inline">Loops</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors" href="../trilha3/index.html"><span class="lg:hidden">T3</span><span class="hidden lg:inline">Comparison</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-amber-400 bg-amber-500/10" href="index.html"><span class="lg:hidden">T4</span><span class="hidden lg:inline">Practice</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors" href="../trilha5/index.html"><span class="lg:hidden">T5</span><span class="hidden lg:inline">Hands-on</span></a>
+<button class="hidden sm:inline-flex items-center gap-1 px-2 py-1.5 rounded-lg text-sm text-neutral-400 hover:text-neutral-100 transition-colors" data-inema-journey-open="" title="My journey" type="button">
+<span aria-hidden="true">◷</span><span class="hidden xl:inline">Journey</span><span aria-hidden="true" class="inema-journey-badge hidden"></span>
+</button>
+<button aria-label="Toggle light/dark theme" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<nav aria-label="Navigation trail" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+<div class="flex items-center space-x-2 text-sm text-neutral-400">
+<a class="hover:text-amber-400" href="../../index.html">Start</a><span>/</span>
+<a class="hover:text-amber-400" href="index.html">Track 4</a><span>/</span>
+<span class="text-amber-400">Module 4.3</span>
+</div>
+</nav>
+<header class="bg-gradient-to-br from-amber-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600" data-inema-module="4-3" data-inema-track="4">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-amber-500/20 text-amber-400 text-xs font-semibold rounded-full mb-4">MODULE 4.3</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">🔭 Failures, harness, and observability</h1>
+<p class="text-lg text-neutral-400 max-w-3xl">
+      Here’s the cost of the graph: fan-in that swallows a source, a cycle that doesn’t converge, state that leaks from one node to another.
+      This module shows the three failure modes that exist only because you built a graph—and how to instrument it so you don’t discover each one in production.
+    </p>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-amber-400">6</div><div class="text-xs text-neutral-400">Topics</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-amber-400">45</div><div class="text-xs text-neutral-400">Minutes</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-amber-400">Advanced</div><div class="text-xs text-neutral-400">Level</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-amber-400">Practice</div><div class="text-xs text-neutral-400">Type</div></div>
+</div>
+<div class="mt-6 max-w-2xl bg-dark-800 rounded-xl border border-dark-600 p-4">
+<div class="flex items-center justify-between">
+<span class="text-sm text-neutral-300 font-semibold">Progress in this module</span>
+<div aria-label="Module 4.3 progress" aria-valuemax="100" aria-valuemin="0" class="inema-meter text-sm" data-inema-meter="modulo:4-3" role="progressbar">
+<span class="inema-meter-pct text-amber-400 font-bold">0%</span><span class="inema-meter-count text-neutral-400 ml-2">0 of 6</span>
+</div>
+</div>
+</div>
+</div>
+</header>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="lg:grid lg:grid-cols-[220px_minmax(0,1fr)] lg:gap-10">
+<nav aria-label="Page index" class="hidden lg:block sticky top-24 self-start" data-inema-toc="">
+<p class="text-sm text-neutral-400 mb-3">Section <span class="inema-toc-pos">1</span> of <span class="inema-toc-total">6</span></p>
+<ul class="space-y-1 text-sm">
+<li><a class="inema-toc-link text-neutral-400 hover:text-amber-400" href="#topico-1">1. Hunt down the merge that swallows</a></li>
+<li><a class="inema-toc-link text-neutral-400 hover:text-amber-400" href="#topico-2">2. Break the infinite loop</a></li>
+<li><a class="inema-toc-link text-neutral-400 hover:text-amber-400" href="#topico-3">3. Seal off leaking state</a></li>
+<li><a class="inema-toc-link text-neutral-400 hover:text-amber-400" href="#topico-4">4. Write the state schema</a></li>
+<li><a class="inema-toc-link text-neutral-400 hover:text-amber-400" href="#topico-5">5. Make execution durable</a></li>
+<li><a class="inema-toc-link text-neutral-400 hover:text-amber-400" href="#topico-6">6. Instrument it or debug in the dark</a></li>
+</ul>
+</nav>
+<main class="inema-prose" id="conteudo">
+<!-- ============ TOPICO 1 ============ -->
+<section class="mb-16" data-inema-topic="modulo-4-3#topico-1" id="topico-1">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl">1</span>
+<h2 class="text-2xl font-bold">🔀 Find the merge that swallows a source</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button">
+<span aria-hidden="true">?</span><span>I have a question</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-3-t1-p1">
+      A fan-in node—the point where several parallel branches come back together at a single node—has a silent failure mode:
+      one branch fails or returns empty, and the join moves on as if it were complete. The result looks polished,
+      but it’s incomplete, and no one notices because nothing raised an alarm.
+    </p>
+<div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">🆕</span> New here? Two words before you continue</h3>
+<ul class="space-y-2 text-neutral-300 text-sm">
+<li><strong class="text-neutral-100">Fan-in / merge / join:</strong> the node where several branches that ran in parallel (fan-out) come back together. It’s the opposite of fan-out.</li>
+<li><strong class="text-neutral-100">Cardinality:</strong> expected number of items. If you dispatched 4 branches, the expected cardinality at the join is 4. Wrong cardinality = something disappeared along the way.</li>
+</ul>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-3-t1-p2">
+      The most common way this happens: you dispatch research across four sources, one API goes down, that source’s node
+      returns an empty list (not an error—empty), and the merge writes the report with three sources, thinking there are four.
+      Nobody got an exception, nobody saw a red log. The report is just wrong.
+    </p>
+<div class="rounded-2xl border border-amber-500/30 bg-dark-900/40 p-3 sm:p-4 mb-4 overflow-hidden">
+<svg aria-label="A node dispatches four parallel branches: source A, B, C, and D. Source C appears faded gray with an X, indicating failure. The four arrows converge at a join node that, without checking, proceeds with a report based on 3 of 4 sources, without an alert." class="w-full h-auto" role="img" viewbox="0 0 1000 260">
+<defs>
+<lineargradient id="m43a-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#fbbf24"></stop><stop offset="1" stop-color="#f59e0b"></stop></lineargradient>
+<filter height="180%" id="m43a-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="m43a-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#f59e0b" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="m43a-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#fbbf24"></path></marker>
+<marker id="m43a-ahr" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#f87171"></path></marker>
+</defs>
+<rect fill="url(#m43a-grid)" height="260" width="1000" x="0" y="0"></rect>
+<g fill="none" opacity="0.55" stroke="#fbbf24" stroke-width="1.8">
+<path d="M170,60 C320,60 380,150 470,150" marker-end="url(#m43a-ah)"></path>
+<path d="M170,110 C320,110 380,140 470,148" marker-end="url(#m43a-ah)"></path>
+<path d="M170,190 C320,190 380,160 470,152" marker-end="url(#m43a-ah)"></path>
+</g>
+<path d="M170,150 C320,150 380,150 470,150" fill="none" marker-end="url(#m43a-ahr)" opacity="0.5" stroke="#f87171" stroke-dasharray="6 6" stroke-width="1.8"></path>
+<g font-family="Inter,sans-serif" font-size="13" font-weight="600">
+<rect fill="#1f1604" height="48" rx="12" stroke="#fbbf24" stroke-width="2" width="110" x="60" y="36"></rect><text fill="#fcd9a0" text-anchor="middle" x="115" y="66">source A</text>
+<rect fill="#1f1604" height="48" rx="12" stroke="#fbbf24" stroke-width="2" width="110" x="60" y="86"></rect><text fill="#fcd9a0" text-anchor="middle" x="115" y="116">source B</text>
+<rect fill="#241010" height="48" opacity="0.7" rx="12" stroke="#f87171" stroke-width="2" width="110" x="60" y="126"></rect><text fill="#fca5a5" text-anchor="middle" x="115" y="156">source C ✗</text>
+<rect fill="#1f1604" height="48" rx="12" stroke="#fbbf24" stroke-width="2" width="110" x="60" y="166"></rect><text fill="#fcd9a0" text-anchor="middle" x="115" y="196">source D</text>
+<g filter="url(#m43a-glow)"><rect fill="#1f1604" height="48" rx="12" stroke="url(#m43a-grad)" stroke-width="2" width="150" x="470" y="126"></rect></g>
+<text fill="#fbbf24" font-weight="600" text-anchor="middle" x="545" y="156">junction (merge)</text>
+</g>
+<text fill="#fcd9a0" font-family="Inter,sans-serif" font-size="13" text-anchor="middle" x="500" y="228">3 of 4 sources arrived — merge didn't check, and continued as if complete</text>
+</svg>
+</div>
+<p class="text-sm text-neutral-400 mb-6">
+<strong class="text-neutral-300">What to look at:</strong> the red dashed line from source C—it still reaches the join, just empty.
+      The merge node doesn’t check the quantity, so it processes what it received and continues. No error is raised.
+      The defect isn’t in the source that failed; it’s in the join that didn’t ask, "Did I receive all four that I dispatched?"
+    </p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+<h4 class="font-bold text-emerald-400 mb-4">✓ Safe join</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Counts how many items arrived and compares that with how many were dispatched</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Explicitly decide what to do with a missing branch: abort, continue while marking the gap, or retry</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Records in the output "3 of 4 sources, C unavailable" when you decide to proceed anyway</span></li>
+</ul>
+</div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+<h4 class="font-bold text-red-400 mb-4">✗ Blind join</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Merges “what arrived” without knowing how much was expected</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Treats an empty list the same as a list with data—both “pass” in the merge</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>No log or metric records the gap</span></li>
+</ul>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-amber-400 mb-4">Key concepts</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">Fan-in</div><p class="text-xs text-neutral-400">Where parallel branches come together</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">Cardinality</div><p class="text-xs text-neutral-400">Did I receive the N I dispatched?</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">Silent failure</div><p class="text-xs text-neutral-400">Empty isn’t an error, but it should be</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">Explicit decision</div><p class="text-xs text-neutral-400">Abort, flag, or try again</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span>
+</button>
+</div>
+</section>
+<!-- ============ TOPICO 2 ============ -->
+<section class="mb-16" data-inema-topic="modulo-4-3#topico-2" id="topico-2">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl">2</span>
+<h2 class="text-2xl font-bold">♾️ Break the Routing That Doesn’t Converge</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button">
+<span aria-hidden="true">?</span><span>I have a question</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-3-t2-p1">
+      Two conditional edges pointing to each other are the most common recipe for a stuck graph: the reviewer rejects,
+      the writer rewrites, the reviewer rejects again — indefinitely. The graph “has been running” for hours, and the symptom
+      is exactly that: no error, just consumption.
+    </p>
+<div class="bg-gradient-to-br from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-amber-400 mb-4 flex items-center"><span class="mr-2">💡</span> What every cycle needs to have</h3>
+<ul class="space-y-2 text-neutral-300">
+<li class="flex items-start space-x-2"><span class="text-amber-400 mt-1">•</span><span><strong>Iteration cap</strong> — a maximum number of repetitions, period, even if nobody has "solved" anything</span></li>
+<li class="flex items-start space-x-2"><span class="text-amber-400 mt-1">•</span><span><strong>Progress criterion</strong> — two iterations without measurable improvement = give up and alert; don’t keep trying the same way</span></li>
+<li class="flex items-start space-x-2"><span class="text-amber-400 mt-1">•</span><span>Without both, the bill is infinite—you pay in tokens, time, and credits until someone notices manually</span></li>
+</ul>
+</div>
+<div class="rounded-2xl border border-amber-500/30 bg-dark-900/40 p-3 sm:p-4 mb-4 overflow-hidden">
+<svg aria-label="Side-by-side comparison. On the left, two nodes, writer and reviewer, pointing to each other in a closed red loop with the infinity symbol in the center. On the right, the same two nodes with a counter reading turn 2 of 3 and a third edge leading to a box labeled give up and report, highlighted with a glow." class="w-full h-auto" role="img" viewbox="0 0 1000 260">
+<defs>
+<lineargradient id="m43b-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#fbbf24"></stop><stop offset="1" stop-color="#f59e0b"></stop></lineargradient>
+<filter height="180%" id="m43b-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="m43b-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#f59e0b" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="m43b-ahr" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#f87171"></path></marker>
+<marker id="m43b-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#fbbf24"></path></marker>
+</defs>
+<rect fill="url(#m43b-grid)" height="260" width="1000" x="0" y="0"></rect>
+<path d="M500,20 L500,240" opacity="0.4" stroke="#9ca3af" stroke-dasharray="9 9" stroke-width="1.5"></path>
+<text fill="#fca5a5" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="220" y="36">NO LIMIT — it hangs</text>
+<g font-family="Inter,sans-serif" font-size="13">
+<rect fill="#1f1604" height="48" rx="12" stroke="#fbbf24" stroke-width="2" width="120" x="90" y="90"></rect><text fill="#fcd9a0" text-anchor="middle" x="150" y="120">writer</text>
+<rect fill="#1f1604" height="48" rx="12" stroke="#fbbf24" stroke-width="2" width="120" x="260" y="90"></rect><text fill="#fcd9a0" text-anchor="middle" x="320" y="120">reviewer</text>
+</g>
+<path d="M210,105 L260,105" fill="none" marker-end="url(#m43b-ahr)" stroke="#f87171" stroke-width="1.8"></path>
+<path d="M260,125 L210,125" fill="none" marker-end="url(#m43b-ahr)" stroke="#f87171" stroke-width="1.8"></path>
+<text fill="#fca5a5" font-family="Inter,sans-serif" font-size="26" font-weight="700" text-anchor="middle" x="235" y="90">∞</text>
+<text fill="#fcd9a0" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="220" y="200">rejected → rewrite → rejected → rewrite...</text>
+<text fill="#fcd9a0" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="775" y="36">WITH A CEILING — converges</text>
+<g font-family="Inter,sans-serif" font-size="13">
+<rect fill="#1f1604" height="48" rx="12" stroke="#fbbf24" stroke-width="2" width="120" x="620" y="90"></rect><text fill="#fcd9a0" text-anchor="middle" x="680" y="120">writer</text>
+<rect fill="#1f1604" height="48" rx="12" stroke="#fbbf24" stroke-width="2" width="120" x="790" y="90"></rect><text fill="#fcd9a0" text-anchor="middle" x="850" y="120">reviewer</text>
+</g>
+<path d="M740,105 L790,105" fill="none" marker-end="url(#m43b-ah)" opacity="0.6" stroke="#fbbf24" stroke-width="1.8"></path>
+<path d="M790,125 L740,125" fill="none" marker-end="url(#m43b-ah)" opacity="0.6" stroke="#fbbf24" stroke-width="1.8"></path>
+<text fill="#fcd9a0" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="765" y="90">round 2 of 3</text>
+<path d="M850,138 C850,170 780,175 780,195" fill="none" marker-end="url(#m43b-ah)" opacity="0.7" stroke="#38bdf8" stroke-width="1.8"></path>
+<g filter="url(#m43b-glow)"><rect fill="#0e1b26" height="44" rx="12" stroke="#38bdf8" stroke-width="2" width="160" x="700" y="196"></rect></g>
+<text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="12.5" font-weight="600" text-anchor="middle" x="780" y="223">give up and warn you</text>
+</svg>
+</div>
+<p class="text-sm text-neutral-400 mb-6">
+<strong class="text-neutral-300">What to look at:</strong> the entire difference is in the third edge on the right, the cyan one, which exists only
+      because someone designed an emergency exit. Without it, the graph on the left has only two edges—and both can only point to each other.
+    </p>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center"><span class="mr-2">⚠️</span> Warning: “eventually converges” is not a plan</h3>
+<p class="text-neutral-300">
+        If your defense against an infinite loop is “the reviewer will approve it eventually,” you have no defense at all.
+        Write down the explicit number (e.g., max 3 rounds) AND the progress criterion (e.g., the quality score has to go up each round) —
+        both, not just one. A limit without a progress criterion lets the graph use all 3 rounds even when the second already showed it won't improve.
+      </p>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-amber-400 mb-4">Key concepts</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">Iteration cap</div><p class="text-xs text-neutral-400">Maximum number, no exceptions</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">Progress criterion</div><p class="text-xs text-neutral-400">2 rounds with no improvement = stop</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">Emergency exit</div><p class="text-xs text-neutral-400">Third edge out of the pair</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">Infinite bill</div><p class="text-xs text-neutral-400">No cap = no cost limit</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span>
+</button>
+</div>
+</section>
+<!-- ============ TOPICO 3 ============ -->
+<section class="mb-16" data-inema-topic="modulo-4-3#topico-3" id="topico-3">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl">3</span>
+<h2 class="text-2xl font-bold">🚰 Seal the state leak</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button">
+<span aria-hidden="true">?</span><span>I have a question</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-3-t3-p1">
+<strong class="text-amber-400">State leakage</strong> is when a node passes along more than it should, and the next node’s
+      clean context is no longer clean. Clean context was exactly the advantage that motivated building the graph—and
+      this is the failure mode that silently cancels out that advantage without visibly breaking anything.
+    </p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-3-t3-p2">
+      The classic example is the reviewer. If the reviewer receives only the text and the approval criteria, they judge it with fresh eyes.
+      If the reviewer receives the <em>reasoning</em> the writer’s thought process too—“I thought about it this way, then decided that”—it stops judging the result
+      and starts validating the process. In practice, it goes back to approving the work, because it now understands (and empathizes with) the reason behind the choice.
+    </p>
+<div class="rounded-2xl border border-amber-500/30 bg-dark-900/40 p-3 sm:p-4 mb-4 overflow-hidden">
+<svg aria-label="Two paths side by side, separated by a dashed line. On the left, writer to reviewer, with the edge labeled text + criteria; the reviewer appears with an amber glow indicating clean context. On the right, the same pair, but the edge carries text, criteria, and all of the writer’s reasoning; the reviewer appears contaminated in red, labeled stamps it again." class="w-full h-auto" role="img" viewbox="0 0 1000 260">
+<defs>
+<lineargradient id="m43c-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#fbbf24"></stop><stop offset="1" stop-color="#f59e0b"></stop></lineargradient>
+<filter height="180%" id="m43c-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="m43c-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#f59e0b" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="m43c-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#fbbf24"></path></marker>
+<marker id="m43c-ahr" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#f87171"></path></marker>
+</defs>
+<rect fill="url(#m43c-grid)" height="260" width="1000" x="0" y="0"></rect>
+<path d="M500,20 L500,240" opacity="0.4" stroke="#9ca3af" stroke-dasharray="9 9" stroke-width="1.5"></path>
+<text fill="#fcd9a0" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="220" y="36">lean state</text>
+<g font-family="Inter,sans-serif" font-size="13">
+<rect fill="#1f1604" height="48" rx="12" stroke="#fbbf24" stroke-width="2" width="120" x="90" y="90"></rect><text fill="#fcd9a0" text-anchor="middle" x="150" y="120">writer</text>
+<g filter="url(#m43c-glow)"><rect fill="#1f1604" height="48" rx="12" stroke="url(#m43c-grad)" stroke-width="2" width="120" x="260" y="90"></rect></g>
+<text fill="#fbbf24" font-weight="600" text-anchor="middle" x="320" y="120">reviewer</text>
+</g>
+<path d="M210,113 L260,113" fill="none" marker-end="url(#m43c-ah)" opacity="0.7" stroke="#fbbf24" stroke-width="1.8"></path>
+<text fill="#fcd9a0" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="235" y="98">text + criteria</text>
+<text fill="#fcd9a0" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="220" y="200">reviewer judges with fresh eyes</text>
+<text fill="#fca5a5" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="775" y="36">leaked state</text>
+<g font-family="Inter,sans-serif" font-size="13">
+<rect fill="#1f1604" height="48" rx="12" stroke="#fbbf24" stroke-width="2" width="120" x="620" y="90"></rect><text fill="#fcd9a0" text-anchor="middle" x="680" y="120">writer</text>
+<rect fill="#241010" height="48" rx="12" stroke="#f87171" stroke-width="2" width="120" x="790" y="90"></rect><text fill="#fca5a5" text-anchor="middle" x="850" y="120">reviewer</text>
+</g>
+<path d="M740,113 L790,113" fill="none" marker-end="url(#m43c-ahr)" opacity="0.7" stroke="#f87171" stroke-width="1.8"></path>
+<text fill="#fca5a5" font-family="Inter,sans-serif" font-size="10.5" text-anchor="middle" x="765" y="98">text + criteria + reasoning</text>
+<text fill="#fca5a5" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="775" y="200">stamps the work again</text>
+</svg>
+</div>
+<p class="text-sm text-neutral-400 mb-6">
+<strong class="text-neutral-300">What to look at:</strong> only the edge's content changed — not the graph's structure. That's what makes state leakage
+      hard to spot in code review: the diagram looks identical; only the payload traveling along the edge has grown.
+      Audit edges by <em>schema</em>, not just by looking at the diagram; it’s the only reliable way to catch this.
+    </p>
+<div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">📊</span> Where leakage tends to slip in unintentionally</h3>
+<ul class="space-y-2 text-neutral-300 text-sm">
+<li><strong>Forgotten debug log in the payload</strong> — you left the writer’s “thinking out loud” in the output field</li>
+<li><strong>Context shared for convenience</strong> — a single session object that every node reads and writes</li>
+<li><strong>Entire conversation history</strong> — instead of just the summary, the next node receives the raw transcript</li>
+<li><strong>“Just in case” fields</strong> — someone adds an extra field "might be useful later" without checking whether it should leak</li>
+</ul>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-amber-400 mb-4">Key concepts</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">State leakage</div><p class="text-xs text-neutral-400">An edge carries more than it should</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">Clean context</div><p class="text-xs text-neutral-400">The advantage the graph promised</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">Stamp on return</div><p class="text-xs text-neutral-400">A contaminated reviewer always approves</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">Silent failure</div><p class="text-xs text-neutral-400">Same diagram, different payload</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span>
+</button>
+</div>
+</section>
+<!-- ============ TOPICO 4 ============ -->
+<section class="mb-16" data-inema-topic="modulo-4-3#topico-4" id="topico-4">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl">4</span>
+<h2 class="text-2xl font-bold">📐 Write the state schema</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button">
+<span aria-hidden="true">?</span><span>I have a question</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-3-t4-p1">
+<strong class="text-amber-400">State schema</strong> is the explicit declaration of what each edge carries: field names,
+      each field’s format, what’s required, and—just as importantly—what’s explicitly <em>no</em> must pass.
+      It’s the contract between two nodes. Without a contract, changing one side breaks the other without warning, and nobody knows who’s responsible.
+    </p>
+<div class="space-y-6 mb-6">
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-amber-500/20 flex items-center justify-center"><span class="text-amber-400 font-bold">1</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">Required fields</h4>
+<p class="text-sm text-neutral-400 mb-3">The minimum the next node needs to work—without it, it shouldn’t even start.</p>
+<p class="text-neutral-300 text-sm">E.g.: <code class="text-amber-400">texto</code> e <code class="text-amber-400">criterio_aprovacao</code> to a reviewer.</p>
+</div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-amber-500/20 flex items-center justify-center"><span class="text-amber-400 font-bold">2</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">Forbidden fields</h4>
+<p class="text-sm text-neutral-400 mb-3">The part most people forget to write down. Without it, “just to be safe” becomes the default.</p>
+<p class="text-neutral-300 text-sm">E.g.: <code class="text-amber-400">raciocinio_do_escritor</code> Do NOT pass it to the reviewer—that's topic 3 state leakage.</p>
+</div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-amber-500/20 flex items-center justify-center"><span class="text-amber-400 font-bold">3</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">Format and validation</h4>
+<p class="text-sm text-neutral-400 mb-3">The field name alone isn't enough—you need to specify the type and, if possible, validate it before passing it on.</p>
+<p class="text-neutral-300 text-sm">E.g.: <code class="text-amber-400">score</code> is a number between 0 and 1, not the string “eighty percent.”</p>
+</div>
+</div>
+</div>
+<div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Practical tip</h3>
+<p class="text-neutral-300">
+        Write the state schema BEFORE writing the prompt for each node—on paper or in a sample JSON. If you
+        can’t clearly name the fields, that’s a sign the two nodes are still conceptually mixed together,
+        and perhaps should be one.
+      </p>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-amber-400 mb-4">Key concepts</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">State schema</div><p class="text-xs text-neutral-400">The contract for each edge</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">Required vs. prohibited</div><p class="text-xs text-neutral-400">Both sides need to exist</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">Before the prompt</div><p class="text-xs text-neutral-400">The schema defines the node, not the other way around</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">No shared blame</div><p class="text-xs text-neutral-400">Clear contract = traceable failure</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span>
+</button>
+</div>
+</section>
+<!-- ============ TOPICO 5 ============ -->
+<section class="mb-16" data-inema-topic="modulo-4-3#topico-5" id="topico-5">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl">5</span>
+<h2 class="text-2xl font-bold">💾 Make execution durable</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button">
+<span aria-hidden="true">?</span><span>I have a question</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-3-t5-p1">
+<strong class="text-amber-400">Durable execution</strong> is a graph’s ability to survive a failure along the way:
+      resume exactly where it left off, not redo a node that already finished successfully, and be <strong class="text-amber-400">idempotent</strong> —
+      running the same input twice produces the same result, with no duplicated side effects.
+    </p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-3-t5-p2">
+      This isn't something new invented by the agent world. It's exactly what data orchestration has solved for decades with durable execution and per-node caching (think of data pipeline tools that resume a stuck job without rerunning steps that have already completed). Agentic graphs inherit this ready-made solution — there's no need to reinvent it.
+    </p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+<h4 class="font-bold text-emerald-400 mb-4">✓ Durable execution</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Each completed node saves the result + checkpoint before moving on</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Resuming after a failure starts at the next pending node, not from the beginning</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Same input + same graph = same path (reproducible)</span></li>
+</ul>
+</div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+<h4 class="font-bold text-red-400 mb-4">✗ Fragile execution</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>The entire graph runs again from scratch after any failure</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>That has already sent an email or written a file repeats the action on retry (not idempotent)</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>No record of “how far I’d gotten”</span></li>
+</ul>
+</div>
+</div>
+<div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">📊</span> Three questions to check whether your graph is durable</h3>
+<ul class="space-y-2 text-neutral-300 text-sm">
+<li><strong>If it crashes at node 4 of 7, what happens on restart?</strong> — if the answer is "run everything again," it isn't durable</li>
+<li><strong>Does running a node twice change the real-world result?</strong> — if so (duplicate email, double charge), it isn't idempotent</li>
+<li><strong>Can you reproduce exactly the same path with the same input?</strong> — otherwise, you can't really debug it</li>
+</ul>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-amber-400 mb-4">Key concepts</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">Durable execution</div><p class="text-xs text-neutral-400">Survives a failure midway through</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">Idempotent</div><p class="text-xs text-neutral-400">Repeating doesn't change the result</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">Cache per node</div><p class="text-xs text-neutral-400">Doesn't redo what's already finished</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">Inherited from data</div><p class="text-xs text-neutral-400">Orchestration already solved this</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span>
+</button>
+</div>
+</section>
+<!-- ============ TOPICO 6 ============ -->
+<section class="mb-16" data-inema-topic="modulo-4-3#topico-6" id="topico-6">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl">6</span>
+<h2 class="text-2xl font-bold">🖥️ Instrument it or debug in the dark</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button">
+<span aria-hidden="true">?</span><span>I have a question</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-3-t6-p1">
+<strong class="text-amber-400">Observability</strong> here it’s simple: the graph harness needs to show which nodes ran,
+      in what order, with what latency and cost. In a loop, “why did it do that?” gets buried in a
+      <strong class="text-amber-400">transcript</strong> (the raw conversation/execution log) that you read line by line. In a graph,
+      the path taken is data you can inspect — if instrumentation exists.
+    </p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-3-t6-p2">
+      Without this instrumentation, you pay the full cost of the graph—more nodes, more edges, more failure modes—
+      and don’t get the advantage that justified it: seeing the system. And instrumentation isn’t optional in a graph the way
+      it was “desirable” in a loop; without it, you literally have no way to answer “where did it get stuck?”
+    </p>
+<div class="bg-dark-900 rounded-xl border border-dark-600 overflow-hidden mb-3">
+<div class="flex items-center gap-2 px-4 py-2.5 border-b border-dark-600 bg-dark-800">
+<span class="w-3 h-3 rounded-full bg-red-500/70"></span>
+<span class="w-3 h-3 rounded-full bg-amber-400/70"></span>
+<span class="w-3 h-3 rounded-full bg-emerald-500/70"></span>
+<span class="ml-3 text-xs text-neutral-400 font-mono">execution monitor — graph:daily_brief#run_4821</span>
+</div>
+<div class="p-4 font-mono text-sm space-y-3">
+<div>
+<div class="flex items-center justify-between text-neutral-300"><span>✓ coletar_fonte_a</span><span class="text-neutral-500 text-xs">1.2s · $0.003</span></div>
+<div class="h-1.5 mt-1 rounded-full bg-dark-700 overflow-hidden"><div class="h-full bg-emerald-500 w-full"></div></div>
+</div>
+<div>
+<div class="flex items-center justify-between text-neutral-300"><span>✓ coletar_fonte_b</span><span class="text-neutral-500 text-xs">0.9s · $0.002</span></div>
+<div class="h-1.5 mt-1 rounded-full bg-dark-700 overflow-hidden"><div class="h-full bg-emerald-500 w-full"></div></div>
+</div>
+<div>
+<div class="flex items-center justify-between text-red-400"><span>✗ coletar_fonte_c</span><span class="text-neutral-500 text-xs">4.0s · timeout</span></div>
+<div class="h-1.5 mt-1 rounded-full bg-dark-700 overflow-hidden"><div class="h-full bg-red-500 w-1/3"></div></div>
+</div>
+<div>
+<div class="flex items-center justify-between text-amber-300"><span>⧗ reviewer (turn 3 of 3)</span><span class="text-neutral-500 text-xs">running · $0.041 total</span></div>
+<div class="h-1.5 mt-1 rounded-full bg-dark-700 overflow-hidden"><div class="h-full bg-amber-400 w-2/3 animate-pulse"></div></div>
+</div>
+<div>
+<div class="flex items-center justify-between text-neutral-500"><span>○ juncao_final</span><span class="text-neutral-600 text-xs">waiting</span></div>
+<div class="h-1.5 mt-1 rounded-full bg-dark-700 overflow-hidden"><div class="h-full bg-dark-600 w-0"></div></div>
+</div>
+</div>
+</div>
+<p class="text-xs text-neutral-500 mb-6">illustrative recreation, not a screenshot of a real tool.</p>
+<p class="text-sm text-neutral-400 mb-6">
+<strong class="text-neutral-300">What to look at:</strong> the red line (coletar_fonte_c) is the warning from topic 1 appearing on your screen—without this panel,
+      that timeout becomes the silent "3 of 4 sources" that no one noticed. The amber line shows the cycle from topic 2 on the third and final allowed turn,
+      with the accumulated cost visible—you see the limit approaching before it blows the budget.
+    </p>
+<!-- EXEMPLO COPY-RUN -->
+<div class="bg-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-amber-400 mb-2 flex items-center"><span class="mr-2">🧪</span> Practical example: graph audit prompt</h3>
+<p class="text-sm text-neutral-400 mb-4"><strong class="text-neutral-300">Objective:</strong> give Claude Code (or another assistant with file access) a
+      <code class="text-amber-400">grafo.json</code> describing nodes and edges, and asking it to find the five flaws in this module before you put it into production.</p>
+<div class="code-box bg-dark-900 rounded-lg border border-dark-600 p-4 mb-4 overflow-x-auto">
+<pre class="text-sm text-neutral-300">Voce vai auditar o arquivo &lt;grafo.json&gt; deste projeto, que descreve um grafo de
+agentes (nos, arestas, condicoes). Procure especificamente estes cinco defeitos
+e reporte cada ocorrencia com o no/aresta exato:
+
+1. CICLO SEM TETO DE VOLTAS
+   Existe algum par de arestas condicionais que formam um ciclo (A -&gt; B -&gt; A)
+   sem um campo tipo "max_voltas" ou equivalente? Se sim, aponte o ciclo.
+
+2. ARESTA CONDICIONAL SEM "QUANDO"
+   Toda aresta que sai de um no de decisao/roteamento declara a condicao sob a
+   qual e seguida? Aponte arestas condicionais sem condicao explicita.
+
+3. CONDICOES QUE NAO COBREM TODOS OS CASOS (ENTRADA ORFA)
+   Some as condicoes de saida de cada no de decisao. Existe um caso possivel
+   (ex.: nem aprovado nem reprovado) que nao tem aresta correspondente? Isso
+   deixa o fluxo sem destino nesse caso.
+
+4. JUNCAO SEM CHECAGEM DE CARDINALIDADE
+   Todo no que recebe de mais de uma aresta (fan-in) tem alguma logica de
+   checagem de quantidade/completude antes de seguir? Aponte juncoes que nao
+   verificam se receberam todos os ramos esperados.
+
+5. NO SEM TETO DE CUSTO
+   Todo no que chama um modelo tem um limite de custo, tokens ou tempo
+   declarado? Aponte nos sem nenhum limite.
+
+Para cada defeito encontrado: cite o id do no/aresta, explique o risco em
+1 frase, e sugira a correcao minima.</pre>
+</div>
+<div class="bg-dark-700/50 rounded-lg p-4">
+<p class="text-sm text-neutral-300"><strong class="text-amber-400">How to verify:</strong> run this prompt against a graph you know is broken —
+        pick one <code class="text-amber-400">grafo.json</code> valid and deliberately remove the field <code class="text-amber-400">max_voltas</code> of a cycle.
+        If the assistant doesn’t identify this exact cycle as defect 1, the prompt is too loose — rewrite it and ask it to list ALL cycles before deciding whether there’s a cap.</p>
+<p class="text-sm text-neutral-400 mt-3"><strong class="text-neutral-300">Now swap it for yours:</strong> point to your own
+        <code class="text-amber-400">&lt;grafo.json&gt;</code> real. If more than one defect appears, prioritize fixing the unbounded cycle and the unchecked join first —
+        those two can turn into an infinite bill or incomplete data without warning the fastest.</p>
+</div>
+</div>
+<!-- CHECAGEM LEVE -->
+<div class="inema-check mt-8 bg-dark-800 border border-dark-600 rounded-xl p-6 mb-6" data-inema-check="modulo-4-3#q1">
+<p class="font-medium mb-4">Quick check (doesn’t block anything): the reviewer starts approving everything after you began including the writer’s reasoning in the edge leading to it. What’s the flaw?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">Cycle with no iteration limit — the reviewer is stuck in a loop</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">State leakage—the reviewer lost its clean context and started validating the process, not the result</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">A merge that swallows a source—missing cardinality in the join</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-amber-400 mb-4">Key concepts</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">Observability</div><p class="text-xs text-neutral-400">Which nodes, in what order, how much it cost</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">Transcript</div><p class="text-xs text-neutral-400">Raw log that you read line by line</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">Path as data</div><p class="text-xs text-neutral-400">You look it up; you don't guess</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">No instrument</div><p class="text-xs text-neutral-400">Pay the cost, lose the advantage</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span>
+</button>
+</div>
+</section>
+<!-- ============ RESUMO ============ -->
+<section class="mb-12">
+<div class="bg-gradient-to-br from-amber-900/40 via-dark-800 to-dark-800 rounded-xl border border-amber-500/30 p-8">
+<h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">📌</span> Module Summary</h2>
+<div class="space-y-4 mb-8">
+<div class="flex items-start space-x-3"><span class="text-amber-400 mt-1">✓</span><div><strong class="text-white">A join needs to check cardinality</strong><span class="text-neutral-400"> — did it receive the N items it dispatched? Explicitly decide what to do with anything missing.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-amber-400 mt-1">✓</span><div><strong class="text-white">Every cycle needs a cap and a progress criterion</strong><span class="text-neutral-400"> — without both, the bill is infinite.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-amber-400 mt-1">✓</span><div><strong class="text-white">State leakage cancels out the graph</strong><span class="text-neutral-400"> — contaminated context makes the reviewer rubber-stamp it again.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-amber-400 mt-1">✓</span><div><strong class="text-white">State schema is the contract</strong><span class="text-neutral-400"> — both required and prohibited; both sides need to exist.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-amber-400 mt-1">✓</span><div><strong class="text-white">Durable and idempotent execution</strong><span class="text-neutral-400"> — resumes without redoing work, repeats without duplicating effects.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-amber-400 mt-1">✓</span><div><strong class="text-white">Without observability, you pay and get nothing back</strong><span class="text-neutral-400"> — the path taken must be data you can query.</span></div></div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+<h3 class="font-semibold text-amber-400 mb-2">What this covers:</h3>
+<p class="text-neutral-300">
+          The graph isn’t free. You get parallelism, clean context, and an auditable flow—and pay for it with a state schema,
+          new failure modes, and execution/observability infrastructure. If you’re not going to instrument it,
+          you probably shouldn’t have built the graph.
+        </p>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+<h3 class="font-semibold text-amber-400 mb-2">Next Track:</h3>
+<p class="text-neutral-300">Track 5 — Hands-on: migrate a real loop to a graph, model business and task graphs, and take home a library of ready-to-use prompts.</p>
+</div>
+<div class="flex flex-col sm:flex-row gap-4">
+<a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="modulo-4-2.html">← Previous Module</a>
+<a class="flex-1 text-center px-6 py-3 bg-teal-600 text-white rounded-lg font-semibold hover:bg-teal-500 transition-colors" href="../trilha5/index.html">Track 5: Hands-on →</a>
+</div>
+</div>
+</section>
+</main>
+</div>
+</div>
+<footer class="border-t border-dark-600 py-8 mt-16">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+<p>Graph Engineering — From Loops to Graphs · INEMA 2026</p>
+<p class="mt-2">
+<a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+<span class="text-neutral-600 mx-1">-</span>
+<a class="text-amber-700 hover:text-amber-600 dark:text-slate-300 dark:hover:text-slate-200" href="https://inema.pro" target="_blank">PRO</a>
+</p>
+</div>
+</footer>
+<script>
+  function toggleTopic(button) {
+    const topicItem = button.closest('.topic-item');
+    const explanation = topicItem.querySelector('.topic-explanation');
+    const moduleCard = button.closest('.bg-dark-800') || document;
+    moduleCard.querySelectorAll('.topic-explanation.active').forEach(exp => { if (exp !== explanation) { exp.classList.remove('active'); const b = exp.closest('.topic-item').querySelector('button'); if (b) b.setAttribute('aria-expanded','false'); } });
+    explanation.classList.toggle('active');
+    button.setAttribute('aria-expanded', explanation.classList.contains('active') ? 'true' : 'false');
+  }
+  function openModal(modalId) { const m = document.getElementById(modalId); if (m) { m.classList.remove('hidden'); document.body.style.overflow = 'hidden'; } }
+  function closeModal() { document.querySelectorAll('.modal').forEach(m => m.classList.add('hidden')); document.body.style.overflow = 'auto'; }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+  const themeToggle = document.getElementById('theme-toggle');
+  const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+  const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+  const htmlEl = document.documentElement;
+  if (htmlEl.classList.contains('dark')) themeToggleLightIcon.classList.remove('hidden'); else themeToggleDarkIcon.classList.remove('hidden');
+  themeToggle.addEventListener('click', () => {
+    themeToggleDarkIcon.classList.toggle('hidden'); themeToggleLightIcon.classList.toggle('hidden');
+    htmlEl.classList.toggle('dark');
+    const dark = htmlEl.classList.contains('dark');
+    localStorage.setItem('theme', dark ? 'dark' : 'light');
+    try { const p = JSON.parse(localStorage.getItem('inema.prefs') || '{}'); p.theme = dark ? 'inema-dark' : 'claro'; localStorage.setItem('inema.prefs', JSON.stringify(p)); } catch (e) {}
+  });
+</script>
+<script src="../../../assets/learn.js"></script>
+<script>
+  if (window.INEMA && typeof window.INEMA.init === 'function') { window.INEMA.init(); }
+  window.addEventListener('DOMContentLoaded', function () {
+    if (window.INEMA && INEMA.registerCheck) {
+      INEMA.registerCheck('modulo-4-3#q1', {
+        answer: 1,
+        explain: {
+          0: 'Nao. Nao ha nada aqui indicando que faltou teto de voltas — o sintoma descrito e o revisor sempre aprovando, nao um numero infinito de repeticoes.',
+          1: 'Isso. Quando o revisor recebe o raciocinio do escritor, ele deixa de julgar so o resultado e passa a validar o processo que gerou aquele resultado — e comeca a aprovar tudo. E vazamento de estado: a aresta carregou mais do que devia.',
+          2: 'Nao. Nao ha juncao nem fan-in nesse cenario — e um par escritor-revisor com uma aresta so entre eles, sem fontes paralelas se juntando.'
+        }
+      });
+    }
+  });
+</script>
+</body>
+</html>

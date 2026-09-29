@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="loopgraph" name="inema-course"/>
+<title>Módulo 4.2 — Grafo organizacional vs. grafo de trabajo | Graph Engineering</title>
+<script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'emerald' };
+      function clone(o) { var r = {}; for (var x in o) r[x] = o[x]; return r; }
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed === 'object') { for (var k in DEF) if (parsed[k] != null) p[k] = parsed[k]; } }
+        else { var legacy = localStorage.getItem('theme'); if (legacy === 'light') p.theme = 'claro'; else if (legacy === 'dark') p.theme = 'inema-dark'; }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = { 'inema-dark': { dark: true, attr: null, cs: 'dark' }, 'claro': { dark: false, attr: null, cs: 'light' }, 'sepia': { dark: false, attr: 'sepia', cs: 'light' }, 'foco': { dark: null, attr: 'foco', cs: null }, 'contraste': { dark: true, attr: 'contraste', cs: 'dark' } };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark === true) html.classList.add('dark'); else if (t.dark === false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark') ? 'dark' : 'light'));
+      html.setAttribute('data-font', p.font || 'inter'); html.setAttribute('data-accent', p.accent || 'emerald');
+      var s = html.style, scale = (+p.fontScale || 100);
+      s.setProperty('--inema-font-scale', (scale / 100).toString()); s.setProperty('font-size', scale + '%');
+      s.setProperty('--measure', (+p.lineWidth || 68) + 'ch'); s.setProperty('--lh-body', (+p.leading || 1.7).toString());
+      var fam = p.font === 'system' ? 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif' : (p.font === 'leitura' ? '"Atkinson Hyperlegible", "Inter", system-ui, sans-serif' : '"Inter", system-ui, sans-serif');
+      s.setProperty('--font-body', fam);
+      var ACC = { emerald: [152,76,45], blue: [217,91,60], purple: [258,90,66], amber: [38,92,50], teal: [174,72,41], rose: [350,89,60] };
+      var a = ACC[p.accent] || ACC.emerald;
+      s.setProperty('--accent-h', a[0]+''); s.setProperty('--accent-s', a[1]+'%'); s.setProperty('--accent-l', a[2]+'%');
+      s.setProperty('--accent', 'hsl(' + a[0] + ' ' + a[1] + '% ' + a[2] + '%)');
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme = 'dark'; } catch (e) {} }
+  })();
+  </script>
+<script data-inema-manifest="" type="application/json">
+  {
+    "course": "loopgraph",
+    "tracks": [
+      { "n": "1", "title": "Fundamentos: o grafo", "modules": [
+        { "id": "1-1", "title": "O que e um grafo", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
+        { "id": "1-2", "title": "Grafos no mundo real", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+        { "id": "1-3", "title": "Como se anda num grafo", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" }
+      ]},
+      { "n": "2", "title": "Loop Engineering", "modules": [
+        { "id": "2-1", "title": "Anatomia do loop", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
+        { "id": "2-2", "title": "O verificador e o gargalo", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
+        { "id": "2-3", "title": "Onde o loop quebra", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" }
+      ]},
+      { "n": "3", "title": "Agentic x Loop x Graph", "modules": [
+        { "id": "3-1", "title": "As cinco camadas", "topics": 6, "href": "curso/trilha3/modulo-3-1.html" },
+        { "id": "3-2", "title": "O comparativo de verdade", "topics": 6, "href": "curso/trilha3/modulo-3-2.html" },
+        { "id": "3-3", "title": "Mito x fato", "topics": 6, "href": "curso/trilha3/modulo-3-3.html" }
+      ]},
+      { "n": "4", "title": "Graph Engineering na pratica", "modules": [
+        { "id": "4-1", "title": "Nos, arestas e estado", "topics": 6, "href": "curso/trilha4/modulo-4-1.html" },
+        { "id": "4-2", "title": "Org graph x work graph", "topics": 6, "href": "curso/trilha4/modulo-4-2.html" },
+        { "id": "4-3", "title": "Falhas, harness e observabilidade", "topics": 6, "href": "curso/trilha4/modulo-4-3.html" }
+      ]},
+      { "n": "5", "title": "Mao na massa", "modules": [
+        { "id": "5-1", "title": "Do loop ao grafo", "topics": 6, "href": "curso/trilha5/modulo-5-1.html" },
+        { "id": "5-2", "title": "Grafos de negocio e de tarefas", "topics": 6, "href": "curso/trilha5/modulo-5-2.html" },
+        { "id": "5-3", "title": "Biblioteca de prompts", "topics": 6, "href": "curso/trilha5/modulo-5-3.html" }
+      ]}
+    ]
+  }
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }</script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../../assets/learn.css" rel="stylesheet"/>
+<link href="../../../assets/curso.css" rel="stylesheet"/>
+<link href="https://inematds.github.io/loopgraph/curso/trilha4/modulo-4-2.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/loopgraph/en/curso/trilha4/modulo-4-2.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/loopgraph/es/curso/trilha4/modulo-4-2.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha4/modulo-4-2.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="../../../en/curso/trilha4/modulo-4-2.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="modulo-4-2.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">ES</a></div>
+<a class="sr-only focus:not-sr-only focus:absolute focus:z-[60] focus:m-2 focus:px-4 focus:py-2 focus:rounded-lg focus:bg-dark-700" href="#conteudo">Saltar al contenido</a>
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14 gap-2">
+<div class="flex items-center space-x-3 flex-shrink-0">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html">
+<span class="text-2xl">🕸️</span><span class="font-bold text-lg hidden lg:inline">Graph Engineering</span>
+</a>
+<span class="text-neutral-600 hidden sm:inline">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium hidden sm:inline" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+<span class="text-neutral-600 hidden sm:inline">-</span>
+<a class="text-amber-700 hover:text-amber-600 dark:text-slate-300 dark:hover:text-slate-200 text-sm font-medium hidden sm:inline" href="https://inema.pro" target="_blank">PRO</a>
+</div>
+<div class="flex items-center space-x-1">
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors" href="../trilha1/index.html"><span class="lg:hidden">T1</span><span class="hidden lg:inline">Fundamentos</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors" href="../trilha2/index.html"><span class="lg:hidden">T2</span><span class="hidden lg:inline">Bucles</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors" href="../trilha3/index.html"><span class="lg:hidden">T3</span><span class="hidden lg:inline">Comparativo</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-amber-400 bg-amber-500/10" href="index.html"><span class="lg:hidden">T4</span><span class="hidden lg:inline">Práctica</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors" href="../trilha5/index.html"><span class="lg:hidden">T5</span><span class="hidden lg:inline">Manos a la obra</span></a>
+<button class="hidden sm:inline-flex items-center gap-1 px-2 py-1.5 rounded-lg text-sm text-neutral-400 hover:text-neutral-100 transition-colors" data-inema-journey-open="" title="Mi recorrido" type="button">
+<span aria-hidden="true">◷</span><span class="hidden xl:inline">Recorrido</span><span aria-hidden="true" class="inema-journey-badge hidden"></span>
+</button>
+<button aria-label="Alternar entre tema claro y oscuro" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<nav aria-label="Ruta de navegación" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+<div class="flex items-center space-x-2 text-sm text-neutral-400">
+<a class="hover:text-amber-400" href="../../index.html">Inicio</a><span>/</span>
+<a class="hover:text-amber-400" href="index.html">Ruta 4</a><span>/</span>
+<span class="text-amber-400">Módulo 4.2</span>
+</div>
+</nav>
+<header class="bg-gradient-to-br from-amber-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600" data-inema-module="4-2" data-inema-track="4">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-amber-500/20 text-amber-400 text-xs font-semibold rounded-full mb-4">MÓDULO 4.2</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">🏢 Grafo organizacional × grafo de trabajo</h1>
+<p class="text-lg text-neutral-400 max-w-3xl">
+      Dos grafos conviven en el mismo sistema de agentes, y confundirlos es la causa más común de desorden.
+      Uno se mantiene — y el <strong class="text-amber-400">organigrama</strong>. El otro pasa — y es el <strong class="text-amber-400">pedido de hoy</strong>.
+      Este módulo separa los dos y muestra cómo se conectan: zone defense, fan-out/fan-in y enrutamiento por condición.
+    </p>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-amber-400">6</div><div class="text-xs text-neutral-400">Temas</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-amber-400">40</div><div class="text-xs text-neutral-400">Minutos</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-amber-400">Intermedio</div><div class="text-xs text-neutral-400">Nivel</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-amber-400">Práctica</div><div class="text-xs text-neutral-400">Tipo</div></div>
+</div>
+<div class="mt-6 max-w-2xl bg-dark-800 rounded-xl border border-dark-600 p-4">
+<div class="flex items-center justify-between">
+<span class="text-sm text-neutral-300 font-semibold">Progreso de este módulo</span>
+<div aria-label="Progreso del módulo 4.2" aria-valuemax="100" aria-valuemin="0" class="inema-meter text-sm" data-inema-meter="modulo:4-2" role="progressbar">
+<span class="inema-meter-pct text-amber-400 font-bold">0%</span><span class="inema-meter-count text-neutral-400 ml-2">0 de 6</span>
+</div>
+</div>
+</div>
+</div>
+</header>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="lg:grid lg:grid-cols-[220px_minmax(0,1fr)] lg:gap-10">
+<nav aria-label="Índice de la página" class="hidden lg:block sticky top-24 self-start" data-inema-toc="">
+<p class="text-sm text-neutral-400 mb-3">Sección <span class="inema-toc-pos">1</span> de <span class="inema-toc-total">6</span></p>
+<ul class="space-y-1 text-sm">
+<li><a class="inema-toc-link text-neutral-400 hover:text-amber-400" href="#topico-1">1. Separa el organigrama</a></li>
+<li><a class="inema-toc-link text-neutral-400 hover:text-amber-400" href="#topico-2">2. Construye el grafo de trabajo</a></li>
+<li><a class="inema-toc-link text-neutral-400 hover:text-amber-400" href="#topico-3">3. Aplica zone defense</a></li>
+<li><a class="inema-toc-link text-neutral-400 hover:text-amber-400" href="#topico-4">4. Fan-out y fan-in</a></li>
+<li><a class="inema-toc-link text-neutral-400 hover:text-amber-400" href="#topico-5">5. Enruta por condición</a></li>
+<li><a class="inema-toc-link text-neutral-400 hover:text-amber-400" href="#topico-6">6. Código x modelo</a></li>
+</ul>
+</nav>
+<main class="inema-prose" id="conteudo">
+<!-- ============ TOPICO 1 ============ -->
+<section class="mb-16" data-inema-topic="modulo-4-2#topico-1" id="topico-1">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl">1</span>
+<h2 class="text-2xl font-bold">🏛️ Separa el organigrama del trabajo</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Marcar duda en este tema" type="button">
+<span aria-hidden="true">?</span><span>Tengo una duda</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-2-t1-p1">
+      Dos grafos conviven en el mismo sistema de agentes, y no son el mismo grafo. El
+      <strong class="text-amber-400">org graph</strong> y es la estructura que permanece: agentes de larga duración con roles definidos
+      —investigador, escritor, validador, publicador—, cada uno a cargo de un dominio, con memoria acumulada y aristas estables
+      que solo cambian cuando tú <strong class="text-amber-400">vuelve a desplegar</strong> el sistema.
+    </p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-2-t1-p2">
+      Piensa en él como el organigrama de la empresa, solo que cada cuadro es un agente que ejecuta su propio loop. El org graph responde
+      «quién existe y qué hace cada uno», no «qué estamos haciendo ahora». Esa segunda pregunta corresponde a otro grafo, que
+      verás en el próximo tema.
+    </p>
+<div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">🆕</span> ¿Nuevo aquí? Cuatro palabras antes de seguir</h3>
+<ul class="space-y-2 text-neutral-300 text-sm">
+<li><strong class="text-neutral-100">Org graph:</strong> la estructura estable de agentes de larga duración: el organigrama. Solo cambia cuando vuelves a implementar el sistema.</li>
+<li><strong class="text-neutral-100">Work graph:</strong> el grafo armado para una tarea específica. Se crea, se ejecuta y se descarta.</li>
+<li><strong class="text-neutral-100">Redeploy:</strong> reimplementar — publicar una nueva versión del sistema. Es el único momento en que cambia el org graph.</li>
+<li><strong class="text-neutral-100">Determinista:</strong> mismo input, siempre el mismo output. Lo opuesto a «depende de la suerte del modelo ese día».</li>
+</ul>
+</div>
+<div class="rounded-2xl border border-amber-500/30 bg-dark-900/40 p-3 sm:p-4 mb-4 overflow-hidden">
+<svg aria-label="Divisoria vertical discontinua en el medio. A la izquierda, cuatro agentes con nombre (investigador, escritor, validador, publicador) conectados por aristas estables en ámbar, con la etiqueta se mantiene, cambia al volver a implementar. A la derecha, un camino fino cian que pasa por algunos de los mismos agentes para una tarea específica, con la etiqueta pasa, cambia con cada pedido." class="w-full h-auto" role="img" viewbox="0 0 1000 380">
+<defs>
+<lineargradient id="m42a-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#fbbf24"></stop><stop offset="1" stop-color="#f59e0b"></stop></lineargradient>
+<filter height="180%" id="m42a-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="m42a-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#f59e0b" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="m42a-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#fbbf24"></path></marker>
+<marker id="m42a-ahc" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#38bdf8"></path></marker>
+</defs>
+<rect fill="url(#m42a-grid)" height="380" width="1000" x="0" y="0"></rect>
+<path d="M500,20 L500,360" opacity="0.4" stroke="#9ca3af" stroke-dasharray="9 9" stroke-width="1.5"></path>
+<text fill="#fcd9a0" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="230" y="36">ORG GRAPH — el organigrama</text>
+<g fill="none" opacity="0.6" stroke="#fbbf24" stroke-width="1.8">
+<path d="M170,110 L170,180" marker-end="url(#m42a-ah)"></path>
+<path d="M170,110 L330,180" marker-end="url(#m42a-ah)"></path>
+<path d="M330,110 L170,180" marker-end="url(#m42a-ah)"></path>
+<path d="M170,220 L170,290" marker-end="url(#m42a-ah)"></path>
+<path d="M330,220 L330,290" marker-end="url(#m42a-ah)"></path>
+</g>
+<g font-family="Inter,sans-serif" font-size="12.5" font-weight="600">
+<g filter="url(#m42a-glow)"><rect fill="#1f1604" height="42" rx="10" stroke="url(#m42a-grad)" stroke-width="2" width="120" x="110" y="70"></rect></g>
+<text fill="#fbbf24" text-anchor="middle" x="170" y="96">investigador</text>
+<rect fill="#1f1604" height="42" rx="10" stroke="#fbbf24" stroke-width="2" width="120" x="270" y="70"></rect><text fill="#fcd9a0" text-anchor="middle" x="330" y="96">escritor</text>
+<rect fill="#1f1604" height="42" rx="10" stroke="#fbbf24" stroke-width="2" width="120" x="110" y="180"></rect><text fill="#fcd9a0" text-anchor="middle" x="170" y="206">validador</text>
+<rect fill="#1f1604" height="42" rx="10" stroke="#fbbf24" stroke-width="2" width="120" x="270" y="180"></rect><text fill="#fcd9a0" text-anchor="middle" x="330" y="206">publicador</text>
+</g>
+<text fill="#fcd9a0" font-family="Inter,sans-serif" font-size="13" text-anchor="middle" x="250" y="340">se mantiene — solo cambia al volver a desplegar</text>
+<text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="750" y="36">WORK GRAPH — el pedido de hoy</text>
+<path d="M670,91 C740,91 780,150 850,150 C900,150 900,201 940,201" fill="none" marker-end="url(#m42a-ahc)" stroke="#38bdf8" stroke-width="2.4"></path>
+<g font-family="Inter,sans-serif" font-size="12.5" font-weight="600">
+<rect fill="#0e1b26" height="42" rx="10" stroke="#38bdf8" stroke-width="2" width="120" x="610" y="70"></rect><text fill="#bfe6ff" text-anchor="middle" x="670" y="96">investigador</text>
+<rect fill="#0e1b26" height="42" rx="10" stroke="#38bdf8" stroke-width="2" width="120" x="790" y="130"></rect><text fill="#bfe6ff" text-anchor="middle" x="850" y="156">validador</text>
+<circle cx="960" cy="201" fill="#0e1b26" r="24" stroke="#38bdf8" stroke-width="2"></circle><text fill="#9ad6ff" font-size="11" text-anchor="middle" x="960" y="206">fin</text>
+</g>
+<text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="13" text-anchor="middle" x="770" y="340">cambia: cambia con cada pedido</text>
+</svg>
+</div>
+<p class="text-sm text-neutral-400 mb-6">
+<strong class="text-neutral-300">Qué observar:</strong> la línea divisoria punteada del medio no separa dos sistemas: separa dos <em>perspectivas</em>
+      del mismo sistema. Fíjate en que «investigador» y «validador» aparecen en ambos lados: son los mismos agentes. A la izquierda,
+      ves todas las relaciones posibles entre ellos (el organigrama). A la derecha, ves solo el recorrido específico que esta tarea de hoy
+      realmente siguió: un subconjunto, armado en el momento.
+    </p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+<h4 class="font-bold text-emerald-400 mb-4">✓ Es un org graph cuando</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>El agente tiene un nombre y un papel fijos, no cambia de tarea en tarea</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Acumula memoria: sabe cosas que aprendió en ejecuciones anteriores</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>La arista representa «puede pedirle a» — una relación a largo plazo</span></li>
+</ul>
+</div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+<h4 class="font-bold text-red-400 mb-4">✗ No es un grafo organizacional cuando</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Estás diseñando los pasos de una única tarea: eso es work graph</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>La «estructura» cambia cada vez que llega una solicitud diferente</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>No hay memoria acumulada, solo el contexto de esa ejecución</span></li>
+</ul>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-amber-400 mb-4">Conceptos clave</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">Org graph</div><p class="text-xs text-neutral-400">El organigrama, estable</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">Larga vida</div><p class="text-xs text-neutral-400">Agente con rol definido</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">Memoria acumulada</div><p class="text-xs text-neutral-400">Aprende entre ejecuciones</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">Cambia con el redeploy</div><p class="text-xs text-neutral-400">No cambia en runtime</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span>
+</button>
+</div>
+</section>
+<!-- ============ TOPICO 2 ============ -->
+<section class="mb-16" data-inema-topic="modulo-4-2#topico-2" id="topico-2">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl">2</span>
+<h2 class="text-2xl font-bold">📋 Construye el work graph del pedido de hoy</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Marcar duda en este tema" type="button">
+<span aria-hidden="true">?</span><span>Tengo una duda</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-2-t2-p1">
+      O <strong class="text-amber-400">work graph</strong> y es efímero: se arma para una tarea específica y se descarta después.
+      Cambia con cada ejecución: hoy pide investigador y validador, mañana solo pide al escritor y después pide a los cuatro en fila.
+      No existe «el» work graph del sistema; existe un work graph nuevo para cada solicitud que llega.
+    </p>
+<div class="bg-gradient-to-br from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-amber-400 mb-4 flex items-center"><span class="mr-2">💡</span> La confusión más común de un sistema desordenado</h3>
+<p class="text-neutral-300 mb-4">
+        Confundir los dos grafos es la causa más común de un sistema desordenado. Hay quienes recrean toda la organización en cada solicitud: crean un agente nuevo, redefinen los roles y rediseñan la estructura cada vez que llega un pedido. Y hay quienes hacen lo contrario: encasillan la tarea en el organigrama y tratan cada variación del pedido como si tuviera que convertirse en un agente nuevo y permanente.
+      </p>
+<ul class="space-y-2 text-neutral-300">
+<li class="flex items-start space-x-2"><span class="text-amber-400 mt-1">•</span><span>Recrear la organización en cada solicitud = caro, lento, y pierdes la memoria acumulada que hacía bueno al agente.</span></li>
+<li class="flex items-start space-x-2"><span class="text-amber-400 mt-1">•</span><span>Encorsetar la tarea en el organigrama = el sistema se vuelve rígido, incapaz de atender una solicitud que no siga el guion previsto.</span></li>
+</ul>
+</div>
+<div class="space-y-6 mb-6">
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-amber-500/20 flex items-center justify-center"><span class="text-amber-400 font-bold">1</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">Llega una solicitud</h4>
+<p class="text-neutral-300 text-sm">Un usuario o sistema externo activa una tarea. El work graph todavía no existe.</p>
+</div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-amber-500/20 flex items-center justify-center"><span class="text-amber-400 font-bold">2</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">El enrutador elige quién participa</h4>
+<p class="text-neutral-300 text-sm">Revisa el org graph disponible y selecciona un subconjunto de agentes para esta tarea específica.</p>
+</div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-amber-500/20 flex items-center justify-center"><span class="text-amber-400 font-bold">3</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">Work graph se ejecuta y termina</h4>
+<p class="text-neutral-300 text-sm">El camino específico de la tarea se ejecuta de principio a fin, entrega el resultado y se descarta.</p>
+</div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-amber-500/20 flex items-center justify-center"><span class="text-amber-400 font-bold">4</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">Org graph permanece intacto</h4>
+<p class="text-neutral-300 text-sm">Los agentes que participaron siguen existiendo, listos para el próximo work graph, con la memoria que acumularon.</p>
+</div>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-amber-400 mb-4">Conceptos clave</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">Work graph</div><p class="text-xs text-neutral-400">Efímero, uno por solicitud</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">Descartable</div><p class="text-xs text-neutral-400">Nace, se ejecuta, desaparece</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">Subconjunto</div><p class="text-xs text-neutral-400">Usa solo parte del grafo de la organización</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">Error común</div><p class="text-xs text-neutral-400">Confundirlo con el organigrama</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span>
+</button>
+</div>
+</section>
+<!-- ============ TOPICO 3 ============ -->
+<section class="mb-16" data-inema-topic="modulo-4-2#topico-3" id="topico-3">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl">3</span>
+<h2 class="text-2xl font-bold">🛡️ Aplica zone defense</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Marcar duda en este tema" type="button">
+<span aria-hidden="true">?</span><span>Tengo una duda</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-2-t3-p1">
+<strong class="text-amber-400">Zone defense</strong> y es el patrón que hace que el org graph valga la pena: cada agente está a cargo de
+      un dominio, con contexto persistente. El de seguridad se ocupa de la autenticación, los permisos y los registros de auditoría.
+      El de datos se ocupa del esquema, las migraciones y los patrones de consulta. El de API se ocupa de los endpoints, los límites de tasa y los contratos.
+      El de frontend se ocupa de los componentes, el estado y los patrones de interfaz.
+    </p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-2-t3-p2">
+      Cada uno ejecuta su propio loop dentro de la zona. Una solicitud de una zona a otra pasa por el work graph — nunca directamente.
+      Ningún agente se filtra al contexto del otro. Eso es lo que hace que el agente de larga duración acumule valor de verdad: un agente
+      de seguridad que ya revisó 300 cambios conoce implícitamente el modelo de amenazas de ese código, sin necesidad de
+      volver a explicarlo en cada solicitud.
+    </p>
+<div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">📊</span> Las cuatro zonas clásicas</h3>
+<ul class="space-y-2 text-neutral-300 text-sm">
+<li><strong>Seguridad</strong> — autenticación, permisos, registros de auditoría</li>
+<li><strong>Datos</strong> — esquema, migraciones, patrones de consulta</li>
+<li><strong>API</strong> — endpoints, límites de tasa, contratos</li>
+<li><strong>Frontend</strong> — componentes, estado, patrones de interfaz</li>
+</ul>
+</div>
+<div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">🆕</span> ¿Nuevo aquí? Defensa en zona</h3>
+<p class="text-neutral-300 text-sm">
+<strong class="text-neutral-100">Zone defense:</strong> término tomado del deporte: cada jugador cubre una zona del campo,
+        no a una persona específica del equipo adversario. En graph engineering, cada agente cubre un dominio del sistema, no una
+        tarea específica. Defiende toda la zona, tarea tras tarea.
+      </p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+<h4 class="font-bold text-emerald-400 mb-4">✓ La defensa por zonas funciona cuando</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>El dominio tiene una frontera clara (datos no es API, API no es frontend)</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Los pasos entre zonas se convierten en una arista explícita en el work graph</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Cada agente acumula contexto real (historial de decisiones, no solo instrucciones)</span></li>
+</ul>
+</div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+<h4 class="font-bold text-red-400 mb-4">✗ La defensa por zonas falla cuando</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Un agente lee o escribe directamente en el contexto de otra zona (filtración)</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Las zonas se superponen: dos agentes «dueños» del mismo dominio</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Una zona se queda sin dueño y se convierte en tierra de nadie</span></li>
+</ul>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-amber-400 mb-4">Conceptos clave</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">Zone defense</div><p class="text-xs text-neutral-400">Un responsable por dominio</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">Contexto persistente</div><p class="text-xs text-neutral-400">No se reinicia en cada tarea</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">Sin fugas</div><p class="text-xs text-neutral-400">Paso = arista explícita</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">Valor implícito</div><p class="text-xs text-neutral-400">La experiencia acumulada cuenta</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span>
+</button>
+</div>
+</section>
+<!-- ============ TOPICO 4 ============ -->
+<section class="mb-16" data-inema-topic="modulo-4-2#topico-4" id="topico-4">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl">4</span>
+<h2 class="text-2xl font-bold">🔀 Haz fan-out y fan-in de verdad</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Marcar duda en este tema" type="button">
+<span aria-hidden="true">?</span><span>Tengo una duda</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-2-t4-p1">
+<strong class="text-amber-400">Fan-out</strong> y abrir una tarea en N ramas que se ejecutan al mismo tiempo.
+      <strong class="text-amber-400">Fan-in</strong> y reunir los N resultados en uno solo. Es algo que un loop
+      simplemente no hace, porque su forma es secuencial: un loop procesa una cosa a la vez, siempre.
+    </p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-2-t4-p2">
+      La unión es donde reside el peligro. Una fusión mal hecha se traga una rama en silencio, y el resultado parece completo aunque
+      le falte una parte. Por eso, toda unión necesita comprobar <strong class="text-amber-400">cardinalidad</strong>:
+      ¿recibí los N que despaché?
+    </p>
+<div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">🆕</span> ¿Nuevo aquí? Fan-out, fan-in, cardinalidad</h3>
+<ul class="space-y-2 text-neutral-300 text-sm">
+<li><strong class="text-neutral-100">Fan-out:</strong> un nodo envía trabajo a varias ramas paralelas al mismo tiempo.</li>
+<li><strong class="text-neutral-100">Fan-in:</strong> las ramas paralelas convergen de nuevo en un único nodo de unión.</li>
+<li><strong class="text-neutral-100">Cardinalidad:</strong> el conteo: cuántos elementos salieron y cuántos volvieron. Si enviaste 5 y recibiste 4, la cardinalidad no coincide.</li>
+</ul>
+</div>
+<div class="rounded-2xl border border-amber-500/30 bg-dark-900/40 p-3 sm:p-4 mb-4 overflow-hidden">
+<svg aria-label="El origen, a la izquierda y al centro, se extiende en cinco ramas cian pulsantes hacia la derecha, donde convergen en una unión. Una de las cinco ramas, la del medio, está trazada en rojo con una X y no llega a la unión. La unión muestra el texto recibí 4 de 5." class="w-full h-auto" role="img" viewbox="0 0 1000 320">
+<defs>
+<lineargradient id="m42b-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#fbbf24"></stop><stop offset="1" stop-color="#f59e0b"></stop></lineargradient>
+<filter height="180%" id="m42b-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="m42b-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#f59e0b" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="m42b-ahc" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#38bdf8"></path></marker>
+<marker id="m42b-ahr" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#f87171"></path></marker>
+<style>.wf-a{animation:m42pulse 1.8s ease-in-out infinite;}@keyframes m42pulse{0%,100%{opacity:.35;}50%{opacity:.9;}}</style>
+</defs>
+<rect fill="url(#m42b-grid)" height="320" width="1000" x="0" y="0"></rect>
+<g filter="url(#m42b-glow)"><circle cx="120" cy="160" fill="#1f1604" r="40" stroke="url(#m42b-grad)" stroke-width="2"></circle></g>
+<text fill="#fbbf24" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="120" y="166">origen</text>
+<g class="wf-a" fill="none" stroke="#38bdf8" stroke-width="2">
+<path d="M160,140 C400,60 600,60 850,140" marker-end="url(#m42b-ahc)"></path>
+<path d="M160,150 C400,105 600,105 850,150" marker-end="url(#m42b-ahc)"></path>
+<path d="M160,160 L850,160" marker-end="url(#m42b-ahc)"></path>
+<path d="M160,180 C400,225 600,225 850,180" marker-end="url(#m42b-ahc)"></path>
+</g>
+<path d="M160,170 C400,155 600,195 850,170" fill="none" stroke="#f87171" stroke-dasharray="6 5" stroke-width="2.2"></path>
+<circle cx="500" cy="176" fill="#1f0a0a" r="12" stroke="#f87171" stroke-width="2"></circle>
+<text fill="#f87171" font-family="Inter,sans-serif" font-size="13" font-weight="700" text-anchor="middle" x="500" y="181">✗</text>
+<g filter="url(#m42b-glow)"><circle cx="890" cy="160" fill="#1f1604" r="40" stroke="url(#m42b-grad)" stroke-width="2"></circle></g>
+<text fill="#fbbf24" font-family="Inter,sans-serif" font-size="12.5" font-weight="600" text-anchor="middle" x="890" y="155">unión</text>
+<text fill="#fca5a5" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="890" y="171">recibí 4 de 5</text>
+<text fill="#fcd9a0" font-family="Inter,sans-serif" font-size="13" text-anchor="middle" x="500" y="280">fan-out en 5 ramas · 1 rama falla en silencio · fan-in no lo detecta si no verifica la cardinalidad</text>
+</svg>
+</div>
+<p class="text-sm text-neutral-400 mb-6">
+<strong class="text-neutral-300">Qué observar:</strong> cuatro ramas pulsantes llegan limpias a la unión; la quinta, marcada con una X roja,
+      nunca llega. Si la unión no cuenta cuántas ramas se enviaron y cuántas se recibieron, aceptará «recibí 4 de 5» como si fuera
+      un resultado completo. Eso es la combinación que se traga una fuente — el resultado parece listo y nadie se da cuenta de que falta una parte.
+    </p>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center"><span class="mr-2">⚠️</span> Atención: unión sin verificación de cardinalidad</h3>
+<p class="text-neutral-300">
+        Cada vez que escribas una convergencia, pregúntate explícitamente «¿cuántos esperaba?» antes de seguir. Si la respuesta no coincide con lo que llegó, detente y resuelve el caso: no dejes que el grafo de trabajo siga como si estuviera completo. Una rama que falla en silencio es peor que una rama que falla haciendo ruido.
+      </p>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-amber-400 mb-4">Conceptos clave</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">Fan-out</div><p class="text-xs text-neutral-400">Un nodo se convierte en N ramas</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">Fan-in</div><p class="text-xs text-neutral-400">N ramas se convierten en un nodo</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">Cardinalidad</div><p class="text-xs text-neutral-400">¿Recibí los N que envié?</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">Peligro</div><p class="text-xs text-neutral-400">Merge que se traga algo en silencio</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span>
+</button>
+</div>
+</section>
+<!-- ============ TOPICO 5 ============ -->
+<section class="mb-16" data-inema-topic="modulo-4-2#topico-5" id="topico-5">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl">5</span>
+<h2 class="text-2xl font-bold">🚦 Enruta según la condición</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Marcar duda en este tema" type="button">
+<span aria-hidden="true">?</span><span>Tengo una duda</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-2-t5-p1">
+      En el enrutamiento por condición, la arista elige el destino según el resultado del nodo anterior. Es el mecanismo que hace
+      que el work graph «decida» sin que un agente tenga que interpretar todo de nuevo en cada paso. El ejemplo clásico es el soporte
+      al cliente.
+    </p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-2-t5-p2">
+      La complejidad baja va a la base de respuestas preparadas (FAQ). La complejidad media va al agente de IA. La complejidad alta o arriesgada se escala directamente al humano. También están la arista «no lo resolvió» (devuelve al siguiente nivel) y la arista de aprendizaje (vuelve al clasificador con los comentarios).
+    </p>
+<figure class="mb-6">
+<img alt="Diagrama de soporte al cliente: el cliente envía un mensaje; un nodo de clasificación lo enruta según su complejidad: los casos de baja complejidad van a las FAQ, los de complejidad media al agente de IA y los de alta complejidad o riesgo se escalan directamente a una persona, en rojo. Flechas punteadas de «si no se resuelve» bajan de las FAQ al agente de IA y de este a la persona; todas convergen en una solución. Una flecha verde punteada de aprendizaje vuelve desde los comentarios hasta la clasificación." class="w-full h-auto rounded-xl border border-dark-600" src="../../../assets/img/ex5-suporte-cliente.png"/>
+<figcaption class="text-sm text-neutral-400 mt-3">
+<strong class="text-neutral-300">Qué observar:</strong> la leyenda distingue <strong>cuatro tipos de arista</strong> — flujo principal
+        (clasificación → FAQ/IA/persona), si no se resuelve (línea discontinua, sube un nivel), escalamiento (roja, directo a la persona) y
+        aprendizaje (verde, vuelve al clasificador). La flecha verde de aprendizaje es la <em>única</em> que cierra un ciclo — es lo que hace
+        que el sistema mejore con el tiempo, en vez de funcionar siempre de la misma manera.
+      </figcaption>
+</figure>
+<div class="bg-gradient-to-br from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-amber-400 mb-4 flex items-center"><span class="mr-2">🎯</span> Por qué la arista de aprendizaje importa más de lo que parece</h3>
+<p class="text-neutral-300">
+        Las tres primeras aristas (principal, si-no-se-resuelve, escalamiento) hacen que el sistema <em>funcionar</em> hoy.
+        Solo la arista verde hace funcionar el sistema <em>mejor</em> mañana — porque es la única que devuelve información
+        al nodo que decide. Sin ella, el clasificador se equivoca siempre de la misma manera; con ella, cada corrección humana se convierte en
+        una señal para el siguiente enrutamiento.
+      </p>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-amber-400 mb-4">Conceptos clave</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">Enrutamiento por condición</div><p class="text-xs text-neutral-400">La arista elige según el resultado</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">Escalamiento</div><p class="text-xs text-neutral-400">El riesgo alto va directamente a una persona</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">Si-no-se-resuelve</div><p class="text-xs text-neutral-400">Sube al siguiente nivel</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">Aprendizaje</div><p class="text-xs text-neutral-400">Única arista que cierra el ciclo</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span>
+</button>
+</div>
+</section>
+<!-- ============ TOPICO 6 ============ -->
+<section class="mb-16" data-inema-topic="modulo-4-2#topico-6" id="topico-6">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl">6</span>
+<h2 class="text-2xl font-bold">⚙️ Deja que el código decida lo que es previsible</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Marcar duda en este tema" type="button">
+<span aria-hidden="true">?</span><span>Tengo una duda</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-2-t6-p1">
+      El modelo enruta lo que un <code class="text-amber-400">if</code> resolverlo es caro, lento y no determinista.
+      La división que funciona: el código controla el enrutamiento predecible; el modelo se encarga de los pasos que requieren interpretación
+      o criterio. Cada arista que puedas convertir en una regla escrita es una arista que deja de costar tokens
+      y de variar entre ejecuciones.
+    </p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+<h4 class="font-bold text-emerald-400 mb-4">✓ Déjaselo al código</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>"Si complejidad == baja, va a FAQ" — regla explícita, sin ambigüedad</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>"Si la cardinalidad no coincide, detente y alerta" — comprobación mecánica</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>"Si categoría == pago, va al agente financiero" — mapeo fijo</span></li>
+</ul>
+</div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+<h4 class="font-bold text-red-400 mb-4">✗ Déjaselo al modelo</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>"¿El tono del mensaje sugiere frustración?" — requiere interpretación, no una regla</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>"¿Esta respuesta realmente responde la pregunta?" — evaluación de calidad</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>"¿Cuál es la intención real detrás de esta frase ambigua?" — interpretación</span></li>
+</ul>
+</div>
+</div>
+<!-- EXEMPLO COPY-RUN -->
+<div class="bg-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-amber-400 mb-2 flex items-center"><span class="mr-2">🧪</span> Ejemplo práctico: grafo de enrutamiento de soporte en JSON</h3>
+<p class="text-sm text-neutral-400 mb-4"><strong class="text-neutral-300">Objetivo:</strong> escribir el grafo de enrutamiento del soporte con aristas condicionales explícitas, una arista de escalamiento, otra para los casos no resueltos y otra de aprendizaje — y una unión que compruebe la cardinalidad. Ejecútalo en la consola del navegador (F12 → Console) o en Node.</p>
+<div class="code-box bg-dark-900 rounded-lg border border-dark-600 p-4 mb-4 overflow-x-auto">
+<pre class="text-sm text-neutral-300">// 1) O grafo de roteamento: cada aresta tem uma condicao explicita
+const roteador = {
+  "classificacao": [
+    { "para": "faq",         "quando": "complexidade == 'baixa'" },
+    { "para": "agente_ia",   "quando": "complexidade == 'media'" },
+    { "para": "humano",      "quando": "complexidade == 'alta' || risco == 'alto'" }
+  ],
+  "faq":        [ { "para": "agente_ia", "quando": "resolvido == false" } ],
+  "agente_ia":  [ { "para": "humano",    "quando": "resolvido == false" } ],
+  "humano":     [ { "para": "classificacao", "quando": "feedback_dado == true", "tipo": "aprendizado" } ]
+};
+
+// 2) Juncao com checagem de cardinalidade (fan-in de N tickets em lote)
+function fanIn(despachados, recebidos) {
+  if (recebidos.length !== despachados.length) {
+    throw new Error(`cardinalidade nao bate: recebi ${recebidos.length} de ${despachados.length}`);
+  }
+  return recebidos;
+}
+
+// 3) Rota um ticket de exemplo
+function roteia(no, ctx) {
+  const arestas = roteador[no] || [];
+  for (const a of arestas) {
+    // avaliacao simplificada da condicao 'quando' contra o contexto
+    if (eval(a.quando.replace(/complexidade/g, `'${ctx.complexidade}'`).replace(/risco/g, `'${ctx.risco}'`).replace(/resolvido/g, ctx.resolvido).replace(/feedback_dado/g, ctx.feedback_dado))) {
+      return a.para;
+    }
+  }
+  return null; // nenhuma condicao casou -- pedido some, ver "como verificar"
+}
+
+console.log(roteia("classificacao", { complexidade: "media", risco: "baixo" })); // "agente_ia"</pre>
+</div>
+<div class="bg-dark-700/50 rounded-lg p-4">
+<p class="text-sm text-neutral-300"><strong class="text-amber-400">Cómo verificar:</strong></p>
+<ul class="space-y-2 text-neutral-300 text-sm mt-2">
+<li><strong class="text-amber-400">1.</strong> Toda arista que sale de un nodo de decisión (<code class="text-amber-400">classificacao</code>) tiene <code class="text-amber-400">quando</code> — ninguna arista «cambia» sin una condición escrita.</li>
+<li><strong class="text-amber-400">2.</strong> Las condiciones cubren <em>todos</em> los casos: prueba <code class="text-amber-400">roteia("classificacao", &lt;contexto sem match&gt;)</code>; si devuelve <code class="text-amber-400">null</code>, existe una entrada que no coincide con ninguna condición y la solicitud desaparece en silencio.</li>
+<li><strong class="text-amber-400">3.</strong> Hay un camino hasta la persona a partir de cualquier nodo: sigue las aristas de <code class="text-amber-400">faq</code> e <code class="text-amber-400">agente_ia</code> y confirma que ambas llegan a <code class="text-amber-400">humano</code> cuando <code class="text-amber-400">resolvido == false</code>.</li>
+</ul>
+<p class="text-sm text-neutral-400 mt-3"><strong class="text-neutral-300">Ahora cámbialo por el tuyo:</strong> reemplaza los nodos por
+        <code class="text-amber-400">&lt;etapas do seu suporte&gt;</code> y las condiciones por
+        <code class="text-amber-400">&lt;campos reais do seu ticket&gt;</code>. Ejecuta la prueba del punto 2 antes de pasar a producción.</p>
+</div>
+</div>
+<!-- CHECAGEM LEVE -->
+<div class="inema-check mt-8 bg-dark-800 border border-dark-600 rounded-xl p-6 mb-6" data-inema-check="modulo-4-2#q1">
+<p class="font-medium mb-4">Verificación rápida (no bloquea nada): un fan-in recibió 3 respuestas de un fan-out que despachó 5 ramas y siguió como si estuviera completo. ¿Cuál fue el error?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">Ninguno: el fan-in siempre puede continuar con lo que llegó</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">La unión no comprobó la cardinalidad: debía comparar 3 recibidos con 5 enviados y detenerse</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">El error fue hacer fan-out en vez de ejecutar las 5 ramas en secuencia</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-amber-400 mb-4">Conceptos clave</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">El código enruta</div><p class="text-xs text-neutral-400">Lo que es una regla se convierte en `if`</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">El modelo juzga</div><p class="text-xs text-neutral-400">Lo que exige interpretación</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">Cobertura total</div><p class="text-xs text-neutral-400">Toda entrada tiene un destino</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-amber-400 font-semibold text-sm mb-1">Menos costo</div><p class="text-xs text-neutral-400">Una regla escrita no consume tokens</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span>
+</button>
+</div>
+</section>
+<!-- ============ RESUMO ============ -->
+<section class="mb-12">
+<div class="bg-gradient-to-br from-amber-900/40 via-dark-800 to-dark-800 rounded-xl border border-amber-500/30 p-8">
+<h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">📌</span> Resumen del módulo</h2>
+<div class="space-y-4 mb-8">
+<div class="flex items-start space-x-3"><span class="text-amber-400 mt-1">✓</span><div><strong class="text-white">Org graph = organigrama</strong><span class="text-neutral-400"> — agentes de larga duración, roles con nombre, solo cambia al volver a desplegar.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-amber-400 mt-1">✓</span><div><strong class="text-white">Work graph = tarea de hoy</strong><span class="text-neutral-400"> — efímero, se crea y se descarta con cada solicitud.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-amber-400 mt-1">✓</span><div><strong class="text-white">Zone defense</strong><span class="text-neutral-400"> — cada agente es responsable de un dominio, con contexto persistente, sin filtrarlo al otro.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-amber-400 mt-1">✓</span><div><strong class="text-white">Fan-out/fan-in</strong><span class="text-neutral-400"> — abrir N ramas paralelas y unirlas; cada unión verifica la cardinalidad.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-amber-400 mt-1">✓</span><div><strong class="text-white">Enrutamiento por condición</strong><span class="text-neutral-400"> — la arista elige según el resultado del nodo; la arista de aprendizaje es la única que cierra un ciclo.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-amber-400 mt-1">✓</span><div><strong class="text-white">Código vs. modelo</strong><span class="text-neutral-400"> — lo que es una regla se convierte en `if`; lo que requiere criterio queda en manos del modelo.</span></div></div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+<h3 class="font-semibold text-amber-400 mb-2">Próximo módulo:</h3>
+<p class="text-neutral-300">4.3 — Fallas, harness y observabilidad: merge que se traga la fuente, enrutamiento que no converge, monitor de quién ejecutó qué.</p>
+</div>
+<div class="flex flex-col sm:flex-row gap-4">
+<a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="modulo-4-1.html">← Módulo anterior</a>
+<a class="flex-1 text-center px-6 py-3 bg-amber-600 text-white rounded-lg font-semibold hover:bg-amber-500 transition-colors" href="modulo-4-3.html">Próximo módulo →</a>
+</div>
+</div>
+</section>
+</main>
+</div>
+</div>
+<footer class="border-t border-dark-600 py-8 mt-16">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+<p>Graph Engineering — de loops a grafos · INEMA 2026</p>
+<p class="mt-2">
+<a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+<span class="text-neutral-600 mx-1">-</span>
+<a class="text-amber-700 hover:text-amber-600 dark:text-slate-300 dark:hover:text-slate-200" href="https://inema.pro" target="_blank">PRO</a>
+</p>
+</div>
+</footer>
+<script>
+  function toggleTopic(button) {
+    const topicItem = button.closest('.topic-item');
+    const explanation = topicItem.querySelector('.topic-explanation');
+    const moduleCard = button.closest('.bg-dark-800') || document;
+    moduleCard.querySelectorAll('.topic-explanation.active').forEach(exp => { if (exp !== explanation) { exp.classList.remove('active'); const b = exp.closest('.topic-item').querySelector('button'); if (b) b.setAttribute('aria-expanded','false'); } });
+    explanation.classList.toggle('active');
+    button.setAttribute('aria-expanded', explanation.classList.contains('active') ? 'true' : 'false');
+  }
+  function openModal(modalId) { const m = document.getElementById(modalId); if (m) { m.classList.remove('hidden'); document.body.style.overflow = 'hidden'; } }
+  function closeModal() { document.querySelectorAll('.modal').forEach(m => m.classList.add('hidden')); document.body.style.overflow = 'auto'; }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+  const themeToggle = document.getElementById('theme-toggle');
+  const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+  const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+  const htmlEl = document.documentElement;
+  if (htmlEl.classList.contains('dark')) themeToggleLightIcon.classList.remove('hidden'); else themeToggleDarkIcon.classList.remove('hidden');
+  themeToggle.addEventListener('click', () => {
+    themeToggleDarkIcon.classList.toggle('hidden'); themeToggleLightIcon.classList.toggle('hidden');
+    htmlEl.classList.toggle('dark');
+    const dark = htmlEl.classList.contains('dark');
+    localStorage.setItem('theme', dark ? 'dark' : 'light');
+    try { const p = JSON.parse(localStorage.getItem('inema.prefs') || '{}'); p.theme = dark ? 'inema-dark' : 'claro'; localStorage.setItem('inema.prefs', JSON.stringify(p)); } catch (e) {}
+  });
+</script>
+<script src="../../../assets/learn.js"></script>
+<script>
+  if (window.INEMA && typeof window.INEMA.init === 'function') { window.INEMA.init(); }
+  window.addEventListener('DOMContentLoaded', function () {
+    if (window.INEMA && INEMA.registerCheck) {
+      INEMA.registerCheck('modulo-4-2#q1', {
+        answer: 1,
+        explain: {
+          0: 'Nao. Fan-in nunca pode seguir "com o que chegou" sem checar contra o que foi despachado — e assim que um ramo falho vira invisivel.',
+          1: 'Isso. A juncao devia comparar 3 recebidos contra 5 despachados e parar (ou alertar) antes de seguir. Sem essa checagem de cardinalidade, o merge engole uma fonte em silencio.',
+          2: 'Nao. Rodar em sequencia nao e o problema aqui — o fan-out em paralelo esta correto. O erro esta na juncao, que nao conferiu quantos ramos realmente voltaram.'
+        }
+      });
+    }
+  });
+</script>
+</body>
+</html>

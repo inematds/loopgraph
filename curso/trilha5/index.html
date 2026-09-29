@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="pt-BR" class="dark">
+
+<html class="dark" lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="inema-course" content="loopgraph">
-  <title>Trilha 5 — Mao na massa | Graph Engineering</title>
-  <script>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="loopgraph" name="inema-course"/>
+<title>Trilha 5 — Mao na massa | Graph Engineering</title>
+<script>
   (function () {
     try {
       var html = document.documentElement;
@@ -35,7 +36,7 @@
     } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme = 'dark'; } catch (e) {} }
   })();
   </script>
-  <script type="application/json" data-inema-manifest>
+<script data-inema-manifest="" type="application/json">
   {
     "course": "loopgraph",
     "tracks": [
@@ -67,492 +68,448 @@
     ]
   }
   </script>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }</script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../../assets/learn.css">
-  <link rel="stylesheet" href="../../assets/curso.css">
-</head>
-<body class="bg-dark-900 text-neutral-100 min-h-screen">
-
-<a href="#conteudo" class="sr-only focus:not-sr-only focus:absolute focus:z-[60] focus:m-2 focus:px-4 focus:py-2 focus:rounded-lg focus:bg-dark-700">Pular para o conteudo</a>
-
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }</script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../assets/learn.css" rel="stylesheet"/>
+<link href="../../assets/curso.css" rel="stylesheet"/>
+<link href="https://inematds.github.io/loopgraph/curso/trilha5/" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/loopgraph/en/curso/trilha5/" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/loopgraph/es/curso/trilha5/" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="./" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">PT</a><a href="../../en/curso/trilha5/" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="../../es/curso/trilha5/" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<a class="sr-only focus:not-sr-only focus:absolute focus:z-[60] focus:m-2 focus:px-4 focus:py-2 focus:rounded-lg focus:bg-dark-700" href="#conteudo">Pular para o conteudo</a>
 <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
-  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex justify-between items-center h-14 gap-2">
-      <div class="flex items-center space-x-3 flex-shrink-0">
-        <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
-          <span class="text-2xl">🕸️</span><span class="font-bold text-lg hidden lg:inline">Graph Engineering</span>
-        </a>
-        <span class="text-neutral-600 hidden sm:inline">|</span>
-        <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium hidden sm:inline">INEMA.CLUB</a>
-        <span class="text-neutral-600 hidden sm:inline">-</span>
-        <a href="https://inema.pro" target="_blank" class="text-amber-700 hover:text-amber-600 dark:text-slate-300 dark:hover:text-slate-200 text-sm font-medium hidden sm:inline">PRO</a>
-      </div>
-      <div class="flex items-center space-x-1">
-        <a href="../trilha1/index.html" class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors"><span class="lg:hidden">T1</span><span class="hidden lg:inline">Fundamentos</span></a>
-        <a href="../trilha2/index.html" class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors"><span class="lg:hidden">T2</span><span class="hidden lg:inline">Loops</span></a>
-        <a href="../trilha3/index.html" class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors"><span class="lg:hidden">T3</span><span class="hidden lg:inline">Comparativo</span></a>
-        <a href="../trilha4/index.html" class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors"><span class="lg:hidden">T4</span><span class="hidden lg:inline">Pratica</span></a>
-        <a href="index.html" class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-teal-400 bg-teal-500/10"><span class="lg:hidden">T5</span><span class="hidden lg:inline">Mao na massa</span></a>
-        <button type="button" data-inema-journey-open class="hidden sm:inline-flex items-center gap-1 px-2 py-1.5 rounded-lg text-sm text-neutral-400 hover:text-neutral-100 transition-colors" title="Minha jornada">
-          <span aria-hidden="true">◷</span><span class="hidden xl:inline">Jornada</span><span class="inema-journey-badge hidden" aria-hidden="true"></span>
-        </button>
-        <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" aria-label="Alternar tema claro/escuro">
-          <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
-          <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
-        </button>
-      </div>
-    </div>
-  </div>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14 gap-2">
+<div class="flex items-center space-x-3 flex-shrink-0">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html">
+<span class="text-2xl">🕸️</span><span class="font-bold text-lg hidden lg:inline">Graph Engineering</span>
+</a>
+<span class="text-neutral-600 hidden sm:inline">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium hidden sm:inline" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+<span class="text-neutral-600 hidden sm:inline">-</span>
+<a class="text-amber-700 hover:text-amber-600 dark:text-slate-300 dark:hover:text-slate-200 text-sm font-medium hidden sm:inline" href="https://inema.pro" target="_blank">PRO</a>
+</div>
+<div class="flex items-center space-x-1">
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors" href="../trilha1/index.html"><span class="lg:hidden">T1</span><span class="hidden lg:inline">Fundamentos</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors" href="../trilha2/index.html"><span class="lg:hidden">T2</span><span class="hidden lg:inline">Loops</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors" href="../trilha3/index.html"><span class="lg:hidden">T3</span><span class="hidden lg:inline">Comparativo</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors" href="../trilha4/index.html"><span class="lg:hidden">T4</span><span class="hidden lg:inline">Pratica</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-teal-400 bg-teal-500/10" href="index.html"><span class="lg:hidden">T5</span><span class="hidden lg:inline">Mao na massa</span></a>
+<button class="hidden sm:inline-flex items-center gap-1 px-2 py-1.5 rounded-lg text-sm text-neutral-400 hover:text-neutral-100 transition-colors" data-inema-journey-open="" title="Minha jornada" type="button">
+<span aria-hidden="true">◷</span><span class="hidden xl:inline">Jornada</span><span aria-hidden="true" class="inema-journey-badge hidden"></span>
+</button>
+<button aria-label="Alternar tema claro/escuro" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
 </nav>
-
 <main id="conteudo">
-
 <header class="bg-gradient-to-br from-teal-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600" data-inema-track="5">
-  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-    <span class="inline-block px-3 py-1 bg-teal-500/20 text-teal-400 text-xs font-semibold rounded-full mb-4">TRILHA 5</span>
-    <h1 class="text-3xl sm:text-4xl font-bold mb-4">🛠️ Mao na massa</h1>
-    <p class="text-lg text-neutral-400 max-w-3xl">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-teal-500/20 text-teal-400 text-xs font-semibold rounded-full mb-4">TRILHA 5</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">🛠️ Mao na massa</h1>
+<p class="text-lg text-neutral-400 max-w-3xl">
       A trilha onde voce constroi. Migra um caso real de loop para grafo com criterio (e sabe quando NAO migrar),
       modela o grafo do seu proprio negocio e do seu backlog, e sai com uma biblioteca de prompts prontos para
       desenhar, gerar e auditar grafos.
     </p>
-
-    <div class="rounded-2xl border border-teal-500/30 bg-dark-900/40 p-3 sm:p-4 mt-8 mb-6 overflow-hidden">
-      <svg viewBox="0 0 1000 340" class="w-full h-auto" role="img" aria-label="Fluxo de decisao: no topo a pergunta um loop ainda da conta. A seta sim, em verde, leva a acerte o loop primeiro. A seta nao, em ambar, leva a segunda pergunta: precisa rodar coisas ao mesmo tempo, ou precisa de revisor com contexto limpo. Dessa segunda pergunta saem duas caixas: monte o grafo, com destaque, e melhore o verificador.">
-        <defs>
-          <linearGradient id="t5-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2dd4bf"/><stop offset="1" stop-color="#14b8a6"/></linearGradient>
-          <filter id="t5-glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-          <pattern id="t5-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#14b8a6" opacity="0.12"/></pattern>
-          <marker id="t5-ah-y" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#34d399"/></marker>
-          <marker id="t5-ah-a" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#fbbf24"/></marker>
-          <marker id="t5-ah-c" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#38bdf8"/></marker>
-        </defs>
-        <rect x="0" y="0" width="1000" height="340" fill="url(#t5-grid)"/>
-
-        <g font-family="Inter,sans-serif" font-weight="600">
-          <rect x="330" y="26" width="340" height="56" rx="14" fill="#0c1f1c" stroke="#2dd4bf" stroke-width="2"/>
-          <text x="500" y="60" text-anchor="middle" fill="#99f6e4" font-size="14">um loop ainda da conta?</text>
-
-          <path d="M420,82 C300,120 220,140 190,168" stroke="#34d399" stroke-width="1.8" fill="none" marker-end="url(#t5-ah-y)"/>
-          <text x="255" y="128" fill="#34d399" font-size="12.5">sim</text>
-          <rect x="40" y="168" width="260" height="52" rx="12" fill="#0c1f1c" stroke="#34d399" stroke-width="2"/>
-          <text x="170" y="200" text-anchor="middle" fill="#a7f3d0" font-size="13">acerte o loop primeiro</text>
-
-          <path d="M580,82 C700,118 770,138 800,166" stroke="#fbbf24" stroke-width="1.8" fill="none" marker-end="url(#t5-ah-a)"/>
-          <text x="742" y="128" fill="#fbbf24" font-size="12.5">nao</text>
-          <rect x="600" y="166" width="380" height="64" rx="14" fill="#0c1f1c" stroke="#fbbf24" stroke-width="2"/>
-          <text x="790" y="192" text-anchor="middle" fill="#fde68a" font-size="12.5">precisa rodar em paralelo, ou</text>
-          <text x="790" y="212" text-anchor="middle" fill="#fde68a" font-size="12.5">precisa de revisor com contexto limpo?</text>
-
-          <path d="M760,230 C660,266 560,278 490,290" stroke="#38bdf8" stroke-width="1.8" fill="none" marker-end="url(#t5-ah-c)"/>
-          <g filter="url(#t5-glow)"><rect x="360" y="290" width="240" height="52" rx="12" fill="#0c1f1c" stroke="url(#t5-grad)" stroke-width="2"/></g>
-          <text x="480" y="322" text-anchor="middle" fill="#2dd4bf" font-size="13.5">monte o grafo</text>
-
-          <path d="M840,230 C860,260 870,278 872,290" stroke="#38bdf8" stroke-width="1.8" fill="none" marker-end="url(#t5-ah-c)"/>
-          <rect x="740" y="290" width="240" height="52" rx="12" fill="#0c1f1c" stroke="#38bdf8" stroke-width="2"/>
-          <text x="860" y="322" text-anchor="middle" fill="#bae6fd" font-size="13">melhore o verificador</text>
-        </g>
-      </svg>
-    </div>
-    <p class="text-sm text-neutral-400 max-w-3xl mb-8">
-      <strong class="text-neutral-300">O que olhar:</strong> a primeira pergunta ja elimina a maioria dos casos —
+<div class="rounded-2xl border border-teal-500/30 bg-dark-900/40 p-3 sm:p-4 mt-8 mb-6 overflow-hidden">
+<svg aria-label="Fluxo de decisao: no topo a pergunta um loop ainda da conta. A seta sim, em verde, leva a acerte o loop primeiro. A seta nao, em ambar, leva a segunda pergunta: precisa rodar coisas ao mesmo tempo, ou precisa de revisor com contexto limpo. Dessa segunda pergunta saem duas caixas: monte o grafo, com destaque, e melhore o verificador." class="w-full h-auto" role="img" viewbox="0 0 1000 340">
+<defs>
+<lineargradient id="t5-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#2dd4bf"></stop><stop offset="1" stop-color="#14b8a6"></stop></lineargradient>
+<filter height="180%" id="t5-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="t5-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#14b8a6" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="t5-ah-y" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#34d399"></path></marker>
+<marker id="t5-ah-a" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#fbbf24"></path></marker>
+<marker id="t5-ah-c" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#38bdf8"></path></marker>
+</defs>
+<rect fill="url(#t5-grid)" height="340" width="1000" x="0" y="0"></rect>
+<g font-family="Inter,sans-serif" font-weight="600">
+<rect fill="#0c1f1c" height="56" rx="14" stroke="#2dd4bf" stroke-width="2" width="340" x="330" y="26"></rect>
+<text fill="#99f6e4" font-size="14" text-anchor="middle" x="500" y="60">um loop ainda da conta?</text>
+<path d="M420,82 C300,120 220,140 190,168" fill="none" marker-end="url(#t5-ah-y)" stroke="#34d399" stroke-width="1.8"></path>
+<text fill="#34d399" font-size="12.5" x="255" y="128">sim</text>
+<rect fill="#0c1f1c" height="52" rx="12" stroke="#34d399" stroke-width="2" width="260" x="40" y="168"></rect>
+<text fill="#a7f3d0" font-size="13" text-anchor="middle" x="170" y="200">acerte o loop primeiro</text>
+<path d="M580,82 C700,118 770,138 800,166" fill="none" marker-end="url(#t5-ah-a)" stroke="#fbbf24" stroke-width="1.8"></path>
+<text fill="#fbbf24" font-size="12.5" x="742" y="128">nao</text>
+<rect fill="#0c1f1c" height="64" rx="14" stroke="#fbbf24" stroke-width="2" width="380" x="600" y="166"></rect>
+<text fill="#fde68a" font-size="12.5" text-anchor="middle" x="790" y="192">precisa rodar em paralelo, ou</text>
+<text fill="#fde68a" font-size="12.5" text-anchor="middle" x="790" y="212">precisa de revisor com contexto limpo?</text>
+<path d="M760,230 C660,266 560,278 490,290" fill="none" marker-end="url(#t5-ah-c)" stroke="#38bdf8" stroke-width="1.8"></path>
+<g filter="url(#t5-glow)"><rect fill="#0c1f1c" height="52" rx="12" stroke="url(#t5-grad)" stroke-width="2" width="240" x="360" y="290"></rect></g>
+<text fill="#2dd4bf" font-size="13.5" text-anchor="middle" x="480" y="322">monte o grafo</text>
+<path d="M840,230 C860,260 870,278 872,290" fill="none" marker-end="url(#t5-ah-c)" stroke="#38bdf8" stroke-width="1.8"></path>
+<rect fill="#0c1f1c" height="52" rx="12" stroke="#38bdf8" stroke-width="2" width="240" x="740" y="290"></rect>
+<text fill="#bae6fd" font-size="13" text-anchor="middle" x="860" y="322">melhore o verificador</text>
+</g>
+</svg>
+</div>
+<p class="text-sm text-neutral-400 max-w-3xl mb-8">
+<strong class="text-neutral-300">O que olhar:</strong> a primeira pergunta ja elimina a maioria dos casos —
       se um loop ainda da conta, a resposta certa e melhorar o loop, nao migrar. "Monte o grafo" e a folha mais
       rara dessa arvore: e a excecao, nao a regra. Boa parte dos problemas que parecem exigir grafo se resolve
       com um verificador melhor, que e mais barato e mais rapido de construir.
     </p>
-
-    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-2xl">
-      <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-teal-400">3</div><div class="text-xs text-neutral-400">Modulos</div></div>
-      <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-teal-400">18</div><div class="text-xs text-neutral-400">Topicos</div></div>
-      <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-teal-400">~2h</div><div class="text-xs text-neutral-400">Duracao</div></div>
-      <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-teal-400">Pratico</div><div class="text-xs text-neutral-400">Nivel</div></div>
-    </div>
-
-    <div class="mt-6 max-w-2xl bg-dark-800 rounded-xl border border-dark-600 p-4">
-      <div class="flex items-center justify-between">
-        <span class="text-sm text-neutral-300 font-semibold">Progresso da trilha</span>
-        <div data-inema-meter="trilha:5" class="inema-meter text-sm" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="Progresso da trilha 5">
-          <span class="inema-meter-pct text-teal-400 font-bold">0%</span><span class="inema-meter-count text-neutral-400 ml-2">0 de 18</span>
-        </div>
-      </div>
-    </div>
-  </div>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-teal-400">3</div><div class="text-xs text-neutral-400">Modulos</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-teal-400">18</div><div class="text-xs text-neutral-400">Topicos</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-teal-400">~2h</div><div class="text-xs text-neutral-400">Duracao</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-teal-400">Pratico</div><div class="text-xs text-neutral-400">Nivel</div></div>
+</div>
+<div class="mt-6 max-w-2xl bg-dark-800 rounded-xl border border-dark-600 p-4">
+<div class="flex items-center justify-between">
+<span class="text-sm text-neutral-300 font-semibold">Progresso da trilha</span>
+<div aria-label="Progresso da trilha 5" aria-valuemax="100" aria-valuemin="0" class="inema-meter text-sm" data-inema-meter="trilha:5" role="progressbar">
+<span class="inema-meter-pct text-teal-400 font-bold">0%</span><span class="inema-meter-count text-neutral-400 ml-2">0 de 18</span>
+</div>
+</div>
+</div>
+</div>
 </header>
-
 <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-
-  <section class="mb-12">
-    <h2 class="text-2xl font-bold mb-6">Mapa da trilha</h2>
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-      <a href="#modulo-5-1" class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-teal-500/30 p-5 transition-all">
-        <div class="flex items-center justify-between mb-2"><span class="text-teal-400 font-bold text-sm">5.1</span><span class="text-xs text-neutral-500">~40 min</span></div>
-        <h3 class="font-semibold mb-1 group-hover:text-teal-400 transition-colors">🔀 Do loop ao grafo</h3>
-        <p class="text-xs text-neutral-400">Migre so quando doer</p>
-      </a>
-      <a href="#modulo-5-2" class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-teal-500/30 p-5 transition-all">
-        <div class="flex items-center justify-between mb-2"><span class="text-teal-400 font-bold text-sm">5.2</span><span class="text-xs text-neutral-500">~40 min</span></div>
-        <h3 class="font-semibold mb-1 group-hover:text-teal-400 transition-colors">📊 Grafos de negocio e de tarefas</h3>
-        <p class="text-xs text-neutral-400">Modele o que voce ja tem</p>
-      </a>
-      <a href="#modulo-5-3" class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-teal-500/30 p-5 transition-all">
-        <div class="flex items-center justify-between mb-2"><span class="text-teal-400 font-bold text-sm">5.3</span><span class="text-xs text-neutral-500">~40 min</span></div>
-        <h3 class="font-semibold mb-1 group-hover:text-teal-400 transition-colors">📋 Biblioteca de prompts</h3>
-        <p class="text-xs text-neutral-400">Copie, cole, rode</p>
-      </a>
-    </div>
-  </section>
-
-  <h2 class="text-2xl font-bold mb-6">Conteudo detalhado</h2>
-
-  <!-- MODULO 5.1 -->
-  <div id="modulo-5-1" class="bg-dark-800 rounded-xl border border-dark-600 mb-6" data-inema-module="5-1" data-inema-track="5">
-    <div class="p-6 border-b border-dark-600">
-      <div class="flex items-center justify-between mb-2"><span class="text-teal-400 font-bold">5.1</span><span class="text-xs text-neutral-500">~40 min</span></div>
-      <h3 class="text-2xl font-bold mb-2">🔀 Do loop ao grafo</h3>
-      <p class="text-neutral-400 text-sm">A migracao passo a passo do resumo diario, com os sinais que autorizam migrar e o que medir antes e depois.</p>
-    </div>
-    <div class="divide-y divide-dark-600">
-
-      <div class="topic-item">
-        <button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="p-5-1-1" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
-          <span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
-          <span class="text-lg">🚦</span><div><span class="font-medium">Reconheca os sinais de migracao</span><span class="text-neutral-500 text-sm ml-2">- tres sinais legitimos</span></div>
-        </button>
-        <div id="p-5-1-1" class="topic-explanation px-6 pb-4">
-          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-            <div><span class="text-teal-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Tres sinais legitimos pra migrar: voce precisa rodar partes ao mesmo tempo; voce precisa de um revisor que nao veja como o trabalho foi feito; o contexto esta virando pantano e o agente perde a instrucao original.</p></div>
-            <div><span class="text-teal-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Se nenhum dos tres esta presente, melhore o loop. Migrar sem um desses sinais e comprar complexidade de graca.</p></div>
-            <div><span class="text-teal-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Os tres sinais resumem tudo que as trilhas 2 e 3 ja mostraram: paralelismo, contexto limpo e pantano de contexto.</p></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="topic-item">
-        <button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="p-5-1-2" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
-          <span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
-          <span class="text-lg">📏</span><div><span class="font-medium">Meca antes de mexer</span><span class="text-neutral-500 text-sm ml-2">- a linha de base</span></div>
-        </button>
-        <div id="p-5-1-2" class="topic-explanation px-6 pb-4">
-          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-            <div><span class="text-teal-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Anote custo por execucao, tempo total, e uma medida de qualidade que voce consiga verificar — antes de tocar em qualquer coisa.</p></div>
-            <div><span class="text-teal-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Migracao sem linha de base e fe, nao engenharia. Sem numero de antes, nunca vai saber se o grafo valeu.</p></div>
-            <div><span class="text-teal-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">As tres medidas — custo, tempo, qualidade — sao as mesmas que voce vai comparar de novo la no topico 6.</p></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="topic-item">
-        <button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="p-5-1-3" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
-          <span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
-          <span class="text-lg">✂️</span><div><span class="font-medium">Corte nos pontos de mudanca de contexto</span><span class="text-neutral-500 text-sm ml-2">- onde nasce cada no</span></div>
-        </button>
-        <div id="p-5-1-3" class="topic-explanation px-6 pb-4">
-          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-            <div><span class="text-teal-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Quebre o loop onde muda a responsabilidade, a ferramenta ou o contexto necessario. No resumo diario isso da tres nos naturais: quem busca, quem escreve, quem confere.</p></div>
-            <div><span class="text-teal-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Cortar no lugar errado te da um grafo com nos artificiais que so complicam. Cortar no lugar certo te da nos que ja existiam escondidos no loop.</p></div>
-            <div><span class="text-teal-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Mudanca de responsabilidade, de ferramenta ou de contexto — qualquer uma das tres ja justifica um corte.</p></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="topic-item">
-        <button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="p-5-1-4" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
-          <span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
-          <span class="text-lg">📜</span><div><span class="font-medium">Escreva o contrato entre os nos</span><span class="text-neutral-500 text-sm ml-2">- antes de codar</span></div>
-        </button>
-        <div id="p-5-1-4" class="topic-explanation px-6 pb-4">
-          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-            <div><span class="text-teal-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Antes de codar, defina o que cada aresta carrega: o pesquisador entrega notas (nao HTML bruto), o escritor entrega rascunho, o revisor devolve aprovado mais criticas.</p></div>
-            <div><span class="text-teal-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Sem contrato explicito, cada no acaba mandando o que sobrou no proprio contexto — e o pantano volta pela porta dos fundos.</p></div>
-            <div><span class="text-teal-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Isso e o state schema em miniatura: nome do campo, formato, obrigatorio ou nao.</p></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="topic-item">
-        <button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="p-5-1-5" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
-          <span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
-          <span class="text-lg">🔁</span><div><span class="font-medium">Adicione a aresta de volta com teto</span><span class="text-neutral-500 text-sm ml-2">- sem isso a fatura e infinita</span></div>
-        </button>
-        <div id="p-5-1-5" class="topic-explanation px-6 pb-4">
-          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-            <div><span class="text-teal-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">O revisor reprovando devolve pro escritor, com no maximo N voltas e um criterio de progresso.</p></div>
-            <div><span class="text-teal-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Sem teto, a fatura e infinita — o mesmo problema de loop sem condicao de parada, agora dentro de um no do grafo.</p></div>
-            <div><span class="text-teal-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Teto de voltas + criterio de progresso, nao so teto de voltas. Sem progresso medido, N voltas gastam N vezes o mesmo erro.</p></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="topic-item">
-        <button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="p-5-1-6" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
-          <span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
-          <span class="text-lg">⚖️</span><div><span class="font-medium">Compare e decida se valeu</span><span class="text-neutral-500 text-sm ml-2">- o passo que quase ninguem faz</span></div>
-        </button>
-        <div id="p-5-1-6" class="topic-explanation px-6 pb-4">
-          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-            <div><span class="text-teal-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Rode os dois em paralelo por alguns dias com as mesmas entradas e compare contra a linha de base do topico 2.</p></div>
-            <div><span class="text-teal-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Se o grafo nao melhorou nenhuma das tres medidas, volte pro loop: voce comprou complexidade sem retorno.</p></div>
-            <div><span class="text-teal-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Admitir que nao valeu e parte do trabalho, nao fracasso. Migracao e uma hipotese testada, nao uma crenca.</p></div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-    <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
-      <button onclick="openModal('modal-5-1')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Ver em Modal</button>
-      <a href="modulo-5-1.html" class="px-4 py-2 text-sm bg-teal-600 hover:bg-teal-500 text-white rounded-lg transition-colors">Ver Completo</a>
-    </div>
-  </div>
-
-  <!-- MODULO 5.2 -->
-  <div id="modulo-5-2" class="bg-dark-800 rounded-xl border border-dark-600 mb-6" data-inema-module="5-2" data-inema-track="5">
-    <div class="p-6 border-b border-dark-600">
-      <div class="flex items-center justify-between mb-2"><span class="text-teal-400 font-bold">5.2</span><span class="text-xs text-neutral-500">~40 min</span></div>
-      <h3 class="text-2xl font-bold mb-2">📊 Grafos de negocio e de tarefas</h3>
-      <p class="text-neutral-400 text-sm">Modelar o que voce ja tem. O funil do negocio com varias metricas e o backlog com dependencia e bloqueio — dois grafos que ja existem na sua empresa sem ninguem ter desenhado.</p>
-    </div>
-    <div class="divide-y divide-dark-600">
-
-      <div class="topic-item">
-        <button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="p-5-2-1" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
-          <span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
-          <span class="text-lg">🌪️</span><div><span class="font-medium">Modele o funil como grafo</span><span class="text-neutral-500 text-sm ml-2">- estados do cliente</span></div>
-        </button>
-        <div id="p-5-2-1" class="topic-explanation px-6 pb-4">
-          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-            <div><span class="text-teal-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Campanha, trafego, landing, signup, ativacao, retencao, LTV, churn; nos sao estados do cliente e arestas sao taxas de conversao.</p></div>
-            <div><span class="text-teal-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">O funil ja e um grafo — so ninguem costuma desenha-lo assim. Desenhar deixa visivel onde o cliente realmente perde.</p></div>
-            <div><span class="text-teal-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Cada aresta e uma taxa de conversao mensuravel, nao uma seta decorativa.</p></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="topic-item">
-        <button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="p-5-2-2" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
-          <span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
-          <span class="text-lg">🔄</span><div><span class="font-medium">Marque as arestas de realimentacao</span><span class="text-neutral-500 text-sm ml-2">- churn e CAC voltam</span></div>
-        </button>
-        <div id="p-5-2-2" class="topic-explanation px-6 pb-4">
-          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-            <div><span class="text-teal-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Churn e custo de aquisicao voltam pro comeco do funil, fechando um ciclo dentro do grafo de negocio.</p></div>
-            <div><span class="text-teal-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">E essa volta que faz o sistema ter comportamento proprio — e o que um agente miope, olhando so pra frente, nao ve.</p></div>
-            <div><span class="text-teal-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Um funil sem a aresta de volta e uma foto; com ela, e um sistema dinamico.</p></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="topic-item">
-        <button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="p-5-2-3" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
-          <span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
-          <span class="text-lg">🧮</span><div><span class="font-medium">Declare as restricoes entre metricas</span><span class="text-neutral-500 text-sm ml-2">- LTV sobre CAC</span></div>
-        </button>
-        <div id="p-5-2-3" class="topic-explanation px-6 pb-4">
-          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-            <div><span class="text-teal-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">"LTV sobre CAC precisa ser maior que 3" e uma relacao entre duas metricas, nao uma metrica isolada.</p></div>
-            <div><span class="text-teal-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Um loop com objetivo unico nao consegue nem expressar essa relacao — ele so enxerga a metrica que voce deu pra ele.</p></div>
-            <div><span class="text-teal-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Restricao entre nos e outra forma de aresta — invisivel pra quem pensa em metrica unica.</p></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="topic-item">
-        <button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="p-5-2-4" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
-          <span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
-          <span class="text-lg">🧩</span><div><span class="font-medium">Distinga decompor, depender e bloquear</span><span class="text-neutral-500 text-sm ml-2">- tres arestas diferentes</span></div>
-        </button>
-        <div id="p-5-2-4" class="topic-explanation px-6 pb-4">
-          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-            <div><span class="text-teal-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">No backlog sao tres tipos de aresta: decomposicao (epico contem historia contem tarefa), dependencia (precisa terminar antes) e bloqueio (impede o inicio).</p></div>
-            <div><span class="text-teal-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Confundir os tres faz o backlog virar uma arvore mentirosa. So a primeira e hierarquia; as outras duas transformam a arvore em grafo de verdade.</p></div>
-            <div><span class="text-teal-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Decompor ≠ depender ≠ bloquear. Ferramenta de backlog que trata os tres iguais esconde informacao.</p></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="topic-item">
-        <button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="p-5-2-5" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
-          <span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
-          <span class="text-lg">📶</span><div><span class="font-medium">Calcule quantas frentes andam agora</span><span class="text-neutral-500 text-sm ml-2">- largura do nivel</span></div>
-        </button>
-        <div id="p-5-2-5" class="topic-explanation px-6 pb-4">
-          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-            <div><span class="text-teal-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Conte quantas tarefas estao prontas ao mesmo tempo — a largura do nivel do grafo de backlog.</p></div>
-            <div><span class="text-teal-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">E assim que voce dimensiona pessoas ou agentes de verdade, em vez de chutar quantos "cabem" no sprint.</p></div>
-            <div><span class="text-teal-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Largura de nivel e a mesma ideia de fan-out — quantos nos independentes existem nesse ponto do grafo.</p></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="topic-item">
-        <button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="p-5-2-6" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
-          <span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
-          <span class="text-lg">🤖</span><div><span class="font-medium">Passe o grafo para um agente decidir</span><span class="text-neutral-500 text-sm ml-2">- de opiniao a proposta</span></div>
-        </button>
-        <div id="p-5-2-6" class="topic-explanation px-6 pb-4">
-          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-            <div><span class="text-teal-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Com o grafo do negocio ou do backlog escrito, um agente consegue propor alocacao, apontar o gargalo e simular o efeito colateral de uma mudanca.</p></div>
-            <div><span class="text-teal-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Sem o grafo, o agente so opina sobre a metrica que voce citou — ele nao enxerga o sistema, so o ponto que voce apontou.</p></div>
-            <div><span class="text-teal-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">O grafo escrito e o que transforma "pergunte pro agente" em "de o grafo pro agente". A diferenca e enorme.</p></div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-    <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
-      <button onclick="openModal('modal-5-2')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Ver em Modal</button>
-      <a href="modulo-5-2.html" class="px-4 py-2 text-sm bg-teal-600 hover:bg-teal-500 text-white rounded-lg transition-colors">Ver Completo</a>
-    </div>
-  </div>
-
-  <!-- MODULO 5.3 -->
-  <div id="modulo-5-3" class="bg-dark-800 rounded-xl border border-dark-600 mb-6" data-inema-module="5-3" data-inema-track="5">
-    <div class="p-6 border-b border-dark-600">
-      <div class="flex items-center justify-between mb-2"><span class="text-teal-400 font-bold">5.3</span><span class="text-xs text-neutral-500">~40 min</span></div>
-      <h3 class="text-2xl font-bold mb-2">📋 Biblioteca de prompts</h3>
-      <p class="text-neutral-400 text-sm">Seis prompts prontos, testados no formato objetivo + bloco copiavel + como verificar. O modulo que voce volta pra consultar.</p>
-    </div>
-    <div class="divide-y divide-dark-600">
-
-      <div class="topic-item">
-        <button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="p-5-3-1" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
-          <span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
-          <span class="text-lg">🖊️</span><div><span class="font-medium">Prompt: desenhe o grafo do meu processo</span><span class="text-neutral-500 text-sm ml-2">- texto vira JSON</span></div>
-        </button>
-        <div id="p-5-3-1" class="topic-explanation px-6 pb-4">
-          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-            <div><span class="text-teal-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Voce descreve um processo em texto corrido e o agente devolve nos, arestas condicionais e o que passa em cada aresta, em JSON.</p></div>
-            <div><span class="text-teal-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">E o ponto de partida mais rapido pra sair de "processo na cabeca" pra "processo desenhado".</p></div>
-            <div><span class="text-teal-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">JSON de nos e arestas e o formato comum que os proximos prompts desta lista assumem como entrada.</p></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="topic-item">
-        <button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="p-5-3-2" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
-          <span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
-          <span class="text-lg">⚙️</span><div><span class="font-medium">Prompt: transforme o grafo em script</span><span class="text-neutral-500 text-sm ml-2">- o segundo passo do metodo</span></div>
-        </button>
-        <div id="p-5-3-2" class="topic-explanation px-6 pb-4">
-          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-            <div><span class="text-teal-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">O segundo passo do metodo de duas etapas: desenhe qualquer grafo, depois peca pro agente gerar o script que o executa.</p></div>
-            <div><span class="text-teal-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">E assim que se sai do diagrama pro codigo sem escrever orquestracao na mao — o agente traduz, voce revisa.</p></div>
-            <div><span class="text-teal-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Desenhar e gerar sao duas etapas separadas de proposito: desenhar e pensamento humano, gerar e trabalho mecanico.</p></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="topic-item">
-        <button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="p-5-3-3" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
-          <span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
-          <span class="text-lg">🕵️</span><div><span class="font-medium">Prompt: audite meu grafo</span><span class="text-neutral-500 text-sm ml-2">- cinco tipos de defeito</span></div>
-        </button>
-        <div id="p-5-3-3" class="topic-explanation px-6 pb-4">
-          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-            <div><span class="text-teal-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Procura ciclo sem saida, aresta sem condicao, no sem teto de custo, juncao que nao confere cardinalidade e estado que vaza entre nos.</p></div>
-            <div><span class="text-teal-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Sao os mesmos defeitos que a trilha 4 ensinou a reconhecer — agora automatizados num unico prompt de checagem.</p></div>
-            <div><span class="text-teal-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Auditoria de grafo e verificador de grafo — o mesmo principio do modulo 2.2 aplicado a estrutura, nao ao resultado.</p></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="topic-item">
-        <button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="p-5-3-4" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
-          <span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
-          <span class="text-lg">💥</span><div><span class="font-medium">Prompt: ache a colisao entre loops</span><span class="text-neutral-500 text-sm ml-2">- objetivos que se pressionam</span></div>
-        </button>
-        <div id="p-5-3-4" class="topic-explanation px-6 pb-4">
-          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-            <div><span class="text-teal-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Dado um conjunto de objetivos automatizados, aponta quais se pressionam mutuamente e qual metrica de um e efeito colateral do outro.</p></div>
-            <div><span class="text-teal-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Colisao entre loops (trilha 2, falha 3) so aparece quando alguem — ou algo — olha o conjunto. Esse prompt automatiza esse olhar.</p></div>
-            <div><span class="text-teal-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Colisao vira visivel quando voce desenha a aresta entre dois loops — e e essa aresta que o prompt procura.</p></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="topic-item">
-        <button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="p-5-3-5" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
-          <span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
-          <span class="text-lg">📐</span><div><span class="font-medium">Prompt: escreva o state schema</span><span class="text-neutral-500 text-sm ml-2">- o contrato da aresta</span></div>
-        </button>
-        <div id="p-5-3-5" class="topic-explanation px-6 pb-4">
-          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-            <div><span class="text-teal-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Dado dois nos vizinhos, define o contrato da aresta entre eles: nome dos campos, formato, o que e obrigatorio e o que explicitamente NAO deve passar.</p></div>
-            <div><span class="text-teal-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">O que NAO deve passar e a parte que todo mundo esquece — e a que evita o contexto virar sopa de novo dentro do grafo.</p></div>
-            <div><span class="text-teal-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">State schema formaliza o contrato que o topico 4 do modulo 5.1 ja pedia pra voce escrever a mao.</p></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="topic-item">
-        <button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="p-5-3-6" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
-          <span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
-          <span class="text-lg">✍️</span><div><span class="font-medium">Prompt: escreva o verificador antes do prompt</span><span class="text-neutral-500 text-sm ml-2">- inverte a ordem</span></div>
-        </button>
-        <div id="p-5-3-6" class="topic-explanation px-6 pb-4">
-          <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-            <div><span class="text-teal-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Inverte a ordem: primeiro como voce vai saber que deu certo, com um caso ruim de teste; so depois o prompt do agente.</p></div>
-            <div><span class="text-teal-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">E o fechamento do curso inteiro num unico habito: verificador primeiro, sempre — loop, no ou grafo inteiro.</p></div>
-            <div><span class="text-teal-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">O mesmo principio do modulo 2.2, agora empacotado como prompt pronto pra usar em qualquer no novo que voce criar.</p></div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-    <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
-      <button onclick="openModal('modal-5-3')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Ver em Modal</button>
-      <a href="modulo-5-3.html" class="px-4 py-2 text-sm bg-teal-600 hover:bg-teal-500 text-white rounded-lg transition-colors">Ver Completo</a>
-    </div>
-  </div>
-
-  <div class="flex flex-col sm:flex-row gap-4 mt-12">
-    <a href="../trilha4/index.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">← Trilha 4: Graph Engineering na pratica</a>
-    <a href="../../index.html" class="flex-1 text-center px-6 py-3 bg-teal-600 text-white rounded-lg font-semibold hover:bg-teal-500 transition-colors">Concluir o curso →</a>
-  </div>
-
+<section class="mb-12">
+<h2 class="text-2xl font-bold mb-6">Mapa da trilha</h2>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+<a class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-teal-500/30 p-5 transition-all" href="#modulo-5-1">
+<div class="flex items-center justify-between mb-2"><span class="text-teal-400 font-bold text-sm">5.1</span><span class="text-xs text-neutral-500">~40 min</span></div>
+<h3 class="font-semibold mb-1 group-hover:text-teal-400 transition-colors">🔀 Do loop ao grafo</h3>
+<p class="text-xs text-neutral-400">Migre so quando doer</p>
+</a>
+<a class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-teal-500/30 p-5 transition-all" href="#modulo-5-2">
+<div class="flex items-center justify-between mb-2"><span class="text-teal-400 font-bold text-sm">5.2</span><span class="text-xs text-neutral-500">~40 min</span></div>
+<h3 class="font-semibold mb-1 group-hover:text-teal-400 transition-colors">📊 Grafos de negocio e de tarefas</h3>
+<p class="text-xs text-neutral-400">Modele o que voce ja tem</p>
+</a>
+<a class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-teal-500/30 p-5 transition-all" href="#modulo-5-3">
+<div class="flex items-center justify-between mb-2"><span class="text-teal-400 font-bold text-sm">5.3</span><span class="text-xs text-neutral-500">~40 min</span></div>
+<h3 class="font-semibold mb-1 group-hover:text-teal-400 transition-colors">📋 Biblioteca de prompts</h3>
+<p class="text-xs text-neutral-400">Copie, cole, rode</p>
+</a>
+</div>
+</section>
+<h2 class="text-2xl font-bold mb-6">Conteudo detalhado</h2>
+<!-- MODULO 5.1 -->
+<div class="bg-dark-800 rounded-xl border border-dark-600 mb-6" data-inema-module="5-1" data-inema-track="5" id="modulo-5-1">
+<div class="p-6 border-b border-dark-600">
+<div class="flex items-center justify-between mb-2"><span class="text-teal-400 font-bold">5.1</span><span class="text-xs text-neutral-500">~40 min</span></div>
+<h3 class="text-2xl font-bold mb-2">🔀 Do loop ao grafo</h3>
+<p class="text-neutral-400 text-sm">A migracao passo a passo do resumo diario, com os sinais que autorizam migrar e o que medir antes e depois.</p>
+</div>
+<div class="divide-y divide-dark-600">
+<div class="topic-item">
+<button aria-controls="p-5-1-1" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<span class="text-lg">🚦</span><div><span class="font-medium">Reconheca os sinais de migracao</span><span class="text-neutral-500 text-sm ml-2">- tres sinais legitimos</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4" id="p-5-1-1">
+<div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-teal-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Tres sinais legitimos pra migrar: voce precisa rodar partes ao mesmo tempo; voce precisa de um revisor que nao veja como o trabalho foi feito; o contexto esta virando pantano e o agente perde a instrucao original.</p></div>
+<div><span class="text-teal-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Se nenhum dos tres esta presente, melhore o loop. Migrar sem um desses sinais e comprar complexidade de graca.</p></div>
+<div><span class="text-teal-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Os tres sinais resumem tudo que as trilhas 2 e 3 ja mostraram: paralelismo, contexto limpo e pantano de contexto.</p></div>
+</div>
+</div>
+</div>
+<div class="topic-item">
+<button aria-controls="p-5-1-2" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<span class="text-lg">📏</span><div><span class="font-medium">Meca antes de mexer</span><span class="text-neutral-500 text-sm ml-2">- a linha de base</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4" id="p-5-1-2">
+<div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-teal-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Anote custo por execucao, tempo total, e uma medida de qualidade que voce consiga verificar — antes de tocar em qualquer coisa.</p></div>
+<div><span class="text-teal-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Migracao sem linha de base e fe, nao engenharia. Sem numero de antes, nunca vai saber se o grafo valeu.</p></div>
+<div><span class="text-teal-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">As tres medidas — custo, tempo, qualidade — sao as mesmas que voce vai comparar de novo la no topico 6.</p></div>
+</div>
+</div>
+</div>
+<div class="topic-item">
+<button aria-controls="p-5-1-3" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<span class="text-lg">✂️</span><div><span class="font-medium">Corte nos pontos de mudanca de contexto</span><span class="text-neutral-500 text-sm ml-2">- onde nasce cada no</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4" id="p-5-1-3">
+<div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-teal-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Quebre o loop onde muda a responsabilidade, a ferramenta ou o contexto necessario. No resumo diario isso da tres nos naturais: quem busca, quem escreve, quem confere.</p></div>
+<div><span class="text-teal-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Cortar no lugar errado te da um grafo com nos artificiais que so complicam. Cortar no lugar certo te da nos que ja existiam escondidos no loop.</p></div>
+<div><span class="text-teal-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Mudanca de responsabilidade, de ferramenta ou de contexto — qualquer uma das tres ja justifica um corte.</p></div>
+</div>
+</div>
+</div>
+<div class="topic-item">
+<button aria-controls="p-5-1-4" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<span class="text-lg">📜</span><div><span class="font-medium">Escreva o contrato entre os nos</span><span class="text-neutral-500 text-sm ml-2">- antes de codar</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4" id="p-5-1-4">
+<div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-teal-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Antes de codar, defina o que cada aresta carrega: o pesquisador entrega notas (nao HTML bruto), o escritor entrega rascunho, o revisor devolve aprovado mais criticas.</p></div>
+<div><span class="text-teal-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Sem contrato explicito, cada no acaba mandando o que sobrou no proprio contexto — e o pantano volta pela porta dos fundos.</p></div>
+<div><span class="text-teal-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Isso e o state schema em miniatura: nome do campo, formato, obrigatorio ou nao.</p></div>
+</div>
+</div>
+</div>
+<div class="topic-item">
+<button aria-controls="p-5-1-5" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<span class="text-lg">🔁</span><div><span class="font-medium">Adicione a aresta de volta com teto</span><span class="text-neutral-500 text-sm ml-2">- sem isso a fatura e infinita</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4" id="p-5-1-5">
+<div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-teal-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">O revisor reprovando devolve pro escritor, com no maximo N voltas e um criterio de progresso.</p></div>
+<div><span class="text-teal-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Sem teto, a fatura e infinita — o mesmo problema de loop sem condicao de parada, agora dentro de um no do grafo.</p></div>
+<div><span class="text-teal-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Teto de voltas + criterio de progresso, nao so teto de voltas. Sem progresso medido, N voltas gastam N vezes o mesmo erro.</p></div>
+</div>
+</div>
+</div>
+<div class="topic-item">
+<button aria-controls="p-5-1-6" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<span class="text-lg">⚖️</span><div><span class="font-medium">Compare e decida se valeu</span><span class="text-neutral-500 text-sm ml-2">- o passo que quase ninguem faz</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4" id="p-5-1-6">
+<div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-teal-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Rode os dois em paralelo por alguns dias com as mesmas entradas e compare contra a linha de base do topico 2.</p></div>
+<div><span class="text-teal-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Se o grafo nao melhorou nenhuma das tres medidas, volte pro loop: voce comprou complexidade sem retorno.</p></div>
+<div><span class="text-teal-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Admitir que nao valeu e parte do trabalho, nao fracasso. Migracao e uma hipotese testada, nao uma crenca.</p></div>
+</div>
+</div>
+</div>
+</div>
+<div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+<button class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors" onclick="openModal('modal-5-1')">Ver em Modal</button>
+<a class="px-4 py-2 text-sm bg-teal-600 hover:bg-teal-500 text-white rounded-lg transition-colors" href="modulo-5-1.html">Ver Completo</a>
+</div>
+</div>
+<!-- MODULO 5.2 -->
+<div class="bg-dark-800 rounded-xl border border-dark-600 mb-6" data-inema-module="5-2" data-inema-track="5" id="modulo-5-2">
+<div class="p-6 border-b border-dark-600">
+<div class="flex items-center justify-between mb-2"><span class="text-teal-400 font-bold">5.2</span><span class="text-xs text-neutral-500">~40 min</span></div>
+<h3 class="text-2xl font-bold mb-2">📊 Grafos de negocio e de tarefas</h3>
+<p class="text-neutral-400 text-sm">Modelar o que voce ja tem. O funil do negocio com varias metricas e o backlog com dependencia e bloqueio — dois grafos que ja existem na sua empresa sem ninguem ter desenhado.</p>
+</div>
+<div class="divide-y divide-dark-600">
+<div class="topic-item">
+<button aria-controls="p-5-2-1" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<span class="text-lg">🌪️</span><div><span class="font-medium">Modele o funil como grafo</span><span class="text-neutral-500 text-sm ml-2">- estados do cliente</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4" id="p-5-2-1">
+<div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-teal-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Campanha, trafego, landing, signup, ativacao, retencao, LTV, churn; nos sao estados do cliente e arestas sao taxas de conversao.</p></div>
+<div><span class="text-teal-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">O funil ja e um grafo — so ninguem costuma desenha-lo assim. Desenhar deixa visivel onde o cliente realmente perde.</p></div>
+<div><span class="text-teal-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Cada aresta e uma taxa de conversao mensuravel, nao uma seta decorativa.</p></div>
+</div>
+</div>
+</div>
+<div class="topic-item">
+<button aria-controls="p-5-2-2" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<span class="text-lg">🔄</span><div><span class="font-medium">Marque as arestas de realimentacao</span><span class="text-neutral-500 text-sm ml-2">- churn e CAC voltam</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4" id="p-5-2-2">
+<div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-teal-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Churn e custo de aquisicao voltam pro comeco do funil, fechando um ciclo dentro do grafo de negocio.</p></div>
+<div><span class="text-teal-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">E essa volta que faz o sistema ter comportamento proprio — e o que um agente miope, olhando so pra frente, nao ve.</p></div>
+<div><span class="text-teal-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Um funil sem a aresta de volta e uma foto; com ela, e um sistema dinamico.</p></div>
+</div>
+</div>
+</div>
+<div class="topic-item">
+<button aria-controls="p-5-2-3" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<span class="text-lg">🧮</span><div><span class="font-medium">Declare as restricoes entre metricas</span><span class="text-neutral-500 text-sm ml-2">- LTV sobre CAC</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4" id="p-5-2-3">
+<div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-teal-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">"LTV sobre CAC precisa ser maior que 3" e uma relacao entre duas metricas, nao uma metrica isolada.</p></div>
+<div><span class="text-teal-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Um loop com objetivo unico nao consegue nem expressar essa relacao — ele so enxerga a metrica que voce deu pra ele.</p></div>
+<div><span class="text-teal-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Restricao entre nos e outra forma de aresta — invisivel pra quem pensa em metrica unica.</p></div>
+</div>
+</div>
+</div>
+<div class="topic-item">
+<button aria-controls="p-5-2-4" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<span class="text-lg">🧩</span><div><span class="font-medium">Distinga decompor, depender e bloquear</span><span class="text-neutral-500 text-sm ml-2">- tres arestas diferentes</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4" id="p-5-2-4">
+<div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-teal-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">No backlog sao tres tipos de aresta: decomposicao (epico contem historia contem tarefa), dependencia (precisa terminar antes) e bloqueio (impede o inicio).</p></div>
+<div><span class="text-teal-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Confundir os tres faz o backlog virar uma arvore mentirosa. So a primeira e hierarquia; as outras duas transformam a arvore em grafo de verdade.</p></div>
+<div><span class="text-teal-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Decompor ≠ depender ≠ bloquear. Ferramenta de backlog que trata os tres iguais esconde informacao.</p></div>
+</div>
+</div>
+</div>
+<div class="topic-item">
+<button aria-controls="p-5-2-5" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<span class="text-lg">📶</span><div><span class="font-medium">Calcule quantas frentes andam agora</span><span class="text-neutral-500 text-sm ml-2">- largura do nivel</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4" id="p-5-2-5">
+<div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-teal-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Conte quantas tarefas estao prontas ao mesmo tempo — a largura do nivel do grafo de backlog.</p></div>
+<div><span class="text-teal-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">E assim que voce dimensiona pessoas ou agentes de verdade, em vez de chutar quantos "cabem" no sprint.</p></div>
+<div><span class="text-teal-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Largura de nivel e a mesma ideia de fan-out — quantos nos independentes existem nesse ponto do grafo.</p></div>
+</div>
+</div>
+</div>
+<div class="topic-item">
+<button aria-controls="p-5-2-6" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<span class="text-lg">🤖</span><div><span class="font-medium">Passe o grafo para um agente decidir</span><span class="text-neutral-500 text-sm ml-2">- de opiniao a proposta</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4" id="p-5-2-6">
+<div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-teal-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Com o grafo do negocio ou do backlog escrito, um agente consegue propor alocacao, apontar o gargalo e simular o efeito colateral de uma mudanca.</p></div>
+<div><span class="text-teal-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Sem o grafo, o agente so opina sobre a metrica que voce citou — ele nao enxerga o sistema, so o ponto que voce apontou.</p></div>
+<div><span class="text-teal-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">O grafo escrito e o que transforma "pergunte pro agente" em "de o grafo pro agente". A diferenca e enorme.</p></div>
+</div>
+</div>
+</div>
+</div>
+<div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+<button class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors" onclick="openModal('modal-5-2')">Ver em Modal</button>
+<a class="px-4 py-2 text-sm bg-teal-600 hover:bg-teal-500 text-white rounded-lg transition-colors" href="modulo-5-2.html">Ver Completo</a>
+</div>
+</div>
+<!-- MODULO 5.3 -->
+<div class="bg-dark-800 rounded-xl border border-dark-600 mb-6" data-inema-module="5-3" data-inema-track="5" id="modulo-5-3">
+<div class="p-6 border-b border-dark-600">
+<div class="flex items-center justify-between mb-2"><span class="text-teal-400 font-bold">5.3</span><span class="text-xs text-neutral-500">~40 min</span></div>
+<h3 class="text-2xl font-bold mb-2">📋 Biblioteca de prompts</h3>
+<p class="text-neutral-400 text-sm">Seis prompts prontos, testados no formato objetivo + bloco copiavel + como verificar. O modulo que voce volta pra consultar.</p>
+</div>
+<div class="divide-y divide-dark-600">
+<div class="topic-item">
+<button aria-controls="p-5-3-1" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<span class="text-lg">🖊️</span><div><span class="font-medium">Prompt: desenhe o grafo do meu processo</span><span class="text-neutral-500 text-sm ml-2">- texto vira JSON</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4" id="p-5-3-1">
+<div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-teal-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Voce descreve um processo em texto corrido e o agente devolve nos, arestas condicionais e o que passa em cada aresta, em JSON.</p></div>
+<div><span class="text-teal-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">E o ponto de partida mais rapido pra sair de "processo na cabeca" pra "processo desenhado".</p></div>
+<div><span class="text-teal-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">JSON de nos e arestas e o formato comum que os proximos prompts desta lista assumem como entrada.</p></div>
+</div>
+</div>
+</div>
+<div class="topic-item">
+<button aria-controls="p-5-3-2" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<span class="text-lg">⚙️</span><div><span class="font-medium">Prompt: transforme o grafo em script</span><span class="text-neutral-500 text-sm ml-2">- o segundo passo do metodo</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4" id="p-5-3-2">
+<div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-teal-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">O segundo passo do metodo de duas etapas: desenhe qualquer grafo, depois peca pro agente gerar o script que o executa.</p></div>
+<div><span class="text-teal-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">E assim que se sai do diagrama pro codigo sem escrever orquestracao na mao — o agente traduz, voce revisa.</p></div>
+<div><span class="text-teal-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Desenhar e gerar sao duas etapas separadas de proposito: desenhar e pensamento humano, gerar e trabalho mecanico.</p></div>
+</div>
+</div>
+</div>
+<div class="topic-item">
+<button aria-controls="p-5-3-3" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<span class="text-lg">🕵️</span><div><span class="font-medium">Prompt: audite meu grafo</span><span class="text-neutral-500 text-sm ml-2">- cinco tipos de defeito</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4" id="p-5-3-3">
+<div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-teal-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Procura ciclo sem saida, aresta sem condicao, no sem teto de custo, juncao que nao confere cardinalidade e estado que vaza entre nos.</p></div>
+<div><span class="text-teal-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Sao os mesmos defeitos que a trilha 4 ensinou a reconhecer — agora automatizados num unico prompt de checagem.</p></div>
+<div><span class="text-teal-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Auditoria de grafo e verificador de grafo — o mesmo principio do modulo 2.2 aplicado a estrutura, nao ao resultado.</p></div>
+</div>
+</div>
+</div>
+<div class="topic-item">
+<button aria-controls="p-5-3-4" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<span class="text-lg">💥</span><div><span class="font-medium">Prompt: ache a colisao entre loops</span><span class="text-neutral-500 text-sm ml-2">- objetivos que se pressionam</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4" id="p-5-3-4">
+<div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-teal-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Dado um conjunto de objetivos automatizados, aponta quais se pressionam mutuamente e qual metrica de um e efeito colateral do outro.</p></div>
+<div><span class="text-teal-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Colisao entre loops (trilha 2, falha 3) so aparece quando alguem — ou algo — olha o conjunto. Esse prompt automatiza esse olhar.</p></div>
+<div><span class="text-teal-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Colisao vira visivel quando voce desenha a aresta entre dois loops — e e essa aresta que o prompt procura.</p></div>
+</div>
+</div>
+</div>
+<div class="topic-item">
+<button aria-controls="p-5-3-5" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<span class="text-lg">📐</span><div><span class="font-medium">Prompt: escreva o state schema</span><span class="text-neutral-500 text-sm ml-2">- o contrato da aresta</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4" id="p-5-3-5">
+<div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-teal-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Dado dois nos vizinhos, define o contrato da aresta entre eles: nome dos campos, formato, o que e obrigatorio e o que explicitamente NAO deve passar.</p></div>
+<div><span class="text-teal-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">O que NAO deve passar e a parte que todo mundo esquece — e a que evita o contexto virar sopa de novo dentro do grafo.</p></div>
+<div><span class="text-teal-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">State schema formaliza o contrato que o topico 4 do modulo 5.1 ja pedia pra voce escrever a mao.</p></div>
+</div>
+</div>
+</div>
+<div class="topic-item">
+<button aria-controls="p-5-3-6" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<span class="text-lg">✍️</span><div><span class="font-medium">Prompt: escreva o verificador antes do prompt</span><span class="text-neutral-500 text-sm ml-2">- inverte a ordem</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4" id="p-5-3-6">
+<div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-teal-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Inverte a ordem: primeiro como voce vai saber que deu certo, com um caso ruim de teste; so depois o prompt do agente.</p></div>
+<div><span class="text-teal-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">E o fechamento do curso inteiro num unico habito: verificador primeiro, sempre — loop, no ou grafo inteiro.</p></div>
+<div><span class="text-teal-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">O mesmo principio do modulo 2.2, agora empacotado como prompt pronto pra usar em qualquer no novo que voce criar.</p></div>
+</div>
+</div>
+</div>
+</div>
+<div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+<button class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors" onclick="openModal('modal-5-3')">Ver em Modal</button>
+<a class="px-4 py-2 text-sm bg-teal-600 hover:bg-teal-500 text-white rounded-lg transition-colors" href="modulo-5-3.html">Ver Completo</a>
+</div>
+</div>
+<div class="flex flex-col sm:flex-row gap-4 mt-12">
+<a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="../trilha4/index.html">← Trilha 4: Graph Engineering na pratica</a>
+<a class="flex-1 text-center px-6 py-3 bg-teal-600 text-white rounded-lg font-semibold hover:bg-teal-500 transition-colors" href="../../index.html">Concluir o curso →</a>
+</div>
 </div>
 </main>
-
-<div id="modal-5-1" class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target === this) closeModal()">
-  <div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
-    <div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0">
-      <div class="flex items-center space-x-3"><span class="text-teal-400 font-bold">5.1</span><span class="font-semibold">Do loop ao grafo</span></div>
-      <button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none" aria-label="Fechar">&times;</button>
-    </div>
-    <iframe src="modulo-5-1.html" title="Modulo 5.1" class="flex-1 w-full rounded-b-xl"></iframe>
-  </div>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" id="modal-5-1" onclick="if(event.target === this) closeModal()">
+<div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
+<div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0">
+<div class="flex items-center space-x-3"><span class="text-teal-400 font-bold">5.1</span><span class="font-semibold">Do loop ao grafo</span></div>
+<button aria-label="Fechar" class="text-neutral-400 hover:text-white text-2xl leading-none" onclick="closeModal()">×</button>
 </div>
-<div id="modal-5-2" class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target === this) closeModal()">
-  <div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
-    <div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0">
-      <div class="flex items-center space-x-3"><span class="text-teal-400 font-bold">5.2</span><span class="font-semibold">Grafos de negocio e de tarefas</span></div>
-      <button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none" aria-label="Fechar">&times;</button>
-    </div>
-    <iframe src="modulo-5-2.html" title="Modulo 5.2" class="flex-1 w-full rounded-b-xl"></iframe>
-  </div>
+<iframe class="flex-1 w-full rounded-b-xl" src="modulo-5-1.html" title="Modulo 5.1"></iframe>
 </div>
-<div id="modal-5-3" class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target === this) closeModal()">
-  <div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
-    <div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0">
-      <div class="flex items-center space-x-3"><span class="text-teal-400 font-bold">5.3</span><span class="font-semibold">Biblioteca de prompts</span></div>
-      <button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none" aria-label="Fechar">&times;</button>
-    </div>
-    <iframe src="modulo-5-3.html" title="Modulo 5.3" class="flex-1 w-full rounded-b-xl"></iframe>
-  </div>
 </div>
-
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" id="modal-5-2" onclick="if(event.target === this) closeModal()">
+<div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
+<div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0">
+<div class="flex items-center space-x-3"><span class="text-teal-400 font-bold">5.2</span><span class="font-semibold">Grafos de negocio e de tarefas</span></div>
+<button aria-label="Fechar" class="text-neutral-400 hover:text-white text-2xl leading-none" onclick="closeModal()">×</button>
+</div>
+<iframe class="flex-1 w-full rounded-b-xl" src="modulo-5-2.html" title="Modulo 5.2"></iframe>
+</div>
+</div>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" id="modal-5-3" onclick="if(event.target === this) closeModal()">
+<div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
+<div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0">
+<div class="flex items-center space-x-3"><span class="text-teal-400 font-bold">5.3</span><span class="font-semibold">Biblioteca de prompts</span></div>
+<button aria-label="Fechar" class="text-neutral-400 hover:text-white text-2xl leading-none" onclick="closeModal()">×</button>
+</div>
+<iframe class="flex-1 w-full rounded-b-xl" src="modulo-5-3.html" title="Modulo 5.3"></iframe>
+</div>
+</div>
 <footer class="border-t border-dark-600 py-8 mt-16">
-  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
-    <p>Graph Engineering — de loops a grafos · INEMA 2026</p>
-    <p class="mt-2">
-      <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a>
-      <span class="text-neutral-600 mx-1">-</span>
-      <a href="https://inema.pro" target="_blank" class="text-amber-700 hover:text-amber-600 dark:text-slate-300 dark:hover:text-slate-200">PRO</a>
-    </p>
-  </div>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+<p>Graph Engineering — de loops a grafos · INEMA 2026</p>
+<p class="mt-2">
+<a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+<span class="text-neutral-600 mx-1">-</span>
+<a class="text-amber-700 hover:text-amber-600 dark:text-slate-300 dark:hover:text-slate-200" href="https://inema.pro" target="_blank">PRO</a>
+</p>
+</div>
 </footer>
-
 <script>
   function toggleTopic(button) {
     const topicItem = button.closest('.topic-item');

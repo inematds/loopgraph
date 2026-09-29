@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="loopgraph" name="inema-course"/>
+<title>Module 2.3 — Where the loop breaks | Graph Engineering</title>
+<script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'emerald' };
+      function clone(o) { var r = {}; for (var x in o) r[x] = o[x]; return r; }
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed === 'object') { for (var k in DEF) if (parsed[k] != null) p[k] = parsed[k]; } }
+        else { var legacy = localStorage.getItem('theme'); if (legacy === 'light') p.theme = 'claro'; else if (legacy === 'dark') p.theme = 'inema-dark'; }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = { 'inema-dark': { dark: true, attr: null, cs: 'dark' }, 'claro': { dark: false, attr: null, cs: 'light' }, 'sepia': { dark: false, attr: 'sepia', cs: 'light' }, 'foco': { dark: null, attr: 'foco', cs: null }, 'contraste': { dark: true, attr: 'contraste', cs: 'dark' } };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark === true) html.classList.add('dark'); else if (t.dark === false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark') ? 'dark' : 'light'));
+      html.setAttribute('data-font', p.font || 'inter'); html.setAttribute('data-accent', p.accent || 'emerald');
+      var s = html.style, scale = (+p.fontScale || 100);
+      s.setProperty('--inema-font-scale', (scale / 100).toString()); s.setProperty('font-size', scale + '%');
+      s.setProperty('--measure', (+p.lineWidth || 68) + 'ch'); s.setProperty('--lh-body', (+p.leading || 1.7).toString());
+      var fam = p.font === 'system' ? 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif' : (p.font === 'leitura' ? '"Atkinson Hyperlegible", "Inter", system-ui, sans-serif' : '"Inter", system-ui, sans-serif');
+      s.setProperty('--font-body', fam);
+      var ACC = { emerald: [152,76,45], blue: [217,91,60], purple: [258,90,66], amber: [38,92,50], teal: [174,72,41], rose: [350,89,60] };
+      var a = ACC[p.accent] || ACC.emerald;
+      s.setProperty('--accent-h', a[0]+''); s.setProperty('--accent-s', a[1]+'%'); s.setProperty('--accent-l', a[2]+'%');
+      s.setProperty('--accent', 'hsl(' + a[0] + ' ' + a[1] + '% ' + a[2] + '%)');
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme = 'dark'; } catch (e) {} }
+  })();
+  </script>
+<script data-inema-manifest="" type="application/json">
+  {
+    "course": "loopgraph",
+    "tracks": [
+      { "n": "1", "title": "Fundamentos: o grafo", "modules": [
+        { "id": "1-1", "title": "O que e um grafo", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
+        { "id": "1-2", "title": "Grafos no mundo real", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+        { "id": "1-3", "title": "Como se anda num grafo", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" }
+      ]},
+      { "n": "2", "title": "Loop Engineering", "modules": [
+        { "id": "2-1", "title": "Anatomia do loop", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
+        { "id": "2-2", "title": "O verificador e o gargalo", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
+        { "id": "2-3", "title": "Onde o loop quebra", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" }
+      ]},
+      { "n": "3", "title": "Agentic x Loop x Graph", "modules": [
+        { "id": "3-1", "title": "As cinco camadas", "topics": 6, "href": "curso/trilha3/modulo-3-1.html" },
+        { "id": "3-2", "title": "O comparativo de verdade", "topics": 6, "href": "curso/trilha3/modulo-3-2.html" },
+        { "id": "3-3", "title": "Mito x fato", "topics": 6, "href": "curso/trilha3/modulo-3-3.html" }
+      ]},
+      { "n": "4", "title": "Graph Engineering na pratica", "modules": [
+        { "id": "4-1", "title": "Nos, arestas e estado", "topics": 6, "href": "curso/trilha4/modulo-4-1.html" },
+        { "id": "4-2", "title": "Org graph x work graph", "topics": 6, "href": "curso/trilha4/modulo-4-2.html" },
+        { "id": "4-3", "title": "Falhas, harness e observabilidade", "topics": 6, "href": "curso/trilha4/modulo-4-3.html" }
+      ]},
+      { "n": "5", "title": "Mao na massa", "modules": [
+        { "id": "5-1", "title": "Do loop ao grafo", "topics": 6, "href": "curso/trilha5/modulo-5-1.html" },
+        { "id": "5-2", "title": "Grafos de negocio e de tarefas", "topics": 6, "href": "curso/trilha5/modulo-5-2.html" },
+        { "id": "5-3", "title": "Biblioteca de prompts", "topics": 6, "href": "curso/trilha5/modulo-5-3.html" }
+      ]}
+    ]
+  }
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }</script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../../assets/learn.css" rel="stylesheet"/>
+<link href="../../../assets/curso.css" rel="stylesheet"/>
+<link href="https://inematds.github.io/loopgraph/curso/trilha2/modulo-2-3.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/loopgraph/en/curso/trilha2/modulo-2-3.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/loopgraph/es/curso/trilha2/modulo-2-3.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha2/modulo-2-3.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="modulo-2-3.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">EN</a><a href="../../../es/curso/trilha2/modulo-2-3.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<a class="sr-only focus:not-sr-only focus:absolute focus:z-[60] focus:m-2 focus:px-4 focus:py-2 focus:rounded-lg focus:bg-dark-700" href="#conteudo">Skip to content</a>
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14 gap-2">
+<div class="flex items-center space-x-3 flex-shrink-0">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html">
+<span class="text-2xl">🕸️</span><span class="font-bold text-lg hidden lg:inline">Graph Engineering</span>
+</a>
+<span class="text-neutral-600 hidden sm:inline">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium hidden sm:inline" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+<span class="text-neutral-600 hidden sm:inline">-</span>
+<a class="text-amber-700 hover:text-amber-600 dark:text-slate-300 dark:hover:text-slate-200 text-sm font-medium hidden sm:inline" href="https://inema.pro" target="_blank">PRO</a>
+</div>
+<div class="flex items-center space-x-1">
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors" href="../trilha1/index.html"><span class="lg:hidden">T1</span><span class="hidden lg:inline">Fundamentals</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-blue-400 bg-blue-500/10" href="index.html"><span class="lg:hidden">T2</span><span class="hidden lg:inline">Loops</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors" href="../trilha3/index.html"><span class="lg:hidden">T3</span><span class="hidden lg:inline">Comparison</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors" href="../trilha4/index.html"><span class="lg:hidden">T4</span><span class="hidden lg:inline">Practice</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors" href="../trilha5/index.html"><span class="lg:hidden">T5</span><span class="hidden lg:inline">Hands-on</span></a>
+<button class="hidden sm:inline-flex items-center gap-1 px-2 py-1.5 rounded-lg text-sm text-neutral-400 hover:text-neutral-100 transition-colors" data-inema-journey-open="" title="My journey" type="button">
+<span aria-hidden="true">◷</span><span class="hidden xl:inline">Journey</span><span aria-hidden="true" class="inema-journey-badge hidden"></span>
+</button>
+<button aria-label="Toggle light/dark theme" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<nav aria-label="Navigation trail" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+<div class="flex items-center space-x-2 text-sm text-neutral-400">
+<a class="hover:text-blue-400" href="../../index.html">Start</a><span>/</span>
+<a class="hover:text-blue-400" href="index.html">Track 2</a><span>/</span>
+<span class="text-blue-400">Module 2.3</span>
+</div>
+</nav>
+<header class="bg-gradient-to-br from-blue-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600" data-inema-module="2-3" data-inema-track="2">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full mb-4">MODULE 2.3</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">💥 Where the loop breaks</h1>
+<p class="text-lg text-neutral-400 max-w-3xl">
+      A well-built loop — five right steps, a sharp verifier — can still break. Not because of a bug: because of
+      <strong class="text-blue-400">structure</strong>. This module shows four failures that happen while the loop
+      is working perfectly, plus two practical consequences—and which one really requires changing the structure.
+    </p>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">6</div><div class="text-xs text-neutral-400">Topics</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">40</div><div class="text-xs text-neutral-400">Minutes</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">Intermediate</div><div class="text-xs text-neutral-400">Level</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">Closure</div><div class="text-xs text-neutral-400">Type</div></div>
+</div>
+<div class="mt-6 max-w-2xl bg-dark-800 rounded-xl border border-dark-600 p-4">
+<div class="flex items-center justify-between">
+<span class="text-sm text-neutral-300 font-semibold">Progress in this module</span>
+<div aria-label="Module 2.3 progress" aria-valuemax="100" aria-valuemin="0" class="inema-meter text-sm" data-inema-meter="modulo:2-3" role="progressbar">
+<span class="inema-meter-pct text-blue-400 font-bold">0%</span><span class="inema-meter-count text-neutral-400 ml-2">0 of 6</span>
+</div>
+</div>
+</div>
+</div>
+</header>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="lg:grid lg:grid-cols-[220px_minmax(0,1fr)] lg:gap-10">
+<nav aria-label="Page index" class="hidden lg:block sticky top-24 self-start" data-inema-toc="">
+<p class="text-sm text-neutral-400 mb-3">Section <span class="inema-toc-pos">1</span> of <span class="inema-toc-total">6</span></p>
+<ul class="space-y-1 text-sm">
+<li><a class="inema-toc-link text-neutral-400 hover:text-blue-400" href="#topico-1">1. Watch it bypass the rules</a></li>
+<li><a class="inema-toc-link text-neutral-400 hover:text-blue-400" href="#topico-2">2. Notice the blind spot</a></li>
+<li><a class="inema-toc-link text-neutral-400 hover:text-blue-400" href="#topico-3">3. Find collisions</a></li>
+<li><a class="inema-toc-link text-neutral-400 hover:text-blue-400" href="#topico-4">4. Be skeptical of the measurement</a></li>
+<li><a class="inema-toc-link text-neutral-400 hover:text-blue-400" href="#topico-5">5. Clean up the mess</a></li>
+<li><a class="inema-toc-link text-neutral-400 hover:text-blue-400" href="#topico-6">6. Accept the limit</a></li>
+</ul>
+</nav>
+<main class="inema-prose" id="conteudo">
+<!-- ============ TOPICO 1 ============ -->
+<section class="mb-16" data-inema-topic="modulo-2-3#topico-1" id="topico-1">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">1</span>
+<h2 class="text-2xl font-bold">🎯 Watch it game its own metric</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button">
+<span aria-hidden="true">?</span><span>I have a question</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-3-t1-p1">
+      A loop sees only the metric you gave it. If you said “reduce CAC” (customer acquisition cost —
+      how much it costs, on average, to bring in a new customer), the loop will find <em>all</em> the ways to bring this number down,
+      including those that betray its real purpose: making a campaign cheaper by attracting people who will never buy, cutting post-sale
+      support, promising more than it delivers. It’s not an execution flaw — it’s the loop doing exactly what you told it to,
+      using a number that has become detached from the reality it’s supposed to represent.
+    </p>
+<div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">🆕</span> New here? Two words before you continue</h3>
+<ul class="space-y-2 text-neutral-300 text-sm">
+<li><strong class="text-neutral-100">Goodhart’s law:</strong> when a metric becomes a target, it stops being a good metric. The number you measured to see how things were going becomes the number the system directly optimizes — and the two are no longer the same thing.</li>
+<li><strong class="text-neutral-100">CAC:</strong> customer acquisition cost. How much you spend, on average, to bring in a new customer. On its own, it’s an incomplete number — it needs to be read alongside churn (cancellation rate) and LTV (how much that customer is worth over time).</li>
+</ul>
+</div>
+<figure class="mb-6">
+<img alt="Whiteboard-style diagram of the growth funnel: campaign leads to traffic, traffic leads to a landing page, the landing page to signup, signup to activation, activation to retention, and retention to LTV. Churn and CAC figures appear alongside, as well as an LTV-to-CAC ratio greater than 3. A red arrow closes the loop from a better campaign to lower churn to higher LTV." class="w-full h-auto rounded-xl border border-dark-600" src="../../../assets/img/ex2-funil-crescimento.png"/>
+<figcaption class="text-sm text-neutral-400 mt-3">
+<strong class="text-neutral-300">What to look at:</strong> a loop instructed to “lower CAC” sees only the campaign → traffic box.
+        It doesn’t see the red arrow connecting campaign to churn and LTV. Lowering CAC by attracting cheap, unqualified traffic
+        worsens churn and drives down LTV/CAC—the loop declares victory (CAC fell) while the business gets worse. Only someone who sees the entire funnel
+        can see the damage.
+      </figcaption>
+</figure>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+<h4 class="font-bold text-emerald-400 mb-4">✓ Hard-to-game metric</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>The ratio between two things pulling in opposite directions—LTV/CAC, not CAC alone</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Metric measured with a delay (90-day churn), hard to fake in the short term</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Set of 2-3 metrics that counterbalance each other and are required together</span></li>
+</ul>
+</div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+<h4 class="font-bold text-red-400 mb-4">✗ Easy-to-game metric</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Single number, measured at one point in time (today's CAC, without looking at retention)</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>A count that ignores quality (lines of code, tickets closed, messages sent)</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>A metric that the loop itself measures and reports without external auditing</span></li>
+</ul>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-4">Key concepts</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Goodhart’s law</div><p class="text-xs text-neutral-400">The target metric stops measuring</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">It's not a bug</div><p class="text-xs text-neutral-400">And the loop obeying</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Narrow view</div><p class="text-xs text-neutral-400">Only sees the metric provided</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Correction</div><p class="text-xs text-neutral-400">Metrics in pairs, never alone</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span>
+</button>
+</div>
+</section>
+<!-- ============ TOPICO 2 ============ -->
+<section class="mb-16" data-inema-topic="modulo-2-3#topico-2" id="topico-2">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">2</span>
+<h2 class="text-2xl font-bold">🌡️ Notice the upward blindness</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button">
+<span aria-hidden="true">?</span><span>I have a question</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-3-t2-p1">
+      The loop pursues a reference—the target you defined—and nothing inside it can ask whether that reference
+      is right. A thermostat keeps the temperature at 20 degrees with impeccable precision; it will never ask itself whether 20 is the
+      right temperature for that room on that day. It only knows how to measure the distance to 20 and act to close that gap.
+      Questioning its own goal requires someone <strong class="text-blue-400">outside</strong> of the loop—because from the inside,
+      the objective is the only ground there is.
+    </p>
+<div class="space-y-6 mb-6">
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">1</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">The loop is great within its own target</h4>
+<p class="text-neutral-300 text-sm">Tested against “reaching 20 degrees,” the thermostat passes every test. The error isn’t in the execution.</p>
+</div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">2</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">The mistake is in who chose the target</h4>
+<p class="text-neutral-300 text-sm">If 20 degrees is the wrong target for that room on that day, no perfect execution of the loop will fix it.</p>
+</div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">3</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">Reviewing the target is a step outside the cycle</h4>
+<p class="text-neutral-300 text-sm">A person, another loop, or a separate process needs to periodically ask “does 20 degrees still make sense?” — the loop itself will never ask that question on its own.</p>
+</div>
+</div>
+</div>
+<div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">📊</span> Where this blindness shows up in agents</h3>
+<ul class="space-y-2 text-neutral-300 text-sm">
+<li><strong>Support agent</strong> — optimized to “solve it in 1 turn”; never questions whether solving quickly is the right goal for complex cases</li>
+<li><strong>Coding agent</strong> — optimized to “pass the tests”; never questions whether the tests cover the right behavior</li>
+<li><strong>Content agent</strong> — optimized for “engagement”; never questions whether the content that gets the most engagement is what you want to publish</li>
+</ul>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-4">Key concepts</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Fixed reference</div><p class="text-xs text-neutral-400">The loop doesn’t question the target</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Local optimum</div><p class="text-xs text-neutral-400">Perfect within its own objective</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">External review</div><p class="text-xs text-neutral-400">Only an outsider questions the target</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Thermostat</div><p class="text-xs text-neutral-400">The most honest metaphor</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span>
+</button>
+</div>
+</section>
+<!-- ============ TOPICO 3 ============ -->
+<section class="mb-16" data-inema-topic="modulo-2-3#topico-3" id="topico-3">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">3</span>
+<h2 class="text-2xl font-bold">🌀 Discover loops colliding</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button">
+<span aria-hidden="true">?</span><span>I have a question</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-3-t3-p1">
+      A speed loop fights with a quality loop. A hiring loop puts pressure on a culture loop.
+      Each one, examined alone, passes the test — it’s doing exactly what was requested. The problem appears
+      only when you look at both <em>together</em>. It's like two poorly configured air conditioners in the same room:
+      one cools because the temperature went up, the other heats because the temperature went down—both “working,”
+      while the environment is unstable.
+    </p>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-4 overflow-hidden">
+<svg aria-label="Side-by-side comparison divided by a vertical dashed line down the middle. On the left, three loops drawn separately, each with its own cycle and its own metric, with no lines between them, each labeled correct on its own. On the right, the same three loops with red interference lines between them, labeled the set is wrong; only the graph shows it." class="w-full h-auto" role="img" viewbox="0 0 1000 340">
+<defs>
+<lineargradient id="m23a-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#60a5fa"></stop><stop offset="1" stop-color="#3b82f6"></stop></lineargradient>
+<filter height="180%" id="m23a-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="m23a-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#3b82f6" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="m23a-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#60a5fa"></path></marker>
+<marker id="m23a-ahr" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#f87171"></path></marker>
+</defs>
+<rect fill="url(#m23a-grid)" height="340" width="1000" x="0" y="0"></rect>
+<path d="M500,10 L500,330" opacity="0.4" stroke="#9ca3af" stroke-dasharray="9 9" stroke-width="1.5"></path>
+<text fill="#bfdbfe" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="245" y="30">MESH — each one on its own</text>
+<g font-family="Inter,sans-serif" font-size="11" font-weight="600">
+<circle cx="120" cy="80" fill="#0e1622" r="34" stroke="#60a5fa" stroke-width="2"></circle><text fill="#bfdbfe" text-anchor="middle" x="120" y="84">speed</text>
+<path d="M120,46 A34,34 0 1 1 119,46" fill="none" marker-end="url(#m23a-ah)" opacity="0.55" stroke="#60a5fa" stroke-width="1.6"></path>
+<circle cx="245" cy="160" fill="#0e1622" r="34" stroke="#60a5fa" stroke-width="2"></circle><text fill="#bfdbfe" text-anchor="middle" x="245" y="164">quality</text>
+<path d="M245,126 A34,34 0 1 1 244,126" fill="none" marker-end="url(#m23a-ah)" opacity="0.55" stroke="#60a5fa" stroke-width="1.6"></path>
+<circle cx="370" cy="80" fill="#0e1622" r="34" stroke="#60a5fa" stroke-width="2"></circle><text fill="#bfdbfe" text-anchor="middle" x="370" y="84">hiring</text>
+<path d="M370,46 A34,34 0 1 1 369,46" fill="none" marker-end="url(#m23a-ah)" opacity="0.55" stroke="#60a5fa" stroke-width="1.6"></path>
+</g>
+<text fill="#bfdbfe" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="245" y="290">no line between them—each one is correct on its own</text>
+<text fill="#fca5a5" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="750" y="30">SOLO — all three together</text>
+<g font-family="Inter,sans-serif" font-size="11" font-weight="600">
+<circle cx="620" cy="80" fill="#0e1622" r="34" stroke="#60a5fa" stroke-width="2"></circle><text fill="#bfdbfe" text-anchor="middle" x="620" y="84">speed</text>
+<path d="M620,46 A34,34 0 1 1 619,46" fill="none" marker-end="url(#m23a-ah)" opacity="0.55" stroke="#60a5fa" stroke-width="1.6"></path>
+<g filter="url(#m23a-glow)"><circle cx="745" cy="160" fill="#0e1622" r="34" stroke="url(#m23a-grad)" stroke-width="2"></circle></g>
+<text fill="#bfdbfe" text-anchor="middle" x="745" y="164">quality</text>
+<path d="M745,126 A34,34 0 1 1 744,126" fill="none" marker-end="url(#m23a-ah)" opacity="0.55" stroke="#60a5fa" stroke-width="1.6"></path>
+<circle cx="870" cy="80" fill="#0e1622" r="34" stroke="#60a5fa" stroke-width="2"></circle><text fill="#bfdbfe" text-anchor="middle" x="870" y="84">hiring</text>
+<path d="M870,46 A34,34 0 1 1 869,46" fill="none" marker-end="url(#m23a-ah)" opacity="0.55" stroke="#60a5fa" stroke-width="1.6"></path>
+</g>
+<path d="M632,105 L718,142" fill="none" marker-end="url(#m23a-ahr)" stroke="#f87171" stroke-width="2"></path>
+<path d="M858,105 L772,142" fill="none" marker-end="url(#m23a-ahr)" stroke="#f87171" stroke-width="2"></path>
+<text fill="#fca5a5" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="745" y="290">the wrong set — only the graph shows the interference</text>
+</svg>
+</div>
+<p class="text-sm text-neutral-400 mb-6">
+<strong class="text-neutral-300">What to look at:</strong> the three loops are identical on both sides — the only difference is
+      the two red lines on the right. They represent the real pressure that "moving faster" and "hiring faster"
+      put on "maintaining quality." A single-loop mindset has no vocabulary to describe this line — it only exists
+      when you draw all three loops in the same graph and connect what interferes with what.
+    </p>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-4">Key concepts</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Each one passes</div><p class="text-xs text-neutral-400">Isolated; none fail</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">The group gets it wrong</div><p class="text-xs text-neutral-400">Only appears in both together</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">No vocabulary</div><p class="text-xs text-neutral-400">A single loop cannot see interference</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Needs a graph</div><p class="text-xs text-neutral-400">To draw the red line</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span>
+</button>
+</div>
+</section>
+<!-- ============ TOPICO 4 ============ -->
+<section class="mb-16" data-inema-topic="modulo-2-3#topico-4" id="topico-4">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">4</span>
+<h2 class="text-2xl font-bold">📉 Be wary of a metric that decays</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button">
+<span aria-hidden="true">?</span><span>I have a question</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-3-t4-p1">
+      Sensors go out of calibration. Data pipelines rot—a field changes its name, a filter stops running, and nobody notices.
+      The metric definition changes behind the scenes (someone redefines "active user" and forgets to tell anyone). Verification
+      gradually slips from checking reality to just comparing paperwork: the number matches the previous number,
+      so "everything is fine." But both numbers could be equally wrong.
+    </p>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center"><span class="mr-2">⚠️</span> The quietest of the four failures</h3>
+<p class="text-neutral-300">
+        There is no alert when the measurement breaks, because the alert usually depends <em>from the same measurement that failed</em>.
+        If the churn sensor stops counting correctly, it won't trigger an alert saying "I'm broken"—
+        it'll just report a wrong number with the same confidence as always. That's why this failure goes undiscovered
+        for the longest time.
+      </p>
+</div>
+<div class="space-y-6 mb-6">
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">1</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">Sensor goes out of calibration</h4>
+<p class="text-neutral-300 text-sm">The instrument that captures raw data gradually loses accuracy—a click tracking system that misses 10% of clicks because of a new ad blocker.</p>
+</div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">2</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">Pipelines rot</h4>
+<p class="text-neutral-300 text-sm">There’s a broken step on the path from raw data to the final number—a join that drops rows, an outdated filter, a job that fails silently.</p>
+</div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">3</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600">
+<h4 class="font-semibold text-white mb-2">Definition changes underneath</h4>
+<p class="text-neutral-300 text-sm">Someone redefines "active customer" (30 days becomes 60 days) for another report, and the verification loop keeps using the old definition without knowing it.</p>
+</div>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-4">Key concepts</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Silent decay</div><p class="text-xs text-neutral-400">No one alerts you to the break</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Role × reality</div><p class="text-xs text-neutral-400">The number adds up, but the world doesn't</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Periodic audit</div><p class="text-xs text-neutral-400">Check the measurement, not just the result</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Broken alarm too</div><p class="text-xs text-neutral-400">It uses the same data that caused the failure</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span>
+</button>
+</div>
+</section>
+<!-- ============ TOPICO 5 ============ -->
+<section class="mb-16" data-inema-topic="modulo-2-3#topico-5" id="topico-5">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">5</span>
+<h2 class="text-2xl font-bold">🍲 Clean up context that turned into soup</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button">
+<span aria-hidden="true">?</span><span>I have a question</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-3-t5-p1">
+      In a single-node loop, everything happens in the same <strong class="text-blue-400">context window</strong> — the body of text the model can see at once, along with the instructions, what has already been done, and what remains. Raw HTML from a search, a half-finished draft, reasoning from two iterations ago: all floating together when it’s time to decide the next step. That’s what produces fake review (the verifier approves because it’s in the same emotional context as the person who wrote it—covered in module 2.2) and “forgetting” the original instruction, which is still there, just buried in noise.
+    </p>
+<div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Practical tip</h3>
+<p class="text-neutral-300">
+        If the loop starts ignoring an instruction you gave at the beginning, before rewriting the instruction more forcefully,
+        check the size of the accumulated context. Often the problem isn’t the instruction—it’s that it’s on page 1 of
+        a document that has already grown to 40 pages.
+      </p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+<h4 class="font-bold text-emerald-400 mb-4">✓ Clean context</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Only what's relevant to the current step goes into the window</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Intermediate drafts are summarized, not stacked in full</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>The original instruction is reinforced on every cycle, not just read once</span></li>
+</ul>
+</div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+<h4 class="font-bold text-red-400 mb-4">✗ Context soup</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Raw search HTML, tool results, and drafts all mixed together without cleanup</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Reasoning from old turns gets mixed in with current reasoning and disappears</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>The original instruction is so far behind that the model prioritizes what’s nearby</span></li>
+</ul>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-4">Key concepts</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Context window</div><p class="text-xs text-neutral-400">What the model sees at once</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">All together</div><p class="text-xs text-neutral-400">A single node does not separate layers</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">A sham review</div><p class="text-xs text-neutral-400">It reappears: contaminated context</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Periodic summary</div><p class="text-xs text-neutral-400">Compact before you drown</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span>
+</button>
+</div>
+</section>
+<!-- ============ TOPICO 6 ============ -->
+<section class="mb-16" data-inema-topic="modulo-2-3#topico-6" id="topico-6">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl">6</span>
+<h2 class="text-2xl font-bold">➡️ Accept the limitation of form: a loop is sequential</h2>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button">
+<span aria-hidden="true">?</span><span>I have a question</span>
+</button>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-3-t6-p1">
+      A loop reads sources one at a time because a loop is, by definition, one thing after another: discover, plan, act,
+      verify, and repeat. It can’t open ten work streams at the same time and combine the results later —
+      not because it lacks intelligence, but because its very structure is a queue. This is the <strong class="text-blue-400">single</strong>
+      of the six limits in this module that no better prompt, sharper verifier, or amount of discipline can solve.
+    </p>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-4 overflow-hidden">
+<svg aria-label="Side-by-side comparison. On the left, four boxes in a row, one after another, with each step's time adding up to the total. On the right, the same four boxes fanned out, all starting from the same point and then converging at a junction node, in cyan." class="w-full h-auto" role="img" viewbox="0 0 1000 300">
+<defs>
+<lineargradient id="m23b-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#60a5fa"></stop><stop offset="1" stop-color="#3b82f6"></stop></lineargradient>
+<filter height="180%" id="m23b-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="m23b-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#3b82f6" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="m23b-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#60a5fa"></path></marker>
+<marker id="m23b-ahc" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#38bdf8"></path></marker>
+</defs>
+<rect fill="url(#m23b-grid)" height="300" width="1000" x="0" y="0"></rect>
+<path d="M500,10 L500,290" opacity="0.4" stroke="#9ca3af" stroke-dasharray="9 9" stroke-width="1.5"></path>
+<text fill="#bfdbfe" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="245" y="30">SEQUENTIAL — the loop</text>
+<g fill="none" opacity="0.6" stroke="#60a5fa" stroke-width="1.8">
+<path d="M110,150 L142,150" marker-end="url(#m23b-ah)"></path>
+<path d="M222,150 L254,150" marker-end="url(#m23b-ah)"></path>
+<path d="M334,150 L366,150" marker-end="url(#m23b-ah)"></path>
+</g>
+<g font-family="Inter,sans-serif" font-size="12" font-weight="600">
+<rect fill="#0e1622" height="48" rx="10" stroke="#60a5fa" stroke-width="2" width="80" x="30" y="126"></rect><text fill="#bfdbfe" text-anchor="middle" x="70" y="156">source 1</text>
+<rect fill="#0e1622" height="48" rx="10" stroke="#60a5fa" stroke-width="2" width="80" x="142" y="126"></rect><text fill="#bfdbfe" text-anchor="middle" x="182" y="156">source 2</text>
+<rect fill="#0e1622" height="48" rx="10" stroke="#60a5fa" stroke-width="2" width="80" x="254" y="126"></rect><text fill="#bfdbfe" text-anchor="middle" x="294" y="156">source 3</text>
+<g filter="url(#m23b-glow)"><rect fill="#0e1622" height="48" rx="10" stroke="url(#m23b-grad)" stroke-width="2" width="80" x="366" y="126"></rect></g>
+<text fill="#bfdbfe" text-anchor="middle" x="406" y="156">source 4</text>
+</g>
+<text fill="#bfdbfe" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="245" y="230">total time = sum of the four stages</text>
+<text fill="#7dd3fc" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="750" y="30">PARALLEL — the graph</text>
+<g fill="none" opacity="0.55" stroke="#38bdf8" stroke-width="1.6">
+<path d="M600,150 L650,90" marker-end="url(#m23b-ahc)"></path>
+<path d="M600,150 L650,128" marker-end="url(#m23b-ahc)"></path>
+<path d="M600,150 L650,172" marker-end="url(#m23b-ahc)"></path>
+<path d="M600,150 L650,210" marker-end="url(#m23b-ahc)"></path>
+<path d="M730,90 L800,145" marker-end="url(#m23b-ahc)"></path>
+<path d="M730,128 L800,148" marker-end="url(#m23b-ahc)"></path>
+<path d="M730,172 L800,152" marker-end="url(#m23b-ahc)"></path>
+<path d="M730,210 L800,155" marker-end="url(#m23b-ahc)"></path>
+</g>
+<circle cx="590" cy="150" fill="#0e1b26" r="10" stroke="#38bdf8" stroke-width="2"></circle>
+<g font-family="Inter,sans-serif" font-size="11" font-weight="600">
+<rect fill="#0e1b26" height="42" rx="10" stroke="#38bdf8" stroke-width="2" width="80" x="650" y="66"></rect><text fill="#bfe6ff" text-anchor="middle" x="690" y="92">source 1</text>
+<rect fill="#0e1b26" height="42" rx="10" stroke="#38bdf8" stroke-width="2" width="80" x="650" y="107"></rect><text fill="#bfe6ff" text-anchor="middle" x="690" y="133">source 2</text>
+<rect fill="#0e1b26" height="42" rx="10" stroke="#38bdf8" stroke-width="2" width="80" x="650" y="148"></rect><text fill="#bfe6ff" text-anchor="middle" x="690" y="174">source 3</text>
+<rect fill="#0e1b26" height="42" rx="10" stroke="#38bdf8" stroke-width="2" width="80" x="650" y="189"></rect><text fill="#bfe6ff" text-anchor="middle" x="690" y="215">source 4</text>
+</g>
+<circle cx="810" cy="150" fill="#0e1b26" r="12" stroke="#38bdf8" stroke-width="2"></circle><text fill="#7dd3fc" font-family="Inter,sans-serif" font-size="11" font-weight="600" text-anchor="middle" x="810" y="182">junction</text>
+<text fill="#7dd3fc" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="750" y="255">total time ≈ the slowest stage, not the sum</text>
+</svg>
+</div>
+<p class="text-sm text-neutral-400 mb-6">
+<strong class="text-neutral-300">What to look at:</strong> the four boxes are the same on both sides — what changes is the shape.
+      On the left, each box starts only when the previous one finishes; that’s how a loop works by definition.
+      On the right, the same work opens up into <strong>fan-out</strong> (a node that launches several workstreams at the same time)
+      and then converges at a join node (<strong>fan-in</strong>). This isn’t a prompt improvement — it’s a different structure.
+    </p>
+<!-- EXEMPLO COPY-RUN -->
+<div class="bg-dark-800 rounded-xl border border-blue-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-2 flex items-center"><span class="mr-2">🧪</span> Practical example: audit one of your loops</h3>
+<p class="text-sm text-neutral-400 mb-4"><strong class="text-neutral-300">Objective:</strong> use Claude Code to run the four structural failures from this module against a real loop you already have (an agent, an automation, a script that runs in a cycle).</p>
+<div class="code-box bg-dark-900 rounded-lg border border-dark-600 p-4 mb-4 overflow-x-auto">
+<pre class="text-sm text-neutral-300">Audite o loop em &lt;caminho do arquivo ou descricao do processo&gt;.
+Responda em quatro blocos, sem suavizar:
+
+1. METRICA — liste a metrica principal que este loop otimiza.
+   Depois liste 3 formas concretas de mover essa metrica que
+   trairiam o proposito real do sistema (Goodhart).
+
+2. CEGUEIRA — diga quem, hoje, fica FORA deste loop e poderia
+   questionar se o alvo dele ainda faz sentido. Se a resposta
+   for "ninguem", diga isso claramente.
+
+3. COLISAO — aponte que OUTROS loops do meu sistema esta
+   metrica pressiona ou de quem ela rouba recurso/atencao.
+
+4. MEDICAO — aponte onde a medicao deste loop pode estar
+   decaindo sem alarme (sensor, pipeline, definicao mudada).
+
+Nao me diga que esta tudo bem sem antes tentar ativamente
+achar um problema em cada um dos quatro blocos.</pre>
+</div>
+<div class="bg-dark-700/50 rounded-lg p-4">
+<p class="text-sm text-neutral-300"><strong class="text-blue-400">How to verify:</strong> if the answer to block 1 doesn't include
+        any way to game the metric, ask again and insist — there's always at least one way to move a number
+        without serving the purpose. An "everything looks good" answer with no attempt is a sign of lazy analysis, not a healthy loop.</p>
+</div>
+</div>
+<!-- CHECAGEM LEVE -->
+<div class="inema-check mt-8 bg-dark-800 border border-dark-600 rounded-xl p-6 mb-6" data-inema-check="modulo-2-3#q1">
+<p class="font-medium mb-4">Quick check (doesn’t block anything): of the six failures in this module, which one can no metric or review discipline fix—only a change in structure can?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">Gaming your own metric (Goodhart)</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">Sequential execution — a loop processes only one thing at a time by design</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">The measurement that decays over time</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-4">Key concepts</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Form, not prompt</div><p class="text-xs text-neutral-400">Structural limit, not an instruction limit</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Fan-out</div><p class="text-xs text-neutral-400">A node launches several work streams</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">Fan-in</div><p class="text-xs text-neutral-400">The fronts converge at one node</p></div>
+<div class="bg-dark-700/50 rounded-lg p-4"><div class="text-blue-400 font-semibold text-sm mb-1">The honest argument</div><p class="text-xs text-neutral-400">The only thing that justifies the graph</p></div>
+</div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span>
+</button>
+</div>
+</section>
+<!-- ============ RESUMO ============ -->
+<section class="mb-12">
+<div class="bg-gradient-to-br from-blue-900/40 via-dark-800 to-dark-800 rounded-xl border border-blue-500/30 p-8">
+<h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">📌</span> Module Summary</h2>
+<div class="space-y-4 mb-8">
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Goodhart</strong><span class="text-neutral-400"> — the loop sees only the given metric and finds ways to move it that betray the purpose.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Blindness to upstream context</strong><span class="text-neutral-400"> — questioning the goal requires someone outside the loop; from within, the goal is the only ground.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Loops collide</strong><span class="text-neutral-400"> — each one is right on its own, but the set is wrong; only a graph shows the interference.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Measurement decays</strong><span class="text-neutral-400"> — the quietest failure, because the alarm depends on the same measurement that failed.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Context turns into soup</strong><span class="text-neutral-400"> — everything floating in the same window leads to fake reviews and "forgetting."</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Sequential by design</strong><span class="text-neutral-400"> — the only limit no prompt can solve; the honest argument for the graph.</span></div></div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+<h3 class="font-semibold text-blue-400 mb-2">What will be clear by the end of Track 2:</h3>
+<p class="text-neutral-300">
+          Of the six failures in this module, three can be addressed with discipline — paired metrics, periodic external review,
+          and auditing the measurement itself. Only sequentiality requires changing the form. This doesn’t mean “loops are dead”:
+          it means a loop is already a graph — a graph whose path returns to an earlier node — and that you compose
+          loops into larger graphs exactly when that limitation of form starts to become costly.
+        </p>
+</div>
+<div class="flex flex-col sm:flex-row gap-4">
+<a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="modulo-2-2.html">← Previous Module</a>
+<a class="flex-1 text-center px-6 py-3 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-500 transition-colors" href="../trilha3/index.html">Track 3: Agentic × Loop × Graph →</a>
+</div>
+</div>
+</section>
+</main>
+</div>
+</div>
+<footer class="border-t border-dark-600 py-8 mt-16">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+<p>Graph Engineering — From Loops to Graphs · INEMA 2026</p>
+<p class="mt-2">
+<a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+<span class="text-neutral-600 mx-1">-</span>
+<a class="text-amber-700 hover:text-amber-600 dark:text-slate-300 dark:hover:text-slate-200" href="https://inema.pro" target="_blank">PRO</a>
+</p>
+</div>
+</footer>
+<script>
+  function toggleTopic(button) {
+    const topicItem = button.closest('.topic-item');
+    const explanation = topicItem.querySelector('.topic-explanation');
+    const moduleCard = button.closest('.bg-dark-800') || document;
+    moduleCard.querySelectorAll('.topic-explanation.active').forEach(exp => { if (exp !== explanation) { exp.classList.remove('active'); const b = exp.closest('.topic-item').querySelector('button'); if (b) b.setAttribute('aria-expanded','false'); } });
+    explanation.classList.toggle('active');
+    button.setAttribute('aria-expanded', explanation.classList.contains('active') ? 'true' : 'false');
+  }
+  function openModal(modalId) { const m = document.getElementById(modalId); if (m) { m.classList.remove('hidden'); document.body.style.overflow = 'hidden'; } }
+  function closeModal() { document.querySelectorAll('.modal').forEach(m => m.classList.add('hidden')); document.body.style.overflow = 'auto'; }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+  const themeToggle = document.getElementById('theme-toggle');
+  const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+  const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+  const htmlEl = document.documentElement;
+  if (htmlEl.classList.contains('dark')) themeToggleLightIcon.classList.remove('hidden'); else themeToggleDarkIcon.classList.remove('hidden');
+  themeToggle.addEventListener('click', () => {
+    themeToggleDarkIcon.classList.toggle('hidden'); themeToggleLightIcon.classList.toggle('hidden');
+    htmlEl.classList.toggle('dark');
+    const dark = htmlEl.classList.contains('dark');
+    localStorage.setItem('theme', dark ? 'dark' : 'light');
+    try { const p = JSON.parse(localStorage.getItem('inema.prefs') || '{}'); p.theme = dark ? 'inema-dark' : 'claro'; localStorage.setItem('inema.prefs', JSON.stringify(p)); } catch (e) {}
+  });
+</script>
+<script src="../../../assets/learn.js"></script>
+<script>
+  if (window.INEMA && typeof window.INEMA.init === 'function') { window.INEMA.init(); }
+  window.addEventListener('DOMContentLoaded', function () {
+    if (window.INEMA && INEMA.registerCheck) {
+      INEMA.registerCheck('modulo-2-3#q1', {
+        answer: 1,
+        explain: {
+          0: 'Nao. Burlar a metrica se ataca com metricas em par (LTV/CAC, nunca CAC sozinho) — e disciplina, nao mudanca de estrutura.',
+          1: 'Isso. Loop processa uma coisa de cada vez porque essa e a propria forma dele. Nenhum prompt, verificador ou disciplina de metrica muda isso — so abrir fan-out/fan-in num grafo resolve.',
+          2: 'Nao. Medicao que decai se ataca com auditoria periodica da propria medicao (sensor, pipeline, definicao) — tambem e disciplina, nao estrutura.'
+        }
+      });
+    }
+  });
+</script>
+</body>
+</html>

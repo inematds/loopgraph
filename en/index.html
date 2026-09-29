@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="loopgraph" name="inema-course"/>
+<meta content="Complete Graph Engineering course: from isolated loops to agent graphs. Graph fundamentals, loop engineering, agentic vs. loop vs. graph comparison, hands-on practice, and ready-to-use prompts." name="description"/>
+<title>Graph Engineering — From Loops to Graphs | INEMA</title>
+<script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'emerald' };
+      function clone(o) { var r = {}; for (var x in o) r[x] = o[x]; return r; }
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed === 'object') { for (var k in DEF) if (parsed[k] != null) p[k] = parsed[k]; } }
+        else { var legacy = localStorage.getItem('theme'); if (legacy === 'light') p.theme = 'claro'; else if (legacy === 'dark') p.theme = 'inema-dark'; }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = { 'inema-dark': { dark: true, attr: null, cs: 'dark' }, 'claro': { dark: false, attr: null, cs: 'light' }, 'sepia': { dark: false, attr: 'sepia', cs: 'light' }, 'foco': { dark: null, attr: 'foco', cs: null }, 'contraste': { dark: true, attr: 'contraste', cs: 'dark' } };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark === true) html.classList.add('dark'); else if (t.dark === false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark') ? 'dark' : 'light'));
+      html.setAttribute('data-font', p.font || 'inter');
+      html.setAttribute('data-accent', p.accent || 'emerald');
+      var s = html.style, scale = (+p.fontScale || 100);
+      s.setProperty('--inema-font-scale', (scale / 100).toString());
+      s.setProperty('font-size', scale + '%');
+      s.setProperty('--measure', (+p.lineWidth || 68) + 'ch');
+      s.setProperty('--lh-body', (+p.leading || 1.7).toString());
+      var fam = p.font === 'system' ? 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif' : (p.font === 'leitura' ? '"Atkinson Hyperlegible", "Inter", system-ui, sans-serif' : '"Inter", system-ui, sans-serif');
+      s.setProperty('--font-body', fam);
+      var ACC = { emerald: [152, 76, 45], blue: [217, 91, 60], purple: [258, 90, 66], amber: [38, 92, 50], teal: [174, 72, 41], rose: [350, 89, 60] };
+      var a = ACC[p.accent] || ACC.emerald;
+      s.setProperty('--accent-h', a[0] + ''); s.setProperty('--accent-s', a[1] + '%'); s.setProperty('--accent-l', a[2] + '%');
+      s.setProperty('--accent', 'hsl(' + a[0] + ' ' + a[1] + '% ' + a[2] + '%)');
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme = 'dark'; } catch (e) {} }
+  })();
+  </script>
+<script data-inema-manifest="" type="application/json">
+  {
+    "course": "loopgraph",
+    "tracks": [
+      { "n": "1", "title": "Fundamentos: o grafo", "modules": [
+        { "id": "1-1", "title": "O que e um grafo", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
+        { "id": "1-2", "title": "Grafos no mundo real", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+        { "id": "1-3", "title": "Como se anda num grafo", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" }
+      ]},
+      { "n": "2", "title": "Loop Engineering", "modules": [
+        { "id": "2-1", "title": "Anatomia do loop", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
+        { "id": "2-2", "title": "O verificador e o gargalo", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
+        { "id": "2-3", "title": "Onde o loop quebra", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" }
+      ]},
+      { "n": "3", "title": "Agentic x Loop x Graph", "modules": [
+        { "id": "3-1", "title": "As cinco camadas", "topics": 6, "href": "curso/trilha3/modulo-3-1.html" },
+        { "id": "3-2", "title": "O comparativo de verdade", "topics": 6, "href": "curso/trilha3/modulo-3-2.html" },
+        { "id": "3-3", "title": "Mito x fato", "topics": 6, "href": "curso/trilha3/modulo-3-3.html" }
+      ]},
+      { "n": "4", "title": "Graph Engineering na pratica", "modules": [
+        { "id": "4-1", "title": "Nos, arestas e estado", "topics": 6, "href": "curso/trilha4/modulo-4-1.html" },
+        { "id": "4-2", "title": "Org graph x work graph", "topics": 6, "href": "curso/trilha4/modulo-4-2.html" },
+        { "id": "4-3", "title": "Falhas, harness e observabilidade", "topics": 6, "href": "curso/trilha4/modulo-4-3.html" }
+      ]},
+      { "n": "5", "title": "Mao na massa", "modules": [
+        { "id": "5-1", "title": "Do loop ao grafo", "topics": 6, "href": "curso/trilha5/modulo-5-1.html" },
+        { "id": "5-2", "title": "Grafos de negocio e de tarefas", "topics": 6, "href": "curso/trilha5/modulo-5-2.html" },
+        { "id": "5-3", "title": "Biblioteca de prompts", "topics": 6, "href": "curso/trilha5/modulo-5-3.html" }
+      ]}
+    ]
+  }
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../assets/learn.css" rel="stylesheet"/>
+<link href="../assets/curso.css" rel="stylesheet"/>
+<style>
+    /* so o que e especifico da landing — o resto vem de assets/curso.css */
+  </style>
+<link href="https://inematds.github.io/loopgraph/" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/loopgraph/en/" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/loopgraph/es/" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="./" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">EN</a><a href="../es/" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<a class="sr-only focus:not-sr-only focus:absolute focus:z-[60] focus:m-2 focus:px-4 focus:py-2 focus:rounded-lg focus:bg-dark-700" href="#conteudo">Skip to content</a>
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14 gap-2">
+<div class="flex items-center space-x-3 flex-shrink-0">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="index.html">
+<span class="text-2xl">🕸️</span>
+<span class="font-bold text-lg hidden lg:inline">Graph Engineering</span>
+</a>
+<span class="text-neutral-600 hidden sm:inline">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium hidden sm:inline" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+<span class="text-neutral-600 hidden sm:inline">-</span>
+<a class="text-amber-700 hover:text-amber-600 dark:text-slate-300 dark:hover:text-slate-200 text-sm font-medium hidden sm:inline" href="https://inema.pro" target="_blank">PRO</a>
+</div>
+<div class="flex items-center space-x-1">
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors" href="curso/trilha1/index.html"><span class="lg:hidden">T1</span><span class="hidden lg:inline">Fundamentals</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors" href="curso/trilha2/index.html"><span class="lg:hidden">T2</span><span class="hidden lg:inline">Loops</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors" href="curso/trilha3/index.html"><span class="lg:hidden">T3</span><span class="hidden lg:inline">Comparison</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors" href="curso/trilha4/index.html"><span class="lg:hidden">T4</span><span class="hidden lg:inline">Practice</span></a>
+<a class="px-2 sm:px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors" href="curso/trilha5/index.html"><span class="lg:hidden">T5</span><span class="hidden lg:inline">Hands-on</span></a>
+<button class="hidden sm:inline-flex items-center gap-1 px-2 py-1.5 rounded-lg text-sm text-neutral-400 hover:text-neutral-100 transition-colors" data-inema-journey-open="" title="My journey" type="button">
+<span aria-hidden="true">◷</span><span class="hidden xl:inline">Journey</span>
+<span aria-hidden="true" class="inema-journey-badge hidden"></span>
+</button>
+<button aria-label="Toggle light/dark theme" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<main id="conteudo">
+<!-- ===================== HERO ===================== -->
+<header class="bg-gradient-to-br from-amber-900/30 via-dark-800 to-dark-800 py-14 border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-amber-500/20 text-amber-400 text-xs font-semibold rounded-full mb-4">COMPLETE COURSE · 2026</span>
+<h1 class="text-4xl sm:text-5xl font-bold mb-4">🕸️ Graph Engineering</h1>
+<p class="text-lg text-neutral-400 max-w-3xl mb-6">
+      Of <strong class="text-blue-400">isolated loops</strong> a <strong class="text-amber-400">agent graphs</strong>.
+      The course starts from scratch—what a node is, what an edge is—and ends with you drawing,
+      running, and debugging a real agent graph. With an antidote to the hype along the way.
+    </p>
+<figure class="mb-8">
+<img alt="Four-stage infographic. (1) Simple loop: a red circle spinning over a single person icon, with the labels 1 task, 1 metric, 1 goal. (2) Harnesses and skills: four boxes — tools, memory, prompt, validation. (3) Orchestrator: a central brain connected to planning, routing, state, and checklist. (4) Agent graph: a golden mesh with research, data, execution, analysis, validation, observability, and shared memory, all interconnected. Below, the Why graphs? section — parallelism, dependencies, multiple metrics, scalability — and the final banner: Loop Engineering (isolated, fragile, optimizes 1 metric) versus Graph Engineering (orchestrated, resilient, balances the system)." class="w-full h-auto rounded-xl border border-dark-600" onerror="this.closest('figure').style.display='none'" src="../assets/img/graph-engineering-panorama.png"/>
+<figcaption class="text-sm text-neutral-400 mt-3">
+<strong class="text-neutral-300">What to look at:</strong> the progression from left to right is the entire course in one image.
+        Stage 1 (red) is the loop: <em>a</em> task, <em>a</em> metric, <em>one</em> goal — and Track 2 shows exactly why that “one” is the limit.
+        Stages 2 and 3 are what you hang around the loop to help it handle more (harness, orchestrator).
+        Stage 4 is the graph. Notice the bottom band: the promise isn’t “faster,” it’s <strong class="text-amber-400">balance the system</strong> instead of optimizing just one number.
+      </figcaption>
+</figure>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl mb-8">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+<div class="text-xl font-bold text-amber-400">5</div><div class="text-xs text-neutral-400">Tracks</div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+<div class="text-xl font-bold text-amber-400">15</div><div class="text-xs text-neutral-400">Modules</div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+<div class="text-xl font-bold text-amber-400">90</div><div class="text-xs text-neutral-400">Topics</div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+<div class="text-xl font-bold text-amber-400">~10h</div><div class="text-xs text-neutral-400">Duration</div>
+</div>
+</div>
+<!-- Progresso do curso + continuar -->
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-5 max-w-3xl">
+<div class="flex items-center justify-between mb-3">
+<h2 class="text-sm font-semibold text-neutral-300">Your course progress</h2>
+<div aria-label="Course progress" aria-valuemax="100" aria-valuemin="0" class="inema-meter text-sm" data-inema-meter="curso" role="progressbar">
+<span class="inema-meter-pct text-amber-400 font-bold">0%</span>
+<span class="inema-meter-count text-neutral-400 ml-2">0 of 90</span>
+</div>
+</div>
+<div class="flex justify-start flex-wrap gap-3">
+<a class="px-4 py-2 text-sm bg-amber-600 hover:bg-amber-500 text-white rounded-lg font-semibold transition-colors" href="curso/trilha1/modulo-1-1.html">Start with module 1.1</a>
+<button class="px-4 py-2 text-sm bg-dark-700 hover:bg-dark-600 rounded-lg transition-colors" data-inema-journey-open="" type="button">My journey / continue</button>
+</div>
+<p class="text-xs text-neutral-500 mt-3">Your progress, questions, and notes are saved in your own browser. Nothing is uploaded to any server.</p>
+</div>
+</div>
+</header>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<!-- ===================== A TESE (hero SVG) ===================== -->
+<section class="mb-16">
+<h2 class="text-2xl font-bold mb-4">The sentence that holds up through the hype</h2>
+<div class="bg-gradient-to-br from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-8">
+<p class="text-xl text-neutral-100 leading-relaxed mb-3">
+        “A <strong class="text-blue-400">loop</strong> already is a <strong class="text-amber-400">graph</strong> — a graph whose path returns to a previous node.”
+      </p>
+<p class="text-neutral-300">
+        You don't <em>if condition</em> from loops to graphs. You <strong class="text-amber-400">composes</strong> loops in graphs
+        when one loop is no longer enough—and pays for it in prompts, in <em>state schema</em> and new failure modes.
+        Get the loop right first; build the graph when the work calls for it.
+      </p>
+</div>
+<div class="rounded-2xl border border-amber-500/30 bg-dark-900/40 p-3 sm:p-4 mb-4 overflow-hidden">
+<svg aria-label="On the left, a loop: a single node that points back to itself, labeled with a metric. In the center, a composition arrow. On the right, a graph: a plan node that branches into four parallel agents in cyan, which converge at a result node, with a return path labeled rejected." class="w-full h-auto" role="img" viewbox="0 0 1000 300">
+<defs>
+<lineargradient id="hero-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#fbbf24"></stop><stop offset="1" stop-color="#f59e0b"></stop></lineargradient>
+<lineargradient id="hero-grad-b" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#60a5fa"></stop><stop offset="1" stop-color="#3b82f6"></stop></lineargradient>
+<filter height="180%" id="hero-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="hero-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#f59e0b" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="hero-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#fbbf24"></path></marker>
+<marker id="hero-ahc" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#38bdf8"></path></marker>
+<marker id="hero-ahb" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#60a5fa"></path></marker>
+</defs>
+<rect fill="url(#hero-grid)" height="300" width="1000" x="0" y="0"></rect>
+<!-- LOOP (esquerda, azul = T2) -->
+<text fill="#93c5fd" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="140" y="34">LOOP</text>
+<path d="M140,88 C60,88 60,212 140,212 C220,212 220,88 140,88" fill="none" marker-end="url(#hero-ahb)" opacity="0.55" stroke="#60a5fa" stroke-width="1.8"></path>
+<g filter="url(#hero-glow)"><rect fill="#0e1622" height="64" rx="14" stroke="url(#hero-grad-b)" stroke-width="2" width="156" x="62" y="118"></rect></g>
+<text fill="#60a5fa" font-family="Inter,sans-serif" font-size="17" font-weight="600" text-anchor="middle" x="140" y="145">agent</text>
+<text fill="#bfdbfe" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="140" y="165">plan · act · verify</text>
+<text fill="#93c5fd" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="140" y="248">1 context · 1 metric · sequential</text>
+<!-- Seta de composicao -->
+<path d="M258,150 L338,150" fill="none" marker-end="url(#hero-ah)" opacity="0.5" stroke="#9ca3af" stroke-width="1.8"></path>
+<text fill="#e5e7eb" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="298" y="138">compose</text>
+<!-- GRAFO (direita, ambar = T4) -->
+<text fill="#fcd9a0" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="660" y="34">LOOP GRAPH</text>
+<g fill="none" opacity="0.5" stroke="#fbbf24" stroke-width="1.8">
+<path d="M506,150 C560,150 570,72 630,72" marker-end="url(#hero-ah)"></path>
+<path d="M506,150 C560,150 570,118 630,118" marker-end="url(#hero-ah)"></path>
+<path d="M506,150 C560,150 570,164 630,164" marker-end="url(#hero-ah)"></path>
+<path d="M506,150 C560,150 570,210 630,210" marker-end="url(#hero-ah)"></path>
+</g>
+<g fill="none" opacity="0.5" stroke="#38bdf8" stroke-width="1.8">
+<path d="M766,72  C830,72 840,150 886,150" marker-end="url(#hero-ahc)"></path>
+<path d="M766,118 C830,118 840,150 886,150" marker-end="url(#hero-ahc)"></path>
+<path d="M766,164 C830,164 840,150 886,150" marker-end="url(#hero-ahc)"></path>
+<path d="M766,210 C830,210 840,150 886,150" marker-end="url(#hero-ahc)"></path>
+</g>
+<path d="M930,182 C930,262 430,262 430,192" fill="none" marker-end="url(#hero-ah)" opacity="0.65" stroke="#f87171" stroke-dasharray="8 8" stroke-width="1.8"></path>
+<text fill="#fca5a5" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="680" y="278">back edge: “rejected, try again”</text>
+<rect fill="#1f1604" height="64" rx="14" stroke="#fbbf24" stroke-width="2" width="156" x="350" y="118"></rect>
+<text fill="#fbbf24" font-family="Inter,sans-serif" font-size="16" font-weight="600" text-anchor="middle" x="428" y="145">plan</text>
+<text fill="#fcd9a0" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="428" y="165">orchestrator</text>
+<g font-family="Inter,sans-serif" font-size="12.5" font-weight="600">
+<g class="wf-a"><rect fill="#0e1b26" height="32" rx="9" stroke="#38bdf8" stroke-width="2" width="136" x="630" y="56"></rect><text fill="#bfe6ff" text-anchor="middle" x="698" y="77">research</text></g>
+<g class="wf-a"><rect fill="#0e1b26" height="32" rx="9" stroke="#38bdf8" stroke-width="2" width="136" x="630" y="102"></rect><text fill="#bfe6ff" text-anchor="middle" x="698" y="123">writing</text></g>
+<g class="wf-a"><rect fill="#0e1b26" height="32" rx="9" stroke="#38bdf8" stroke-width="2" width="136" x="630" y="148"></rect><text fill="#bfe6ff" text-anchor="middle" x="698" y="169">data</text></g>
+<g class="wf-a"><rect fill="#0e1b26" height="32" rx="9" stroke="#38bdf8" stroke-width="2" width="136" x="630" y="194"></rect><text fill="#bfe6ff" text-anchor="middle" x="698" y="215">review</text></g>
+</g>
+<g filter="url(#hero-glow)"><rect fill="#1f1604" height="64" rx="14" stroke="url(#hero-grad)" stroke-width="2" width="96" x="886" y="118"></rect></g>
+<text fill="#fbbf24" font-family="Inter,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="934" y="155">output</text>
+</svg>
+</div>
+<p class="text-sm text-neutral-400 mb-8">
+<strong class="text-neutral-300">What to look at:</strong> the two diagrams have <em>in nodes</em> e <em>edges</em> — the difference isn’t conceptual; it’s in the structure.
+      On the left, a single edge that loops back to the same node: everything happens in one context, one step at a time.
+      On the right, the same work split into four nodes that run <em>at the same time</em>, each with its own clean context,
+      plus a red edge going back (the reviewer rejected it). Each light-blue box inside is still a loop.
+    </p>
+</section>
+<!-- ===================== O QUE VOCE VAI SABER FAZER ===================== -->
+<section class="mb-16">
+<h2 class="text-2xl font-bold mb-6">What you will know how to do by the end</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+<h3 class="font-bold text-emerald-400 mb-4">✓ You'll leave here able to</h3>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Read and draw a graph (nodes, edges, direction, weight) without getting overwhelmed</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Design a loop with a stopping condition and a verifier that works</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Decide, based on clear criteria, between a standalone agent, a loop, and a graph</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Break a task into nodes with clean context, then fan out / fan in</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Write the <em>state schema</em> between nodes and predict new failure modes</span></li>
+<li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Use ready-made prompts to design the graph and turn it into executable code</span></li>
+</ul>
+</div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+<h3 class="font-bold text-red-400 mb-4">✗ What this course does NOT do</h3>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>It doesn’t claim that “the loop is dead.” The loop isn’t dead—it’s become the graph’s node</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>It doesn’t force you to adopt any framework to learn the concept</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Don't repeat marketing numbers without a source (there's a whole module for that)</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Don't confuse them <em>knowledge graph</em> / GraphRAG with graph engineering</span></li>
+<li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>It doesn't mean you should turn every agent into a distributed system</span></li>
+</ul>
+</div>
+</div>
+</section>
+<!-- ===================== TRILHAS ===================== -->
+<section class="mb-16">
+<h2 class="text-2xl font-bold mb-6">The 5 tracks</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<a class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-emerald-500/30 p-6 transition-all" href="curso/trilha1/index.html">
+<div class="flex items-center justify-between mb-3">
+<span class="px-3 py-1 bg-emerald-500/20 text-emerald-400 text-xs font-semibold rounded-full">TRACK 1</span>
+<span class="text-xs text-neutral-500">3 modules · ~2h</span>
+</div>
+<h3 class="text-2xl font-bold mb-2 group-hover:text-emerald-400 transition-colors">🔵 Fundamentals: the graph</h3>
+<p class="text-neutral-400 text-sm mb-4">Starting from absolute zero. Node, edge, weight, direction, cycle — and why your coffee routine is already a graph.</p>
+<div aria-label="Learning path 1 progress" aria-valuemax="100" aria-valuemin="0" class="inema-meter text-xs text-neutral-500" data-inema-meter="trilha:1" role="progressbar">
+<span class="inema-meter-pct text-emerald-400 font-bold">0%</span><span class="inema-meter-count ml-2">0 of 18</span>
+</div>
+</a>
+<a class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-blue-500/30 p-6 transition-all" href="curso/trilha2/index.html">
+<div class="flex items-center justify-between mb-3">
+<span class="px-3 py-1 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full">TRACK 2</span>
+<span class="text-xs text-neutral-500">3 modules · ~2h</span>
+</div>
+<h3 class="text-2xl font-bold mb-2 group-hover:text-blue-400 transition-colors">🔁 Loop Engineering</h3>
+<p class="text-neutral-400 text-sm mb-4">The cycle that made AI stop needing a babysitter—and the four structural ways it can betray you.</p>
+<div aria-label="Learning path 2 progress" aria-valuemax="100" aria-valuemin="0" class="inema-meter text-xs text-neutral-500" data-inema-meter="trilha:2" role="progressbar">
+<span class="inema-meter-pct text-blue-400 font-bold">0%</span><span class="inema-meter-count ml-2">0 of 18</span>
+</div>
+</a>
+<a class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-purple-500/30 p-6 transition-all" href="curso/trilha3/index.html">
+<div class="flex items-center justify-between mb-3">
+<span class="px-3 py-1 bg-purple-500/20 text-purple-400 text-xs font-semibold rounded-full">TRACK 3</span>
+<span class="text-xs text-neutral-500">3 modules · ~2h</span>
+</div>
+<h3 class="text-2xl font-bold mb-2 group-hover:text-purple-400 transition-colors">⚖️ Agentic × Loop × Graph</h3>
+<p class="text-neutral-400 text-sm mb-4">The five layers, the three-column comparison, and the myth × fact table that will save you from the next tweet.</p>
+<div aria-label="Learning path 3 progress" aria-valuemax="100" aria-valuemin="0" class="inema-meter text-xs text-neutral-500" data-inema-meter="trilha:3" role="progressbar">
+<span class="inema-meter-pct text-purple-400 font-bold">0%</span><span class="inema-meter-count ml-2">0 of 18</span>
+</div>
+</a>
+<a class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-amber-500/30 p-6 transition-all" href="curso/trilha4/index.html">
+<div class="flex items-center justify-between mb-3">
+<span class="px-3 py-1 bg-amber-500/20 text-amber-400 text-xs font-semibold rounded-full">TRACK 4</span>
+<span class="text-xs text-neutral-500">3 modules · ~2h</span>
+</div>
+<h3 class="text-2xl font-bold mb-2 group-hover:text-amber-400 transition-colors">🕸️ Graph Engineering in practice</h3>
+<p class="text-neutral-400 text-sm mb-4">Org graph × work graph, zone defense, fan-out/fan-in, state schema, and failure modes unique to the graph.</p>
+<div aria-label="Learning path 4 progress" aria-valuemax="100" aria-valuemin="0" class="inema-meter text-xs text-neutral-500" data-inema-meter="trilha:4" role="progressbar">
+<span class="inema-meter-pct text-amber-400 font-bold">0%</span><span class="inema-meter-count ml-2">0 of 18</span>
+</div>
+</a>
+<a class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-teal-500/30 p-6 transition-all md:col-span-2" href="curso/trilha5/index.html">
+<div class="flex items-center justify-between mb-3">
+<span class="px-3 py-1 bg-teal-500/20 text-teal-400 text-xs font-semibold rounded-full">TRACK 5</span>
+<span class="text-xs text-neutral-500">3 modules · ~2h</span>
+</div>
+<h3 class="text-2xl font-bold mb-2 group-hover:text-teal-400 transition-colors">🛠️ Hands-on practice</h3>
+<p class="text-neutral-400 text-sm mb-4">Migrate a real loop case to a graph, model your business and backlog graphs—and use the copy-and-paste prompt library.</p>
+<div aria-label="Learning path 5 progress" aria-valuemax="100" aria-valuemin="0" class="inema-meter text-xs text-neutral-500" data-inema-meter="trilha:5" role="progressbar">
+<span class="inema-meter-pct text-teal-400 font-bold">0%</span><span class="inema-meter-count ml-2">0 of 18</span>
+</div>
+</a>
+</div>
+</section>
+<!-- ===================== PRE-REQUISITOS ===================== -->
+<section class="mb-12">
+<h2 class="text-2xl font-bold mb-6">Who it’s for (and what you need to know first)</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+<h3 class="font-semibold text-amber-400 mb-3">Prerequisites</h3>
+<p class="text-neutral-300 text-sm">No knowledge of graph theory required. If you’ve used an AI agent (Claude Code, Codex, any bot) and know what a prompt is, you’re ready. Track 1 defines <em>each</em> technical term the first time it appears.</p>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+<h3 class="font-semibold text-amber-400 mb-3">Who it’s for</h3>
+<p class="text-neutral-300 text-sm">Anyone building with agents who has already hit the ceiling of a single agent: developer, PM, founder, automation builder. And anyone who saw “graph engineering” in a tweet and wants to understand it before dropping everything.</p>
+</div>
+<div class="bg-primary/10 rounded-xl border border-primary/30 p-6">
+<h3 class="font-semibold text-primary mb-3">💡 How to study</h3>
+<p class="text-neutral-300 text-sm">Mark each section as read—that’s how your progress moves forward. Select a passage to highlight or annotate. Mark “I have a question” without hesitation: it all comes back in the panel <strong>My journey</strong>.</p>
+</div>
+</div>
+</section>
+</div>
+</main>
+<footer class="border-t border-dark-600 py-8 mt-16">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+<p>Graph Engineering — From Loops to Graphs · INEMA 2026</p>
+<p class="mt-2">
+<a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+<span class="text-neutral-600 mx-1">-</span>
+<a class="text-amber-700 hover:text-amber-600 dark:text-slate-300 dark:hover:text-slate-200" href="https://inema.pro" target="_blank">PRO</a>
+</p>
+</div>
+</footer>
+<script>
+  function toggleTopic(button) {
+    const topicItem = button.closest('.topic-item');
+    const explanation = topicItem.querySelector('.topic-explanation');
+    const moduleCard = button.closest('.bg-dark-800') || document;
+    moduleCard.querySelectorAll('.topic-explanation.active').forEach(exp => { if (exp !== explanation) { exp.classList.remove('active'); const b = exp.closest('.topic-item').querySelector('button'); if (b) b.setAttribute('aria-expanded','false'); } });
+    explanation.classList.toggle('active');
+    button.setAttribute('aria-expanded', explanation.classList.contains('active') ? 'true' : 'false');
+  }
+  function openModal(modalId) { const m = document.getElementById(modalId); if (m) { m.classList.remove('hidden'); document.body.style.overflow = 'hidden'; } }
+  function closeModal() { document.querySelectorAll('.modal').forEach(m => m.classList.add('hidden')); document.body.style.overflow = 'auto'; }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+  const themeToggle = document.getElementById('theme-toggle');
+  const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+  const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+  const htmlEl = document.documentElement;
+  if (htmlEl.classList.contains('dark')) themeToggleLightIcon.classList.remove('hidden'); else themeToggleDarkIcon.classList.remove('hidden');
+  themeToggle.addEventListener('click', () => {
+    themeToggleDarkIcon.classList.toggle('hidden'); themeToggleLightIcon.classList.toggle('hidden');
+    htmlEl.classList.toggle('dark');
+    const dark = htmlEl.classList.contains('dark');
+    localStorage.setItem('theme', dark ? 'dark' : 'light');
+    try { const p = JSON.parse(localStorage.getItem('inema.prefs') || '{}'); p.theme = dark ? 'inema-dark' : 'claro'; localStorage.setItem('inema.prefs', JSON.stringify(p)); } catch (e) {}
+  });
+</script>
+<script src="../assets/learn.js"></script>
+<script>if (window.INEMA && typeof window.INEMA.init === 'function') { window.INEMA.init(); }</script>
+</body>
+</html>
