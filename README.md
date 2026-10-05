@@ -95,3 +95,11 @@ e a documentação de LangGraph, Microsoft AutoGen e Google ADK. Detalhes em `do
 
 Feito com o formato **INEMA formato-curso-v2**.
 [INEMA.CLUB](https://inema.club) · [PRO](https://inema.pro)
+
+<!-- inema-backlink:v1 -->
+## Mais no INEMA.CLUB
+
+- [Ficha completa deste curso](https://www.inema.club/cursos/232-graph-engineering-de-loops-a-grafos/)
+- [Guia: como aprender inteligência artificial](https://www.inema.club/aprender-inteligencia-artificial/)
+- [Todos os cursos](https://www.inema.club/cursos/)
+<!-- /inema-backlink:v1 -->
